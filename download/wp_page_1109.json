@@ -1,0 +1,26 @@
+{
+  "code": 200,
+  "data": {
+    "description": "",
+    "html": "<html><head><meta name=\"color-scheme\" content=\"light dark\"></head><body><pre style=\"word-wrap: break-word; white-space: pre-wrap;\">{\"id\":1109,\"date\":\"2026-02-18T12:26:59\",\"date_gmt\":\"2026-02-18T12:26:59\",\"guid\":{\"rendered\":\"https:\\/\\/drpedrambakhshaei.com\\/?page_id=1109\"},\"modified\":\"2026-02-24T09:54:15\",\"modified_gmt\":\"2026-02-24T09:54:15\",\"slug\":\"jaw-surgery\",\"status\":\"publish\",\"type\":\"page\",\"link\":\"https:\\/\\/drpedrambakhshaei.com\\/services\\/jaw-surgery\\/\",\"title\":{\"rendered\":\"\\u062c\\u0631\\u0627\\u062d\\u06cc \\u0641\\u06a9\"},\"content\":{\"rendered\":\"\",\"protected\":true},\"excerpt\":{\"rendered\":\"\",\"protected\":true},\"author\":1,\"featured_media\":0,\"parent\":1092,\"menu_order\":2,\"comment_status\":\"closed\",\"ping_status\":\"open\",\"template\":\"\",\"meta\":{\"footnotes\":\"\"},\"class_list\":[\"post-1109\",\"page\",\"type-page\",\"status-publish\",\"post-password-required\",\"hentry\"],\"_links\":{\"self\":[{\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/pages\\/1109\",\"targetHints\":{\"allow\":[\"GET\"]}}],\"collection\":[{\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/pages\"}],\"about\":[{\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/types\\/page\"}],\"author\":[{\"embeddable\":true,\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/users\\/1\"}],\"replies\":[{\"embeddable\":true,\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/comments?post=1109\"}],\"version-history\":[{\"count\":2,\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/pages\\/1109\\/revisions\"}],\"predecessor-version\":[{\"id\":1111,\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/pages\\/1109\\/revisions\\/1111\"}],\"up\":[{\"embeddable\":true,\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/pages\\/1092\"}],\"wp:attachment\":[{\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/media?parent=1109\"}],\"curies\":[{\"name\":\"wp\",\"href\":\"https:\\/\\/api.w.org\\/{rel}\",\"templated\":true}]}}</pre></body></html>",
+    "httpStatus": 200,
+    "httpStatusText": "",
+    "title": "",
+    "url": "https://drpedrambakhshaei.com/wp-json/wp/v2/pages/1109",
+    "usage": {
+      "measuredTokens": 0,
+      "outputTokens": 0,
+      "scaledTokens": 626,
+      "tokens": 626
+    }
+  },
+  "meta": {
+    "usage": {
+      "measuredTokens": 0,
+      "outputTokens": 0,
+      "scaledTokens": 626,
+      "tokens": 626
+    }
+  },
+  "status": 20000
+}

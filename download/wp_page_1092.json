@@ -1,0 +1,26 @@
+{
+  "code": 200,
+  "data": {
+    "description": "",
+    "html": "<html><head><meta name=\"color-scheme\" content=\"light dark\"></head><body><pre style=\"word-wrap: break-word; white-space: pre-wrap;\">{\"id\":1092,\"date\":\"2026-02-18T12:18:59\",\"date_gmt\":\"2026-02-18T12:18:59\",\"guid\":{\"rendered\":\"https:\\/\\/drpedrambakhshaei.com\\/?page_id=1092\"},\"modified\":\"2026-02-24T10:42:28\",\"modified_gmt\":\"2026-02-24T10:42:28\",\"slug\":\"services\",\"status\":\"publish\",\"type\":\"page\",\"link\":\"https:\\/\\/drpedrambakhshaei.com\\/services\\/\",\"title\":{\"rendered\":\"\\u062e\\u062f\\u0645\\u0627\\u062a\"},\"content\":{\"rendered\":\"\",\"protected\":true},\"excerpt\":{\"rendered\":\"\",\"protected\":true},\"author\":1,\"featured_media\":0,\"parent\":0,\"menu_order\":0,\"comment_status\":\"closed\",\"ping_status\":\"closed\",\"template\":\"\",\"meta\":{\"footnotes\":\"\"},\"class_list\":[\"post-1092\",\"page\",\"type-page\",\"status-publish\",\"post-password-required\",\"hentry\"],\"_links\":{\"self\":[{\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/pages\\/1092\",\"targetHints\":{\"allow\":[\"GET\"]}}],\"collection\":[{\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/pages\"}],\"about\":[{\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/types\\/page\"}],\"author\":[{\"embeddable\":true,\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/users\\/1\"}],\"replies\":[{\"embeddable\":true,\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/comments?post=1092\"}],\"version-history\":[{\"count\":6,\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/pages\\/1092\\/revisions\"}],\"predecessor-version\":[{\"id\":1224,\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/pages\\/1092\\/revisions\\/1224\"}],\"wp:attachment\":[{\"href\":\"https:\\/\\/drpedrambakhshaei.com\\/wp-json\\/wp\\/v2\\/media?parent=1092\"}],\"curies\":[{\"name\":\"wp\",\"href\":\"https:\\/\\/api.w.org\\/{rel}\",\"templated\":true}]}}</pre></body></html>",
+    "httpStatus": 200,
+    "httpStatusText": "",
+    "title": "",
+    "url": "https://drpedrambakhshaei.com/wp-json/wp/v2/pages/1092",
+    "usage": {
+      "measuredTokens": 0,
+      "outputTokens": 0,
+      "scaledTokens": 575,
+      "tokens": 575
+    }
+  },
+  "meta": {
+    "usage": {
+      "measuredTokens": 0,
+      "outputTokens": 0,
+      "scaledTokens": 575,
+      "tokens": 575
+    }
+  },
+  "status": 20000
+}
