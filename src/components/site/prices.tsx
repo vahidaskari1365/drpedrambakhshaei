@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { Info, PhoneCall, BadgeCheck } from "lucide-react";
 import { PRICE_TABS } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
-import { SectionHeading } from "./services";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -26,18 +25,6 @@ export function Prices() {
       />
 
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
-        <SectionHeading
-          dark
-          kicker="تعرفه خدمات — ۱۴۰۵"
-          title={
-            <>
-              هزینه جراحی‌های
-              <br className="hidden sm:block" /> متخصص فک و صورت
-            </>
-          }
-          desc="قیمت‌ها تقریبی و جهت راهنمایی است؛ قیمت دقیق پس از معاینه و بررسی CBCT تعیین می‌شود."
-        />
-
         {/* تب‌ها — قرصی */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
