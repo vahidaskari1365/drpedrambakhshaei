@@ -4,38 +4,24 @@ import * as React from "react";
 import { AnimatePresence, motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { Menu, X, Phone, Star } from "lucide-react";
 import { LogoMark } from "./logo";
-import { NAV_ITEMS, SITE } from "@/lib/site-data";
+import { NAV_ITEMS, SITE, type RouteKey } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 /**
  * نوبار بیضی (اوال) مدرن — شیشه‌ای، اپل‌استایل
- * اسکرول اسپای + منوی موبایل فول‌اسکرین
+ * route-aware: هر تب یک صفحه اختصاصی + منوی موبایل فول‌اسکرین
  */
-export function Navbar() {
+export function Navbar({ route }: { route: RouteKey }) {
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
-  const [active, setActive] = React.useState<string>("#home");
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 40));
 
-  // اسکرول‌اسپای
+  // بستن منو با تغییر مسیر
   React.useEffect(() => {
-    const ids = NAV_ITEMS.map((n) => n.href.slice(1));
-    const obs = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) setActive(`#${e.target.id}`);
-        }
-      },
-      { rootMargin: "-40% 0px -55% 0px" }
-    );
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) obs.observe(el);
-    });
-    return () => obs.disconnect();
-  }, []);
+    setOpen(false);
+  }, [route]);
 
   // قفل اسکرول در منوی موبایل
   React.useEffect(() => {
@@ -50,7 +36,7 @@ export function Navbar() {
       <motion.header
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
         className="fixed top-3 left-0 right-0 z-50 flex justify-center px-4"
       >
         <nav
@@ -61,7 +47,7 @@ export function Navbar() {
           )}
         >
           <a
-            href="#home"
+            href="#/"
             aria-label="صفحه اصلی"
             className="flex items-center gap-2 rounded-full py-1 pl-2 cursor-pointer"
           >
@@ -76,14 +62,15 @@ export function Navbar() {
               <li key={item.href}>
                 <a
                   href={item.href}
+                  aria-current={route === item.href.slice(1) ? "page" : undefined}
                   className={cn(
                     "relative block whitespace-nowrap rounded-full px-2.5 py-2 text-[12.5px] font-medium transition-colors duration-300 xl:px-3.5 xl:text-[13px] cursor-pointer",
-                    active === item.href
+                    route === item.href.slice(1)
                       ? "text-primary-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  {active === item.href && (
+                  {route === item.href.slice(1) && (
                     <motion.span
                       layoutId="nav-pill"
                       transition={{ type: "spring", stiffness: 380, damping: 32 }}
@@ -126,18 +113,18 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35 }}
-            className="fixed inset-0 z-[60] flex flex-col bg-background/95 backdrop-blur-2xl lg:hidden"
+            className="fixed inset-0 z-[60] flex flex-col bg-petrol-frost backdrop-blur-2xl lg:hidden"
             role="dialog"
             aria-modal="true"
             aria-label="منوی اصلی"
           >
             <div className="flex items-center justify-between px-6 py-5">
-              <LogoMark className="h-10 w-10 text-foreground" />
+              <LogoMark className="h-10 w-10 text-background" />
               <button
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="بستن منو"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-border/60 bg-card/70 cursor-pointer"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-background/20 bg-background/10 text-background cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -156,11 +143,11 @@ export function Navbar() {
                       onClick={() => setOpen(false)}
                       className={cn(
                         "group flex items-center justify-between rounded-2xl px-4 py-3.5 text-2xl font-extrabold tracking-tight transition-colors cursor-pointer",
-                        active === item.href ? "text-primary" : "text-foreground/80 hover:text-foreground"
+                        route === item.href.slice(1) ? "text-teal-300" : "text-background/80 hover:text-background"
                       )}
                     >
                       {item.label}
-                      <span className="text-xs font-medium text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100">
+                      <span className="text-xs font-medium text-background/40 opacity-0 transition-opacity group-hover:opacity-100">
                         ۰{i + 1}
                       </span>
                     </a>
@@ -174,8 +161,8 @@ export function Navbar() {
               transition={{ delay: 0.5 }}
               className="space-y-3 px-8 pb-10"
             >
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-1 text-amber-700 dark:bg-amber-950 dark:text-amber-400">
+              <div className="flex items-center gap-2 text-sm text-background/60">
+                <span className="flex items-center gap-1 rounded-full bg-amber-400/15 px-2.5 py-1 text-amber-300">
                   <Star className="h-3.5 w-3.5 fill-current" /> {SITE.rating.score}
                 </span>
                 <span>{SITE.rating.count} نظر در گوگل</span>
@@ -183,7 +170,7 @@ export function Navbar() {
               <a
                 href={`tel:${SITE.phone}`}
                 dir="ltr"
-                className="flex items-center justify-center gap-2 rounded-full bg-foreground py-4 text-base font-bold text-background cursor-pointer"
+                className="flex items-center justify-center gap-2 rounded-full bg-background py-4 text-base font-bold text-[oklch(0.17_0.025_205)] cursor-pointer"
               >
                 <Phone className="h-4 w-4" />
                 {SITE.phone}

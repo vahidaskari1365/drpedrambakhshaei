@@ -2,11 +2,11 @@
 
 import { LogoFull } from "./logo";
 import { Phone, MapPin, Instagram, SendHorizontal, MessageCircle, Play, Star } from "lucide-react";
-import { SITE } from "@/lib/site-data";
+import { SITE, NAV_ITEMS } from "@/lib/site-data";
 
 export function Footer() {
   return (
-    <footer className="mt-auto bg-[oklch(0.16_0.01_190)] text-background/85" role="contentinfo">
+    <footer className="mt-auto bg-petrol-deep text-background/85" role="contentinfo">
       <div className="mx-auto max-w-7xl px-5 pb-8 pt-14 lg:px-8">
         <div className="grid gap-10 md:grid-cols-3">
           {/* برند */}
@@ -17,7 +17,7 @@ export function Footer() {
               </span>
             </div>
             <p className="mt-4 max-w-xs text-[13px] leading-7 text-background/60">
-              متخصص جراحی‌های دهان، فک و صورت — دانشیار دانشگاه شهید بهشتی، رتبه ۲ بورد تخصص؛
+              متخصص جراحی‌های دهان، فک و صورت — رتبه ۲ بورد تخصص کشور؛
               ارتوسرجری، ایمپلنت و جراحی دندان‌های نهفته در پاسداران تهران.
             </p>
             <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-amber-300">
@@ -30,22 +30,18 @@ export function Footer() {
           <nav aria-label="دسترسی سریع">
             <h2 className="mb-4 text-sm font-black text-background">دسترسی سریع</h2>
             <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5 text-[13px]">
-              {[
-                { href: "#gallery", label: "گالری جراحی فک و صورت" },
-                { href: "#gallery", label: "گالری ایمپلنت" },
-                { href: "#gallery", label: "گالری جراحی دندان عقل" },
-                { href: "#services", label: "ارتوسرجری" },
-                { href: "#services", label: "جراحی چانه" },
-                { href: "#prices", label: "تعرفه خدمات" },
-                { href: "#faq", label: "سوالات متداول" },
-                { href: "#contact", label: "رزرو نوبت" },
-              ].map((l) => (
-                <li key={l.label}>
+              {NAV_ITEMS.filter((n) => n.href !== "#/").map((l) => (
+                <li key={l.href}>
                   <a href={l.href} className="text-background/60 transition-colors hover:text-background cursor-pointer">
                     {l.label}
                   </a>
                 </li>
               ))}
+              <li>
+                <a href="#/gallery" className="text-background/60 transition-colors hover:text-background cursor-pointer">
+                  گالری مطب
+                </a>
+              </li>
             </ul>
           </nav>
 
@@ -62,6 +58,10 @@ export function Footer() {
               <li className="flex items-start gap-2.5 text-background/60">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
                 <span className="leading-6">{SITE.address}</span>
+              </li>
+              <li className="flex items-start gap-2.5 text-background/60">
+                <ClockIcon />
+                <span className="leading-6">{SITE.hours}</span>
               </li>
             </ul>
             <div className="mt-5 flex gap-2">
@@ -92,5 +92,14 @@ export function Footer() {
         </div>
       </div>
     </footer>
+  );
+}
+
+function ClockIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
   );
 }

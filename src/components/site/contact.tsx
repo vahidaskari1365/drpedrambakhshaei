@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { Phone, MapPin, Clock, Send, Loader2, CheckCircle2, Instagram, SendHorizontal, Play, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { SITE } from "@/lib/site-data";
-import { SectionHeading } from "./services";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -57,12 +56,6 @@ export function Contact() {
   return (
     <section id="contact" className="relative py-20 lg:py-28" aria-label="تماس و رزرو نوبت">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <SectionHeading
-          kicker="رزرو نوبت"
-          title="درخواست سریع نوبت و مشاوره"
-          desc="از طریق پیام‌رسان‌ها یا تماس با شماره مطب با کارشناسان ما مشاوره شوید و نوبت رزرو نمایید."
-        />
-
         <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:gap-12">
           {/* اطلاعات تماس */}
           <motion.div

@@ -41,6 +41,14 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  /* پالت برند — قابل استفاده به‌صورت یوتیلیتی تیلویند (bg-petrol و ...) */
+  --color-petrol: var(--petrol);
+  --color-petrol-deep: var(--petrol-deep);
+  --color-petrol-soft: var(--petrol-soft);
+  --color-sage: var(--sage);
+  --color-sage-deep: var(--sage-deep);
+  --color-gold: var(--gold);
+  --color-gold-deep: var(--gold-deep);
 }
 
 :root {
@@ -78,6 +86,14 @@
   --sidebar-accent-foreground: oklch(0.25 0.01 95);
   --sidebar-border: oklch(0.905 0.006 95);
   --sidebar-ring: oklch(0.52 0.09 190);
+  /* پالت برند — پترول عمیق + سِیج جراحی + طلایی */
+  --petrol: oklch(0.24 0.03 205);
+  --petrol-deep: oklch(0.17 0.025 205);
+  --petrol-soft: oklch(0.32 0.04 202);
+  --sage: oklch(0.955 0.016 175);
+  --sage-deep: oklch(0.92 0.024 175);
+  --gold: oklch(0.78 0.13 85);
+  --gold-deep: oklch(0.68 0.12 80);
 }
 
 .dark {
@@ -131,6 +147,23 @@
   ::selection {
     background: oklch(0.52 0.09 190 / 0.18);
   }
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.6 0.05 190 / 0.35);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.5 0.07 190 / 0.55);
+    background-clip: content-box;
+    border: 2px solid transparent;
+  }
 }
 
 /* اسکرول‌بار سفارشی */
@@ -162,6 +195,120 @@
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  /* متن گرادیانی روشن — روی زمینه تیره */
+  .text-gradient-light {
+    background: linear-gradient(
+      120deg,
+      oklch(0.97 0.01 190) 15%,
+      oklch(0.78 0.13 85) 55%,
+      oklch(0.75 0.1 185) 90%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* پترول عمیق — زمینه بخش‌های تیره سینمایی */
+  .bg-petrol {
+    background-color: var(--petrol);
+    color: oklch(0.97 0.008 190);
+  }
+  .bg-petrol-deep {
+    background-color: var(--petrol-deep);
+    color: oklch(0.97 0.008 190);
+  }
+
+  /* سِیج جراحی — زمینه روشن رنگی */
+  .bg-sage {
+    background-color: var(--sage);
+  }
+  .bg-sage-deep {
+    background-color: var(--sage-deep);
+  }
+
+  /* شفق قطبی — بلاب‌های گرادیانی رنگی */
+  .aurora {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .aurora::before,
+  .aurora::after {
+    content: "";
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(90px);
+  }
+  .aurora::before {
+    width: 55%;
+    aspect-ratio: 1.4;
+    top: -18%;
+    inset-inline-start: -12%;
+    background: radial-gradient(closest-side, oklch(0.55 0.1 190 / 0.5), transparent);
+  }
+  .aurora::after {
+    width: 48%;
+    aspect-ratio: 1.3;
+    bottom: -22%;
+    inset-inline-end: -10%;
+    background: radial-gradient(closest-side, oklch(0.72 0.11 85 / 0.32), transparent);
+  }
+  .aurora-sage::before {
+    background: radial-gradient(closest-side, oklch(0.72 0.09 175 / 0.55), transparent);
+  }
+  .aurora-sage::after {
+    background: radial-gradient(closest-side, oklch(0.6 0.09 190 / 0.35), transparent);
+  }
+
+  /* پس‌زمینه یخ‌زده منوی موبایل — ۹۸٪ پترول */
+  .bg-petrol-frost {
+    background-color: color-mix(in oklab, var(--petrol-deep) 98%, transparent);
+  }
+
+  /* گرادیان عمودی CTA — پترول تیره به روشن و برعکس */
+  .gradient-petrol-cta {
+    background: linear-gradient(
+      to bottom,
+      var(--petrol-deep),
+      oklch(0.3 0.045 200),
+      var(--petrol)
+    );
+  }
+
+  /* کارت شیشه‌ای روی زمینه تیره */
+  .glass-dark {
+    background: oklch(0.97 0.008 190 / 0.06);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    border: 1px solid oklch(0.97 0.008 190 / 0.12);
+    box-shadow:
+      0 20px 50px -20px oklch(0.08 0.02 205 / 0.5),
+      inset 0 1px 0 oklch(0.97 0.008 190 / 0.14);
+  }
+
+  /* کارت روشن روی زمینه سِیج */
+  .card-sage {
+    background: oklch(0.985 0.008 175);
+    border: 1px solid oklch(0.55 0.06 175 / 0.14);
+    box-shadow:
+      0 14px 40px -18px oklch(0.45 0.05 175 / 0.25),
+      inset 0 1px 0 oklch(1 0 0 / 0.7);
+  }
+
+  /* خط طلایی بالای کارت‌های ویژه */
+  .gold-top-line {
+    position: relative;
+  }
+  .gold-top-line::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    inset-inline: 10%;
+    height: 1px;
+    background: linear-gradient(to left, transparent, oklch(0.78 0.13 85 / 0.7), transparent);
   }
 
   /* شیشه مات — نوبار بیضی */

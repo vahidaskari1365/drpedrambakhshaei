@@ -5,7 +5,6 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { GraduationCap, Quote, FileBadge, Stethoscope } from "lucide-react";
 import { ABOUT_BIO, ABOUT_APPROACH, CREDENTIALS, SKILLS } from "@/lib/site-data";
-import { SectionHeading } from "./services";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -44,16 +43,6 @@ export function About() {
   return (
     <section id="about" className="relative py-20 lg:py-28" aria-label="درباره دکتر">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <SectionHeading
-          kicker="درباره من"
-          title={
-            <>
-              علم، هنر و دقت —
-              <br className="hidden sm:block" /> در خدمت لبخند شما
-            </>
-          }
-        />
-
         <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
           {/* بیوگرافی */}
           <motion.div
