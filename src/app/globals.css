@@ -1,0 +1,221 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-vazir), var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 1.25rem;
+  /* پورسلین گرم — اپل‌استایل */
+  --background: oklch(0.985 0.003 95);
+  --foreground: oklch(0.18 0.01 95);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.01 95);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.01 95);
+  /* تیل جراحی — آرام و پریمیوم */
+  --primary: oklch(0.52 0.09 190);
+  --primary-foreground: oklch(0.985 0.005 190);
+  --secondary: oklch(0.96 0.006 95);
+  --secondary-foreground: oklch(0.25 0.01 95);
+  --muted: oklch(0.955 0.005 95);
+  --muted-foreground: oklch(0.5 0.01 95);
+  --accent: oklch(0.55 0.1 190);
+  --accent-foreground: oklch(0.985 0.005 190);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.905 0.006 95);
+  --input: oklch(0.905 0.006 95);
+  --ring: oklch(0.52 0.09 190);
+  --chart-1: oklch(0.52 0.09 190);
+  --chart-2: oklch(0.7 0.12 80);
+  --chart-3: oklch(0.4 0.06 190);
+  --chart-4: oklch(0.8 0.1 90);
+  --chart-5: oklch(0.65 0.08 170);
+  --sidebar: oklch(0.985 0.003 95);
+  --sidebar-foreground: oklch(0.18 0.01 95);
+  --sidebar-primary: oklch(0.52 0.09 190);
+  --sidebar-primary-foreground: oklch(0.985 0.005 190);
+  --sidebar-accent: oklch(0.96 0.006 95);
+  --sidebar-accent-foreground: oklch(0.25 0.01 95);
+  --sidebar-border: oklch(0.905 0.006 95);
+  --sidebar-ring: oklch(0.52 0.09 190);
+}
+
+.dark {
+  --background: oklch(0.145 0.008 95);
+  --foreground: oklch(0.96 0.005 95);
+  --card: oklch(0.19 0.008 95);
+  --card-foreground: oklch(0.96 0.005 95);
+  --popover: oklch(0.19 0.008 95);
+  --popover-foreground: oklch(0.96 0.005 95);
+  --primary: oklch(0.72 0.1 185);
+  --primary-foreground: oklch(0.15 0.01 190);
+  --secondary: oklch(0.24 0.008 95);
+  --secondary-foreground: oklch(0.96 0.005 95);
+  --muted: oklch(0.24 0.008 95);
+  --muted-foreground: oklch(0.68 0.008 95);
+  --accent: oklch(0.72 0.1 185);
+  --accent-foreground: oklch(0.15 0.01 190);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.72 0.1 185);
+  --chart-1: oklch(0.72 0.1 185);
+  --chart-2: oklch(0.8 0.12 80);
+  --chart-3: oklch(0.55 0.07 190);
+  --chart-4: oklch(0.85 0.1 90);
+  --chart-5: oklch(0.7 0.08 170);
+  --sidebar: oklch(0.19 0.008 95);
+  --sidebar-foreground: oklch(0.96 0.005 95);
+  --sidebar-primary: oklch(0.72 0.1 185);
+  --sidebar-primary-foreground: oklch(0.15 0.01 190);
+  --sidebar-accent: oklch(0.24 0.008 95);
+  --sidebar-accent-foreground: oklch(0.96 0.005 95);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.72 0.1 185);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "ss01";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: oklch(0.52 0.09 190 / 0.18);
+  }
+}
+
+/* اسکرول‌بار سفارشی */
+@layer utilities {
+  .scrollbar-slim {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(0.7 0.02 190 / 0.4) transparent;
+  }
+  .scrollbar-slim::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-slim::-webkit-scrollbar-thumb {
+    background: oklch(0.7 0.02 190 / 0.4);
+    border-radius: 999px;
+  }
+  .scrollbar-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* متن گرادیانی اپل‌استایل */
+  .text-gradient {
+    background: linear-gradient(
+      120deg,
+      oklch(0.18 0.01 95) 20%,
+      oklch(0.52 0.09 190) 60%,
+      oklch(0.6 0.1 185) 80%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* شیشه مات — نوبار بیضی */
+  .glass {
+    background: color-mix(in oklab, var(--background) 72%, transparent);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    border: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
+    box-shadow:
+      0 12px 40px -12px oklch(0.2 0.02 190 / 0.18),
+      inset 0 1px 0 color-mix(in oklab, oklch(1 0 0) 55%, transparent);
+  }
+
+  /* گرین (دانه فیلم) سینمایی */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
+  }
+
+  .mask-fade-x {
+    mask-image: linear-gradient(
+      to left,
+      transparent,
+      black 12%,
+      black 88%,
+      transparent
+    );
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(50%);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+/* ریسپکت برای کاربران کم‌تحرک */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
