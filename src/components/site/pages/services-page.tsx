@@ -90,14 +90,14 @@ export function ServicesPage() {
 
                 <div className="mt-6 flex flex-wrap gap-3">
                   <a
-                    href="#/contact"
+                    href="/contact"
                     className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground shadow-[0_14px_34px_-12px] shadow-primary/60 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer"
                   >
                     درخواست مشاوره
                     <ArrowLeft className="h-4 w-4" />
                   </a>
                   <a
-                    href="#/prices"
+                    href="/prices"
                     className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-card px-6 py-3 text-sm font-bold transition-all duration-300 hover:bg-card/70 active:scale-95 cursor-pointer"
                   >
                     تعرفه این خدمت
@@ -191,14 +191,14 @@ export function ServicesPage() {
             className="mt-7 flex flex-wrap items-center justify-center gap-3"
           >
             <a
-              href="#/contact"
+              href="/contact"
               className="inline-flex items-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-black text-[oklch(0.2_0.03_205)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
             >
               رزرو نوبت
               <ArrowLeft className="h-4 w-4" />
             </a>
             <a
-              href="#/prices"
+              href="/prices"
               dir="ltr"
               className="inline-flex items-center gap-2 rounded-full border border-background/25 bg-background/10 px-7 py-3.5 text-sm font-bold text-background backdrop-blur transition-all hover:bg-background/20 cursor-pointer"
             >

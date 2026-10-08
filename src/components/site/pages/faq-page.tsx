@@ -174,7 +174,7 @@ export function FaqPage() {
               سوال خود را مستقیم از مطب بپرسید — کارشناسان ما در ساعات کاری پاسخگو هستند.
             </p>
             <a
-              href="#/contact"
+              href="/contact"
               className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer"
             >
               پرسیدن سوال

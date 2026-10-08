@@ -160,7 +160,7 @@ export function GalleryPage() {
 
             {/* کارت CTA داخل گرید */}
             <motion.a
-              href="#/contact"
+              href="/contact"
               layout
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -201,7 +201,7 @@ export function GalleryPage() {
               </h2>
               <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{BEFORE_AFTER.desc}</p>
               <a
-                href="#/contact"
+                href="/contact"
                 className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-teal-300 transition-all duration-300 hover:gap-3 cursor-pointer"
               >
                 رزرو مشاوره برای طرح مشابه
@@ -246,7 +246,7 @@ export function GalleryPage() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.15 }}
-              href="#/contact"
+              href="/contact"
               className="inline-flex items-center gap-1.5 rounded-full border border-background/15 bg-background/[0.06] px-5 py-2.5 text-[13px] font-bold text-background/80 backdrop-blur transition-all hover:bg-background/15 hover:text-background cursor-pointer"
             >
               رزرو بازدید حضوری

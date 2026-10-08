@@ -5,16 +5,19 @@
  * + دکترتو (۱۸ نظر واقعی مراجعین)
  */
 
-/** مسیرهای ناوبری — هر تب یک صفحه اختصاصی (روتر هش‌محور) */
+/** آدرس اصلی سایت — پایه canonical و sitemap */
+export const SITE_URL = "https://drpedrambakhshaei.com";
+
+/** مسیرهای ناوبری — هر تب یک صفحه واقعی SSR با URL مستقل */
 export const NAV_ITEMS = [
-  { href: "#/", label: "خانه" },
-  { href: "#/services", label: "خدمات" },
-  { href: "#/gallery", label: "نمونه کارها" },
-  { href: "#/about", label: "درباره من" },
-  { href: "#/prices", label: "تعرفه‌ها" },
-  { href: "#/faq", label: "سوالات متداول" },
-  { href: "#/reviews", label: "نظرات" },
-  { href: "#/contact", label: "تماس" },
+  { href: "/", label: "خانه" },
+  { href: "/services", label: "خدمات" },
+  { href: "/gallery", label: "نمونه کارها" },
+  { href: "/about", label: "درباره من" },
+  { href: "/prices", label: "تعرفه‌ها" },
+  { href: "/faq", label: "سوالات متداول" },
+  { href: "/reviews", label: "نظرات" },
+  { href: "/contact", label: "تماس" },
 ] as const;
 
 export type RouteKey =
@@ -27,16 +30,24 @@ export type RouteKey =
   | "/reviews"
   | "/contact";
 
-/** نگاشت انکرهای قدیمی (#contact) به صفحات جدید — برای سازگاری لینک‌های داخل هیرو */
+/** نگاشت انکرها و هش‌های قدیمی به URLهای واقعی — برای ریدایرکت سمت کلاینت */
 export const LEGACY_ANCHOR_MAP: Record<string, string> = {
-  "#home": "#/",
-  "#services": "#/services",
-  "#gallery": "#/gallery",
-  "#about": "#/about",
-  "#prices": "#/prices",
-  "#faq": "#/faq",
-  "#reviews": "#/reviews",
-  "#contact": "#/contact",
+  "#home": "/",
+  "#/": "/",
+  "#services": "/services",
+  "#/services": "/services",
+  "#gallery": "/gallery",
+  "#/gallery": "/gallery",
+  "#about": "/about",
+  "#/about": "/about",
+  "#prices": "/prices",
+  "#/prices": "/prices",
+  "#faq": "/faq",
+  "#/faq": "/faq",
+  "#reviews": "/reviews",
+  "#/reviews": "/reviews",
+  "#contact": "/contact",
+  "#/contact": "/contact",
 };
 
 export const SITE = {

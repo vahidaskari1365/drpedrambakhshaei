@@ -167,7 +167,7 @@ export function About() {
                 </p>
               </div>
               <a
-                href="#prices"
+                href="/prices"
                 className="rounded-full bg-background px-5 py-2.5 text-sm font-bold text-foreground transition-transform hover:scale-105 active:scale-95 cursor-pointer"
               >
                 مشاهده تعرفه‌ها

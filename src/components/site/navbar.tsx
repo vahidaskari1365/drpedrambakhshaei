@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import { AnimatePresence, motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { Menu, X, Phone, Star } from "lucide-react";
 import { AnimatedLogo } from "./logo";
 import { NAV_ITEMS, SITE, type RouteKey } from "@/lib/site-data";
@@ -9,10 +11,12 @@ import { cn } from "@/lib/utils";
 
 /**
  * نوبار بیضی (اوال) مدرن — شیشه‌ای، اپل‌استایل
- * route-aware: هر تب یک صفحه اختصاصی + منوی موبایل فول‌اسکرین
+ * route-aware با usePathname: هر تب یک صفحه واقعی + منوی موبایل فول‌اسکرین
  * مخفی‌شدن با اسکرول به پایین و بازگشت با اسکرول به بالا
  */
-export function Navbar({ route }: { route: RouteKey }) {
+export function Navbar() {
+  const pathname = usePathname();
+  const route = (pathname || "/") as RouteKey;
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
   const [hidden, setHidden] = React.useState(false);
@@ -30,7 +34,7 @@ export function Navbar({ route }: { route: RouteKey }) {
   // بستن منو با تغییر مسیر
   React.useEffect(() => {
     setOpen(false);
-  }, [route]);
+  }, [pathname]);
 
   // قفل اسکرول در منوی موبایل
   React.useEffect(() => {
@@ -55,8 +59,8 @@ export function Navbar({ route }: { route: RouteKey }) {
             scrolled ? "py-1.5 pl-2 pr-3 shadow-lg" : "py-2.5 pl-2.5 pr-4"
           )}
         >
-          <a
-            href="#/"
+          <Link
+            href="/"
             aria-label="صفحه اصلی"
             className="group flex items-center gap-2 rounded-full py-1 pl-2 cursor-pointer"
           >
@@ -64,22 +68,22 @@ export function Navbar({ route }: { route: RouteKey }) {
             <span className={cn("flex flex-col leading-none transition-all", scrolled ? "opacity-0 w-0 overflow-hidden" : "opacity-100")}>
               <span className="text-[13px] font-extrabold tracking-tight whitespace-nowrap">دکتر پدرام بخشایی</span>
             </span>
-          </a>
+          </Link>
 
           <ul className="mr-auto hidden items-center lg:flex">
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
-                <a
+                <Link
                   href={item.href}
-                  aria-current={route === item.href.slice(1) ? "page" : undefined}
+                  aria-current={route === item.href ? "page" : undefined}
                   className={cn(
                     "relative block whitespace-nowrap rounded-full px-2.5 py-2 text-[12.5px] font-medium transition-colors duration-300 xl:px-3.5 xl:text-[13px] cursor-pointer",
-                    route === item.href.slice(1)
+                    route === item.href
                       ? "text-primary-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  {route === item.href.slice(1) && (
+                  {route === item.href && (
                     <motion.span
                       layoutId="nav-pill"
                       transition={{ type: "spring", stiffness: 380, damping: 32 }}
@@ -87,7 +91,7 @@ export function Navbar({ route }: { route: RouteKey }) {
                     />
                   )}
                   <span className="relative z-10">{item.label}</span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -147,19 +151,19 @@ export function Navbar({ route }: { route: RouteKey }) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.06 * i + 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <a
+                    <Link
                       href={item.href}
                       onClick={() => setOpen(false)}
                       className={cn(
                         "group flex items-center justify-between rounded-2xl px-4 py-3.5 text-2xl font-extrabold tracking-tight transition-colors cursor-pointer",
-                        route === item.href.slice(1) ? "text-teal-300" : "text-background/80 hover:text-background"
+                        route === item.href ? "text-teal-300" : "text-background/80 hover:text-background"
                       )}
                     >
                       {item.label}
                       <span className="text-xs font-medium text-background/40 opacity-0 transition-opacity group-hover:opacity-100">
                         ۰{i + 1}
                       </span>
-                    </a>
+                    </Link>
                   </motion.li>
                 ))}
               </ul>

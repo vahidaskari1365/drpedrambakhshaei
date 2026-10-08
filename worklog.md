@@ -137,3 +137,28 @@ Stage Summary:
 - لوگوی برند حالا زنده است: هاله چرخان بنفش-آبی-طلایی + درخشش تنفسی + پرتو نور؛ در نوبار، منوی موبایل و فوتر
 - هیرو سینمایی کامل شد بدون دست‌زدن به طراحی تأییدشده: کن‌برنز + شفق + غبار + پرتو + نورافکن ماوس + وینیت + ریرال پرتره + شیمر تیتر
 - حلقه‌های بی‌نهایت روی CSS کامپوزیتوری — پرفورمنس بهتر و پایداری در همه محیط‌ها
+
+---
+Task ID: 6
+Agent: main
+Task: آماده‌سازی کامل سایت برای SEO + GEO + AEO (هدف: انفجار ۶ ماهه)
+
+Work Log:
+- پیام کاربر: «الان سایت رو برای seo , geo , aeo آماده بکن — اول لیست بکن بعد شروع بکن — میخوام ظرف ۶ ماه بترکته»
+- **مهم‌ترین اصل**: کشف اینکه کل سایت یک URL بود (روتر هش‌محور #/services)! هش هرگز به سرور نمی‌رسد و گوگل فقط صفحه اصلی را ایندکس می‌کرد
+- تبدیل به روتهای واقعی App Router: ۷ صفحه SSR جدید (/services /gallery /about /prices /faq /reviews /contact) + 404 اختصاصی — هر کدام با <title>، description، keywords، canonical و OG/Twitter اختصاصی فارسی
+- معماری جدید: chrome.tsx (نوبار+فوتر+پروگرس‌بار مشترک در layout) + template.tsx (ترنزیشن سینمایی بین روتها) + حذف app-shell.tsx هش‌محور؛ نوبار به usePathname + Link مهاجرت شد
+- seo.tsx: سازنده‌های JSON-LD — Physician کامل (geo دقیق، openingHours، priceRange، availableService، knowsAbout، sameAs شامل دکترتو)، WebSite، BreadcrumbList، FAQPage (۲۱ سوال)، ItemList/MedicalProcedure خدمات، OfferCatalog تعرفه‌ها با قیمت‌های تومانی، MedicalClinic برای تماس، Review+AggregateRating (۸ نظر واقعی)
+- متادیتای مکان‌محور: geo.region IR-23، geo.position، ICBM — سئوی محلی پاسداران تهران
+- sitemap.xml داینامیک (۸ URL با priority) + robots.txt داینامیک با **اجازه صریح ۱۴ کرالر AI** (GPTBot، ClaudeBot، PerplexityBot، Google-Extended و ...) برای GEO — حذف robots.txt استاتیک
+- GEO/AEO: llms.txt (خلاصه ساختاریافته هویت/خدمات/تعرفه/تماس) + llms-full.txt (نسخه کامل با ۲۱ پاسخ مستقیم سوالات + تمام تعرفه‌ها)
+- تصویر OG برند اختصاصی ۱۲۰۰×۶۳۰ با لوگوی واقعی + تایپوگرافی استداد (اسکرین‌شات براوزر از HTML طراحی‌شده) → og-image.jpg
+- Breadcrumbs دیداری (خانه ← صفحه) در PageHero همه صفحات + اسکیمای BreadcrumbList
+- ریدایرکت سمت کلاینت هش‌های قدیمی (#/services، #contact) به URLهای واقعی (hash-redirect.tsx) — لینک‌های ایندکس‌شده قدیمی نمی‌شکنند
+- همه ۳۰+ لینک داخلی هش‌محور به مسیر واقعی تبدیل شدند؛ نوبار/فوتر با next/link (ناوبری SPA)
+- رفع LCP: loading=eager + fetchPriority=high روی پرتره و hero-bg؛ data-scroll-behavior روی html؛ lang=fa-IR
+- تأیید: هر ۸ روت + sitemap.xml + robots.txt + llms.txt همگی 200؛ SSR شامل title/h1/canonical/21×Question JSON-LD؛ ریدایرکت #/contact→/contact و #prices→/prices تست شد؛ ناوبری کلاینت‌ساید نوبار + کرامب + موبایل ۳۹۰ بدون خطای کنسول؛ lint پاس
+
+Stage Summary:
+- سایت از «یک URL هش‌محور» به «۸ صفحه SSR قابل ایندکس با اسکیمای کامل» تبدیل شد — زیربنای واقعی رشد ۶ ماهه
+- برای نتیجه انفجاری: ثبت Search Console + اجرای sitemap، انتشار محتوای مقاله‌ای ماهانه (کلمات «هزینه ایمپلنت/جراحی فک تهران»)، و بک‌لینک از پروفایل‌های دکترتو/پذیرش۲۴ توصیه می‌شود

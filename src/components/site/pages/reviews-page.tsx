@@ -183,7 +183,7 @@ export function ReviewsPage() {
                 ثبت نظر در گوگل
               </a>
               <a
-                href="#/contact"
+                href="/contact"
                 className="inline-flex items-center gap-2 rounded-full border border-background/25 bg-background/10 px-6 py-3 text-sm font-bold text-background backdrop-blur transition-all hover:bg-background/20 cursor-pointer"
               >
                 <Phone className="h-4 w-4" />

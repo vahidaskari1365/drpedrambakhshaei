@@ -107,6 +107,7 @@ export function Hero() {
               alt=""
               fill
               priority
+              loading="eager"
               className="object-cover opacity-90 dark:opacity-40"
               sizes="100vw"
             />
@@ -208,7 +209,7 @@ export function Hero() {
             className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
           >
             <a
-              href="#contact"
+              href="/contact"
               className="shimmer group inline-flex items-center gap-2.5 rounded-full bg-primary px-7 py-3.5 text-sm font-bold text-primary-foreground shadow-[0_16px_40px_-14px] shadow-primary/60 transition-all duration-300 hover:shadow-primary/80 hover:brightness-110 active:scale-95 cursor-pointer"
             >
               <CalendarCheck className="h-4.5 w-4.5 transition-transform duration-300 group-hover:-rotate-6" />
@@ -268,6 +269,8 @@ export function Hero() {
                 alt="دکتر پدرام بخشایی — متخصص جراحی دهان، فک و صورت"
                 fill
                 priority
+                loading="eager"
+                fetchPriority="high"
                 className="object-cover object-top"
                 sizes="(max-width: 1024px) 90vw, 440px"
               />
@@ -321,7 +324,7 @@ export function Hero() {
         </dl>
         <div className="mt-6 flex justify-center">
           <a
-            href="#services"
+            href="/services"
             aria-label="رفتن به بخش خدمات"
             className="animate-bob flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-card/60 text-muted-foreground backdrop-blur transition-colors hover:text-foreground cursor-pointer"
           >

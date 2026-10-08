@@ -38,7 +38,7 @@ export function Footer() {
                 </li>
               ))}
               <li>
-                <a href="#/gallery" className="text-background/60 transition-colors hover:text-background cursor-pointer">
+                <a href="/gallery" className="text-background/60 transition-colors hover:text-background cursor-pointer">
                   گالری مطب
                 </a>
               </li>

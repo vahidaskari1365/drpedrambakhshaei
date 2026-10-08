@@ -4,6 +4,10 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { PwaRegister } from "@/components/site/pwa-register";
+import { Chrome } from "@/components/site/chrome";
+import { HashRedirect } from "@/components/site/hash-redirect";
+import { JsonLd, OG_IMAGE, physicianJsonLd, websiteJsonLd } from "@/lib/seo";
+import { SITE_URL } from "@/lib/site-data";
 
 const vazir = Vazirmatn({
   variable: "--font-vazir",
@@ -20,7 +24,6 @@ const estedad = localFont({
   display: "swap",
 });
 
-const SITE_URL = "https://drpedrambakhshaei.com";
 const TITLE = "دکتر پدرام بخشایی | متخصص جراحی دهان، فک و صورت";
 const DESC =
   "دکتر پدرام بخشایی، متخصص جراحی‌های دهان، فک و صورت از دانشگاه شهید بهشتی — ارتوسرجری، جراحی فک، ایمپلنت دندان، جراحی دندان عقل نهفته، جنیوپلاستی؛ جراح فک در پاسداران تهران";
@@ -45,9 +48,13 @@ export const metadata: Metadata = {
     "جراح فک پاسداران",
     "OMFS تهران",
   ],
-  authors: [{ name: "دکتر پدرام بخشایی" }],
+  authors: [{ name: "دکتر پدرام بخشایی", url: SITE_URL }],
   creator: "دکتر پدرام بخشایی",
-  alternates: { canonical: "/" },
+  publisher: "مطب دکتر پدرام بخشایی",
+  alternates: {
+    canonical: "/",
+    languages: { "fa-IR": "/" },
+  },
   openGraph: {
     type: "website",
     locale: "fa_IR",
@@ -57,10 +64,10 @@ export const metadata: Metadata = {
     description: DESC,
     images: [
       {
-        url: "/uploads/doctor-portrait.jpg",
-        width: 1500,
-        height: 1842,
-        alt: "دکتر پدرام بخشایی — متخصص جراحی دهان، فک و صورت",
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "دکتر پدرام بخشایی — متخصص جراحی دهان، فک و صورت در تهران",
       },
     ],
   },
@@ -68,12 +75,18 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: TITLE,
     description: DESC,
-    images: ["/uploads/doctor-portrait.jpg"],
+    images: [OG_IMAGE],
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
   icons: {
     icon: [
@@ -90,6 +103,12 @@ export const metadata: Metadata = {
     title: "دکتر بخشایی",
   },
   formatDetection: { telephone: true },
+  other: {
+    "geo.region": "IR-23",
+    "geo.placename": "تهران، پاسداران",
+    "geo.position": "35.7675574;51.4571543",
+    ICBM: "35.7675574, 51.4571543",
+  },
 };
 
 export const viewport: Viewport = {
@@ -108,51 +127,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl" suppressHydrationWarning>
+    <html lang="fa-IR" dir="rtl" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
         className={`${vazir.variable} ${estedad.variable} antialiased bg-background text-foreground min-h-screen flex flex-col`}
       >
-        {children}
+        {/* اسکیماهای سراسری — هویت پزشک و وب‌سایت */}
+        <JsonLd data={physicianJsonLd()} />
+        <JsonLd data={websiteJsonLd()} />
+        <Chrome>{children}</Chrome>
         <Toaster />
         <PwaRegister />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Physician",
-              name: "دکتر پدرام بخشایی",
-              alternateName: "Dr. Pedram Bakhshaei",
-              medicalSpecialty: "OralAndMaxillofacialSurgery",
-              description: DESC,
-              url: SITE_URL,
-              telephone: "+989302626021",
-              image: `${SITE_URL}/uploads/doctor-portrait.jpg`,
-              address: {
-                "@type": "PostalAddress",
-                streetAddress: "خیابان پاسداران، مرکز خرید پاسداران، طبقه ۲ و ۴",
-                addressLocality: "تهران",
-                addressCountry: "IR",
-              },
-              geo: {
-                "@type": "GeoCoordinates",
-                latitude: 35.7675574,
-                longitude: 51.4571543,
-              },
-              sameAs: [
-                "https://www.instagram.com/dr.bakhshaei.omfs",
-                "https://t.me/drbakhshaei",
-                "https://www.aparat.com/Drpedrambakhshaei",
-              ],
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: "5.0",
-                reviewCount: "9",
-                bestRating: "5",
-              },
-            }),
-          }}
-        />
+        <HashRedirect />
       </body>
     </html>
   );

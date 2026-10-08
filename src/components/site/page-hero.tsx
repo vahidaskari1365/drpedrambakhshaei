@@ -3,6 +3,7 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
+import { Breadcrumbs } from "./breadcrumbs";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -19,7 +20,7 @@ export function PageHero({
   children?: React.ReactNode;
 }) {
   return (
-    <section className="bg-petrol-deep grain relative overflow-hidden pt-32 pb-14 lg:pt-40 lg:pb-20" aria-label="سربرگ صفحه">
+    <section className="bg-petrol-deep grain relative overflow-hidden pt-28 pb-14 lg:pt-36 lg:pb-20" aria-label="سربرگ صفحه">
       <div className="aurora" />
       <div
         className="pointer-events-none absolute inset-0 opacity-70"
@@ -29,6 +30,7 @@ export function PageHero({
         }}
       />
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+        <Breadcrumbs />
         <motion.p
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}

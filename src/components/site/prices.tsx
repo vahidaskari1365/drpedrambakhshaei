@@ -120,7 +120,7 @@ export function Prices() {
               {current.note}
             </p>
             <a
-              href="#contact"
+              href="/contact"
               className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-black text-[oklch(0.19_0.01_190)] transition-transform duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
             >
               <PhoneCall className="h-4 w-4" />
