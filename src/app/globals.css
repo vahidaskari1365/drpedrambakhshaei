@@ -462,6 +462,248 @@
     height: 1px;
     background: linear-gradient(to left, transparent, oklch(0.6 0.06 190 / 0.35), transparent);
   }
+
+  /* ─── لوگوی متحرک سینمایی ─── */
+  @keyframes logo-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes logo-shine-x {
+    0%,
+    55% {
+      transform: translateX(-240%) skewX(-18deg);
+    }
+    82%,
+    100% {
+      transform: translateX(460%) skewX(-18deg);
+    }
+  }
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.75;
+      transform: scale(1.1);
+    }
+  }
+  /* هاله چرخان بنفش-آبی-طلایی دور لوگو (رنگ‌های خود برند) */
+  .logo-halo {
+    position: absolute;
+    inset: -3px;
+    border-radius: 9999px;
+    pointer-events: none;
+    background: conic-gradient(
+      from 20deg,
+      transparent 0deg,
+      oklch(0.56 0.24 300) 42deg,
+      oklch(0.6 0.2 255) 88deg,
+      oklch(0.8 0.14 85) 126deg,
+      transparent 172deg,
+      transparent 360deg
+    );
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 1.25px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 1.25px));
+    animation: logo-spin 7s linear infinite;
+  }
+  /* درخشش عبوری روی خود لوگو */
+  .logo-shine {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .logo-shine::after {
+    content: "";
+    position: absolute;
+    top: -25%;
+    bottom: -25%;
+    width: 36%;
+    background: linear-gradient(90deg, transparent, oklch(1 0 0 / 0.65), transparent);
+    transform: translateX(-240%) skewX(-18deg);
+    animation: logo-shine-x 6s ease-in-out infinite;
+  }
+  /* هاله تنفسی بنفش پشت لوگو */
+  .logo-glow {
+    position: absolute;
+    inset: -9px;
+    border-radius: 9999px;
+    pointer-events: none;
+    background: radial-gradient(
+      closest-side,
+      oklch(0.56 0.2 295 / 0.32),
+      oklch(0.58 0.17 255 / 0.16) 55%,
+      transparent 74%
+    );
+    filter: blur(10px);
+    animation: breathe 4.5s ease-in-out infinite;
+  }
+
+  /* ─── موشن‌گرافی سینمایی هیرو ─── */
+  @keyframes cinema-sweep-x {
+    0% {
+      transform: translateX(-230%) skewX(-16deg);
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    46% {
+      opacity: 1;
+    }
+    58%,
+    100% {
+      transform: translateX(560%) skewX(-16deg);
+      opacity: 0;
+    }
+  }
+  @keyframes text-shimmer-pos {
+    0%,
+    100% {
+      background-position: 0% center;
+    }
+    50% {
+      background-position: 100% center;
+    }
+  }
+  /* پرتو نور عبوری از کل صحنه */
+  .cinema-sweep {
+    position: absolute;
+    top: -18%;
+    bottom: -18%;
+    width: 32%;
+    inset-inline-start: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      oklch(1 0 0 / 0.08) 42%,
+      oklch(0.9 0.05 190 / 0.11) 58%,
+      transparent
+    );
+    filter: blur(26px);
+    transform: translateX(-230%) skewX(-16deg);
+    animation: cinema-sweep-x 11s ease-in-out infinite;
+  }
+  /* جلوه نور روی قاب پرتره */
+  .portrait-sheen::after {
+    content: "";
+    position: absolute;
+    top: -30%;
+    bottom: -30%;
+    width: 30%;
+    background: linear-gradient(90deg, transparent, oklch(1 0 0 / 0.2), transparent);
+    transform: translateX(-260%) skewX(-18deg);
+    animation: cinema-sweep-x 9s ease-in-out infinite;
+    animation-delay: 2.4s;
+    pointer-events: none;
+  }
+  /* تیره‌شدن سینمایی گوشه‌های قاب (وینیت) */
+  .hero-vignette {
+    background: radial-gradient(
+      120% 95% at 50% 32%,
+      transparent 52%,
+      oklch(0.24 0.03 210 / 0.2) 100%
+    );
+  }
+  /* درخشش متحرک روی متن گرادیانی */
+  .text-shimmer {
+    background-size: 220% auto;
+    animation: text-shimmer-pos 6.5s ease-in-out infinite;
+  }
+
+  /* ─── حلقه‌های محیطی سینمایی (CSS — شتاب کامپوزیتوری) ─── */
+  /* کن‌برنز: پن آرام دوربین روی پس‌زمینه */
+  @keyframes kenburns-pan {
+    from {
+      transform: scale(1) translate(0, 0);
+    }
+    to {
+      transform: scale(1.07) translate(1.6%, -1.2%);
+    }
+  }
+  .kenburns {
+    animation: kenburns-pan 28s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  /* شناوری بلاب‌های شفق قطبی */
+  @keyframes orb-a {
+    from {
+      transform: translate(0, 0) scale(1);
+    }
+    to {
+      transform: translate(-44px, 26px) scale(1.12);
+    }
+  }
+  @keyframes orb-b {
+    from {
+      transform: translate(0, 0) scale(1);
+    }
+    to {
+      transform: translate(38px, -22px) scale(1.09);
+    }
+  }
+  @keyframes orb-c {
+    from {
+      transform: translate(0, 0) scale(1);
+    }
+    to {
+      transform: translate(26px, 30px) scale(1.14);
+    }
+  }
+  .orb-a {
+    animation: orb-a 22s ease-in-out infinite alternate;
+  }
+  .orb-b {
+    animation: orb-b 18s ease-in-out infinite alternate;
+    animation-delay: 2s;
+  }
+  .orb-c {
+    animation: orb-c 26s ease-in-out infinite alternate;
+    animation-delay: 5s;
+  }
+  /* ذرات معلق غبار — متغیرهای سرانه هر ذره */
+  @keyframes particle-float {
+    0% {
+      transform: translate(0, 0);
+      opacity: 0.08;
+    }
+    25% {
+      opacity: 0.55;
+    }
+    50% {
+      transform: translate(var(--px-x, 8px), -34px);
+      opacity: 0.62;
+    }
+    75% {
+      opacity: 0.3;
+    }
+    100% {
+      transform: translate(calc(var(--px-x, 8px) * -0.6), 0);
+      opacity: 0.08;
+    }
+  }
+  .particle {
+    animation: particle-float var(--px-dur, 12s) ease-in-out var(--px-delay, 0s) infinite;
+    will-change: transform, opacity;
+  }
+  /* بابِ فلش اسکرول */
+  @keyframes bob-y {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(8px);
+    }
+  }
+  .animate-bob {
+    animation: bob-y 2s ease-in-out infinite;
+  }
 }
 
 /* ریسپکت برای کاربران کم‌تحرک */

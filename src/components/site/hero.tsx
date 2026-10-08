@@ -2,7 +2,14 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+  useMotionTemplate,
+} from "framer-motion";
 import { ArrowDown, Phone, Star, CalendarCheck, ShieldCheck, Award } from "lucide-react";
 import { SITE, STATS } from "@/lib/site-data";
 
@@ -44,6 +51,23 @@ function Counter({ value, suffix }: { value: number; suffix: string }) {
   );
 }
 
+/* ذرات معلق سینمایی — موقعیت قطعی برای جلوگیری از mismatch سرور/کلاینت */
+const PARTICLES = Array.from({ length: 14 }, (_, i) => ({
+  left: 3 + ((i * 7.3 + 11) % 94),
+  top: 10 + ((i * 37 + 5) % 72),
+  size: 2.5 + ((i * 13) % 4),
+  dur: 9 + ((i * 17) % 9),
+  delay: -1 * ((i * 1.37) % 9),
+  dx: (i % 2 === 0 ? 1 : -1) * (6 + ((i * 5) % 9)),
+  tone: i % 3 === 0 ? "gold" : i % 4 === 1 ? "teal" : "white",
+}));
+
+const TONE_BG: Record<string, string> = {
+  gold: "bg-[oklch(0.8_0.13_85/0.75)]",
+  teal: "bg-[oklch(0.78_0.09_185/0.6)]",
+  white: "bg-white/70",
+};
+
 export function Hero() {
   const ref = React.useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
@@ -53,27 +77,82 @@ export function Hero() {
   const scaleImg = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
   const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
+  /* نورافکن دنبال‌کننده ماوس — فقط دسکتاپ */
+  const mx = useMotionValue(50);
+  const my = useMotionValue(36);
+  const sx = useSpring(mx, { stiffness: 55, damping: 18 });
+  const sy = useSpring(my, { stiffness: 55, damping: 18 });
+  const spotlight = useMotionTemplate`radial-gradient(560px circle at ${sx}% ${sy}%, oklch(0.92 0.05 190 / 0.13), transparent 68%)`;
+  const onMove = (e: React.MouseEvent<HTMLElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    mx.set(((e.clientX - r.left) / r.width) * 100);
+    my.set(((e.clientY - r.top) / r.height) * 100);
+  };
+
   return (
     <section
       id="home"
       ref={ref}
+      onMouseMove={onMove}
       className="grain relative flex min-h-[100svh] flex-col overflow-hidden pt-28 lg:pt-32"
       aria-label="معرفی"
     >
       {/* پس‌زمینه سینمایی */}
       <motion.div style={{ y: yBg }} className="absolute inset-0 -z-10">
         <motion.div style={{ scale: scaleImg }} className="relative h-full w-full">
-          <Image
-            src="/uploads/hero-bg.png"
-            alt=""
-            fill
-            priority
-            className="object-cover opacity-90 dark:opacity-40"
-            sizes="100vw"
-          />
+          {/* کن بِرنِز — پن آرام و بی‌وقفه دوربین روی عکس (CSS کامپوزیتوری) */}
+          <div className="kenburns absolute -inset-[4%]">
+            <Image
+              src="/uploads/hero-bg.png"
+              alt=""
+              fill
+              priority
+              className="object-cover opacity-90 dark:opacity-40"
+              sizes="100vw"
+            />
+          </div>
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background" />
       </motion.div>
+
+      {/* شفق قطبی سینمایی — بلاب‌های شناور (تیل/طلایی/بنفشِ لوگو) */}
+      <div className="pointer-events-none absolute inset-0 -z-[6] overflow-hidden" aria-hidden="true">
+        <div className="orb-a absolute -top-[12%] right-[-10%] h-[44vw] max-h-[600px] w-[44vw] max-w-[600px] rounded-full bg-[oklch(0.6_0.1_190/0.32)] blur-[100px]" />
+        <div className="orb-b absolute bottom-[-16%] left-[-8%] h-[38vw] max-h-[520px] w-[38vw] max-w-[520px] rounded-full bg-[oklch(0.8_0.12_85/0.2)] blur-[100px]" />
+        <div className="orb-c absolute left-[16%] top-[28%] h-[30vw] max-h-[420px] w-[30vw] max-w-[420px] rounded-full bg-[oklch(0.58_0.16_295/0.16)] blur-[100px]" />
+      </div>
+
+      {/* ذرات معلق غبار طلایی */}
+      <div className="pointer-events-none absolute inset-0 -z-[5]" aria-hidden="true">
+        {PARTICLES.map((p, i) => (
+          <span
+            key={i}
+            className={`particle absolute rounded-full blur-[1px] ${TONE_BG[p.tone]}`}
+            style={{
+              left: `${p.left}%`,
+              top: `${p.top}%`,
+              width: p.size,
+              height: p.size,
+              "--px-dur": `${p.dur}s`,
+              "--px-delay": `${p.delay}s`,
+              "--px-x": `${p.dx}px`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* نورافکن دنبال‌کننده ماوس (دسکتاپ) */}
+      <motion.div
+        style={{ background: spotlight }}
+        className="pointer-events-none absolute inset-0 -z-[4] hidden [@media(pointer:fine)]:block"
+        aria-hidden="true"
+      />
+
+      {/* پرتو نور عبوری از صحنه */}
+      <div className="cinema-sweep -z-[3]" aria-hidden="true" />
+
+      {/* وینیت سینمایی گوشه‌ها */}
+      <div className="hero-vignette pointer-events-none absolute inset-0 -z-[2]" aria-hidden="true" />
 
       <motion.div style={{ opacity }} className="relative mx-auto grid w-full max-w-7xl flex-1 items-center gap-10 px-5 lg:grid-cols-[1.1fr_0.9fr] lg:gap-6 lg:px-8">
         {/* متن */}
@@ -103,10 +182,10 @@ export function Hero() {
               دکتر پدرام بخشایی
             </motion.span>
             <motion.span
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease, delay: 0.78 }}
-              className="text-gradient mt-2 block text-[1.55rem] font-extrabold sm:text-4xl lg:text-[2.6rem]"
+              initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 1.1, ease, delay: 0.78 }}
+              className="text-gradient text-shimmer mt-2 block text-[1.55rem] font-extrabold sm:text-4xl lg:text-[2.6rem]"
             >
               متخصص جراحی دهان، فک و صورت
             </motion.span>
@@ -130,7 +209,7 @@ export function Hero() {
           >
             <a
               href="#contact"
-              className="group inline-flex items-center gap-2.5 rounded-full bg-primary px-7 py-3.5 text-sm font-bold text-primary-foreground shadow-[0_16px_40px_-14px] shadow-primary/60 transition-all duration-300 hover:shadow-primary/80 hover:brightness-110 active:scale-95 cursor-pointer"
+              className="shimmer group inline-flex items-center gap-2.5 rounded-full bg-primary px-7 py-3.5 text-sm font-bold text-primary-foreground shadow-[0_16px_40px_-14px] shadow-primary/60 transition-all duration-300 hover:shadow-primary/80 hover:brightness-110 active:scale-95 cursor-pointer"
             >
               <CalendarCheck className="h-4.5 w-4.5 transition-transform duration-300 group-hover:-rotate-6" />
               رزرو نوبت و مشاوره
@@ -171,15 +250,28 @@ export function Hero() {
           style={{ rotate }}
           className="relative mx-auto w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[440px]"
         >
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-border/50 shadow-[0_40px_90px_-30px] shadow-foreground/30">
-            <Image
-              src="/uploads/doctor-portrait.jpg"
-              alt="دکتر پدرام بخشایی — متخصص جراحی دهان، فک و صورت"
-              fill
-              priority
-              className="object-cover object-top"
-              sizes="(max-width: 1024px) 90vw, 440px"
-            />
+          {/* قاب پرتره — ریرال سینمایی با کلیپ‌پات + زوم‌اوت تصویر */}
+          <motion.div
+            initial={{ clipPath: "inset(14% 14% 14% 14% round 3rem)", opacity: 0.4 }}
+            animate={{ clipPath: "inset(0% 0% 0% 0% round 2.5rem)", opacity: 1 }}
+            transition={{ duration: 1.25, ease, delay: 0.95 }}
+            className="portrait-sheen relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-border/50 shadow-[0_40px_90px_-30px] shadow-foreground/30"
+          >
+            <motion.div
+              className="absolute inset-0"
+              initial={{ scale: 1.18 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 1.9, ease, delay: 0.95 }}
+            >
+              <Image
+                src="/uploads/doctor-portrait.jpg"
+                alt="دکتر پدرام بخشایی — متخصص جراحی دهان، فک و صورت"
+                fill
+                priority
+                className="object-cover object-top"
+                sizes="(max-width: 1024px) 90vw, 440px"
+              />
+            </motion.div>
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/25 via-transparent to-transparent" />
             <div className="absolute inset-x-4 bottom-4 flex items-center justify-between rounded-2xl bg-background/80 px-4 py-3 backdrop-blur-xl">
               <div>
@@ -190,25 +282,17 @@ export function Hero() {
                 ۱۱+ سال تجربه
               </span>
             </div>
-          </div>
+          </motion.div>
 
           {/* چیپ شناور */}
-          <motion.div
-            animate={{ y: [0, -12, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -right-3 top-8 rounded-2xl bg-card/90 px-4 py-3 shadow-xl backdrop-blur-xl sm:-right-8"
-          >
+          <div className="animate-float absolute -right-3 top-8 rounded-2xl bg-card/90 px-4 py-3 shadow-xl backdrop-blur-xl sm:-right-8">
             <p className="text-xl font-black text-primary tabular-nums">۱۵k+</p>
             <p className="text-[11px] font-medium text-muted-foreground">جراحی ایمپلنت</p>
-          </motion.div>
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute -left-3 bottom-24 rounded-2xl bg-card/90 px-4 py-3 shadow-xl backdrop-blur-xl sm:-left-8"
-          >
+          </div>
+          <div className="animate-float-sm absolute -left-3 bottom-24 rounded-2xl bg-card/90 px-4 py-3 shadow-xl backdrop-blur-xl [animation-delay:1.2s] sm:-left-8">
             <p className="text-xl font-black tabular-nums">۳۴۱</p>
             <p className="text-[11px] font-medium text-muted-foreground">جراحی بازسازی پیشرفته</p>
-          </motion.div>
+          </div>
         </motion.div>
       </motion.div>
 
@@ -220,25 +304,29 @@ export function Hero() {
         className="relative mx-auto w-full max-w-7xl px-5 pb-8 lg:px-8"
       >
         <dl className="grid grid-cols-2 gap-3 rounded-[2rem] border border-border/60 bg-card/70 p-4 backdrop-blur-xl sm:grid-cols-4 sm:p-6">
-          {STATS.map((s) => (
-            <div key={s.label} className="text-center">
+          {STATS.map((s, i) => (
+            <motion.div
+              key={s.label}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease, delay: 1.5 + i * 0.1 }}
+              className="text-center"
+            >
               <dt className="order-2 mt-1 text-[11px] font-medium text-muted-foreground sm:text-xs">{s.label}</dt>
               <dd className="order-1 text-2xl font-black tracking-tight sm:text-3xl">
                 <Counter value={s.value} suffix={s.suffix} />
               </dd>
-            </div>
+            </motion.div>
           ))}
         </dl>
         <div className="mt-6 flex justify-center">
-          <motion.a
+          <a
             href="#services"
             aria-label="رفتن به بخش خدمات"
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-card/60 text-muted-foreground backdrop-blur transition-colors hover:text-foreground cursor-pointer"
+            className="animate-bob flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-card/60 text-muted-foreground backdrop-blur transition-colors hover:text-foreground cursor-pointer"
           >
             <ArrowDown className="h-4.5 w-4.5" />
-          </motion.a>
+          </a>
         </div>
       </motion.div>
     </section>
