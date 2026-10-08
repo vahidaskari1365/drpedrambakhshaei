@@ -4,7 +4,7 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { Star, ExternalLink, Quote, MapPin, Phone } from "lucide-react";
 import { PageHero } from "../page-hero";
-import { REVIEWS, SITE } from "@/lib/site-data";
+import { useSite } from "../content-provider";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -23,6 +23,7 @@ function Stars({ n = 5 }: { n?: number }) {
 }
 
 export function ReviewsPage() {
+  const { reviews, site } = useSite();
   return (
     <>
       <PageHero
@@ -53,16 +54,16 @@ export function ReviewsPage() {
               <span className="text-xs font-bold text-background/60">نظرات گوگل مپ</span>
             </div>
             <p className="text-[4.5rem] font-black leading-none tracking-tight text-background" aria-label="امتیاز ۵ از ۵">
-              {SITE.rating.score}
+              {site.rating.score}
             </p>
             <div className="mt-3 flex justify-center">
               <Stars />
             </div>
             <p className="mt-2 text-sm font-bold text-background/60">
-              بر اساس {SITE.rating.count.toLocaleString("fa-IR")} نظر ثبت‌شده
+              بر اساس {site.rating.count.toLocaleString("fa-IR")} نظر ثبت‌شده
             </p>
             <a
-              href={SITE.reviewsUrl}
+              href={site.reviewsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-background px-6 py-3.5 text-sm font-black text-[oklch(0.2_0.03_205)] transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer"
@@ -125,7 +126,7 @@ export function ReviewsPage() {
           </div>
 
           <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
-            {REVIEWS.map((r, i) => (
+            {reviews.map((r, i) => (
               <motion.figure
                 key={`${r.author}-${i}`}
                 initial={{ opacity: 0, y: 32 }}
@@ -174,7 +175,7 @@ export function ReviewsPage() {
             </p>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <a
-                href={SITE.reviewsUrl}
+                href={site.reviewsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-black text-[oklch(0.2_0.03_205)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"

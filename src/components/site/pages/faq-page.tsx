@@ -4,15 +4,10 @@ import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus, MessageCircleQuestion, ArrowLeft } from "lucide-react";
 import { PageHero } from "../page-hero";
-import { FAQ_ITEMS, PRICE_FAQS } from "@/lib/site-data";
+import { useSite } from "../content-provider";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
-
-const ALL_FAQS = [
-  ...FAQ_ITEMS.map((f) => ({ q: f.q, a: f.a, group: f.group })),
-  ...PRICE_FAQS.map((f) => ({ q: f.q, a: f.a, group: f.group })),
-];
 
 const GROUPS = ["همه", "ارتوسرجری", "ایمپلنت", "دندان نهفته", "هزینه‌ها"] as const;
 
@@ -87,9 +82,17 @@ function FaqItem({
 }
 
 export function FaqPage() {
+  const { faq, priceFaqs } = useSite();
+  const allFaqs = React.useMemo(
+    () => [
+      ...faq.map((f) => ({ q: f.q, a: f.a, group: f.group })),
+      ...priceFaqs.map((f) => ({ q: f.q, a: f.a, group: f.group })),
+    ],
+    [faq, priceFaqs]
+  );
   const [active, setActive] = React.useState<string>("همه");
   const [openIndex, setOpenIndex] = React.useState<number>(0);
-  const filtered = ALL_FAQS.filter((f) => matches(f.group, active));
+  const filtered = allFaqs.filter((f) => matches(f.group, active));
 
   return (
     <>

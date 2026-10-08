@@ -24,49 +24,10 @@ import { Hero } from "../hero";
 import { SectionHeading } from "../section-heading";
 import { WorksSlider } from "../works-slider";
 import { BeforeAfter } from "../before-after";
-import {
-  SITE,
-  SERVICES,
-  WORKS,
-  WHY_US,
-  REVIEWS,
-  PRICE_TABS,
-  FAQ_ITEMS,
-  ABOUT_BIO,
-  CREDENTIALS,
-  BEFORE_AFTER,
-} from "@/lib/site-data";
+import { useSite } from "../content-provider";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
-
-/** پیش‌نمایش گالری صفحه اول — عکس‌های واقعی جراحی‌ها و مطب */
-const HOME_GALLERY = [WORKS[2], WORKS[5], WORKS[0], WORKS[6], WORKS[7], WORKS[8]] as const;
-
-/** برجسته‌های تعرفه — از جداول اصلی */
-const PRICE_HIGHLIGHTS = [
-  {
-    id: PRICE_TABS[0].id,
-    title: PRICE_TABS[0].label,
-    price: PRICE_TABS[0].rows[0].price,
-    note: "شامل فیکسچر و اباتمنت",
-  },
-  {
-    id: PRICE_TABS[1].id,
-    title: PRICE_TABS[1].label,
-    price: PRICE_TABS[1].rows[3].price,
-    note: "جراحی یک فک (MONOMAX)",
-  },
-  {
-    id: PRICE_TABS[2].id,
-    title: PRICE_TABS[2].label,
-    price: PRICE_TABS[2].rows[0].price,
-    note: "با بی‌حسی موضعی",
-  },
-] as const;
-
-/** سوالات منتخب صفحه اول — ترکیبی از دو گروه */
-const HOME_FAQS = [FAQ_ITEMS[0], FAQ_ITEMS[5], FAQ_ITEMS[1], FAQ_ITEMS[6]] as const;
 
 /** ردیف آکاردئون سوالات */
 function FaqRow({ q, a, open, onToggle }: { q: string; a: string; open: boolean; onToggle: () => void }) {
@@ -110,7 +71,22 @@ function FaqRow({ q, a, open, onToggle }: { q: string; a: string; open: boolean;
 }
 
 export function HomePage() {
+  const { site, services, works, whyUs, reviews, priceTabs, faq, aboutBio, credentials, beforeAfter } = useSite();
   const [openFaq, setOpenFaq] = React.useState<number | null>(0);
+
+  /** پیش‌نمایش گالری صفحه اول — عکس‌های واقعی جراحی‌ها و مطب */
+  const homeGallery = [works[2], works[5], works[0], works[6], works[7], works[8]];
+
+  /** برجسته‌های تعرفه — از جداول اصلی */
+  const priceHighlights = priceTabs.slice(0, 3).map((t, idx) => ({
+    id: t.id,
+    title: t.label,
+    price: t.rows[idx === 1 ? 3 : 0].price,
+    note: idx === 0 ? "شامل فیکسچر و اباتمنت" : idx === 1 ? "جراحی یک فک (MONOMAX)" : "با بی‌حسی موضعی",
+  }));
+
+  /** سوالات منتخب صفحه اول — ترکیبی از دو گروه */
+  const homeFaqs = [faq[0], faq[5], faq[1], faq[6]].filter(Boolean);
 
   return (
     <>
@@ -132,7 +108,7 @@ export function HomePage() {
           />
 
           <div className="grid gap-5 md:grid-cols-3">
-            {SERVICES.map((s, i) => (
+            {services.map((s, i) => (
               <motion.a
                 key={s.id}
                 href="/services"
@@ -217,12 +193,12 @@ export function HomePage() {
             >
               <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-teal-400/10 px-3 py-1.5 text-xs font-bold text-teal-300">
                 <Sparkles className="h-3.5 w-3.5" />
-                {BEFORE_AFTER.kicker}
+                {beforeAfter.kicker}
               </p>
               <h2 className="text-2xl font-black tracking-tight text-background sm:text-4xl sm:leading-[1.25]">
-                {BEFORE_AFTER.title}
+                {beforeAfter.title}
               </h2>
-              <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{BEFORE_AFTER.desc}</p>
+              <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{beforeAfter.desc}</p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <a
                   href="/gallery"
@@ -241,10 +217,10 @@ export function HomePage() {
               </div>
             </motion.div>
             <BeforeAfter
-              before={BEFORE_AFTER.before}
-              after={BEFORE_AFTER.after}
-              beforeLabel={BEFORE_AFTER.beforeLabel}
-              afterLabel={BEFORE_AFTER.afterLabel}
+              before={beforeAfter.before}
+              after={beforeAfter.after}
+              beforeLabel={beforeAfter.beforeLabel}
+              afterLabel={beforeAfter.afterLabel}
               alt="بازسازی کامل دهان با ایمپلنت"
             />
           </div>
@@ -266,9 +242,9 @@ export function HomePage() {
                 اعتبار علمی
               </p>
               <h2 className="text-2xl font-black tracking-tight text-background sm:text-4xl sm:leading-[1.25]">
-                {WHY_US.title}
+                {whyUs.title}
               </h2>
-              <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{WHY_US.text}</p>
+              <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{whyUs.text}</p>
               <a
                 href="/about"
                 className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-teal-300 transition-all duration-300 hover:gap-3 cursor-pointer"
@@ -278,7 +254,7 @@ export function HomePage() {
               </a>
             </motion.div>
             <div className="grid gap-3 sm:grid-cols-2">
-              {WHY_US.points.map((p, i) => (
+              {whyUs.points.map((p, i) => (
                 <motion.div
                   key={p}
                   initial={{ opacity: 0, y: 24 }}
@@ -337,7 +313,7 @@ export function HomePage() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {HOME_GALLERY.map((g, i) => (
+            {homeGallery.map((g, i) => (
               <motion.a
                 key={g.image}
                 href="/gallery"
@@ -415,12 +391,12 @@ export function HomePage() {
                 <span className="text-gradient block">در جراحی فک و صورت</span>
               </h2>
               <p className="mt-5 max-w-2xl text-[14px] leading-8 text-muted-foreground">
-                {ABOUT_BIO[2]}
+                {aboutBio[2]}
               </p>
 
               {/* مدارک منتخب */}
               <ul className="mt-6 grid gap-2.5 sm:grid-cols-2">
-                {CREDENTIALS.slice(4, 7).map((c) => (
+                {credentials.slice(4, 7).map((c) => (
                   <li key={c} className="flex items-start gap-2 text-[13px] font-medium leading-6 text-foreground/85">
                     <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
                       <Check className="h-3 w-3 text-primary" />
@@ -468,7 +444,7 @@ export function HomePage() {
           />
 
           <div className="grid gap-4 md:grid-cols-3">
-            {PRICE_HIGHLIGHTS.map((p, i) => (
+            {priceHighlights.map((p, i) => (
               <motion.a
                 key={p.id}
                 href="/prices"
@@ -528,7 +504,7 @@ export function HomePage() {
           />
 
           <div className="mx-auto grid max-w-4xl gap-3 lg:grid-cols-2">
-            {HOME_FAQS.map((f, i) => (
+            {homeFaqs.map((f, i) => (
               <motion.div
                 key={f.q}
                 initial={{ opacity: 0, y: 28 }}
@@ -558,7 +534,7 @@ export function HomePage() {
             </a>
             <span className="inline-flex items-center gap-2 text-[13px] text-muted-foreground">
               <Clock3 className="h-4 w-4" />
-              جواب سوال خود را پیدا نکردید؟ {SITE.phone} تماس بگیرید
+              جواب سوال خود را پیدا نکردید؟ {site.phone} تماس بگیرید
             </span>
           </motion.div>
         </div>
@@ -577,7 +553,7 @@ export function HomePage() {
                 className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-amber-400/10 px-3 py-1.5 text-xs font-bold text-amber-300"
               >
                 <Star className="h-3.5 w-3.5 fill-current" />
-                {SITE.rating.score} در گوگل · {SITE.rating.count} نظر
+                {site.rating.score} در گوگل · {site.rating.count} نظر
               </motion.p>
               <motion.h2
                 initial={{ opacity: 0, y: 24 }}
@@ -603,7 +579,7 @@ export function HomePage() {
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
-            {REVIEWS.slice(1, 4).map((r, i) => (
+            {reviews.slice(1, 4).map((r, i) => (
               <motion.figure
                 key={r.author}
                 initial={{ opacity: 0, y: 32 }}
@@ -658,7 +634,7 @@ export function HomePage() {
             transition={{ duration: 0.9, ease, delay: 0.1 }}
             className="mx-auto mt-5 max-w-xl text-[15px] leading-8 text-background/70"
           >
-            {SITE.hours} — {SITE.shortAddress}
+            {site.hours} — {site.shortAddress}
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -675,12 +651,12 @@ export function HomePage() {
               رزرو نوبت و مشاوره
             </a>
             <a
-              href={`tel:${SITE.phone}`}
+              href={`tel:${site.phone}`}
               dir="ltr"
               className="inline-flex items-center gap-2.5 rounded-full border border-background/25 bg-background/10 px-7 py-3.5 text-sm font-bold text-background backdrop-blur transition-all duration-300 hover:bg-background/20 active:scale-95 cursor-pointer"
             >
               <Phone className="h-4.5 w-4.5" />
-              {SITE.phone}
+              {site.phone}
             </a>
           </motion.div>
         </div>

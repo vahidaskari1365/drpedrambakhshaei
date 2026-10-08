@@ -8,20 +8,20 @@ import {
   breadcrumbJsonLd,
   faqJsonLd,
 } from "@/lib/seo";
-import { ARTICLES, getArticleBySlug } from "@/lib/blog-data";
+import { getMergedContent } from "@/lib/content-store";
 
-/** تمام مقالات در زمان بیلد به HTML استاتیک تبدیل می‌شوند — بهترین حالت برای SEO */
-export function generateStaticParams() {
-  return ARTICLES.map((a) => ({ slug: a.slug }));
-}
-
+/**
+ * صفحه مقاله — اول در دیتابیس (ویرایش‌های پنل ادمین) جستجو می‌شود و بعد در
+ * مقالات پیش‌فرض کد. مقاله‌های جدید پنل بدون بیلد مجدد همین‌جا رندر می‌شوند.
+ */
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const content = await getMergedContent();
+  const article = content.blog.find((a) => a.slug === slug);
   if (!article) return {};
 
   return {
@@ -51,7 +51,8 @@ export default async function ArticleRoute({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const content = await getMergedContent();
+  const article = content.blog.find((a) => a.slug === slug);
   if (!article) notFound();
 
   return (

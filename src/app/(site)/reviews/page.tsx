@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ReviewsPage } from "@/components/site/pages/reviews-page";
 import { JsonLd, OG_IMAGE, ROBOTS_META, breadcrumbJsonLd, reviewsJsonLd } from "@/lib/seo";
+import { getMergedContent } from "@/lib/content-store";
 
 const TITLE = "نظرات مراجعین | امتیاز ۵ از ۵ در گوگل";
 const DESC =
@@ -25,7 +26,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ReviewsRoute() {
+export default async function ReviewsRoute() {
+  const content = await getMergedContent();
   return (
     <>
       <JsonLd
@@ -34,7 +36,7 @@ export default function ReviewsRoute() {
           { name: "نظرات", path: "/reviews" },
         ])}
       />
-      <JsonLd data={reviewsJsonLd()} />
+      <JsonLd data={reviewsJsonLd(content.reviews)} />
       <ReviewsPage />
     </>
   );

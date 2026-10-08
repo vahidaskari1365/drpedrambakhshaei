@@ -41,3 +41,23 @@ model ContactRequest {
   status    String   @default("new")
   createdAt DateTime @default(now())
 }
+
+/**
+ * بازنویسی محتوای سایت توسط پنل ادمین
+ * هر رکورد = کلید یک مجموعه محتوا (services، faq، blog و ...) + JSON کامل جایگزین
+ * اگر رکوردی نباشد، پیش‌فرض کد (site-data.ts / blog-data.ts) استفاده می‌شود
+ */
+model ContentOverride {
+  key       String   @id
+  data      String
+  updatedAt DateTime @updatedAt
+}
+
+/** گزارش فعالیت‌های پنل — سوخت نمودارهای گزارش‌گیری */
+model ActivityLog {
+  id        String   @id @default(cuid())
+  kind      String
+  entity    String
+  summary   String
+  createdAt DateTime @default(now())
+}

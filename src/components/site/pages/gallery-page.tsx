@@ -7,7 +7,7 @@ import { X, Expand, ArrowLeft, ChevronRight, ChevronLeft, Camera, Sparkles } fro
 import { PageHero } from "../page-hero";
 import { SectionHeading } from "../section-heading";
 import { BeforeAfter } from "../before-after";
-import { GALLERY, WORKS, BEFORE_AFTER } from "@/lib/site-data";
+import { useSite } from "../content-provider";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -29,16 +29,17 @@ const FILTERS: { id: Category; label: string }[] = [
 ];
 
 export function GalleryPage() {
+  const { works, gallery, beforeAfter } = useSite();
   const [filter, setFilter] = React.useState<Category>("all");
   const [lightbox, setLightbox] = React.useState<number | null>(null);
 
   const items = React.useMemo(
     () =>
-      WORKS.map((w) => ({
+      works.map((w) => ({
         ...w,
         category: (TREATMENT_IMAGES.has(w.image) ? "treatments" : "clinic") as Category,
       })),
-    []
+    [works]
   );
 
   const filtered = React.useMemo(
@@ -194,12 +195,12 @@ export function GalleryPage() {
             >
               <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-teal-400/10 px-3 py-1.5 text-xs font-bold text-teal-300">
                 <Sparkles className="h-3.5 w-3.5" />
-                {BEFORE_AFTER.kicker}
+                {beforeAfter.kicker}
               </p>
               <h2 className="text-2xl font-black tracking-tight text-background sm:text-4xl sm:leading-[1.25]">
-                {BEFORE_AFTER.title}
+                {beforeAfter.title}
               </h2>
-              <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{BEFORE_AFTER.desc}</p>
+              <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{beforeAfter.desc}</p>
               <a
                 href="/contact"
                 className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-teal-300 transition-all duration-300 hover:gap-3 cursor-pointer"
@@ -209,10 +210,10 @@ export function GalleryPage() {
               </a>
             </motion.div>
             <BeforeAfter
-              before={BEFORE_AFTER.before}
-              after={BEFORE_AFTER.after}
-              beforeLabel={BEFORE_AFTER.beforeLabel}
-              afterLabel={BEFORE_AFTER.afterLabel}
+              before={beforeAfter.before}
+              after={beforeAfter.after}
+              beforeLabel={beforeAfter.beforeLabel}
+              afterLabel={beforeAfter.afterLabel}
               alt="بازسازی کامل دهان با ایمپلنت"
             />
           </div>
@@ -255,7 +256,7 @@ export function GalleryPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5">
-            {GALLERY.map((g, i) => (
+            {gallery.map((g, i) => (
               <motion.button
                 key={g.image}
                 type="button"

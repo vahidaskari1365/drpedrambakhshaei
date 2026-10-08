@@ -1,0 +1,691 @@
+     1→     1→"use client";
+     2→     2→
+     3→     3→import * as React from "react";
+     4→     4→import Image from "next/image";
+     5→     5→import { motion, AnimatePresence } from "framer-motion";
+     6→     6→import {
+     7→     7→  ArrowLeft,
+     8→     8→  Star,
+     9→     9→  Quote,
+    10→    10→  Phone,
+    11→    11→  CalendarCheck,
+    12→    12→  BadgeCheck,
+    13→    13→  ChevronDown,
+    14→    14→  Check,
+    15→    15→  Camera,
+    16→    16→  Sparkles,
+    17→    17→  Stethoscope,
+    18→    18→  Wallet,
+    19→    19→  WalletCards,
+    20→    20→  GraduationCap,
+    21→    21→  Clock3,
+    22→    22→} from "lucide-react";
+    23→    23→import { Hero } from "../hero";
+    24→    24→import { SectionHeading } from "../section-heading";
+    25→    25→import { WorksSlider } from "../works-slider";
+    26→    26→import { BeforeAfter } from "../before-after";
+    27→    27→import {
+    28→    28→  SITE,
+    29→    29→  SERVICES,
+    30→    30→  WORKS,
+    31→    31→  WHY_US,
+    32→    32→  REVIEWS,
+    33→    33→  PRICE_TABS,
+    34→    34→  FAQ_ITEMS,
+    35→    35→  ABOUT_BIO,
+    36→    36→  CREDENTIALS,
+    37→    37→  BEFORE_AFTER,
+    38→    38→} from "@/lib/site-data";
+    39→    39→import { cn } from "@/lib/utils";
+    40→    40→
+    41→    41→const ease = [0.16, 1, 0.3, 1] as const;
+    42→    42→
+    43→    43→/** پیش‌نمایش گالری صفحه اول — عکس‌های واقعی جراحی‌ها و مطب */
+    44→    44→const HOME_GALLERY = [WORKS[2], WORKS[5], WORKS[0], WORKS[6], WORKS[7], WORKS[8]] as const;
+    45→    45→
+    46→    46→/** برجسته‌های تعرفه — از جداول اصلی */
+    47→    47→const PRICE_HIGHLIGHTS = [
+    48→    48→  {
+    49→    49→    id: PRICE_TABS[0].id,
+    50→    50→    title: PRICE_TABS[0].label,
+    51→    51→    price: PRICE_TABS[0].rows[0].price,
+    52→    52→    note: "شامل فیکسچر و اباتمنت",
+    53→    53→  },
+    54→    54→  {
+    55→    55→    id: PRICE_TABS[1].id,
+    56→    56→    title: PRICE_TABS[1].label,
+    57→    57→    price: PRICE_TABS[1].rows[3].price,
+    58→    58→    note: "جراحی یک فک (MONOMAX)",
+    59→    59→  },
+    60→    60→  {
+    61→    61→    id: PRICE_TABS[2].id,
+    62→    62→    title: PRICE_TABS[2].label,
+    63→    63→    price: PRICE_TABS[2].rows[0].price,
+    64→    64→    note: "با بی‌حسی موضعی",
+    65→    65→  },
+    66→    66→] as const;
+    67→    67→
+    68→    68→/** سوالات منتخب صفحه اول — ترکیبی از دو گروه */
+    69→    69→const HOME_FAQS = [FAQ_ITEMS[0], FAQ_ITEMS[5], FAQ_ITEMS[1], FAQ_ITEMS[6]] as const;
+    70→    70→
+    71→    71→/** ردیف آکاردئون سوالات */
+    72→    72→function FaqRow({ q, a, open, onToggle }: { q: string; a: string; open: boolean; onToggle: () => void }) {
+    73→    73→  return (
+    74→    74→    <div
+    75→    75→      className={cn(
+    76→    76→        "overflow-hidden rounded-2xl border bg-card transition-all duration-300",
+    77→    77→        open ? "border-primary/40 shadow-[0_16px_40px_-24px] shadow-primary/40" : "border-border/60"
+    78→    78→      )}
+    79→    79→    >
+    80→    80→      <button
+    81→    81→        type="button"
+    82→    82→        onClick={onToggle}
+    83→    83→        aria-expanded={open}
+    84→    84→        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start cursor-pointer"
+    85→    85→      >
+    86→    86→        <span className="text-[14px] font-extrabold leading-6">{q}</span>
+    87→    87→        <span
+    88→    88→          className={cn(
+    89→    89→            "flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-colors",
+    90→    90→            open ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+    91→    91→          )}
+    92→    92→        >
+    93→    93→          <ChevronDown className={cn("h-4 w-4 transition-transform duration-300", open && "rotate-180")} />
+    94→    94→        </span>
+    95→    95→      </button>
+    96→    96→      <AnimatePresence initial={false}>
+    97→    97→        {open && (
+    98→    98→          <motion.div
+    99→    99→            initial={{ height: 0, opacity: 0 }}
+   100→   100→            animate={{ height: "auto", opacity: 1 }}
+   101→   101→            exit={{ height: 0, opacity: 0 }}
+   102→   102→            transition={{ duration: 0.35, ease }}
+   103→   103→          >
+   104→   104→            <p className="border-t border-border/50 px-5 py-4 text-[13px] leading-7 text-muted-foreground">{a}</p>
+   105→   105→          </motion.div>
+   106→   106→        )}
+   107→   107→      </AnimatePresence>
+   108→   108→    </div>
+   109→   109→  );
+   110→   110→}
+   111→   111→
+   112→   112→export function HomePage() {
+   113→   113→  const [openFaq, setOpenFaq] = React.useState<number | null>(0);
+   114→   114→
+   115→   115→  return (
+   116→   116→    <>
+   117→   117→      <Hero />
+   118→   118→
+   119→   119→      {/* ═══ خدمات — پیش‌نمایش ۳ خدمت اصلی ═══ */}
+   120→   120→      <section className="bg-sage relative overflow-hidden py-16 lg:py-24" aria-label="خدمات تخصصی">
+   121→   121→        <div className="aurora aurora-sage" />
+   122→   122→        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+   123→   123→          <SectionHeading
+   124→   124→            kicker="خدمات تخصصی"
+   125→   125→            title={
+   126→   126→              <>
+   127→   127→                از ارتوسرجری تا ایمپلنت —
+   128→   128→                <span className="text-gradient block">همه در یک مجموعه</span>
+   129→   129→              </>
+   130→   130→            }
+   131→   131→            desc="حوزه‌های تخصصی جراحی دهان، فک و صورت با برنامه‌ریزی سه‌بعدی دیجیتال و تکنیک‌های کم‌تهاجمی"
+   132→   132→          />
+   133→   133→
+   134→   134→          <div className="grid gap-5 md:grid-cols-3">
+   135→   135→            {SERVICES.map((s, i) => (
+   136→   136→              <motion.a
+   137→   137→                key={s.id}
+   138→   138→                href="/services"
+   139→   139→                initial={{ opacity: 0, y: 48 }}
+   140→   140→                whileInView={{ opacity: 1, y: 0 }}
+   141→   141→                viewport={{ once: true, margin: "-60px" }}
+   142→   142→                transition={{ duration: 0.9, ease, delay: i * 0.1 }}
+   143→   143→                className="group relative flex flex-col overflow-hidden rounded-[2rem] border border-[oklch(0.5_0.06_175/0.12)] bg-card shadow-[0_24px_60px_-35px_oklch(0.4_0.05_175/0.5)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_36px_80px_-35px_oklch(0.4_0.06_175/0.6)] cursor-pointer"
+   144→   144→                aria-label={s.title}
+   145→   145→              >
+   146→   146→                <div className="relative aspect-[16/10] overflow-hidden">
+   147→   147→                  <Image
+   148→   148→                    src={s.image}
+   149→   149→                    alt={s.title}
+   150→   150→                    fill
+   151→   151→                    className="object-cover transition-transform duration-[1.6s] ease-out group-hover:scale-110"
+   152→   152→                    sizes="(max-width: 768px) 100vw, 33vw"
+   153→   153→                  />
+   154→   154→                  <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.18_0.03_205/0.55)] via-transparent to-transparent" />
+   155→   155→                  <span className="absolute right-4 top-4 rounded-full bg-background/85 px-3 py-1 text-[11px] font-black text-primary backdrop-blur">
+   156→   156→                    ۰{i + 1}
+   157→   157→                  </span>
+   158→   158→                </div>
+   159→   159→                <div className="flex flex-1 flex-col p-6">
+   160→   160→                  <p className="text-[11px] font-bold tracking-wider text-primary">{s.subtitle}</p>
+   161→   161→                  <h3 className="mt-1.5 text-lg font-black leading-7">{s.title}</h3>
+   162→   162→                  <p className="mt-2.5 flex-1 text-[13px] leading-7 text-muted-foreground">{s.desc}</p>
+   163→   163→                  <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-primary transition-all duration-300 group-hover:gap-3">
+   164→   164→                    جزئیات و تعرفه
+   165→   165→                    <ArrowLeft className="h-4 w-4" />
+   166→   166→                  </span>
+   167→   167→                </div>
+   168→   168→              </motion.a>
+   169→   169→            ))}
+   170→   170→          </div>
+   171→   171→
+   172→   172→          <motion.div
+   173→   173→            initial={{ opacity: 0, y: 20 }}
+   174→   174→            whileInView={{ opacity: 1, y: 0 }}
+   175→   175→            viewport={{ once: true }}
+   176→   176→            transition={{ duration: 0.8, ease, delay: 0.2 }}
+   177→   177→            className="mt-10 text-center"
+   178→   178→          >
+   179→   179→            <a
+   180→   180→              href="/services"
+   181→   181→              className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-card px-7 py-3 text-sm font-bold text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground active:scale-95 cursor-pointer"
+   182→   182→            >
+   183→   183→              <Stethoscope className="h-4 w-4" />
+   184→   184→              مشاهده توضیح کامل خدمات
+   185→   185→            </a>
+   186→   186→          </motion.div>
+   187→   187→        </div>
+   188→   188→      </section>
+   189→   189→
+   190→   190→      {/* ═══ نمونه جراحی‌ها — اسلایدر کشویی با عکس‌های واقعی (مثل سایت اصلی) ═══ */}
+   191→   191→      <section className="relative bg-background py-16 lg:py-24" aria-label="نمونه جراحی‌ها">
+   192→   192→        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+   193→   193→          <SectionHeading
+   194→   194→            kicker="نمونه جراحی‌ها"
+   195→   195→            title={
+   196→   196→              <>
+   197→   197→                نتیجه کارها را ببینید،
+   198→   198→                <span className="text-gradient block">نه فقط حرف‌ها را</span>
+   199→   199→              </>
+   200→   200→            }
+   201→   201→            desc="جهت کمک به شما مراجعین عزیز در روند تصمیم‌گیری و آشنایی بیشتر با انواع جراحی‌ها، علاوه بر نمونه کارها توضیحات هر جراحی نیز قرار داده شده — با سوایپ یا دکمه‌ها جابه‌جا شوید"
+   202→   202→          />
+   203→   203→          <WorksSlider />
+   204→   204→        </div>
+   205→   205→      </section>
+   206→   206→
+   207→   207→      {/* ═══ مقایسه قبل/بعد — کیس واقعی ایمپلنت ═══ */}
+   208→   208→      <section className="bg-petrol-deep grain relative overflow-hidden py-16 lg:py-24" aria-label="مقایسه قبل و بعد">
+   209→   209→        <div className="aurora" />
+   210→   210→        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+   211→   211→          <div className="grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
+   212→   212→            <motion.div
+   213→   213→              initial={{ opacity: 0, x: 40 }}
+   214→   214→              whileInView={{ opacity: 1, x: 0 }}
+   215→   215→              viewport={{ once: true, margin: "-80px" }}
+   216→   216→              transition={{ duration: 0.9, ease }}
+   217→   217→            >
+   218→   218→              <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-teal-400/10 px-3 py-1.5 text-xs font-bold text-teal-300">
+   219→   219→                <Sparkles className="h-3.5 w-3.5" />
+   220→   220→                {BEFORE_AFTER.kicker}
+   221→   221→              </p>
+   222→   222→              <h2 className="text-2xl font-black tracking-tight text-background sm:text-4xl sm:leading-[1.25]">
+   223→   223→                {BEFORE_AFTER.title}
+   224→   224→              </h2>
+   225→   225→              <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{BEFORE_AFTER.desc}</p>
+   226→   226→              <div className="mt-6 flex flex-wrap gap-3">
+   227→   227→                <a
+   228→   228→                  href="/gallery"
+   229→   229→                  className="shimmer inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-bold text-[oklch(0.2_0.03_205)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
+   230→   230→                >
+   231→   231→                  همه نمونه کارها
+   232→   232→                  <ArrowLeft className="h-4 w-4" />
+   233→   233→                </a>
+   234→   234→                <a
+   235→   235→                  href="/contact"
+   236→   236→                  className="inline-flex items-center gap-2 rounded-full border border-background/25 bg-background/10 px-6 py-3 text-sm font-bold text-background backdrop-blur transition-all duration-300 hover:bg-background/20 active:scale-95 cursor-pointer"
+   237→   237→                >
+   238→   238→                  <CalendarCheck className="h-4 w-4" />
+   239→   239→                  مشاوره حضوری
+   240→   240→                </a>
+   241→   241→              </div>
+   242→   242→            </motion.div>
+   243→   243→            <BeforeAfter
+   244→   244→              before={BEFORE_AFTER.before}
+   245→   245→              after={BEFORE_AFTER.after}
+   246→   246→              beforeLabel={BEFORE_AFTER.beforeLabel}
+   247→   247→              afterLabel={BEFORE_AFTER.afterLabel}
+   248→   248→              alt="بازسازی کامل دهان با ایمپلنت"
+   249→   249→            />
+   250→   250→          </div>
+   251→   251→        </div>
+   252→   252→      </section>
+   253→   253→
+   254→   254→      {/* ═══ چرا دکتر بخشایی — نوار تیره ═══ */}
+   255→   255→      <section className="bg-petrol relative overflow-hidden py-16 lg:py-20" aria-label="چرا دکتر بخشایی">
+   256→   256→        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+   257→   257→          <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+   258→   258→            <motion.div
+   259→   259→              initial={{ opacity: 0, x: 40 }}
+   260→   260→              whileInView={{ opacity: 1, x: 0 }}
+   261→   261→              viewport={{ once: true, margin: "-80px" }}
+   262→   262→              transition={{ duration: 0.9, ease }}
+   263→   263→            >
+   264→   264→              <p className="mb-3 inline-flex items-center gap-1.5 text-xs font-bold tracking-widest text-amber-300">
+   265→   265→                <BadgeCheck className="h-3.5 w-3.5" />
+   266→   266→                اعتبار علمی
+   267→   267→              </p>
+   268→   268→              <h2 className="text-2xl font-black tracking-tight text-background sm:text-4xl sm:leading-[1.25]">
+   269→   269→                {WHY_US.title}
+   270→   270→              </h2>
+   271→   271→              <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{WHY_US.text}</p>
+   272→   272→              <a
+   273→   273→                href="/about"
+   274→   274→                className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-teal-300 transition-all duration-300 hover:gap-3 cursor-pointer"
+   275→   275→              >
+   276→   276→                بیشتر درباره دکتر بخشایی
+   277→   277→                <ArrowLeft className="h-4 w-4" />
+   278→   278→              </a>
+   279→   279→            </motion.div>
+   280→   280→            <div className="grid gap-3 sm:grid-cols-2">
+   281→   281→              {WHY_US.points.map((p, i) => (
+   282→   282→                <motion.div
+   283→   283→                  key={p}
+   284→   284→                  initial={{ opacity: 0, y: 24 }}
+   285→   285→                  whileInView={{ opacity: 1, y: 0 }}
+   286→   286→                  viewport={{ once: true, margin: "-40px" }}
+   287→   287→                  transition={{ duration: 0.7, ease, delay: i * 0.08 }}
+   288→   288→                  className="glass-dark gold-top-line flex items-start gap-3 rounded-2xl p-4"
+   289→   289→                >
+   290→   290→                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal-400/15 text-xs font-black text-teal-300">
+   291→   291→                    ۰{i + 1}
+   292→   292→                  </span>
+   293→   293→                  <p className="text-[13px] font-medium leading-6 text-background/85">{p}</p>
+   294→   294→                </motion.div>
+   295→   295→              ))}
+   296→   296→            </div>
+   297→   297→          </div>
+   298→   298→        </div>
+   299→   299→      </section>
+   300→   300→
+   301→   301→      {/* ═══ نمونه کارها — پیش‌نمایش گرید معمولی ═══ */}
+   302→   302→      <section className="relative bg-background py-16 lg:py-24" aria-label="نمونه کارها">
+   303→   303→        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+   304→   304→          <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
+   305→   305→            <div>
+   306→   306→              <motion.p
+   307→   307→                initial={{ opacity: 0, y: 16 }}
+   308→   308→                whileInView={{ opacity: 1, y: 0 }}
+   309→   309→                viewport={{ once: true }}
+   310→   310→                transition={{ duration: 0.7, ease }}
+   311→   311→                className="mb-3 inline-flex items-center gap-1.5 text-xs font-bold tracking-widest text-primary"
+   312→   312→              >
+   313→   313→                <Camera className="h-3.5 w-3.5" />
+   314→   314→                نمونه کارها
+   315→   315→              </motion.p>
+   316→   316→              <motion.h2
+   317→   317→                initial={{ opacity: 0, y: 24 }}
+   318→   318→                whileInView={{ opacity: 1, y: 0 }}
+   319→   319→                viewport={{ once: true }}
+   320→   320→                transition={{ duration: 0.8, ease, delay: 0.08 }}
+   321→   321→                className="text-2xl font-black tracking-tight sm:text-4xl"
+   322→   322→              >
+   323→   323→                جراحی‌ها و فضای مطب از نزدیک
+   324→   324→              </motion.h2>
+   325→   325→            </div>
+   326→   326→            <motion.a
+   327→   327→              initial={{ opacity: 0 }}
+   328→   328→              whileInView={{ opacity: 1 }}
+   329→   329→              viewport={{ once: true }}
+   330→   330→              transition={{ duration: 0.8, delay: 0.15 }}
+   331→   331→              href="/gallery"
+   332→   332→              className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card px-5 py-2.5 text-[13px] font-bold transition-all hover:border-foreground/25 cursor-pointer"
+   333→   333→            >
+   334→   334→              مشاهده همه تصاویر
+   335→   335→              <ArrowLeft className="h-3.5 w-3.5" />
+   336→   336→            </motion.a>
+   337→   337→          </div>
+   338→   338→
+   339→   339→          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+   340→   340→            {HOME_GALLERY.map((g, i) => (
+   341→   341→              <motion.a
+   342→   342→                key={g.image}
+   343→   343→                href="/gallery"
+   344→   344→                initial={{ opacity: 0, y: 40 }}
+   345→   345→                whileInView={{ opacity: 1, y: 0 }}
+   346→   346→                viewport={{ once: true, margin: "-40px" }}
+   347→   347→                transition={{ duration: 0.8, ease, delay: (i % 4) * 0.08 }}
+   348→   348→                className={cn(
+   349→   349→                  "group relative overflow-hidden rounded-[1.75rem] border border-border/60 shadow-[0_24px_60px_-38px_oklch(0.4_0.05_205/0.55)] transition-all duration-500 hover:-translate-y-1.5 cursor-pointer",
+   350→   350→                  i === 0 && "sm:col-span-2 lg:row-span-2"
+   351→   351→                )}
+   352→   352→                aria-label={`${g.title} — مشاهده در گالری`}
+   353→   353→              >
+   354→   354→                <div className={cn("relative", i === 0 ? "aspect-[4/3] lg:h-full lg:aspect-auto" : "aspect-[4/3]")}>
+   355→   355→                  <Image
+   356→   356→                    src={g.image}
+   357→   357→                    alt={g.title}
+   358→   358→                    fill
+   359→   359→                    className="object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-108"
+   360→   360→                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+   361→   361→                  />
+   362→   362→                </div>
+   363→   363→                <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.16_0.03_205/0.8)] via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-100" />
+   364→   364→                <span className="absolute inset-x-4 bottom-3.5 text-[13px] font-extrabold text-background">{g.title}</span>
+   365→   365→              </motion.a>
+   366→   366→            ))}
+   367→   367→          </div>
+   368→   368→        </div>
+   369→   369→      </section>
+   370→   370→
+   371→   371→      {/* ═══ درباره دکتر — پیش‌نمایش ═══ */}
+   372→   372→      <section className="bg-sage relative overflow-hidden py-16 lg:py-24" aria-label="درباره دکتر">
+   373→   373→        <div className="aurora aurora-sage" />
+   374→   374→        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+   375→   375→          <div className="grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
+   376→   376→            {/* پرتره */}
+   377→   377→            <motion.div
+   378→   378→              initial={{ opacity: 0, scale: 0.94, y: 40 }}
+   379→   379→              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+   380→   380→              viewport={{ once: true, margin: "-80px" }}
+   381→   381→              transition={{ duration: 1, ease }}
+   382→   382→              className="relative mx-auto w-full max-w-[340px] lg:max-w-[380px]"
+   383→   383→            >
+   384→   384→              <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-[oklch(0.5_0.06_175/0.15)] shadow-[0_40px_90px_-40px_oklch(0.4_0.06_175/0.55)]">
+   385→   385→                <Image
+   386→   386→                  src="/uploads/doctor-portrait.jpg"
+   387→   387→                  alt="دکتر پدرام بخشایی — متخصص جراحی دهان، فک و صورت"
+   388→   388→                  fill
+   389→   389→                  className="object-cover object-top"
+   390→   390→                  sizes="(max-width: 1024px) 90vw, 380px"
+   391→   391→                />
+   392→   392→                <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.18_0.03_205/0.35)] via-transparent to-transparent" />
+   393→   393→              </div>
+   394→   394→              <div className="absolute -bottom-5 right-5 left-5 rounded-2xl bg-card/90 px-5 py-3.5 shadow-xl backdrop-blur-xl">
+   395→   395→                <p className="text-sm font-black">Dr. Pedram Bakhshaei</p>
+   396→   396→                <p className="mt-0.5 text-[11px] font-medium text-muted-foreground">
+   397→   397→                  متخصص جراحی دهان، فک و صورت — رتبه ۲ بورد
+   398→   398→                </p>
+   399→   399→              </div>
+   400→   400→            </motion.div>
+   401→   401→
+   402→   402→            {/* متن */}
+   403→   403→            <motion.div
+   404→   404→              initial={{ opacity: 0, y: 40 }}
+   405→   405→              whileInView={{ opacity: 1, y: 0 }}
+   406→   406→              viewport={{ once: true, margin: "-80px" }}
+   407→   407→              transition={{ duration: 0.9, ease, delay: 0.1 }}
+   408→   408→            >
+   409→   409→              <p className="mb-3 inline-flex items-center gap-1.5 text-xs font-bold tracking-widest text-primary">
+   410→   410→                <GraduationCap className="h-3.5 w-3.5" />
+   411→   411→                درباره دکتر
+   412→   412→              </p>
+   413→   413→              <h2 className="text-2xl font-black tracking-tight sm:text-4xl sm:leading-[1.25]">
+   414→   414→                تلفیق علم، هنر و دقت
+   415→   415→                <span className="text-gradient block">در جراحی فک و صورت</span>
+   416→   416→              </h2>
+   417→   417→              <p className="mt-5 max-w-2xl text-[14px] leading-8 text-muted-foreground">
+   418→   418→                {ABOUT_BIO[2]}
+   419→   419→              </p>
+   420→   420→
+   421→   421→              {/* مدارک منتخب */}
+   422→   422→              <ul className="mt-6 grid gap-2.5 sm:grid-cols-2">
+   423→   423→                {CREDENTIALS.slice(4, 7).map((c) => (
+   424→   424→                  <li key={c} className="flex items-start gap-2 text-[13px] font-medium leading-6 text-foreground/85">
+   425→   425→                    <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
+   426→   426→                      <Check className="h-3 w-3 text-primary" />
+   427→   427→                    </span>
+   428→   428→                    {c}
+   429→   429→                  </li>
+   430→   430→                ))}
+   431→   431→              </ul>
+   432→   432→
+   433→   433→              <div className="mt-7 flex flex-wrap gap-3">
+   434→   434→                <a
+   435→   435→                  href="/about"
+   436→   436→                  className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground shadow-[0_14px_34px_-12px] shadow-primary/60 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer"
+   437→   437→                >
+   438→   438→                  بیوگرافی کامل و مدارک
+   439→   439→                  <ArrowLeft className="h-4 w-4" />
+   440→   440→                </a>
+   441→   441→                <a
+   442→   442→                  href="/contact"
+   443→   443→                  className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-card px-6 py-3 text-sm font-bold transition-all duration-300 hover:bg-card/70 active:scale-95 cursor-pointer"
+   444→   444→                >
+   445→   445→                  <CalendarCheck className="h-4 w-4" />
+   446→   446→                  رزرو نوبت
+   447→   447→                </a>
+   448→   448→              </div>
+   449→   449→            </motion.div>
+   450→   450→          </div>
+   451→   451→        </div>
+   452→   452→      </section>
+   453→   453→
+   454→   454→      {/* ═══ تعرفه‌ها — پیش‌نمایش تیره سینمایی ═══ */}
+   455→   455→      <section className="bg-petrol-deep grain relative overflow-hidden py-16 lg:py-24" aria-label="تعرفه خدمات">
+   456→   456→        <div className="aurora" />
+   457→   457→        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+   458→   458→          <SectionHeading
+   459→   459→            dark
+   460→   460→            kicker="تعرفه‌های ۱۴۰۵"
+   461→   461→            title={
+   462→   462→              <>
+   463→   463→                هزینه شفاف،
+   464→   464→                <span className="text-gradient-light block">بدون سوال بی‌جواب</span>
+   465→   465→              </>
+   466→   466→            }
+   467→   467→            desc="جدول کامل تعرفه ایمپلنت، جراحی فک و دندان نهفته — قیمت دقیق پس از ویزیت و بررسی CBCT"
+   468→   468→          />
+   469→   469→
+   470→   470→          <div className="grid gap-4 md:grid-cols-3">
+   471→   471→            {PRICE_HIGHLIGHTS.map((p, i) => (
+   472→   472→              <motion.a
+   473→   473→                key={p.id}
+   474→   474→                href="/prices"
+   475→   475→                initial={{ opacity: 0, y: 40 }}
+   476→   476→                whileInView={{ opacity: 1, y: 0 }}
+   477→   477→                viewport={{ once: true, margin: "-60px" }}
+   478→   478→                transition={{ duration: 0.85, ease, delay: i * 0.1 }}
+   479→   479→                className="glass-dark gold-top-line group relative flex flex-col rounded-[1.75rem] p-6 transition-all duration-500 hover:-translate-y-2 cursor-pointer"
+   480→   480→                aria-label={`تعرفه ${p.title}`}
+   481→   481→              >
+   482→   482→                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-teal-400/15">
+   483→   483→                  <Wallet className="h-5 w-5 text-teal-300" />
+   484→   484→                </span>
+   485→   485→                <h3 className="mt-4 text-lg font-black text-background">{p.title}</h3>
+   486→   486→                <p className="mt-3 text-2xl font-black tracking-tight text-teal-300 tabular-nums">{p.price} تومان</p>
+   487→   487→                <p className="mt-1.5 flex-1 text-[12px] leading-6 text-background/55">{p.note}</p>
+   488→   488→                <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-teal-300 transition-all duration-300 group-hover:gap-3">
+   489→   489→                  جدول کامل تعرفه
+   490→   490→                  <ArrowLeft className="h-4 w-4" />
+   491→   491→                </span>
+   492→   492→              </motion.a>
+   493→   493→            ))}
+   494→   494→          </div>
+   495→   495→
+   496→   496→          {/* نوار قسطی */}
+   497→   497→          <motion.div
+   498→   498→            initial={{ opacity: 0, y: 24 }}
+   499→   499→            whileInView={{ opacity: 1, y: 0 }}
+   500→   500→            viewport={{ once: true }}
+   501→   501→            transition={{ duration: 0.8, ease, delay: 0.2 }}
+   502→   502→            className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 rounded-2xl border border-background/10 bg-background/[0.05] px-6 py-4 text-[13px] font-medium text-background/75 backdrop-blur"
+   503→   503→          >
+   504→   504→            <span className="inline-flex items-center gap-2">
+   505→   505→              <WalletCards className="h-4 w-4 text-amber-300" />
+   506→   506→              امکان پرداخت مرحله‌ای برای برخی طرح‌های درمانی
+   507→   507→            </span>
+   508→   508→            <span className="inline-flex items-center gap-2">
+   509→   509→              <BadgeCheck className="h-4 w-4 text-amber-300" />
+   510→   510→              تخفیف اسکان ۲۰ میلیونی مراجعین شهرستانی
+   511→   511→            </span>
+   512→   512→          </motion.div>
+   513→   513→        </div>
+   514→   514→      </section>
+   515→   515→
+   516→   516→      {/* ═══ سوالات متداول — پیش‌نمایش ═══ */}
+   517→   517→      <section className="relative bg-background py-16 lg:py-24" aria-label="سوالات متداول">
+   518→   518→        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+   519→   519→          <SectionHeading
+   520→   520→            kicker="سوالات متداول"
+   521→   521→            title={
+   522→   522→              <>
+   523→   523→                هر سوالی دارید،
+   524→   524→                <span className="text-gradient block">اینجا جوابش هست</span>
+   525→   525→              </>
+   526→   526→            }
+   527→   527→            desc="پاسخ پرتکرارترین سوالات مراجعین درباره ارتوسرجری، ایمپلنت و دوره نقاهت"
+   528→   528→          />
+   529→   529→
+   530→   530→          <div className="mx-auto grid max-w-4xl gap-3 lg:grid-cols-2">
+   531→   531→            {HOME_FAQS.map((f, i) => (
+   532→   532→              <motion.div
+   533→   533→                key={f.q}
+   534→   534→                initial={{ opacity: 0, y: 28 }}
+   535→   535→                whileInView={{ opacity: 1, y: 0 }}
+   536→   536→                viewport={{ once: true, margin: "-40px" }}
+   537→   537→                transition={{ duration: 0.7, ease, delay: i * 0.08 }}
+   538→   538→                className={cn(i === 0 && "lg:row-span-1")}
+   539→   539→              >
+   540→   540→                <FaqRow q={f.q} a={f.a} open={openFaq === i} onToggle={() => setOpenFaq(openFaq === i ? null : i)} />
+   541→   541→              </motion.div>
+   542→   542→            ))}
+   543→   543→          </div>
+   544→   544→
+   545→   545→          <motion.div
+   546→   546→            initial={{ opacity: 0, y: 20 }}
+   547→   547→            whileInView={{ opacity: 1, y: 0 }}
+   548→   548→            viewport={{ once: true }}
+   549→   549→            transition={{ duration: 0.8, ease, delay: 0.15 }}
+   550→   550→            className="mt-9 flex flex-wrap items-center justify-center gap-3"
+   551→   551→          >
+   552→   552→            <a
+   553→   553→              href="/faq"
+   554→   554→              className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-card px-6 py-3 text-sm font-bold text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground active:scale-95 cursor-pointer"
+   555→   555→            >
+   556→   556→              همه سوالات متداول
+   557→   557→              <ArrowLeft className="h-4 w-4" />
+   558→   558→            </a>
+   559→   559→            <span className="inline-flex items-center gap-2 text-[13px] text-muted-foreground">
+   560→   560→              <Clock3 className="h-4 w-4" />
+   561→   561→              جواب سوال خود را پیدا نکردید؟ {SITE.phone} تماس بگیرید
+   562→   562→            </span>
+   563→   563→          </motion.div>
+   564→   564→        </div>
+   565→   565→      </section>
+   566→   566→
+   567→   567→      {/* ═══ نظرات واقعی ═══ */}
+   568→   568→      <section className="bg-petrol-deep relative overflow-hidden py-16 lg:py-24" aria-label="نگاهی به نظرات">
+   569→   569→        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+   570→   570→          <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
+   571→   571→            <div>
+   572→   572→              <motion.p
+   573→   573→                initial={{ opacity: 0, y: 16 }}
+   574→   574→                whileInView={{ opacity: 1, y: 0 }}
+   575→   575→                viewport={{ once: true }}
+   576→   576→                transition={{ duration: 0.7, ease }}
+   577→   577→                className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-amber-400/10 px-3 py-1.5 text-xs font-bold text-amber-300"
+   578→   578→              >
+   579→   579→                <Star className="h-3.5 w-3.5 fill-current" />
+   580→   580→                {SITE.rating.score} در گوگل · {SITE.rating.count} نظر
+   581→   581→              </motion.p>
+   582→   582→              <motion.h2
+   583→   583→                initial={{ opacity: 0, y: 24 }}
+   584→   584→                whileInView={{ opacity: 1, y: 0 }}
+   585→   585→                viewport={{ once: true }}
+   586→   586→                transition={{ duration: 0.8, ease, delay: 0.08 }}
+   587→   587→                className="text-2xl font-black tracking-tight text-background sm:text-4xl"
+   588→   588→              >
+   589→   589→                حرف‌های مراجعین واقعی
+   590→   590→              </motion.h2>
+   591→   591→            </div>
+   592→   592→            <motion.a
+   593→   593→              initial={{ opacity: 0 }}
+   594→   594→              whileInView={{ opacity: 1 }}
+   595→   595→              viewport={{ once: true }}
+   596→   596→              transition={{ duration: 0.8, delay: 0.15 }}
+   597→   597→              href="/reviews"
+   598→   598→              className="inline-flex items-center gap-1.5 rounded-full border border-background/15 bg-background/[0.06] px-5 py-2.5 text-[13px] font-bold text-background/80 backdrop-blur transition-all hover:bg-background/15 hover:text-background cursor-pointer"
+   599→   599→            >
+   600→   600→              همه نظرات
+   601→   601→              <ArrowLeft className="h-3.5 w-3.5" />
+   602→   602→            </motion.a>
+   603→   603→          </div>
+   604→   604→
+   605→   605→          <div className="grid gap-4 md:grid-cols-3">
+   606→   606→            {REVIEWS.slice(1, 4).map((r, i) => (
+   607→   607→              <motion.figure
+   608→   608→                key={r.author}
+   609→   609→                initial={{ opacity: 0, y: 32 }}
+   610→   610→                whileInView={{ opacity: 1, y: 0 }}
+   611→   611→                viewport={{ once: true, margin: "-40px" }}
+   612→   612→                transition={{ duration: 0.8, ease, delay: i * 0.1 }}
+   613→   613→                className="glass-dark relative flex flex-col rounded-3xl p-6"
+   614→   614→              >
+   615→   615→                <Quote className="mb-3 h-5 w-5 text-teal-300/50" />
+   616→   616→                <blockquote className="flex-1 text-[13px] leading-7 text-background/85">{r.text}</blockquote>
+   617→   617→                <figcaption className="mt-4 flex items-center justify-between gap-3 border-t border-background/10 pt-4">
+   618→   618→                  <div className="flex items-center gap-3">
+   619→   619→                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-400/15 text-sm font-black text-teal-300">
+   620→   620→                      {r.author.charAt(0)}
+   621→   621→                    </span>
+   622→   622→                    <div>
+   623→   623→                      <p className="text-[13px] font-extrabold text-background">{r.author}</p>
+   624→   624→                      <p className="text-[11px] text-background/50">{r.source} · {r.time}</p>
+   625→   625→                    </div>
+   626→   626→                  </div>
+   627→   627→                  <span className="flex gap-0.5" aria-label="امتیاز ۵ از ۵">
+   628→   628→                    {Array.from({ length: 5 }).map((_, j) => (
+   629→   629→                      <Star key={j} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+   630→   630→                    ))}
+   631→   631→                  </span>
+   632→   632→                </figcaption>
+   633→   633→              </motion.figure>
+   634→   634→            ))}
+   635→   635→          </div>
+   636→   636→        </div>
+   637→   637→      </section>
+   638→   638→
+   639→   639→      {/* ═══ CTA نهایی ═══ */}
+   640→   640→      <section className="relative overflow-hidden py-16 lg:py-24" aria-label="رزرو نوبت">
+   641→   641→        <div className="gradient-petrol-cta absolute inset-0" />
+   642→   642→        <div className="aurora" />
+   643→   643→        <div className="relative mx-auto max-w-3xl px-5 text-center lg:px-8">
+   644→   644→          <motion.h2
+   645→   645→            initial={{ opacity: 0, y: 28 }}
+   646→   646→            whileInView={{ opacity: 1, y: 0 }}
+   647→   647→            viewport={{ once: true }}
+   648→   648→            transition={{ duration: 0.9, ease }}
+   649→   649→            className="text-3xl font-black tracking-tight text-background sm:text-5xl sm:leading-[1.2]"
+   650→   650→          >
+   651→   651→            مسیر لبخند شما از
+   652→   652→            <span className="text-gradient-light block">یک مشاوره شروع می‌شود</span>
+   653→   653→          </motion.h2>
+   654→   654→          <motion.p
+   655→   655→            initial={{ opacity: 0, y: 20 }}
+   656→   656→            whileInView={{ opacity: 1, y: 0 }}
+   657→   657→            viewport={{ once: true }}
+   658→   658→            transition={{ duration: 0.9, ease, delay: 0.1 }}
+   659→   659→            className="mx-auto mt-5 max-w-xl text-[15px] leading-8 text-background/70"
+   660→   660→          >
+   661→   661→            {SITE.hours} — {SITE.shortAddress}
+   662→   662→          </motion.p>
+   663→   663→          <motion.div
+   664→   664→            initial={{ opacity: 0, y: 24 }}
+   665→   665→            whileInView={{ opacity: 1, y: 0 }}
+   666→   666→            viewport={{ once: true }}
+   667→   667→            transition={{ duration: 0.9, ease, delay: 0.2 }}
+   668→   668→            className="mt-8 flex flex-wrap items-center justify-center gap-3"
+   669→   669→          >
+   670→   670→            <a
+   671→   671→              href="/contact"
+   672→   672→              className="shimmer inline-flex items-center gap-2.5 rounded-full bg-background px-7 py-3.5 text-sm font-black text-[oklch(0.2_0.03_205)] shadow-[0_16px_40px_-14px_oklch(0.05_0.02_205/0.8)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
+   673→   673→            >
+   674→   674→              <CalendarCheck className="h-4.5 w-4.5" />
+   675→   675→              رزرو نوبت و مشاوره
+   676→   676→            </a>
+   677→   677→            <a
+   678→   678→              href={`tel:${SITE.phone}`}
+   679→   679→              dir="ltr"
+   680→   680→              className="inline-flex items-center gap-2.5 rounded-full border border-background/25 bg-background/10 px-7 py-3.5 text-sm font-bold text-background backdrop-blur transition-all duration-300 hover:bg-background/20 active:scale-95 cursor-pointer"
+   681→   681→            >
+   682→   682→              <Phone className="h-4.5 w-4.5" />
+   683→   683→              {SITE.phone}
+   684→   684→            </a>
+   685→   685→          </motion.div>
+   686→   686→        </div>
+   687→   687→      </section>
+   688→   688→    </>
+   689→   689→  );
+   690→   690→}
+   691→   691→

@@ -4,9 +4,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { PwaRegister } from "@/components/site/pwa-register";
-import { Chrome } from "@/components/site/chrome";
-import { HashRedirect } from "@/components/site/hash-redirect";
-import { JsonLd, OG_IMAGE, physicianJsonLd, websiteJsonLd } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site-data";
 
 const vazir = Vazirmatn({
@@ -64,7 +61,7 @@ export const metadata: Metadata = {
     description: DESC,
     images: [
       {
-        url: OG_IMAGE,
+        url: "/uploads/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "دکتر پدرام بخشایی — متخصص جراحی دهان، فک و صورت در تهران",
@@ -75,7 +72,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: TITLE,
     description: DESC,
-    images: [OG_IMAGE],
+    images: ["/uploads/og-image.jpg"],
   },
   robots: {
     index: true,
@@ -131,13 +128,9 @@ export default function RootLayout({
       <body
         className={`${vazir.variable} ${estedad.variable} antialiased bg-background text-foreground min-h-screen flex flex-col`}
       >
-        {/* اسکیماهای سراسری — هویت پزشک و وب‌سایت */}
-        <JsonLd data={physicianJsonLd()} />
-        <JsonLd data={websiteJsonLd()} />
-        <Chrome>{children}</Chrome>
         <Toaster />
         <PwaRegister />
-        <HashRedirect />
+        {children}
       </body>
     </html>
   );

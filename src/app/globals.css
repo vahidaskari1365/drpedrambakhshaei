@@ -719,3 +719,32 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ═══════════ پنل مدیریت ═══════════ */
+.admin-root {
+  background:
+    radial-gradient(52% 40% at 88% -6%, oklch(0.45 0.08 195 / 0.28), transparent 70%),
+    radial-gradient(46% 36% at 6% 104%, oklch(0.5 0.09 85 / 0.1), transparent 70%),
+    radial-gradient(40% 30% at 50% 120%, oklch(0.45 0.1 295 / 0.07), transparent 70%),
+    oklch(0.145 0.02 205);
+  color: oklch(0.95 0.01 205);
+}
+.admin-root ::selection {
+  background: oklch(0.78 0.13 85 / 0.35);
+}
+.admin-root input[type="number"]::-webkit-inner-spin-button,
+.admin-root input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.admin-root input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.admin-root select option {
+  background: oklch(0.2 0.025 205);
+  color: oklch(0.95 0.01 205);
+}
+.admin-root .scrollbar-slim::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+}

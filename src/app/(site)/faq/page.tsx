@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { FaqPage } from "@/components/site/pages/faq-page";
 import { JsonLd, OG_IMAGE, ROBOTS_META, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
-import { FAQ_ITEMS, PRICE_FAQS } from "@/lib/site-data";
+import { getMergedContent } from "@/lib/content-store";
 
 const TITLE = "سوالات متداول جراحی فک، ایمپلنت و دندان نهفته";
 const DESC =
@@ -28,7 +28,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function FaqRoute() {
+export default async function FaqRoute() {
+  const content = await getMergedContent();
   return (
     <>
       <JsonLd
@@ -37,7 +38,7 @@ export default function FaqRoute() {
           { name: "سوالات متداول", path: "/faq" },
         ])}
       />
-      <JsonLd data={faqJsonLd([...FAQ_ITEMS, ...PRICE_FAQS])} />
+      <JsonLd data={faqJsonLd([...content.faq, ...content.priceFaqs])} />
       <FaqPage />
     </>
   );

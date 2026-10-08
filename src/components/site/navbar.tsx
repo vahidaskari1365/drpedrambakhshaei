@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Menu, X, Phone, Star } from "lucide-react";
 import { AnimatedLogo } from "./logo";
-import { NAV_ITEMS, SITE, type RouteKey } from "@/lib/site-data";
+import { useSite } from "./content-provider";
+import { type RouteKey } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 /**
@@ -15,6 +16,7 @@ import { cn } from "@/lib/utils";
  * مخفی‌شدن با اسکرول به پایین و بازگشت با اسکرول به بالا
  */
 export function Navbar() {
+  const { site, nav } = useSite();
   const pathname = usePathname();
   const route = (pathname || "/") as RouteKey;
   const [open, setOpen] = React.useState(false);
@@ -71,7 +73,7 @@ export function Navbar() {
           </Link>
 
           <ul className="mr-auto hidden items-center lg:flex">
-            {NAV_ITEMS.map((item) => (
+            {nav.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
@@ -98,12 +100,12 @@ export function Navbar() {
 
           <div className="mr-auto lg:mr-2 flex items-center gap-2">
             <a
-              href={`tel:${SITE.phone}`}
+              href={`tel:${site.phone}`}
               className="hidden sm:flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-[13px] font-bold text-background transition-transform duration-300 hover:scale-[1.04] active:scale-95 cursor-pointer"
               dir="ltr"
             >
               <Phone className="h-3.5 w-3.5" />
-              {SITE.phone}
+              {site.phone}
             </a>
             <button
               type="button"
@@ -144,7 +146,7 @@ export function Navbar() {
             </div>
             <nav aria-label="ناوبری موبایل" className="flex flex-1 flex-col justify-center px-8">
               <ul className="space-y-1">
-                {NAV_ITEMS.map((item, i) => (
+                {nav.map((item, i) => (
                   <motion.li
                     key={item.href}
                     initial={{ opacity: 0, x: 40 }}
@@ -176,17 +178,17 @@ export function Navbar() {
             >
               <div className="flex items-center gap-2 text-sm text-background/60">
                 <span className="flex items-center gap-1 rounded-full bg-amber-400/15 px-2.5 py-1 text-amber-300">
-                  <Star className="h-3.5 w-3.5 fill-current" /> {SITE.rating.score}
+                  <Star className="h-3.5 w-3.5 fill-current" /> {site.rating.score}
                 </span>
-                <span>{SITE.rating.count} نظر در گوگل</span>
+                <span>{site.rating.count} نظر در گوگل</span>
               </div>
               <a
-                href={`tel:${SITE.phone}`}
+                href={`tel:${site.phone}`}
                 dir="ltr"
                 className="flex items-center justify-center gap-2 rounded-full bg-background py-4 text-base font-bold text-[oklch(0.17_0.025_205)] cursor-pointer"
               >
                 <Phone className="h-4 w-4" />
-                {SITE.phone}
+                {site.phone}
               </a>
             </motion.div>
           </motion.div>

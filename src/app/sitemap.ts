@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site-data";
-import { ARTICLES } from "@/lib/blog-data";
+import { getMergedContent } from "@/lib/content-store";
 
-/** نقشه سایت — صفحات اصلی + مقالات بلاگ با اولویت و تواتر به‌روزرسانی */
-export default function sitemap(): MetadataRoute.Sitemap {
+/** نقشه سایت — صفحات اصلی + مقالات بلاگ (شامل مقاله‌های جدید پنل ادمین) */
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
 
   const mainPages: MetadataRoute.Sitemap = [
@@ -58,7 +58,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const blogPages: MetadataRoute.Sitemap = ARTICLES.map((a) => ({
+  const content = await getMergedContent();
+  const blogPages: MetadataRoute.Sitemap = content.blog.map((a) => ({
     url: `${SITE_URL}/blog/${a.slug}`,
     lastModified: new Date(a.publishDate),
     changeFrequency: "monthly" as const,

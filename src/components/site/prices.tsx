@@ -3,14 +3,15 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { Info, PhoneCall, BadgeCheck } from "lucide-react";
-import { PRICE_TABS } from "@/lib/site-data";
+import { useSite } from "./content-provider";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 export function Prices() {
+  const { priceTabs } = useSite();
   const [tab, setTab] = React.useState(0);
-  const current = PRICE_TABS[tab];
+  const current = priceTabs[tab];
 
   return (
     <section id="prices" className="relative py-20 lg:py-28" aria-label="تعرفه خدمات">
@@ -35,7 +36,7 @@ export function Prices() {
           role="tablist"
           aria-label="دسته‌بندی تعرفه‌ها"
         >
-          {PRICE_TABS.map((t, i) => (
+          {priceTabs.map((t, i) => (
             <button
               key={t.id}
               role="tab"
