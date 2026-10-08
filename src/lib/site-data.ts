@@ -16,6 +16,7 @@ export const NAV_ITEMS = [
   { href: "/about", label: "درباره من" },
   { href: "/prices", label: "تعرفه‌ها" },
   { href: "/faq", label: "سوالات متداول" },
+  { href: "/blog", label: "مقالات" },
   { href: "/reviews", label: "نظرات" },
   { href: "/contact", label: "تماس" },
 ] as const;
@@ -27,6 +28,7 @@ export type RouteKey =
   | "/about"
   | "/prices"
   | "/faq"
+  | "/blog"
   | "/reviews"
   | "/contact";
 
@@ -46,6 +48,8 @@ export const LEGACY_ANCHOR_MAP: Record<string, string> = {
   "#/faq": "/faq",
   "#reviews": "/reviews",
   "#/reviews": "/reviews",
+  "#blog": "/blog",
+  "#/blog": "/blog",
   "#contact": "/contact",
   "#/contact": "/contact",
 };

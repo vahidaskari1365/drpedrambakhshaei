@@ -4,6 +4,7 @@
  * برای درک کامل موتورهای جستجو و موتورهای مولد هوش مصنوعی (ChatGPT، Gemini، Perplexity)
  */
 import { NAV_ITEMS, REVIEWS, SERVICES, SITE, SITE_URL, FAQ_ITEMS, PRICE_TABS } from "./site-data";
+import { ARTICLES, type BlogArticle } from "./blog-data";
 
 export { SITE_URL };
 
@@ -246,6 +247,87 @@ export function pricesJsonLd() {
         },
       })),
     })),
+  };
+}
+
+/** اسکیمای بلاگ — Blog با فهرست پست‌ها برای موتورهای جستجو و AI */
+export function blogJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "@id": `${SITE_URL}/blog#blog`,
+    url: `${SITE_URL}/blog`,
+    name: "بلاگ تخصصی جراحی فک و صورت — دکتر پدرام بخشایی",
+    inLanguage: "fa-IR",
+    description:
+      "راهنماهای اورجینال و بدون کپی درباره جراحی ارتوگناتیک، ایمپلنت دندان و جراحی‌های فک و صورت — نگارش تیم تخصصی دکتر پدرام بخشایی",
+    publisher: { "@id": `${SITE_URL}/#physician` },
+    blogPost: ARTICLES.map((a) => ({
+      "@type": "BlogPosting",
+      headline: a.h1,
+      alternativeHeadline: a.metaTitle,
+      description: a.excerpt,
+      url: `${SITE_URL}/blog/${a.slug}`,
+      datePublished: a.publishDate,
+      dateModified: a.publishDate,
+      image: `${SITE_URL}${a.cover}`,
+      wordCount: a.wordCount,
+      keywords: a.tags.join("، "),
+      inLanguage: "fa-IR",
+      author: { "@id": `${SITE_URL}/#physician` },
+      publisher: { "@id": `${SITE_URL}/#physician` },
+    })),
+  };
+}
+
+/**
+ * اسکیمای مقاله — MedicalWebPage با about: MedicalProcedure + speakable
+ * speakable برای موتورهای پاسخ‌دهی صوتی/متنی (AEO) است که خلاصه مقاله را مستقیم می‌خوانند
+ */
+export function articleJsonLd(article: BlogArticle) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "@id": `${SITE_URL}/blog/${article.slug}#webpage`,
+    url: `${SITE_URL}/blog/${article.slug}`,
+    name: article.metaTitle,
+    headline: article.h1,
+    description: article.metaDesc,
+    inLanguage: "fa-IR",
+    datePublished: article.publishDate,
+    dateModified: article.publishDate,
+    lastReviewed: article.publishDate,
+    reviewAspect: "دقت پزشکی محتوا",
+    wordCount: article.wordCount,
+    image: `${SITE_URL}${article.cover}`,
+    author: { "@id": `${SITE_URL}/#physician` },
+    publisher: { "@id": `${SITE_URL}/#physician` },
+    reviewedBy: { "@id": `${SITE_URL}/#physician` },
+    audience: { "@type": "Patient" },
+    about: {
+      "@type": "MedicalProcedure",
+      name: "جراحی ارتوگناتیک",
+      alternateName: "ارتوسرجری",
+      procedureType: "https://schema.org/SurgicalProcedure",
+      bodyLocation: "فک و صورت",
+      performer: { "@id": `${SITE_URL}/#physician` },
+    },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["#article-h1", "#quick-answers"],
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: article.quickAnswers.map((qa, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: {
+          "@type": "Question",
+          name: qa.q,
+          acceptedAnswer: { "@type": "Answer", text: qa.a },
+        },
+      })),
+    },
   };
 }
 
