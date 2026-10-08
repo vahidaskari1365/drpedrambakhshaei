@@ -486,10 +486,53 @@ export const GALLERY = [
   { title: "تجهیزات مدرن", image: "/uploads/clinic-photo-5.jpg" },
 ] as const;
 
+/**
+ * نمونه کارهای واقعی — عکس‌های اصلی از صفحه اول سایت قدیمی
+ * (نمونه جراحی‌ها: جنیوپلاستی، ایمپلنت، دندان نهفته + ارتوسرجری)
+ */
 export const WORKS = [
-  { title: "ارتوسرجری فک", image: "/uploads/hero-bg.png" },
+  { title: "ارتوسرجری فک — قبل و بعد", image: "/uploads/jaw-surgery-result.jpg" },
+  { title: "جنیوپلاستی (جراحی چانه) — قبل و بعد", image: "/uploads/genioplasty-real.jpg" },
+  { title: "ایمپلنت کامل دندان‌ها — قبل و بعد", image: "/uploads/implant-real.jpg" },
+  { title: "جراحی دندان نهفته", image: "/uploads/wisdom-real.jpg" },
   ...GALLERY,
-  { title: "ایمپلنت پیشرفته", image: "/uploads/implant-art.png" },
-  { title: "جراحی دندان نهفته", image: "/uploads/wisdom-art.png" },
-  { title: "جنیوپلاستی", image: "/uploads/jawline-art.png" },
+] as const;
+
+/** مقایسه کشویی قبل/بعد — کیس واقعی ایمپلنت کامل دهان (از صفحه اصلی سایت قدیمی) */
+export const BEFORE_AFTER = {
+  kicker: "بازسازی کامل دهان با ایمپلنت",
+  title: "نتیجه واقعی، تفاوت واقعی",
+  desc: "دستگیره را بکشید و تفاوت قبل و بعد از بازسازی کامل دهان با ایمپلنت را ببینید — نمونه کار واقعی از آرشیو مطب",
+  before: "/uploads/before-implant.jpg",
+  after: "/uploads/after-implant.jpg",
+  beforeLabel: "قبل",
+  afterLabel: "بعد",
+} as const;
+
+/** اسلایدر کشویی نمونه جراحی‌ها در صفحه اول — مثل سایت اصلی */
+export const CASE_SLIDES = [
+  {
+    title: "جنیوپلاستی",
+    subtitle: "جراحی چانه",
+    image: "/uploads/genioplasty-real.jpg",
+    tag: "قبل و بعد",
+  },
+  {
+    title: "ایمپلنت",
+    subtitle: "کاشت دندان",
+    image: "/uploads/implant-real.jpg",
+    tag: "قبل و بعد",
+  },
+  {
+    title: "جراحی دندان‌های نهفته",
+    subtitle: "دندان عقل، کانین نهفته و ...",
+    image: "/uploads/wisdom-real.jpg",
+    tag: "جراحی",
+  },
+  {
+    title: "ارتوسرجری فک",
+    subtitle: "جراحی ارتوگناتیک فک و صورت",
+    image: "/uploads/jaw-surgery-result.jpg",
+    tag: "قبل و بعد",
+  },
 ] as const;

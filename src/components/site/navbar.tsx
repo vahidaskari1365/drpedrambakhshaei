@@ -10,13 +10,22 @@ import { cn } from "@/lib/utils";
 /**
  * نوبار بیضی (اوال) مدرن — شیشه‌ای، اپل‌استایل
  * route-aware: هر تب یک صفحه اختصاصی + منوی موبایل فول‌اسکرین
+ * مخفی‌شدن با اسکرول به پایین و بازگشت با اسکرول به بالا
  */
 export function Navbar({ route }: { route: RouteKey }) {
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
+  const [hidden, setHidden] = React.useState(false);
   const { scrollY } = useScroll();
+  const lastY = React.useRef(0);
 
-  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 40));
+  useMotionValueEvent(scrollY, "change", (y) => {
+    setScrolled(y > 40);
+    const goingDown = y > lastY.current;
+    // فقط بعد از عبور از هیرو مخفی شود
+    setHidden(goingDown && y > 480 && !open);
+    lastY.current = y;
+  });
 
   // بستن منو با تغییر مسیر
   React.useEffect(() => {
@@ -35,8 +44,8 @@ export function Navbar({ route }: { route: RouteKey }) {
     <>
       <motion.header
         initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+        animate={{ y: hidden ? -130 : 0, opacity: 1 }}
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
         className="fixed top-3 left-0 right-0 z-50 flex justify-center px-4"
       >
         <nav

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AnimatePresence, motion, MotionConfig } from "framer-motion";
+import { AnimatePresence, motion, MotionConfig, useScroll, useSpring } from "framer-motion";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
 import { HomePage } from "./pages/home";
@@ -54,6 +54,8 @@ function parseHash(): { route: RouteKey; legacy: boolean } {
  */
 export function AppShell() {
   const [route, setRoute] = React.useState<RouteKey>("/");
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 26, restDelta: 0.001 });
 
   React.useEffect(() => {
     const apply = () => {
@@ -78,6 +80,12 @@ export function AppShell() {
 
   return (
     <MotionConfig reducedMotion="user">
+      {/* نوار پیشرفت اسکرول سینمایی */}
+      <motion.div
+        style={{ scaleX: progress }}
+        className="scroll-progress"
+        aria-hidden="true"
+      />
       <div className="flex min-h-screen flex-col">
         <Navbar route={route} />
         <AnimatePresence mode="wait" initial={false}>

@@ -144,6 +144,17 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
   }
+  /* تیتراژ با فونت استداد — کنتراست تایپوگرافی در کل سایت */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .font-display {
+    font-family: var(--font-estedad), var(--font-vazir), ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.01em;
+  }
   ::selection {
     background: oklch(0.52 0.09 190 / 0.18);
   }
@@ -350,6 +361,106 @@
     to {
       transform: translateX(-50%);
     }
+  }
+
+  /* موشن‌گرافی سراسری */
+  @keyframes float-y {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-14px);
+    }
+  }
+  @keyframes float-y-sm {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  @keyframes shimmer-x {
+    from {
+      transform: translateX(-120%) skewX(-14deg);
+    }
+    to {
+      transform: translateX(220%) skewX(-14deg);
+    }
+  }
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+  }
+  @keyframes spin-slow {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .animate-float {
+    animation: float-y 6s ease-in-out infinite;
+  }
+  .animate-float-sm {
+    animation: float-y-sm 5s ease-in-out infinite;
+  }
+  .animate-pulse-soft {
+    animation: pulse-soft 3.2s ease-in-out infinite;
+  }
+  .animate-spin-slow {
+    animation: spin-slow 14s linear infinite;
+  }
+
+  /* درخشش عبوری روی کارت‌ها و دکمه‌ها */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 45%;
+    background: linear-gradient(
+      to left,
+      transparent,
+      oklch(1 0 0 / 0.22),
+      transparent
+    );
+    transform: translateX(-120%) skewX(-14deg);
+    animation: shimmer-x 4.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* نوار پیشرفت اسکرول سینمایی */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    inset-inline: 0;
+    height: 3px;
+    z-index: 70;
+    background: linear-gradient(
+      to left,
+      oklch(0.52 0.09 190),
+      oklch(0.72 0.11 175),
+      oklch(0.78 0.13 85)
+    );
+    transform-origin: right;
+    pointer-events: none;
+  }
+
+  /* خط جداکننده گرادیانی بخش‌ها */
+  .divider-fade {
+    height: 1px;
+    background: linear-gradient(to left, transparent, oklch(0.6 0.06 190 / 0.35), transparent);
   }
 }
 
