@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site-data";
+import { ARTICLES } from "@/lib/blog-data";
 
-/** نقشه سایت — ۸ صفحه اصلی با اولویت و تواتر به‌روزرسانی */
+/** نقشه سایت — صفحات اصلی + مقالات بلاگ با اولویت و تواتر به‌روزرسانی */
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
-  return [
+  const mainPages: MetadataRoute.Sitemap = [
     { url: SITE_URL, lastModified, changeFrequency: "weekly", priority: 1 },
     {
       url: `${SITE_URL}/services`,
@@ -38,6 +39,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${SITE_URL}/blog`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: `${SITE_URL}/reviews`,
       lastModified,
       changeFrequency: "weekly",
@@ -50,4 +57,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
   ];
+
+  const blogPages: MetadataRoute.Sitemap = ARTICLES.map((a) => ({
+    url: `${SITE_URL}/blog/${a.slug}`,
+    lastModified: new Date(a.publishDate),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  return [...mainPages, ...blogPages];
 }
