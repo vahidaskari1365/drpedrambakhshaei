@@ -3,7 +3,7 @@
 import * as React from "react";
 import { AnimatePresence, motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { Menu, X, Phone, Star } from "lucide-react";
-import { LogoMark } from "./logo";
+import { AnimatedLogo } from "./logo";
 import { NAV_ITEMS, SITE, type RouteKey } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
@@ -58,9 +58,9 @@ export function Navbar({ route }: { route: RouteKey }) {
           <a
             href="#/"
             aria-label="صفحه اصلی"
-            className="flex items-center gap-2 rounded-full py-1 pl-2 cursor-pointer"
+            className="group flex items-center gap-2 rounded-full py-1 pl-2 cursor-pointer"
           >
-            <LogoMark className={cn("text-foreground transition-all", scrolled ? "h-8 w-8" : "h-9 w-9")} />
+            <AnimatedLogo className={cn("transition-all", scrolled ? "h-8 w-8" : "h-9 w-9")} />
             <span className={cn("flex flex-col leading-none transition-all", scrolled ? "opacity-0 w-0 overflow-hidden" : "opacity-100")}>
               <span className="text-[13px] font-extrabold tracking-tight whitespace-nowrap">دکتر پدرام بخشایی</span>
             </span>
@@ -128,7 +128,7 @@ export function Navbar({ route }: { route: RouteKey }) {
             aria-label="منوی اصلی"
           >
             <div className="flex items-center justify-between px-6 py-5">
-              <LogoMark className="h-10 w-10 text-background" />
+              <AnimatedLogo className="h-10 w-10" />
               <button
                 type="button"
                 onClick={() => setOpen(false)}
