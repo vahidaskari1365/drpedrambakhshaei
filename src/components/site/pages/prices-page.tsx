@@ -178,7 +178,7 @@ export function PricesPage() {
           >
             <p className="mb-5 text-sm text-background/60">برای برآورد دقیق هزینه شرایط خود، نوبت مشاوره بگیرید</p>
             <a
-              href="#/contact"
+              href="/contact"
               className="inline-flex items-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-black text-[oklch(0.2_0.03_205)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
             >
               <PhoneCall className="h-4 w-4" />

@@ -135,7 +135,7 @@ export function HomePage() {
             {SERVICES.map((s, i) => (
               <motion.a
                 key={s.id}
-                href="#/services"
+                href="/services"
                 initial={{ opacity: 0, y: 48 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
@@ -177,7 +177,7 @@ export function HomePage() {
             className="mt-10 text-center"
           >
             <a
-              href="#/services"
+              href="/services"
               className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-card px-7 py-3 text-sm font-bold text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground active:scale-95 cursor-pointer"
             >
               <Stethoscope className="h-4 w-4" />
@@ -225,14 +225,14 @@ export function HomePage() {
               <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{BEFORE_AFTER.desc}</p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <a
-                  href="#/gallery"
+                  href="/gallery"
                   className="shimmer inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-bold text-[oklch(0.2_0.03_205)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
                 >
                   همه نمونه کارها
                   <ArrowLeft className="h-4 w-4" />
                 </a>
                 <a
-                  href="#/contact"
+                  href="/contact"
                   className="inline-flex items-center gap-2 rounded-full border border-background/25 bg-background/10 px-6 py-3 text-sm font-bold text-background backdrop-blur transition-all duration-300 hover:bg-background/20 active:scale-95 cursor-pointer"
                 >
                   <CalendarCheck className="h-4 w-4" />
@@ -270,7 +270,7 @@ export function HomePage() {
               </h2>
               <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{WHY_US.text}</p>
               <a
-                href="#/about"
+                href="/about"
                 className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-teal-300 transition-all duration-300 hover:gap-3 cursor-pointer"
               >
                 بیشتر درباره دکتر بخشایی
@@ -328,7 +328,7 @@ export function HomePage() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.15 }}
-              href="#/gallery"
+              href="/gallery"
               className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card px-5 py-2.5 text-[13px] font-bold transition-all hover:border-foreground/25 cursor-pointer"
             >
               مشاهده همه تصاویر
@@ -340,7 +340,7 @@ export function HomePage() {
             {HOME_GALLERY.map((g, i) => (
               <motion.a
                 key={g.image}
-                href="#/gallery"
+                href="/gallery"
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
@@ -432,14 +432,14 @@ export function HomePage() {
 
               <div className="mt-7 flex flex-wrap gap-3">
                 <a
-                  href="#/about"
+                  href="/about"
                   className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground shadow-[0_14px_34px_-12px] shadow-primary/60 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer"
                 >
                   بیوگرافی کامل و مدارک
                   <ArrowLeft className="h-4 w-4" />
                 </a>
                 <a
-                  href="#/contact"
+                  href="/contact"
                   className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-card px-6 py-3 text-sm font-bold transition-all duration-300 hover:bg-card/70 active:scale-95 cursor-pointer"
                 >
                   <CalendarCheck className="h-4 w-4" />
@@ -471,7 +471,7 @@ export function HomePage() {
             {PRICE_HIGHLIGHTS.map((p, i) => (
               <motion.a
                 key={p.id}
-                href="#/prices"
+                href="/prices"
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
@@ -550,7 +550,7 @@ export function HomePage() {
             className="mt-9 flex flex-wrap items-center justify-center gap-3"
           >
             <a
-              href="#/faq"
+              href="/faq"
               className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-card px-6 py-3 text-sm font-bold text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground active:scale-95 cursor-pointer"
             >
               همه سوالات متداول
@@ -594,7 +594,7 @@ export function HomePage() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.15 }}
-              href="#/reviews"
+              href="/reviews"
               className="inline-flex items-center gap-1.5 rounded-full border border-background/15 bg-background/[0.06] px-5 py-2.5 text-[13px] font-bold text-background/80 backdrop-blur transition-all hover:bg-background/15 hover:text-background cursor-pointer"
             >
               همه نظرات
@@ -668,7 +668,7 @@ export function HomePage() {
             className="mt-8 flex flex-wrap items-center justify-center gap-3"
           >
             <a
-              href="#/contact"
+              href="/contact"
               className="shimmer inline-flex items-center gap-2.5 rounded-full bg-background px-7 py-3.5 text-sm font-black text-[oklch(0.2_0.03_205)] shadow-[0_16px_40px_-14px_oklch(0.05_0.02_205/0.8)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
             >
               <CalendarCheck className="h-4.5 w-4.5" />
