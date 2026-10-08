@@ -4,7 +4,7 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { ChevronDown, CreditCard, PhoneCall, BadgeCheck } from "lucide-react";
 import { Prices } from "../prices";
-import { COST_FACTORS, PRICE_FAQS, WHY_US } from "@/lib/site-data";
+import { useSite } from "../content-provider";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -43,6 +43,7 @@ function FaqRow({ q, a, index }: { q: string; a: string; index: number }) {
 }
 
 export function PricesPage() {
+  const { costFactors, priceFaqs, whyUs } = useSite();
   return (
     <>
       <Prices />
@@ -73,7 +74,7 @@ export function PricesPage() {
           </div>
 
           <div className="grid gap-5 lg:grid-cols-3">
-            {COST_FACTORS.map((c, i) => (
+            {costFactors.map((c, i) => (
               <motion.div
                 key={c.id}
                 initial={{ opacity: 0, y: 40 }}
@@ -143,8 +144,8 @@ export function PricesPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.9, ease }}
           >
-            <h2 className="text-2xl font-black tracking-tight text-background sm:text-3xl">{WHY_US.title}</h2>
-            <p className="mt-4 text-[14px] leading-8 text-background/70">{WHY_US.text}</p>
+            <h2 className="text-2xl font-black tracking-tight text-background sm:text-3xl">{whyUs.title}</h2>
+            <p className="mt-4 text-[14px] leading-8 text-background/70">{whyUs.text}</p>
           </motion.div>
         </div>
       </section>
@@ -164,7 +165,7 @@ export function PricesPage() {
             </motion.h2>
           </div>
           <div className="space-y-3">
-            {PRICE_FAQS.map((f, i) => (
+            {priceFaqs.map((f, i) => (
               <FaqRow key={f.q} q={f.q} a={f.a} index={i} />
             ))}
           </div>

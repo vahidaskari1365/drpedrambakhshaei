@@ -11,7 +11,7 @@ import {
   useMotionTemplate,
 } from "framer-motion";
 import { ArrowDown, Phone, Star, CalendarCheck, ShieldCheck, Award } from "lucide-react";
-import { SITE, STATS } from "@/lib/site-data";
+import { useSite } from "./content-provider";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -69,6 +69,7 @@ const TONE_BG: Record<string, string> = {
 };
 
 export function Hero() {
+  const { site, stats } = useSite();
   const ref = React.useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const yBg = useTransform(scrollYProgress, [0, 1], [0, 120]);
@@ -137,7 +138,7 @@ export function Hero() {
               "--px-dur": `${p.dur}s`,
               "--px-delay": `${p.delay}s`,
               "--px-x": `${p.dx}px`,
-            }}
+            } as React.CSSProperties}
           />
         ))}
       </div>
@@ -166,10 +167,10 @@ export function Hero() {
           >
             <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-700 dark:bg-amber-950/60 dark:text-amber-400">
               <Star className="h-3 w-3 fill-current" />
-              {SITE.rating.score}
+              {site.rating.score}
             </span>
             <span className="text-xs font-medium text-muted-foreground">
-              رضایت {SITE.rating.count} مراجع در گوگل
+              رضایت {site.rating.count} مراجع در گوگل
             </span>
           </motion.div>
 
@@ -216,12 +217,12 @@ export function Hero() {
               رزرو نوبت و مشاوره
             </a>
             <a
-              href={`tel:${SITE.phone}`}
+              href={`tel:${site.phone}`}
               dir="ltr"
               className="inline-flex items-center gap-2.5 rounded-full border border-border/80 bg-card/70 px-7 py-3.5 text-sm font-bold backdrop-blur transition-all duration-300 hover:bg-card active:scale-95 cursor-pointer"
             >
               <Phone className="h-4.5 w-4.5" />
-              {SITE.phone}
+              {site.phone}
             </a>
           </motion.div>
 
@@ -307,7 +308,7 @@ export function Hero() {
         className="relative mx-auto w-full max-w-7xl px-5 pb-8 lg:px-8"
       >
         <dl className="grid grid-cols-2 gap-3 rounded-[2rem] border border-border/60 bg-card/70 p-4 backdrop-blur-xl sm:grid-cols-4 sm:p-6">
-          {STATS.map((s, i) => (
+          {stats.map((s, i) => (
             <motion.div
               key={s.label}
               initial={{ opacity: 0, y: 18 }}

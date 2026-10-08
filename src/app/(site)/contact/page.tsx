@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ContactPage } from "@/components/site/pages/contact-page";
 import { JsonLd, OG_IMAGE, ROBOTS_META, breadcrumbJsonLd, clinicJsonLd } from "@/lib/seo";
+import { getMergedContent } from "@/lib/content-store";
 
 const TITLE = "رزرو نوبت و آدرس مطب | پاسداران، تهران";
 const DESC =
@@ -25,7 +26,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ContactRoute() {
+export default async function ContactRoute() {
+  const content = await getMergedContent();
   return (
     <>
       <JsonLd
@@ -34,7 +36,7 @@ export default function ContactRoute() {
           { name: "تماس", path: "/contact" },
         ])}
       />
-      <JsonLd data={clinicJsonLd()} />
+      <JsonLd data={clinicJsonLd(content.site, content.services)} />
       <ContactPage />
     </>
   );

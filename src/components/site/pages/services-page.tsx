@@ -6,12 +6,13 @@ import { motion } from "framer-motion";
 import { Check, ArrowLeft, Phone, BadgeCheck } from "lucide-react";
 import { PageHero } from "../page-hero";
 import { SectionHeading } from "../section-heading";
-import { SERVICES, IMPLANT_BRANDS, WHY_US } from "@/lib/site-data";
+import { useSite } from "../content-provider";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 export function ServicesPage() {
+  const { services, implantBrands, whyUs } = useSite();
   return (
     <>
       <PageHero
@@ -29,7 +30,7 @@ export function ServicesPage() {
       <section className="relative bg-sage py-16 lg:py-24" aria-label="شرح خدمات">
         <div className="aurora aurora-sage" />
         <div className="relative mx-auto max-w-7xl space-y-16 px-5 lg:space-y-24 lg:px-8">
-          {SERVICES.map((s, i) => (
+          {services.map((s, i) => (
             <motion.article
               key={s.id}
               id={s.id}
@@ -117,7 +118,7 @@ export function ServicesPage() {
           </p>
           <div className="mask-fade-x overflow-hidden">
             <div className="flex w-max animate-[marquee_28s_linear_infinite] gap-4 hover:[animation-play-state:paused]">
-              {[...IMPLANT_BRANDS, ...IMPLANT_BRANDS].map((b, i) => (
+              {[...implantBrands, ...implantBrands].map((b, i) => (
                 <div key={`${b.name}-${i}`} className="glass-dark flex items-center gap-3 rounded-2xl px-6 py-4">
                   <span className="text-base font-black tracking-wide text-background/90" dir="ltr">
                     {b.name}
@@ -146,11 +147,11 @@ export function ServicesPage() {
                 <BadgeCheck className="h-3.5 w-3.5" />
                 اعتبار علمی
               </p>
-              <h2 className="text-2xl font-black tracking-tight text-background sm:text-4xl">{WHY_US.title}</h2>
-              <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{WHY_US.text}</p>
+              <h2 className="text-2xl font-black tracking-tight text-background sm:text-4xl">{whyUs.title}</h2>
+              <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{whyUs.text}</p>
             </motion.div>
             <div className="grid gap-3 sm:grid-cols-2">
-              {WHY_US.points.map((p, i) => (
+              {whyUs.points.map((p, i) => (
                 <motion.div
                   key={p}
                   initial={{ opacity: 0, y: 24 }}

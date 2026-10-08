@@ -9,6 +9,7 @@ import {
   servicesJsonLd,
 } from "@/lib/seo";
 import { FAQ_ITEMS } from "@/lib/site-data";
+import { getMergedContent } from "@/lib/content-store";
 
 const TITLE = "خدمات جراحی فک و صورت، ایمپلنت دندان و دندان نهفته در تهران";
 const DESC =
@@ -37,7 +38,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ServicesRoute() {
+export default async function ServicesRoute() {
+  const content = await getMergedContent();
   return (
     <>
       <JsonLd
@@ -46,8 +48,8 @@ export default function ServicesRoute() {
           { name: "خدمات", path: "/services" },
         ])}
       />
-      <JsonLd data={servicesJsonLd()} />
-      <JsonLd data={faqJsonLd(FAQ_ITEMS)} />
+      <JsonLd data={servicesJsonLd(content.services)} />
+      <JsonLd data={faqJsonLd(content.faq)} />
       <ServicesPage />
     </>
   );

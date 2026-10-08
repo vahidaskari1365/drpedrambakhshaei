@@ -4,7 +4,7 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { Phone, MapPin, Clock, Send, Loader2, CheckCircle2, Instagram, SendHorizontal, Play, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
-import { SITE } from "@/lib/site-data";
+import { useSite } from "./content-provider";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -17,6 +17,7 @@ const SERVICES_OPTIONS = [
 ];
 
 export function Contact() {
+  const { site } = useSite();
   const [state, setState] = React.useState<"idle" | "loading" | "done">("idle");
   const formRef = React.useRef<HTMLFormElement>(null);
 
@@ -73,8 +74,8 @@ export function Contact() {
                   </span>
                   <div>
                     <p className="text-xs font-bold text-muted-foreground">شماره تماس مطب</p>
-                    <a href={`tel:${SITE.phone}`} dir="ltr" className="mt-0.5 block text-lg font-black tabular-nums hover:text-primary cursor-pointer">
-                      {SITE.phone}
+                    <a href={`tel:${site.phone}`} dir="ltr" className="mt-0.5 block text-lg font-black tabular-nums hover:text-primary cursor-pointer">
+                      {site.phone}
                     </a>
                   </div>
                 </li>
@@ -84,9 +85,9 @@ export function Contact() {
                   </span>
                   <div>
                     <p className="text-xs font-bold text-muted-foreground">آدرس مطب</p>
-                    <p className="mt-0.5 text-sm font-bold leading-7">{SITE.address}</p>
+                    <p className="mt-0.5 text-sm font-bold leading-7">{site.address}</p>
                     <a
-                      href={SITE.mapsUrl}
+                      href={site.mapsUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-1 inline-block text-xs font-bold text-primary hover:underline cursor-pointer"
@@ -101,7 +102,7 @@ export function Contact() {
                   </span>
                   <div>
                     <p className="text-xs font-bold text-muted-foreground">ساعات کاری</p>
-                    <p className="mt-0.5 text-sm font-bold">{SITE.hours}</p>
+                    <p className="mt-0.5 text-sm font-bold">{site.hours}</p>
                   </div>
                 </li>
               </ul>
@@ -109,10 +110,10 @@ export function Contact() {
               {/* شبکه‌های اجتماعی */}
               <div className="mt-7 grid grid-cols-4 gap-2 border-t border-border/60 pt-6">
                 {[
-                  { href: SITE.social.whatsapp, label: "واتسپ", Icon: MessageCircle },
-                  { href: SITE.social.telegram, label: "تلگرام", Icon: SendHorizontal },
-                  { href: SITE.social.instagram, label: "اینستاگرام", Icon: Instagram },
-                  { href: SITE.social.aparat, label: "آپارات", Icon: Play },
+                  { href: site.social.whatsapp, label: "واتسپ", Icon: MessageCircle },
+                  { href: site.social.telegram, label: "تلگرام", Icon: SendHorizontal },
+                  { href: site.social.instagram, label: "اینستاگرام", Icon: Instagram },
+                  { href: site.social.aparat, label: "آپارات", Icon: Play },
                 ].map(({ href, label, Icon }) => (
                   <a
                     key={label}
@@ -133,7 +134,7 @@ export function Contact() {
             <div className="overflow-hidden rounded-3xl border border-border/60 shadow-sm">
               <iframe
                 title="نقشه مطب دکتر پدرام بخشایی — پاسداران، مرکز خرید پاسداران"
-                src={SITE.mapEmbed}
+                src={site.mapEmbed}
                 width="100%"
                 height="230"
                 loading="lazy"

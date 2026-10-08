@@ -6,13 +6,22 @@ import { BookOpenText, Clock3, CalendarDays, ArrowLeft, Newspaper } from "lucide
 import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "../page-hero";
-import { ARTICLES } from "@/lib/blog-data";
+import { useSite } from "../content-provider";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 /** صفحه فهرست مقالات — کارت ویژه اول + گرید بقیه */
 export function BlogPage() {
-  const [featured, ...rest] = ARTICLES;
+  const { blog } = useSite();
+  const [featured, ...rest] = blog;
+
+  if (!featured) {
+    return (
+      <section className="bg-sage py-24 text-center" aria-label="بدون مقاله">
+        <p className="text-muted-foreground">هنوز مقاله‌ای منتشر نشده است.</p>
+      </section>
+    );
+  }
 
   return (
     <>
@@ -132,7 +141,7 @@ export function BlogPage() {
             className="mt-10 grid gap-4 rounded-[2rem] border border-border/60 bg-card p-6 shadow-sm sm:grid-cols-3"
           >
             {[
-              { icon: BookOpenText, label: "مقالات اورجینال", value: `${ARTICLES.length} مقاله` },
+              { icon: BookOpenText, label: "مقالات اورجینال", value: `${blog.length.toLocaleString("fa-IR")} مقاله` },
               { icon: Newspaper, label: "بدون کپی‌برداری", value: "۱۰۰٪ نگارش اختصاصی" },
               { icon: Clock3, label: "به‌روزرسانی منظم", value: "هر ماه موضوع جدید" },
             ].map((s) => (

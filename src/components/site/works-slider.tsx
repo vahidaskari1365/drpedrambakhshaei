@@ -4,7 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
-import { CASE_SLIDES } from "@/lib/site-data";
+import { useSite } from "./content-provider";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -14,6 +14,7 @@ const ease = [0.16, 1, 0.3, 1] as const;
  * سوایپ لمسی + دکمه‌ها + پخش خودکار با مکث روی هاور
  */
 export function WorksSlider({ className }: { className?: string }) {
+  const { caseSlides } = useSite();
   const trackRef = React.useRef<HTMLDivElement>(null);
   const [active, setActive] = React.useState(0);
   const [paused, setPaused] = React.useState(false);
@@ -88,7 +89,7 @@ export function WorksSlider({ className }: { className?: string }) {
         role="region"
         aria-label="اسلایدر نمونه جراحی‌ها"
       >
-        {CASE_SLIDES.map((s, i) => (
+        {caseSlides.map((s, i) => (
           <motion.article
             data-slide
             key={s.title}
@@ -130,7 +131,7 @@ export function WorksSlider({ className }: { className?: string }) {
           <ChevronRight className="h-5 w-5" />
         </button>
         <div className="flex items-center gap-2">
-          {CASE_SLIDES.map((s, i) => (
+          {caseSlides.map((s, i) => (
             <button
               key={s.title}
               type="button"

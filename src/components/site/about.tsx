@@ -4,7 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { GraduationCap, Quote, FileBadge, Stethoscope } from "lucide-react";
-import { ABOUT_BIO, ABOUT_APPROACH, CREDENTIALS, SKILLS } from "@/lib/site-data";
+import { useSite } from "./content-provider";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -40,6 +40,7 @@ function SkillBar({ label, value, delay }: { label: string; value: number; delay
 }
 
 export function About() {
+  const { aboutBio, aboutApproach, credentials, skills } = useSite();
   return (
     <section id="about" className="relative py-20 lg:py-28" aria-label="درباره دکتر">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
@@ -53,7 +54,7 @@ export function About() {
             className="order-2 lg:order-1"
           >
             <div className="space-y-5 text-[15px] leading-8 text-foreground/80">
-              {ABOUT_BIO.map((p, i) => (
+              {aboutBio.map((p, i) => (
                 <motion.p
                   key={i}
                   initial={{ opacity: 0, y: 20 }}
@@ -76,7 +77,7 @@ export function About() {
               className="relative mt-8 rounded-3xl border border-border/60 bg-card p-6 shadow-sm"
             >
               <Quote className="absolute -top-3 right-6 h-7 w-7 rounded-full bg-primary p-1.5 text-primary-foreground" />
-              <p className="text-sm leading-8 text-foreground/85">{ABOUT_APPROACH}</p>
+              <p className="text-sm leading-8 text-foreground/85">{aboutApproach}</p>
             </motion.blockquote>
           </motion.div>
 
@@ -100,7 +101,7 @@ export function About() {
                 </div>
               </div>
               <ul className="space-y-3">
-                {CREDENTIALS.map((c, i) => (
+                {credentials.map((c, i) => (
                   <motion.li
                     key={c}
                     initial={{ opacity: 0, x: 24 }}
@@ -134,7 +135,7 @@ export function About() {
                 </div>
               </div>
               <div className="space-y-5">
-                {SKILLS.map((s, i) => (
+                {skills.map((s, i) => (
                   <SkillBar key={s.label} label={s.label} value={s.value} delay={i * 0.1} />
                 ))}
               </div>

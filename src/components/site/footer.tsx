@@ -2,9 +2,10 @@
 
 import { LogoFull } from "./logo";
 import { Phone, MapPin, Instagram, SendHorizontal, MessageCircle, Play, Star } from "lucide-react";
-import { SITE, NAV_ITEMS } from "@/lib/site-data";
+import { useSite } from "./content-provider";
 
 export function Footer() {
+  const { site, nav } = useSite();
   return (
     <footer className="mt-auto bg-petrol-deep text-background/85" role="contentinfo">
       <div className="mx-auto max-w-7xl px-5 pb-8 pt-14 lg:px-8">
@@ -22,7 +23,7 @@ export function Footer() {
             </p>
             <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-amber-300">
               <Star className="h-3.5 w-3.5 fill-current" />
-              امتیاز {SITE.rating.score} در گوگل ({SITE.rating.count} نظر)
+              امتیاز {site.rating.score} در گوگل ({site.rating.count} نظر)
             </div>
           </div>
 
@@ -30,7 +31,7 @@ export function Footer() {
           <nav aria-label="دسترسی سریع">
             <h2 className="mb-4 text-sm font-black text-background">دسترسی سریع</h2>
             <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5 text-[13px]">
-              {NAV_ITEMS.filter((n) => n.href !== "#/").map((l) => (
+              {nav.map((l) => (
                 <li key={l.href}>
                   <a href={l.href} className="text-background/60 transition-colors hover:text-background cursor-pointer">
                     {l.label}
@@ -50,26 +51,26 @@ export function Footer() {
             <h2 className="mb-4 text-sm font-black text-background">تماس با ما</h2>
             <ul className="space-y-3 text-[13px]">
               <li>
-                <a href={`tel:${SITE.phone}`} className="flex items-center gap-2.5 text-background/60 transition-colors hover:text-background cursor-pointer" dir="rtl">
+                <a href={`tel:${site.phone}`} className="flex items-center gap-2.5 text-background/60 transition-colors hover:text-background cursor-pointer" dir="rtl">
                   <Phone className="h-4 w-4 shrink-0" />
-                  <span dir="ltr" className="tabular-nums font-bold">{SITE.phone}</span>
+                  <span dir="ltr" className="tabular-nums font-bold">{site.phone}</span>
                 </a>
               </li>
               <li className="flex items-start gap-2.5 text-background/60">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
-                <span className="leading-6">{SITE.address}</span>
+                <span className="leading-6">{site.address}</span>
               </li>
               <li className="flex items-start gap-2.5 text-background/60">
                 <ClockIcon />
-                <span className="leading-6">{SITE.hours}</span>
+                <span className="leading-6">{site.hours}</span>
               </li>
             </ul>
             <div className="mt-5 flex gap-2">
               {[
-                { href: SITE.social.instagram, label: "اینستاگرام", Icon: Instagram },
-                { href: SITE.social.telegram, label: "تلگرام", Icon: SendHorizontal },
-                { href: SITE.social.whatsapp, label: "واتسپ", Icon: MessageCircle },
-                { href: SITE.social.aparat, label: "آپارات", Icon: Play },
+                { href: site.social.instagram, label: "اینستاگرام", Icon: Instagram },
+                { href: site.social.telegram, label: "تلگرام", Icon: SendHorizontal },
+                { href: site.social.whatsapp, label: "واتسپ", Icon: MessageCircle },
+                { href: site.social.aparat, label: "آپارات", Icon: Play },
               ].map(({ href, label, Icon }) => (
                 <a
                   key={label}
@@ -88,7 +89,12 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-background/10 pt-6 text-[11px] text-background/45 sm:flex-row">
           <p>© ۱۴۰۵ کلیه حقوق برای وبسایت دکتر پدرام بخشایی محفوظ است.</p>
-          <p>طراحی‌شده با دقت — مطب دکتر پدرام بخشایی</p>
+          <div className="flex items-center gap-4">
+            <p>طراحی‌شده با دقت — مطب دکتر پدرام بخشایی</p>
+            <a href="/admin" className="transition-colors hover:text-background/80 cursor-pointer" aria-label="پنل مدیریت سایت">
+              پنل مدیریت
+            </a>
+          </div>
         </div>
       </div>
     </footer>

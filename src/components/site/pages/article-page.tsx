@@ -18,7 +18,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import type { ArticleBlock, BlogArticle } from "@/lib/blog-data";
-import { SITE } from "@/lib/site-data";
+import { useSite } from "../content-provider";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -110,6 +110,7 @@ function FaqSection({ faqs }: { faqs: { q: string; a: string }[] }) {
 }
 
 function CtaBox() {
+  const { site } = useSite();
   return (
     <div className="my-9 overflow-hidden rounded-[1.75rem] bg-petrol-deep p-7 text-center shadow-lg lg:p-9 grain relative">
       <div className="aurora" />
@@ -123,12 +124,12 @@ function CtaBox() {
         </p>
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
           <a
-            href={`tel:${SITE.phone}`}
+            href={`tel:${site.phone}`}
             dir="ltr"
             className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-bold text-[oklch(0.17_0.025_205)] transition-transform duration-300 hover:scale-[1.04] active:scale-95 cursor-pointer"
           >
             <Phone className="h-4 w-4" />
-            {SITE.phone}
+            {site.phone}
           </a>
           <Link
             href="/contact"
@@ -300,7 +301,10 @@ function BlockRenderer({ block }: { block: ArticleBlock }) {
 
 /* ---------- صفحه مقاله ---------- */
 
-export function ArticlePage({ article }: { article: BlogArticle }) {
+export function ArticlePage({ article: articleProp }: { article: BlogArticle }) {
+  const { site, blog } = useSite();
+  // مقاله از محتوای زنده (شامل ویرایش‌های پنل ادمین) خوانده می‌شود؛ prop فقط پشتیبان است
+  const article = blog.find((a) => a.slug === articleProp.slug) ?? articleProp;
   const toc = article.blocks.filter((b): b is Extract<ArticleBlock, { type: "h2" }> => b.type === "h2");
 
   return (

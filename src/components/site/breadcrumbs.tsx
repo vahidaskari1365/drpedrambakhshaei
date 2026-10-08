@@ -3,16 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronLeft, Home } from "lucide-react";
-import { NAV_ITEMS } from "@/lib/site-data";
+import { useSite } from "./content-provider";
 
 /**
  * نان‌برکرامب دیداری — سئوی ساختاری + ناوبری
  * به‌همراه اسکیمای BreadcrumbList که در هر روت جداگانه تزریق می‌شود
  */
 export function Breadcrumbs() {
+  const { nav } = useSite();
   const pathname = usePathname();
   if (!pathname || pathname === "/") return null;
-  const current = NAV_ITEMS.find((n) => n.href === pathname);
+  const current = nav.find((n) => n.href === pathname);
   if (!current) return null;
 
   return (

@@ -8,7 +8,7 @@ import {
   faqJsonLd,
   pricesJsonLd,
 } from "@/lib/seo";
-import { PRICE_FAQS } from "@/lib/site-data";
+import { getMergedContent } from "@/lib/content-store";
 
 const TITLE = "تعرفه خدمات ۱۴۰۵ | قیمت ایمپلنت دندان و جراحی فک در تهران";
 const DESC =
@@ -35,7 +35,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PricesRoute() {
+export default async function PricesRoute() {
+  const content = await getMergedContent();
   return (
     <>
       <JsonLd
@@ -44,8 +45,8 @@ export default function PricesRoute() {
           { name: "تعرفه‌ها", path: "/prices" },
         ])}
       />
-      <JsonLd data={pricesJsonLd()} />
-      <JsonLd data={faqJsonLd(PRICE_FAQS)} />
+      <JsonLd data={pricesJsonLd(content.priceTabs)} />
+      <JsonLd data={faqJsonLd(content.priceFaqs)} />
       <PricesPage />
     </>
   );

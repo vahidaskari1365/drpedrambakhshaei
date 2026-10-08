@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { BlogPage } from "@/components/site/pages/blog-page";
 import { JsonLd, OG_IMAGE, ROBOTS_META, breadcrumbJsonLd, blogJsonLd } from "@/lib/seo";
+import { getMergedContent } from "@/lib/content-store";
 
 const TITLE = "مقالات تخصصی جراحی فک و صورت و ایمپلنت دندان";
 const DESC =
@@ -27,7 +28,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BlogRoute() {
+export default async function BlogRoute() {
+  const content = await getMergedContent();
   return (
     <>
       <JsonLd
@@ -36,7 +38,7 @@ export default function BlogRoute() {
           { name: "مقالات", path: "/blog" },
         ])}
       />
-      <JsonLd data={blogJsonLd()} />
+      <JsonLd data={blogJsonLd(content.blog)} />
       <BlogPage />
     </>
   );

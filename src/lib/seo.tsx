@@ -3,15 +3,21 @@
  * ساخت‌وسازهای JSON-LD (اسکیمای ساختاریافته) + ثابت‌های مشترک متادیتا
  * برای درک کامل موتورهای جستجو و موتورهای مولد هوش مصنوعی (ChatGPT، Gemini، Perplexity)
  */
-import { NAV_ITEMS, REVIEWS, SERVICES, SITE, SITE_URL, FAQ_ITEMS, PRICE_TABS } from "./site-data";
+import { NAV_ITEMS, REVIEWS, SERVICES, SITE, SITE_URL, PRICE_TABS } from "./site-data";
 import { ARTICLES, type BlogArticle } from "./blog-data";
+import type { SiteContent } from "./site-content";
 
 export { SITE_URL };
+
+type SiteInfo = SiteContent["site"];
+type ServiceItem = SiteContent["services"][number];
+type ReviewItem = SiteContent["reviews"][number];
+type PriceTab = SiteContent["priceTabs"][number];
 
 export const OG_IMAGE = "/uploads/og-image.jpg";
 
 /** اسکیمای پزشک — هسته هویت سایت (E-E-A-T) */
-export function physicianJsonLd() {
+export function physicianJsonLd(site: SiteInfo = SITE, services?: ServiceItem[]) {
   return {
     "@context": "https://schema.org",
     "@type": "Physician",
@@ -24,7 +30,7 @@ export function physicianJsonLd() {
     description:
       "متخصص جراحی دهان، فک و صورت، رتبه ۲ بورد تخصصی کشور، هیئت علمی دانشگاه شهید بهشتی؛ بیش از ۱۱ سال تجربه، ۱۵٬۰۰۰+ جراحی ایمپلنت و ۱۰۴ بیمار ارتوسرجری در تهران",
     url: SITE_URL,
-    telephone: SITE.phoneIntl,
+    telephone: site.phoneIntl,
     image: `${SITE_URL}/uploads/doctor-portrait.jpg`,
     logo: `${SITE_URL}/icon-512.png`,
     priceRange: "$$$",
@@ -43,7 +49,7 @@ export function physicianJsonLd() {
       latitude: 35.7675574,
       longitude: 51.4571543,
     },
-    hasMap: SITE.mapsUrl,
+    hasMap: site.mapsUrl,
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
@@ -60,10 +66,10 @@ export function physicianJsonLd() {
       worstRating: "1",
     },
     sameAs: [
-      SITE.social.instagram,
-      SITE.social.telegram,
-      SITE.social.aparat,
-      SITE.social.whatsapp.replace("09302626021", "+989302626021"),
+      site.social.instagram,
+      site.social.telegram,
+      site.social.aparat,
+      site.social.whatsapp.replace("09302626021", "+989302626021"),
       "https://doctoreto.com",
     ],
     knowsAbout: [
@@ -76,7 +82,7 @@ export function physicianJsonLd() {
       "پیوند استخوان فک",
       "بازسازی کامل دهان",
     ],
-    availableService: SERVICES.map((s) => ({
+    availableService: (services ?? (SERVICES as unknown as ServiceItem[])).map((s) => ({
       "@type": "MedicalProcedure",
       name: s.title,
       description: s.desc,
@@ -130,12 +136,12 @@ export function faqJsonLd(items: readonly { q: string; a: string }[]) {
 }
 
 /** اسکیمای خدمات — فهرست MedicalProcedure با جزئیات */
-export function servicesJsonLd() {
+export function servicesJsonLd(services: ServiceItem[] = SERVICES as unknown as ServiceItem[]) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: "خدمات تخصصی جراحی دهان، فک و صورت دکتر پدرام بخشایی",
-    itemListElement: SERVICES.map((s, i) => ({
+    itemListElement: services.map((s, i) => ({
       "@type": "ListItem",
       position: i + 1,
       item: {
@@ -157,7 +163,7 @@ export function servicesJsonLd() {
 }
 
 /** اسکیمای نظرات — ریچ‌ریزالت ستاره در نتایج جستجو */
-export function reviewsJsonLd() {
+export function reviewsJsonLd(reviews: ReviewItem[] = REVIEWS as unknown as ReviewItem[]) {
   return {
     "@context": "https://schema.org",
     "@type": "Physician",
@@ -170,7 +176,7 @@ export function reviewsJsonLd() {
       reviewCount: "9",
       bestRating: "5",
     },
-    review: REVIEWS.slice(0, 8).map((r) => ({
+    review: reviews.slice(0, 8).map((r) => ({
       "@type": "Review",
       author: { "@type": "Person", name: r.author },
       reviewRating: {
@@ -185,7 +191,7 @@ export function reviewsJsonLd() {
 }
 
 /** اسکیمای مطب — صفحه تماس با مختصات جغرافیایی دقیق (Local SEO) */
-export function clinicJsonLd() {
+export function clinicJsonLd(site: SiteInfo = SITE, services?: ServiceItem[]) {
   return {
     "@context": "https://schema.org",
     "@type": "MedicalClinic",
@@ -193,10 +199,10 @@ export function clinicJsonLd() {
     name: "مطب دکتر پدرام بخشایی — جراحی دهان، فک و صورت",
     image: `${SITE_URL}/uploads/clinic-photo-1.jpg`,
     url: `${SITE_URL}/contact`,
-    telephone: SITE.phoneIntl,
+    telephone: site.phoneIntl,
     priceRange: "$$$",
     medicalSpecialty: "OralAndMaxillofacialSurgery",
-    availableService: SERVICES.map((s) => ({
+    availableService: (services ?? SERVICES).map((s) => ({
       "@type": "MedicalProcedure",
       name: s.title,
     })),
@@ -211,7 +217,7 @@ export function clinicJsonLd() {
       latitude: 35.7675574,
       longitude: 51.4571543,
     },
-    hasMap: SITE.mapsUrl,
+    hasMap: site.mapsUrl,
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
@@ -226,13 +232,13 @@ export function clinicJsonLd() {
 }
 
 /** تعرفه‌ها به‌صورت ساختاریافته — برای پاسخ مستقیم AIها به «قیمت ایمپلنت در تهران» */
-export function pricesJsonLd() {
+export function pricesJsonLd(tabs: PriceTab[] = PRICE_TABS as unknown as PriceTab[]) {
   return {
     "@context": "https://schema.org",
     "@type": "OfferCatalog",
     name: "تعرفه خدمات ۱۴۰۵ — دکتر پدرام بخشایی",
     url: `${SITE_URL}/prices`,
-    itemListElement: PRICE_TABS.map((tab) => ({
+    itemListElement: tabs.map((tab) => ({
       "@type": "OfferCatalog",
       name: tab.label,
       itemListElement: tab.rows.map((row) => ({
@@ -251,7 +257,7 @@ export function pricesJsonLd() {
 }
 
 /** اسکیمای بلاگ — Blog با فهرست پست‌ها برای موتورهای جستجو و AI */
-export function blogJsonLd() {
+export function blogJsonLd(articles: BlogArticle[] = ARTICLES) {
   return {
     "@context": "https://schema.org",
     "@type": "Blog",
@@ -262,7 +268,7 @@ export function blogJsonLd() {
     description:
       "راهنماهای اورجینال و بدون کپی درباره جراحی ارتوگناتیک، ایمپلنت دندان و جراحی‌های فک و صورت — نگارش تیم تخصصی دکتر پدرام بخشایی",
     publisher: { "@id": `${SITE_URL}/#physician` },
-    blogPost: ARTICLES.map((a) => ({
+    blogPost: articles.map((a) => ({
       "@type": "BlogPosting",
       headline: a.h1,
       alternativeHeadline: a.metaTitle,
