@@ -6,7 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Expand, ArrowLeft, ChevronRight, ChevronLeft, Camera, Sparkles } from "lucide-react";
 import { PageHero } from "../page-hero";
 import { SectionHeading } from "../section-heading";
-import { GALLERY, WORKS } from "@/lib/site-data";
+import { BeforeAfter } from "../before-after";
+import { GALLERY, WORKS, BEFORE_AFTER } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -14,7 +15,12 @@ const ease = [0.16, 1, 0.3, 1] as const;
 /** دسته‌بندی نمونه کارها برای فیلتر گرید معمولی */
 type Category = "all" | "treatments" | "clinic";
 
-const TREATMENT_IMAGES = new Set(["/uploads/hero-bg.png", "/uploads/implant-art.png", "/uploads/wisdom-art.png", "/uploads/jawline-art.png"]);
+const TREATMENT_IMAGES = new Set([
+  "/uploads/jaw-surgery-result.jpg",
+  "/uploads/genioplasty-real.jpg",
+  "/uploads/implant-real.jpg",
+  "/uploads/wisdom-real.jpg",
+]);
 
 const FILTERS: { id: Category; label: string }[] = [
   { id: "all", label: "همه" },
@@ -174,10 +180,45 @@ export function GalleryPage() {
         </div>
       </section>
 
-      {/* عکس‌های واقعی مطب از گوگل مپ — بخش تیره سینمایی */}
-      <section className="bg-petrol-deep grain relative overflow-hidden py-16 lg:py-24" aria-label="عکس‌های گوگل مپ">
+      {/* مقایسه قبل/بعد + عکس‌های واقعی مطب از گوگل مپ — بخش تیره سینمایی */}
+      <section className="bg-petrol-deep grain relative overflow-hidden py-16 lg:py-24" aria-label="نتایج واقعی و عکس‌های مطب">
         <div className="aurora" />
         <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+          {/* مقایسه کشویی قبل/بعد */}
+          <div className="mb-16 grid items-center gap-10 lg:mb-20 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.9, ease }}
+            >
+              <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-teal-400/10 px-3 py-1.5 text-xs font-bold text-teal-300">
+                <Sparkles className="h-3.5 w-3.5" />
+                {BEFORE_AFTER.kicker}
+              </p>
+              <h2 className="text-2xl font-black tracking-tight text-background sm:text-4xl sm:leading-[1.25]">
+                {BEFORE_AFTER.title}
+              </h2>
+              <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{BEFORE_AFTER.desc}</p>
+              <a
+                href="#/contact"
+                className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-teal-300 transition-all duration-300 hover:gap-3 cursor-pointer"
+              >
+                رزرو مشاوره برای طرح مشابه
+                <ArrowLeft className="h-4 w-4" />
+              </a>
+            </motion.div>
+            <BeforeAfter
+              before={BEFORE_AFTER.before}
+              after={BEFORE_AFTER.after}
+              beforeLabel={BEFORE_AFTER.beforeLabel}
+              afterLabel={BEFORE_AFTER.afterLabel}
+              alt="بازسازی کامل دهان با ایمپلنت"
+            />
+          </div>
+
+          <div className="divider-fade mb-16 lg:mb-20" />
+
           <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
             <div>
               <motion.p

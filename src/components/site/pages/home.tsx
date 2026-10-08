@@ -13,6 +13,7 @@ import {
   ChevronDown,
   Check,
   Camera,
+  Sparkles,
   Stethoscope,
   Wallet,
   WalletCards,
@@ -21,6 +22,8 @@ import {
 } from "lucide-react";
 import { Hero } from "../hero";
 import { SectionHeading } from "../section-heading";
+import { WorksSlider } from "../works-slider";
+import { BeforeAfter } from "../before-after";
 import {
   SITE,
   SERVICES,
@@ -31,13 +34,14 @@ import {
   FAQ_ITEMS,
   ABOUT_BIO,
   CREDENTIALS,
+  BEFORE_AFTER,
 } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-/** پیش‌نمایش گالری صفحه اول — ترکیبی از جراحی‌ها و فضای مطب */
-const HOME_GALLERY = [WORKS[0], WORKS[6], WORKS[3], WORKS[1], WORKS[7], WORKS[8]] as const;
+/** پیش‌نمایش گالری صفحه اول — عکس‌های واقعی جراحی‌ها و مطب */
+const HOME_GALLERY = [WORKS[2], WORKS[5], WORKS[0], WORKS[6], WORKS[7], WORKS[8]] as const;
 
 /** برجسته‌های تعرفه — از جداول اصلی */
 const PRICE_HIGHLIGHTS = [
@@ -180,6 +184,70 @@ export function HomePage() {
               مشاهده توضیح کامل خدمات
             </a>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ═══ نمونه جراحی‌ها — اسلایدر کشویی با عکس‌های واقعی (مثل سایت اصلی) ═══ */}
+      <section className="relative bg-background py-16 lg:py-24" aria-label="نمونه جراحی‌ها">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <SectionHeading
+            kicker="نمونه جراحی‌ها"
+            title={
+              <>
+                نتیجه کارها را ببینید،
+                <span className="text-gradient block">نه فقط حرف‌ها را</span>
+              </>
+            }
+            desc="جهت کمک به شما مراجعین عزیز در روند تصمیم‌گیری و آشنایی بیشتر با انواع جراحی‌ها، علاوه بر نمونه کارها توضیحات هر جراحی نیز قرار داده شده — با سوایپ یا دکمه‌ها جابه‌جا شوید"
+          />
+          <WorksSlider />
+        </div>
+      </section>
+
+      {/* ═══ مقایسه قبل/بعد — کیس واقعی ایمپلنت ═══ */}
+      <section className="bg-petrol-deep grain relative overflow-hidden py-16 lg:py-24" aria-label="مقایسه قبل و بعد">
+        <div className="aurora" />
+        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.9, ease }}
+            >
+              <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-teal-400/10 px-3 py-1.5 text-xs font-bold text-teal-300">
+                <Sparkles className="h-3.5 w-3.5" />
+                {BEFORE_AFTER.kicker}
+              </p>
+              <h2 className="text-2xl font-black tracking-tight text-background sm:text-4xl sm:leading-[1.25]">
+                {BEFORE_AFTER.title}
+              </h2>
+              <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{BEFORE_AFTER.desc}</p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a
+                  href="#/gallery"
+                  className="shimmer inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-bold text-[oklch(0.2_0.03_205)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
+                >
+                  همه نمونه کارها
+                  <ArrowLeft className="h-4 w-4" />
+                </a>
+                <a
+                  href="#/contact"
+                  className="inline-flex items-center gap-2 rounded-full border border-background/25 bg-background/10 px-6 py-3 text-sm font-bold text-background backdrop-blur transition-all duration-300 hover:bg-background/20 active:scale-95 cursor-pointer"
+                >
+                  <CalendarCheck className="h-4 w-4" />
+                  مشاوره حضوری
+                </a>
+              </div>
+            </motion.div>
+            <BeforeAfter
+              before={BEFORE_AFTER.before}
+              after={BEFORE_AFTER.after}
+              beforeLabel={BEFORE_AFTER.beforeLabel}
+              afterLabel={BEFORE_AFTER.afterLabel}
+              alt="بازسازی کامل دهان با ایمپلنت"
+            />
+          </div>
         </div>
       </section>
 
@@ -601,7 +669,7 @@ export function HomePage() {
           >
             <a
               href="#/contact"
-              className="inline-flex items-center gap-2.5 rounded-full bg-background px-7 py-3.5 text-sm font-black text-[oklch(0.2_0.03_205)] shadow-[0_16px_40px_-14px_oklch(0.05_0.02_205/0.8)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
+              className="shimmer inline-flex items-center gap-2.5 rounded-full bg-background px-7 py-3.5 text-sm font-black text-[oklch(0.2_0.03_205)] shadow-[0_16px_40px_-14px_oklch(0.05_0.02_205/0.8)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
             >
               <CalendarCheck className="h-4.5 w-4.5" />
               رزرو نوبت و مشاوره

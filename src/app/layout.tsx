@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Vazirmatn } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { PwaRegister } from "@/components/site/pwa-register";
@@ -8,6 +9,14 @@ const vazir = Vazirmatn({
   variable: "--font-vazir",
   subsets: ["arabic", "latin"],
   weight: ["300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+/* استداد — فونت تیتراژ مدرن فارسی (متغیر، با ارقام فارسی) */
+const estedad = localFont({
+  src: "../fonts/Estedad-FD-VF.woff2",
+  variable: "--font-estedad",
+  weight: "100 900",
   display: "swap",
 });
 
@@ -101,7 +110,7 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl" suppressHydrationWarning>
       <body
-        className={`${vazir.variable} antialiased bg-background text-foreground min-h-screen flex flex-col`}
+        className={`${vazir.variable} ${estedad.variable} antialiased bg-background text-foreground min-h-screen flex flex-col`}
       >
         {children}
         <Toaster />
