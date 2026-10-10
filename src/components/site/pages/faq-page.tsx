@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Plus, MessageCircleQuestion, ArrowLeft } from "lucide-react";
 import { PageHero } from "../page-hero";
 import { useSite } from "../content-provider";
+import { GridPattern } from "@/components/magicui/grid-pattern";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -109,6 +110,8 @@ export function FaqPage() {
 
       <section className="bg-sage relative overflow-hidden py-14 lg:py-20" aria-label="فهرست سوالات">
         <div className="aurora aurora-sage" />
+        {/* Magic UI — Grid Pattern: پس‌زمینه شبکه‌ای ظریف */}
+        <GridPattern className="text-[oklch(0.4_0.06_175/0.08)] [mask-image:radial-gradient(70%_60%_at_50%_20%,black,transparent)]" width={44} height={44} />
         <div className="relative mx-auto max-w-3xl px-5 lg:px-8">
           {/* تب گروه‌ها */}
           <motion.div

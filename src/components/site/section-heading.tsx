@@ -3,6 +3,7 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
+import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -30,8 +31,13 @@ export function SectionHeading({
           dark ? "text-teal-300" : "text-primary"
         )}
       >
-        <Sparkles className="h-3.5 w-3.5" />
-        {kicker}
+        <Sparkles className="h-3.5 w-3.5 shrink-0" />
+        <AnimatedGradientText
+          colorFrom={dark ? "#5fd3c4" : "#2e9d9a"}
+          colorTo={dark ? "#f0c869" : "#d9a53f"}
+        >
+          {kicker}
+        </AnimatedGradientText>
       </motion.p>
       <motion.h2
         initial={{ opacity: 0, y: 24 }}

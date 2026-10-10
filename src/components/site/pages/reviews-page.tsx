@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Star, ExternalLink, Quote, MapPin, Phone } from "lucide-react";
 import { PageHero } from "../page-hero";
 import { useSite } from "../content-provider";
+import { Marquee } from "@/components/magicui/marquee";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -123,6 +124,24 @@ export function ReviewsPage() {
             >
               متن نظرات بدون تغییر، از منابع عمومی ثبت‌شده
             </motion.p>
+          </div>
+
+          {/* Magic UI — Marquee: گزیده نظرها در حرکت بی‌نهایت */}
+          <div className="mask-fade-x mb-12">
+            <Marquee pauseOnHover className="p-0 [--mg-duration:46s]" repeat={3}>
+              {reviews.slice(0, 6).map((r, i) => (
+                <figure
+                  key={`mq-${r.author}-${i}`}
+                  className="glass-dark relative flex w-[300px] shrink-0 flex-col rounded-3xl p-5 sm:w-[360px]"
+                >
+                  <blockquote className="line-clamp-2 text-[12.5px] leading-6 text-background/85">«{r.text}»</blockquote>
+                  <figcaption className="mt-3 flex items-center justify-between gap-3 border-t border-background/10 pt-3">
+                    <span className="text-[12px] font-extrabold text-background">{r.author}</span>
+                    <Stars n={r.stars} />
+                  </figcaption>
+                </figure>
+              ))}
+            </Marquee>
           </div>
 
           <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">

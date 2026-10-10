@@ -8,6 +8,8 @@ import { PageHero } from "../page-hero";
 import { SectionHeading } from "../section-heading";
 import { BeforeAfter } from "../before-after";
 import { useSite } from "../content-provider";
+import { GlareHover } from "@/components/magicui/glare-hover";
+import { BorderBeam } from "@/components/magicui/border-beam";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -139,15 +141,17 @@ export function GalleryPage() {
                   className="group relative overflow-hidden rounded-[1.75rem] border border-border/60 bg-card shadow-[0_24px_60px_-35px_oklch(0.4_0.05_205/0.5)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_34px_70px_-30px_oklch(0.4_0.06_205/0.6)] cursor-pointer"
                   aria-label={`بزرگ‌نمایی ${g.title}`}
                 >
-                  <div className="relative aspect-[4/3]">
-                    <Image
-                      src={g.image}
-                      alt={g.title}
-                      fill
-                      className="object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-108"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                  </div>
+                  <GlareHover color="#f0c869" opacity={0.3} size={230} className="w-full">
+                    <div className="relative aspect-[4/3]">
+                      <Image
+                        src={g.image}
+                        alt={g.title}
+                        fill
+                        className="object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-108"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    </div>
+                  </GlareHover>
                   <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.16_0.03_205/0.85)] via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-100" />
                   <div className="absolute inset-x-4 bottom-4 flex items-center justify-between">
                     <span className="text-sm font-extrabold text-background">{g.title}</span>
@@ -173,6 +177,8 @@ export function GalleryPage() {
                 <ArrowLeft className="h-6 w-6 text-primary transition-transform duration-300 group-hover:-translate-x-1" />
               </span>
               <p className="text-lg font-black text-foreground">بازدید حضوری از مطب</p>
+              {/* Magic UI — Border Beam */}
+              <BorderBeam size={50} duration={8} colorFrom="#2e9d9a" colorTo="#d9a53f" />
               <p className="text-[13px] leading-6 text-muted-foreground">
                 برای مشاهده حضوری فضای مطب، نوبت مشاوره رزرو کنید
               </p>

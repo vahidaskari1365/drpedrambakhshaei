@@ -19,15 +19,54 @@ import {
   WalletCards,
   GraduationCap,
   Clock3,
+  Award,
+  FileBadge,
+  HeartPulse,
+  Microscope,
 } from "lucide-react";
 import { Hero } from "../hero";
 import { SectionHeading } from "../section-heading";
 import { WorksSlider } from "../works-slider";
 import { BeforeAfter } from "../before-after";
 import { useSite } from "../content-provider";
+import { MagicCard } from "@/components/magicui/magic-card";
+import { BorderBeam } from "@/components/magicui/border-beam";
+import { Marquee } from "@/components/magicui/marquee";
+import { Meteors } from "@/components/magicui/meteors";
+import { Ripple } from "@/components/magicui/ripple";
+import { ShimmerButton } from "@/components/magicui/shimmer-button";
+import { WordRotate } from "@/components/magicui/word-rotate";
+import { OrbitingCircles } from "@/components/magicui/orbiting-circles";
+import type { SiteContent } from "@/lib/site-content";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
+
+/** کارت نظر برای Marquee — Magic UI */
+function ReviewCard({ r }: { r: SiteContent["reviews"][number] }) {
+  return (
+    <figure className="glass-dark relative flex w-[300px] shrink-0 flex-col rounded-3xl p-6 sm:w-[380px]">
+      <Quote className="mb-3 h-5 w-5 text-teal-300/50" />
+      <blockquote className="flex-1 text-[13px] leading-7 text-background/85">{r.text}</blockquote>
+      <figcaption className="mt-4 flex items-center justify-between gap-3 border-t border-background/10 pt-4">
+        <div className="flex items-center gap-3">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-400/15 text-sm font-black text-teal-300">
+            {r.author.charAt(0)}
+          </span>
+          <div>
+            <p className="text-[13px] font-extrabold text-background">{r.author}</p>
+            <p className="text-[11px] text-background/50">{r.source} · {r.time}</p>
+          </div>
+        </div>
+        <span className="flex gap-0.5" aria-label="امتیاز ۵ از ۵">
+          {Array.from({ length: 5 }).map((_, j) => (
+            <Star key={j} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+          ))}
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
 
 /** ردیف آکاردئون سوالات */
 function FaqRow({ q, a, open, onToggle }: { q: string; a: string; open: boolean; onToggle: () => void }) {
@@ -261,12 +300,25 @@ export function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ duration: 0.7, ease, delay: i * 0.08 }}
-                  className="glass-dark gold-top-line flex items-start gap-3 rounded-2xl p-4"
                 >
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal-400/15 text-xs font-black text-teal-300">
-                    ۰{i + 1}
-                  </span>
-                  <p className="text-[13px] font-medium leading-6 text-background/85">{p}</p>
+                  {/* Magic UI — Magic Card: گوی درخشان دنبال‌کننده ماوس */}
+                  <MagicCard
+                    mode="orb"
+                    glowFrom="#5fd3c4"
+                    glowTo="#d9a53f"
+                    glowSize={360}
+                    glowBlur={72}
+                    glowOpacity={0.5}
+                    className="gold-top-line rounded-2xl shadow-[0_20px_50px_-30px_oklch(0.05_0.03_205/0.9)] backdrop-blur-md"
+                    style={{ "--mg-card-bg": "oklch(0.3 0.05 205 / 0.55)" } as React.CSSProperties}
+                  >
+                    <div className="flex items-start gap-3 p-4">
+                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal-400/15 text-xs font-black text-teal-300">
+                        ۰{i + 1}
+                      </span>
+                      <p className="text-[13px] font-medium leading-6 text-background/85">{p}</p>
+                    </div>
+                  </MagicCard>
                 </motion.div>
               ))}
             </div>
@@ -357,6 +409,26 @@ export function HomePage() {
               transition={{ duration: 1, ease }}
               className="relative mx-auto w-full max-w-[340px] lg:max-w-[380px]"
             >
+              {/* Magic UI — Orbiting Circles: تخصص‌ها و افتخارات مداری دور پرتره */}
+              <OrbitingCircles radius={175} duration={30} iconSize={42} className="mg-orbit-responsive pointer-events-none z-10 text-primary">
+                {[
+                  { Icon: GraduationCap, label: "متخصص جراحی فک و صورت" },
+                  { Icon: Award, label: "رتبه ۲ بورد تخصص" },
+                  { Icon: FileBadge, label: "هیئت علمی دانشگاه" },
+                  { Icon: Stethoscope, label: "۱۱+ سال تجربه" },
+                  { Icon: Microscope, label: "تکنیک کم‌تهاجمی" },
+                  { Icon: HeartPulse, label: "درمان بیمارمحور" },
+                ].map(({ Icon, label }) => (
+                  <span
+                    key={label}
+                    title={label}
+                    className="flex h-full w-full items-center justify-center rounded-2xl border border-border/70 bg-card/95 text-primary shadow-md backdrop-blur"
+                  >
+                    <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+                    <span className="sr-only">{label}</span>
+                  </span>
+                ))}
+              </OrbitingCircles>
               <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-[oklch(0.5_0.06_175/0.15)] shadow-[0_40px_90px_-40px_oklch(0.4_0.06_175/0.55)]">
                 <Image
                   src="/uploads/doctor-portrait.jpg"
@@ -465,6 +537,8 @@ export function HomePage() {
                   جدول کامل تعرفه
                   <ArrowLeft className="h-4 w-4" />
                 </span>
+                {/* Magic UI — Border Beam: پرتو نور دور کارت‌های تعرفه */}
+                <BorderBeam size={55} duration={7} delay={i * 1.1} colorFrom="#f0c869" colorTo="#5fd3c4" />
               </motion.a>
             ))}
           </div>
@@ -578,36 +652,18 @@ export function HomePage() {
             </motion.a>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            {reviews.slice(1, 4).map((r, i) => (
-              <motion.figure
-                key={r.author}
-                initial={{ opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.8, ease, delay: i * 0.1 }}
-                className="glass-dark relative flex flex-col rounded-3xl p-6"
-              >
-                <Quote className="mb-3 h-5 w-5 text-teal-300/50" />
-                <blockquote className="flex-1 text-[13px] leading-7 text-background/85">{r.text}</blockquote>
-                <figcaption className="mt-4 flex items-center justify-between gap-3 border-t border-background/10 pt-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-400/15 text-sm font-black text-teal-300">
-                      {r.author.charAt(0)}
-                    </span>
-                    <div>
-                      <p className="text-[13px] font-extrabold text-background">{r.author}</p>
-                      <p className="text-[11px] text-background/50">{r.source} · {r.time}</p>
-                    </div>
-                  </div>
-                  <span className="flex gap-0.5" aria-label="امتیاز ۵ از ۵">
-                    {Array.from({ length: 5 }).map((_, j) => (
-                      <Star key={j} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                    ))}
-                  </span>
-                </figcaption>
-              </motion.figure>
-            ))}
+          {/* Magic UI — Marquee: نظرات واقعی در حرکت بی‌نهایت */}
+          <div className="mask-fade-x space-y-4">
+            <Marquee pauseOnHover className="p-0 [--mg-duration:52s]" repeat={3}>
+              {reviews.slice(1, 5).map((r) => (
+                <ReviewCard key={`row1-${r.author}`} r={r} />
+              ))}
+            </Marquee>
+            <Marquee pauseOnHover reverse className="p-0 [--mg-duration:60s]" repeat={3}>
+              {reviews.slice(5, 9).map((r) => (
+                <ReviewCard key={`row2-${r.author}`} r={r} />
+              ))}
+            </Marquee>
           </div>
         </div>
       </section>
@@ -616,6 +672,9 @@ export function HomePage() {
       <section className="relative overflow-hidden py-16 lg:py-24" aria-label="رزرو نوبت">
         <div className="gradient-petrol-cta absolute inset-0" />
         <div className="aurora" />
+        {/* Magic UI — Meteors: شهاب‌های محیطی + Ripple: موج‌های آرام */}
+        <Meteors number={14} angle={215} />
+        <Ripple mainCircleSize={260} numCircles={6} className="opacity-40" />
         <div className="relative mx-auto max-w-3xl px-5 text-center lg:px-8">
           <motion.h2
             initial={{ opacity: 0, y: 28 }}
@@ -625,7 +684,12 @@ export function HomePage() {
             className="text-3xl font-black tracking-tight text-background sm:text-5xl sm:leading-[1.2]"
           >
             مسیر لبخند شما از
-            <span className="text-gradient-light block">یک مشاوره شروع می‌شود</span>
+            <span className="text-gradient-light block">
+              یک{" "}
+              {/* Magic UI — Word Rotate */}
+              <WordRotate words={["مشاوره", "بررسی دقیق", "تصمیم آگاهانه"]} className="inline-block" />{" "}
+              شروع می‌شود
+            </span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -643,13 +707,17 @@ export function HomePage() {
             transition={{ duration: 0.9, ease, delay: 0.2 }}
             className="mt-8 flex flex-wrap items-center justify-center gap-3"
           >
-            <a
+            {/* Magic UI — Shimmer Button: دکمه درخشان با پرتو conic */}
+            <ShimmerButton
               href="/contact"
-              className="shimmer inline-flex items-center gap-2.5 rounded-full bg-background px-7 py-3.5 text-sm font-black text-[oklch(0.2_0.03_205)] shadow-[0_16px_40px_-14px_oklch(0.05_0.02_205/0.8)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
+              shimmerColor="#f0c869"
+              className="shadow-[0_16px_40px_-14px_oklch(0.05_0.02_205/0.8)]"
             >
-              <CalendarCheck className="h-4.5 w-4.5" />
-              رزرو نوبت و مشاوره
-            </a>
+              <span className="inline-flex items-center gap-2.5 text-sm font-black">
+                <CalendarCheck className="h-4.5 w-4.5" />
+                رزرو نوبت و مشاوره
+              </span>
+            </ShimmerButton>
             <a
               href={`tel:${site.phone}`}
               dir="ltr"

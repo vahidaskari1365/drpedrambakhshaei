@@ -7,6 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "../page-hero";
 import { useSite } from "../content-provider";
+import { BlurFade } from "@/components/magicui/blur-fade";
+import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -39,13 +41,9 @@ export function BlogPage() {
       <section className="bg-sage relative overflow-hidden py-14 lg:py-20" aria-label="فهرست مقالات">
         <div className="aurora aurora-sage" />
         <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
-          {/* مقاله ویژه */}
-          <motion.article
-            initial={{ opacity: 0, y: 32 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease }}
-            className="group card-sage overflow-hidden rounded-[2rem] shadow-sm"
-          >
+          {/* مقاله ویژه — Magic UI Blur Fade */}
+          <BlurFade delay={0.05} className="rounded-[2rem]">
+            <article className="group card-sage overflow-hidden rounded-[2rem] shadow-sm">
             <Link href={`/blog/${featured.slug}`} className="grid lg:grid-cols-2 cursor-pointer">
               <div className="relative min-h-56 overflow-hidden lg:min-h-full">
                 <Image
@@ -83,7 +81,8 @@ export function BlogPage() {
                 </span>
               </div>
             </Link>
-          </motion.article>
+          </article>
+          </BlurFade>
 
           {/* کارت‌های بعدی */}
           {rest.length > 0 && (
@@ -150,7 +149,8 @@ export function BlogPage() {
                   <s.icon className="h-5 w-5 text-primary" />
                 </span>
                 <span className="flex flex-col">
-                  <span className="text-[15px] font-extrabold">{s.value}</span>
+                  {/* Magic UI — Animated Gradient Text */}
+                  <AnimatedGradientText className="text-[15px] font-extrabold">{s.value}</AnimatedGradientText>
                   <span className="text-[12px] text-muted-foreground">{s.label}</span>
                 </span>
               </div>

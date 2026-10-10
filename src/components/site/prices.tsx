@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { Info, PhoneCall, BadgeCheck } from "lucide-react";
 import { useSite } from "./content-provider";
+import { BorderBeam } from "@/components/magicui/border-beam";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -67,6 +68,8 @@ export function Prices() {
           transition={{ duration: 0.7, ease }}
           className="overflow-hidden rounded-[2rem] border border-background/15 bg-background/[0.07] backdrop-blur-2xl"
         >
+          {/* Magic UI — Border Beam: پرتو نور دور جدول تعرفه */}
+          <BorderBeam size={70} duration={9} colorFrom="#5fd3c4" colorTo="#f0c869" />
           <div className="overflow-x-auto scrollbar-slim">
             <table className="w-full min-w-[560px] text-right">
               <thead>

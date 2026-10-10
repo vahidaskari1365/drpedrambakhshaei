@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { Phone, MapPin, Clock, Send, Loader2, CheckCircle2, Instagram, SendHorizontal, Play, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useSite } from "./content-provider";
+import { AnimatedBeam } from "@/components/magicui/animated-beam";
+import { Globe } from "@/components/magicui/globe";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -15,6 +17,76 @@ const SERVICES_OPTIONS = [
   "جراحی زیبایی (جنیوپلاستی و ...)",
   "سایر موارد",
 ];
+
+/**
+ * Magic UI — Animated Beam: دیاگرام اتصال زنده مطب به شبکه‌های اجتماعی
+ * پرتوهای نور متحرک از گره مرکزی به هر کانال تماس
+ */
+function ContactBeams() {
+  const { site } = useSite();
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const centerRef = React.useRef<HTMLDivElement>(null);
+  const waRef = React.useRef<HTMLDivElement>(null);
+  const tgRef = React.useRef<HTMLDivElement>(null);
+  const igRef = React.useRef<HTMLDivElement>(null);
+  const apRef = React.useRef<HTMLDivElement>(null);
+
+  const channels = [
+    { href: site.social.whatsapp, label: "واتسپ", Icon: MessageCircle },
+    { href: site.social.telegram, label: "تلگرام", Icon: SendHorizontal },
+    { href: site.social.instagram, label: "اینستاگرام", Icon: Instagram },
+    { href: site.social.aparat, label: "آپارات", Icon: Play },
+  ];
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative flex items-center justify-between gap-6 rounded-3xl border border-border/60 bg-card p-6 shadow-sm"
+      aria-label="راه‌های ارتباطی با مطب"
+    >
+      {/* پرتوهای نور از گره مرکزی به هر کانال */}
+      <AnimatedBeam containerRef={containerRef} fromRef={centerRef} toRef={waRef} curvature={-34} delay={0} duration={4} gradientStartColor="#2e9d9a" gradientStopColor="#d9a53f" pathColor="var(--border)" />
+      <AnimatedBeam containerRef={containerRef} fromRef={centerRef} toRef={tgRef} curvature={-12} delay={0.6} duration={4} gradientStartColor="#2e9d9a" gradientStopColor="#d9a53f" pathColor="var(--border)" />
+      <AnimatedBeam containerRef={containerRef} fromRef={centerRef} toRef={igRef} curvature={12} delay={1.2} duration={4} reverse gradientStartColor="#2e9d9a" gradientStopColor="#d9a53f" pathColor="var(--border)" />
+      <AnimatedBeam containerRef={containerRef} fromRef={centerRef} toRef={apRef} curvature={34} delay={1.8} duration={4} reverse gradientStartColor="#2e9d9a" gradientStopColor="#d9a53f" pathColor="var(--border)" />
+
+      {/* گره‌های کانال‌های تماس */}
+      <div className="z-10 flex flex-col gap-3">
+        <div ref={waRef} className="relative">
+          <a href={channels[0].href} target="_blank" rel="noopener noreferrer" aria-label={channels[0].label} title={channels[0].label} className="flex size-11 items-center justify-center rounded-2xl border border-border/60 bg-background text-muted-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary hover:shadow-md cursor-pointer">
+            <MessageCircle className="h-4.5 w-4.5" />
+          </a>
+        </div>
+        <div ref={tgRef} className="relative">
+          <a href={channels[1].href} target="_blank" rel="noopener noreferrer" aria-label={channels[1].label} title={channels[1].label} className="flex size-11 items-center justify-center rounded-2xl border border-border/60 bg-background text-muted-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary hover:shadow-md cursor-pointer">
+            <SendHorizontal className="h-4.5 w-4.5" />
+          </a>
+        </div>
+        <div ref={igRef} className="relative">
+          <a href={channels[2].href} target="_blank" rel="noopener noreferrer" aria-label={channels[2].label} title={channels[2].label} className="flex size-11 items-center justify-center rounded-2xl border border-border/60 bg-background text-muted-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary hover:shadow-md cursor-pointer">
+            <Instagram className="h-4.5 w-4.5" />
+          </a>
+        </div>
+        <div ref={apRef} className="relative">
+          <a href={channels[3].href} target="_blank" rel="noopener noreferrer" aria-label={channels[3].label} title={channels[3].label} className="flex size-11 items-center justify-center rounded-2xl border border-border/60 bg-background text-muted-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary hover:shadow-md cursor-pointer">
+            <Play className="h-4.5 w-4.5" />
+          </a>
+        </div>
+      </div>
+
+      {/* گره مرکزی — مطب */}
+      <div className="flex flex-col items-center gap-2">
+        <div
+          ref={centerRef}
+          className="relative z-10 flex size-16 items-center justify-center rounded-full border border-primary/25 bg-gradient-to-b from-[oklch(0.55_0.09_190)] to-[oklch(0.44_0.08_192)] text-primary-foreground shadow-[0_14px_34px_-12px] shadow-primary/60"
+        >
+          <Phone className="h-6 w-6" aria-hidden="true" />
+        </div>
+        <p className="text-[11px] font-bold text-muted-foreground">مطب دکتر بخشایی</p>
+      </div>
+    </div>
+  );
+}
 
 export function Contact() {
   const { site } = useSite();
@@ -127,6 +199,24 @@ export function Contact() {
                     <span className="text-[10px] font-bold text-muted-foreground group-hover:text-foreground">{label}</span>
                   </a>
                 ))}
+              </div>
+            </div>
+
+            {/* Magic UI — Animated Beam: دیاگرام زنده راه‌های تماس */}
+            <ContactBeams />
+
+            {/* Magic UI — Globe: کره تعاملی با مارکر تهران */}
+            <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-b from-[oklch(0.965_0.012_185)] to-[oklch(0.93_0.022_185)] shadow-sm">
+              <div className="relative h-[320px]">
+                <div className="relative mx-auto aspect-square h-full">
+                  <Globe />
+                </div>
+                <span className="absolute right-4 top-4 z-10 rounded-full bg-background/85 px-3 py-1.5 text-[11px] font-black text-primary shadow-sm backdrop-blur">
+                  تهران · پاسداران
+                </span>
+                <p className="absolute inset-x-4 bottom-3 z-10 text-center text-[11px] font-medium text-foreground/55">
+                  کره را بچرخانید — از هر نقطه ایران و جهان، راه تماس با ما باز است
+                </p>
               </div>
             </div>
 

@@ -7,6 +7,8 @@ import { Check, ArrowLeft, Phone, BadgeCheck } from "lucide-react";
 import { PageHero } from "../page-hero";
 import { SectionHeading } from "../section-heading";
 import { useSite } from "../content-provider";
+import { Marquee } from "@/components/magicui/marquee";
+import { GlareHover } from "@/components/magicui/glare-hover";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -40,8 +42,9 @@ export function ServicesPage() {
               transition={{ duration: 1, ease }}
               className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14"
             >
-              {/* تصویر سینمایی */}
+              {/* تصویر سینمایی — Magic UI Glare Hover */}
               <div className={cn("relative", i % 2 === 1 && "lg:order-2")}>
+                <GlareHover color="#f0c869" opacity={0.28} size={220} className="w-full">
                 <div className="relative aspect-[4/3] overflow-hidden rounded-[2.5rem] border border-[oklch(0.5_0.06_175/0.15)] shadow-[0_40px_90px_-40px_oklch(0.4_0.06_175/0.5)]">
                   <Image
                     src={s.image}
@@ -55,6 +58,7 @@ export function ServicesPage() {
                     ۰{i + 1}
                   </span>
                 </div>
+                </GlareHover>
                 {/* آمار شناور خدمت */}
                 <div className="relative z-10 -mt-8 grid grid-cols-3 gap-2 px-2 sm:gap-3 sm:px-6">
                   {s.stats.map((st) => (
@@ -117,9 +121,9 @@ export function ServicesPage() {
             برندهای ایمپلنت مورد استفاده
           </p>
           <div className="mask-fade-x overflow-hidden">
-            <div className="flex w-max animate-[marquee_28s_linear_infinite] gap-4 hover:[animation-play-state:paused]">
-              {[...implantBrands, ...implantBrands].map((b, i) => (
-                <div key={`${b.name}-${i}`} className="glass-dark flex items-center gap-3 rounded-2xl px-6 py-4">
+            <Marquee pauseOnHover className="p-0 [--mg-duration:30s]" repeat={3}>
+              {implantBrands.map((b) => (
+                <div key={b.name} className="glass-dark flex shrink-0 items-center gap-3 rounded-2xl px-6 py-4">
                   <span className="text-base font-black tracking-wide text-background/90" dir="ltr">
                     {b.name}
                   </span>
@@ -127,7 +131,7 @@ export function ServicesPage() {
                   <span className="text-xs font-medium text-background/60">{b.country}</span>
                 </div>
               ))}
-            </div>
+            </Marquee>
           </div>
         </div>
       </section>

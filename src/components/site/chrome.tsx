@@ -4,9 +4,10 @@ import * as React from "react";
 import { MotionConfig, motion, useScroll, useSpring } from "framer-motion";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
+import { QuickDock } from "./quick-dock";
 
 /**
- * پوسته مشترک همه صفحات — نوبار، فوتر، نوار پیشرفت اسکرول
+ * پوسته مشترک همه صفحات — نوبار، فوتر، نوار پیشرفت اسکرول، داک تماس سریع
  * موشن‌گرافی و ناوبری بین روتهای واقعی App Router
  */
 export function Chrome({ children }: { children: React.ReactNode }) {
@@ -26,6 +27,8 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         <main className="flex-1">{children}</main>
         <Footer />
       </div>
+      {/* داک شناور دسترسی سریع — Magic UI Dock */}
+      <QuickDock />
     </MotionConfig>
   );
 }

@@ -137,9 +137,12 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 96px;
+    /* جلوگیری از سرریز افقی انیمیشن‌های ورودی (x منفی) */
+    overflow-x: clip;
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: clip;
     font-feature-settings: "ss01";
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -747,4 +750,219 @@
 }
 .admin-root .scrollbar-slim::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.14);
+}
+
+/* ═══════════ Magic UI — keyframes کامپوزیتوری ═══════════ */
+
+/* Marquee افقی و عمودی */
+@keyframes mg-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--mg-gap, 1rem)));
+  }
+}
+@keyframes mg-marquee-vertical {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-100% - var(--mg-gap, 1rem)));
+  }
+}
+.animate-mg-marquee {
+  animation: mg-marquee var(--mg-duration, 40s) linear infinite;
+}
+.animate-mg-marquee-vertical {
+  animation: mg-marquee-vertical var(--mg-duration, 40s) linear infinite;
+}
+
+/* گرادیان متحرک متن */
+@keyframes mg-gradient-x {
+  to {
+    background-position: var(--mg-bg-size, 300%) 0;
+  }
+}
+.animate-mg-gradient-x {
+  animation: mg-gradient-x 8s linear infinite;
+}
+
+/* شفق قطبی متن */
+@keyframes mg-aurora {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 100%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.animate-mg-aurora {
+  animation: mg-aurora 8s ease-in-out infinite alternate;
+}
+
+/* شهاب‌سنگ */
+@keyframes mg-meteor {
+  0% {
+    transform: rotate(var(--mg-angle)) translateX(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(var(--mg-angle)) translateX(-500px);
+    opacity: 0;
+  }
+}
+.animate-mg-meteor {
+  animation: mg-meteor 5s linear infinite;
+}
+
+/* مدار آیکون‌ها */
+@keyframes mg-orbit {
+  0% {
+    transform: rotate(calc(var(--mg-angle) * 1deg))
+      translateY(calc(var(--mg-radius) * 1px))
+      rotate(calc(var(--mg-angle) * -1deg));
+  }
+  100% {
+    transform: rotate(calc(var(--mg-angle) * 1deg + 360deg))
+      translateY(calc(var(--mg-radius) * 1px))
+      rotate(calc((var(--mg-angle) * -1deg) - 360deg));
+  }
+}
+.animate-mg-orbit {
+  animation: mg-orbit calc(var(--mg-duration, 22) * 1s) linear infinite;
+}
+
+/* موج Ripple */
+@keyframes mg-ripple {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}
+.animate-mg-ripple {
+  animation: mg-ripple var(--mg-ripple-duration, 4s) ease-in-out
+    calc(var(--i, 0) * 0.2s) infinite;
+}
+
+/* دکمه Shimmer — پرتو conic چرخان + اسلاید */
+@keyframes mg-shimmer-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);
+  }
+}
+@keyframes mg-spin-around {
+  0% {
+    transform: translateZ(0) rotate(0);
+  }
+  15%,
+  35% {
+    transform: translateZ(0) rotate(90deg);
+  }
+  65%,
+  85% {
+    transform: translateZ(0) rotate(270deg);
+  }
+  100% {
+    transform: translateZ(0) rotate(360deg);
+  }
+}
+.animate-mg-shimmer-slide {
+  animation: mg-shimmer-slide var(--mg-speed, 3.4s) ease-in-out infinite alternate;
+}
+.animate-mg-spin-around {
+  animation: mg-spin-around calc(var(--mg-speed, 3.4s) * 2) infinite linear;
+}
+
+/* مرز درخشان Shine Border */
+@keyframes mg-shine {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  to {
+    background-position: 0% 0%;
+  }
+}
+.animate-mg-shine {
+  animation: mg-shine var(--mg-shine-duration, 12s) infinite linear;
+}
+
+/* پرتو مرزی Border Beam — offset-path کامپوزیتوری */
+@keyframes mg-border-beam {
+  0% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+  }
+}
+.animate-mg-border-beam {
+  offset-distance: var(--mg-offset-start, 0%);
+  animation: mg-border-beam 6s linear infinite;
+}
+
+/* مکان‌نمای تایپ */
+@keyframes mg-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.animate-mg-blink {
+  animation: mg-blink 1.2s step-end infinite;
+}
+
+/* نقاط چشمک‌زن شبکه‌ای */
+@keyframes mg-grid-glow {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: var(--mg-max-opacity, 0.4);
+  }
+}
+.animate-mg-grid-glow {
+  animation: mg-grid-glow 4s ease-in-out infinite;
+}
+
+/* Edge-fade عمودی برای ستون‌های marquee عمودی */
+.mg-fade-y {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+}
+
+/* مدار آیکون‌ها در موبایل — شعاع کوچک‌تر تا داخل ویوپورت بماند */
+@media (max-width: 640px) {
+  .mg-orbit-responsive {
+    --mg-radius: 145 !important;
+    --mg-icon-size: 38px !important;
+  }
 }
