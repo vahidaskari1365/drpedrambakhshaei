@@ -50,6 +50,8 @@ jobs:
           rm -rf bundle
           mkdir -p bundle/tmp
           cp -a .next/standalone/. bundle/
+          # tracing بیلد پوشه‌های غیرلازم ریپو را هم به standalone کشانده — حذف (تست بوت: همه صفحات 200)
+          ( cd bundle && rm -rf src skills tool-results tests examples scripts docs .github db prisma .agent* *.md )
           date +%s > bundle/tmp/restart.txt
           # حذف موتورهای WASM دیتابیس‌های استفاده‌نشده (MySQL/SQLServer/Cockroach/...) — حدود ۵۵MB صرفه‌جویی
           find bundle/node_modules/@prisma/client/runtime -name "*wasm*" -delete || true

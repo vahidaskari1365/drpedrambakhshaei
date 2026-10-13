@@ -371,3 +371,17 @@ Stage Summary:
 - حجم دیپلوی معمولی از ۹۶MB به چند مگ کاهش یافت
 - حذف WASMهای پرisma در CI با گارد engine-check ایمن شد
 - pending همان قبلی: اجرای deploy.sh جدید روی هاست، اتصال Application URL، تست، DNS
+
+---
+Task ID: 15
+Agent: Z.ai Code (main)
+Task: حذف پوشه‌های غیرلازم از باندل (tracing بیلد کل ریپو را کپی کرده بود)
+
+Work Log:
+- ران ۷ سبز شد ولی app bundle هنوز ۴۹.۴MB بود؛ تشریح: skills/ (۲۰۲۲ فایل)، src/، tests/، examples/، tool-results/ هم داخل standalone بودند — خروجی tracing بیلد
+- گریپ fs-read در سورس: ران‌تایم فقط public/ را می‌خواند → حذف امن است
+- تست بوت بعد از حذف: / و /services و /blog هر سه 200 ✅
+- وركفلو: بعد از cp standalone، پوشه‌های اضافی حذف می‌شوند
+
+Stage Summary:
+- انتظار: app ~۶-۸MB و runtime ~۲۹MB؛ دیپلوی معمولی بعدی فقط app (چند ثانیه تا ۱ دقیقه روی لینک ایران)
