@@ -33,6 +33,16 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# database — حاوی اطلاعات شخصی است، هرگز در گیت
+/db/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# داده‌های خام استخراجی (شامل اطلاعات شخصی)
+/download/
+
 # vercel
 .vercel
 
