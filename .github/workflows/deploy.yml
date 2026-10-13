@@ -57,7 +57,10 @@ jobs:
           path: deploy-bundle.tar.gz
           retention-days: 7
 
-      - name: Deploy via FTP (incremental + auto restart)
+      # شبکه بین گیت‌هاب و هاست ایران نوسان دارد — ۳ بار تلاش با فاصله
+      - name: Deploy via FTP (attempt 1)
+        id: ftp1
+        continue-on-error: true
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
@@ -68,6 +71,46 @@ jobs:
           security: loose
           local-dir: bundle/
           server-dir: ${{ secrets.FTP_SERVER_DIR || 'drpedram-app/' }}
+          state-name: ftp-state-1
+
+      - name: Cooldown before retry
+        if: steps.ftp1.outcome == 'failure'
+        run: sleep 40
+
+      - name: Deploy via FTP (attempt 2)
+        id: ftp2
+        if: steps.ftp1.outcome == 'failure'
+        continue-on-error: true
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT || 21 }}
+          protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
+          security: loose
+          local-dir: bundle/
+          server-dir: ${{ secrets.FTP_SERVER_DIR || 'drpedram-app/' }}
+          state-name: ftp-state-2
+
+      - name: Cooldown before final retry
+        if: steps.ftp2.outcome == 'failure'
+        run: sleep 60
+
+      - name: Deploy via FTP (attempt 3 - final)
+        id: ftp3
+        if: steps.ftp2.outcome == 'failure'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT || 21 }}
+          protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
+          security: loose
+          local-dir: bundle/
+          server-dir: ${{ secrets.FTP_SERVER_DIR || 'drpedram-app/' }}
+          state-name: ftp-state-3
 
       - name: Smoke test after deploy (site liveness)
         continue-on-error: true
