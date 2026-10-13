@@ -334,3 +334,22 @@ Work Log:
 Stage Summary:
 - سایت با یک دستور در ترمینال cPanel بالا می‌آید (بدون FTP)؛ بوت‌استرپ PG در اولین بوت جداول را خودکار می‌سازد
 - رفع دائمی CI برای بعد: کاربر پسورد FTP را در cPanel ریست کند + یوزرنیم دقیق را تأیید کند → secret آپدیت → workflow_dispatch re-run
+
+---
+Task ID: 13
+Agent: Z.ai Code (main)
+Task: عیب‌یابی خطای FTP در دیپلوی خودکار و تعویض معماری به Pull-based
+
+Work Log:
+- ران‌های ۱ تا ۴ همگی با «530 Login authentication failed» شکست خورده بودند: FTP_HOST=ftp.drpedrambakhshaei.com به‌خاطر DNS قدیمی به سرور قبل (185.10.74.200) وصل می‌شد که اکانت deploy@ را ندارد
+- پسورد جدید FTP کاربر (Pedram@0142!@#) با PyNaCl در سکرت FTP_PASSWORD نوشته شد (204)
+- هاست‌نیم واقعی سرور جدید از کاربر گرفته شد: linux503.centraldnserver.com = 213.176.126.133 (سرور قدیمی 185.10.74.200 جدا است)
+- FTP_HOST به هاست‌نیم جدید آپدیت شد (204) و ران ۵ اجرا شد: بیلد/باندل/آرتیفکت ۱۰۰٪ سبز، ولی FTP سه بار «Timeout (control socket)» داد
+- تست پورت از سندباکس: TCP:21 سرور جدید باز است ولی سشن FTP روی مسیر خارج←ایران گیر می‌کند؛ نتیجه: FTP از گیت‌هاب به این هاست غیرقابل‌اتکاست
+- معماری معکوس شد: وركفلو حالا به‌جای FTP، هر بیلد را به‌عنوان GitHub Release منتشر می‌کند (tag زمانی + --latest) و اسکریپت scripts/host-deploy.sh روی خود هاست باندل را از releases/latest/download می‌کشد و Passenger را ری‌استارت می‌کند (مسیر ایران←گیت‌هاب پایدار است — دانلود ۹۶MB قبلاً با موفقیت انجام شده)
+- تست HTTPS سرور جدید با Host header: صفحه پیش‌فرض cPanel برگشت ⇒ اپ Node.js هنوز به دامنه اصلی متصل نیست (Application URL باید drpedrambakhshaei.com ریشه باشد) — به کاربر اطلاع داده شد
+
+Stage Summary:
+- دیپلوی دیگر به FTP و سکرت‌های FTP وابسته نیست؛ سکرت‌های FTP فعلی بی‌استفاده‌اند (حذف نشدند)
+- فلو نهایی: push → Actions بیلد → Release؛ کرون هاست هر ۲۰ دقیقه چک و pull می‌کند → restart.txt → Passenger
+- pending: راه‌اندازی deploy.sh + cron روی هاست توسط کاربر، اتصال Application URL به دامنه اصلی، تست مرورگر، سپس تغییر DNS

@@ -9,6 +9,10 @@ concurrency:
   group: deploy-production
   cancel-in-progress: false
 
+# انتشار Release نیاز به مجوز نوشتن contents دارد
+permissions:
+  contents: write
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
@@ -57,67 +61,25 @@ jobs:
           path: deploy-bundle.tar.gz
           retention-days: 7
 
-      # شبکه بین گیت‌هاب و هاست ایران نوسان دارد — ۳ بار تلاش با فاصله
-      - name: Deploy via FTP (attempt 1)
-        id: ftp1
-        continue-on-error: true
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT || 21 }}
-          protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
-          security: loose
-          local-dir: bundle/
-          server-dir: ${{ secrets.FTP_SERVER_DIR || 'drpedram-app/' }}
-          state-name: ftp-state-1
+      # فایروال/مسیر بین‌الملل هاست ایران، سشن FTP از گیت‌هاب را قطع می‌کند (timeout کنترل)
+      # راه‌حل: معماری Pull — گیت‌هاب فقط Release منتشر می‌کند و کرون روی خود هاست،
+      # باندل را از releases/latest/download می‌کشد (مسیر ایران←گیت‌هاب پایدار است)
+      - name: Publish bundle to GitHub Releases (host pulls this)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="deploy-$(date -u +%Y%m%d-%H%M%S)"
+          gh release create "$TAG" deploy-bundle.tar.gz \
+            --title "deploy ${GITHUB_SHA::7}" \
+            --notes "auto build of $GITHUB_SHA" \
+            --latest
+          echo "published: https://github.com/vahidaskari1365/drpedrambakhshaei/releases/latest"
 
-      - name: Cooldown before retry
-        if: steps.ftp1.outcome == 'failure'
-        run: sleep 40
-
-      - name: Deploy via FTP (attempt 2)
-        id: ftp2
-        if: steps.ftp1.outcome == 'failure'
-        continue-on-error: true
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT || 21 }}
-          protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
-          security: loose
-          local-dir: bundle/
-          server-dir: ${{ secrets.FTP_SERVER_DIR || 'drpedram-app/' }}
-          state-name: ftp-state-2
-
-      - name: Cooldown before final retry
-        if: steps.ftp2.outcome == 'failure'
-        run: sleep 60
-
-      - name: Deploy via FTP (attempt 3 - final)
-        id: ftp3
-        if: steps.ftp2.outcome == 'failure'
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT || 21 }}
-          protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
-          security: loose
-          local-dir: bundle/
-          server-dir: ${{ secrets.FTP_SERVER_DIR || 'drpedram-app/' }}
-          state-name: ftp-state-3
-
-      - name: Smoke test after deploy (site liveness)
+      - name: Smoke test (best-effort — foreign route to Iran is throttled)
         continue-on-error: true
         run: |
-          sleep 25
-          SRV_IP=$(getent hosts ftp.drpedrambakhshaei.com | awk '{print $1}' | head -1)
+          sleep 15
+          SRV_IP=$(getent hosts linux503.centraldnserver.com | awk '{print $1}' | head -1)
           echo "server ip: $SRV_IP"
-          echo "-- via domain:"; curl -sk -m 30 -o /dev/null -w "HTTP %{http_code}\n" https://drpedrambakhshaei.com/ || true
-          echo "-- via server IP with Host header:"; curl -sk -m 30 -o /dev/null -w "HTTP %{http_code}\n" --resolve drpedrambakhshaei.com:443:$SRV_IP https://drpedrambakhshaei.com/ || true
-          echo "-- plain HTTP via IP:"; curl -s -m 30 -o /dev/null -w "HTTP %{http_code}\n" --resolve drpedrambakhshaei.com:80:$SRV_IP http://drpedrambakhshaei.com/ || true
+          curl -sk -m 12 --resolve drpedrambakhshaei.com:443:$SRV_IP https://drpedrambakhshaei.com/ -o /dev/null -w "https via IP: %{http_code}\n" || true
+          curl -s -m 12 --resolve drpedrambakhshaei.com:80:$SRV_IP http://drpedrambakhshaei.com/ -o /dev/null -w "http via IP: %{http_code}\n" || true
