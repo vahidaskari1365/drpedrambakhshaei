@@ -2,13 +2,13 @@
 
 /**
  * موتور ویرایشگر فرم عمومی — همه مجموعه‌های محتوا با همین سازوکار ویرایش می‌شوند.
- * انواع فیلد: متن، متن بلند، عدد، تصویر (با پیش‌نمایش)، فهرست رشته،
+ * انواع فیلد: متن، متن بلند، عدد، تصویر (با پیش‌نمایش + آپلود از کامپیوتر)، فهرست رشته،
  * فهرست جفت کلید-مقدار، JSON و فهرست اشیا (بازگشتی با زیرفیلدها)
  */
 import * as React from "react";
-import { Plus, Trash2, ChevronUp, ChevronDown, Image as ImageIcon, Braces } from "lucide-react";
+import { Plus, Trash2, ChevronUp, ChevronDown, Image as ImageIcon, Braces, Upload, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { faNum } from "./shared";
+import { faNum, getKey } from "./shared";
 
 /* ─────────── تعاریف فیلد ─────────── */
 
@@ -116,20 +116,89 @@ export function JsonInput({ value, onChange, label }: { value: unknown; onChange
   );
 }
 
+/**
+ * فیلد تصویر — پیش‌نمایش + ورودی نشانی + آپلود مستقیم از کامپیوتر/موبایل
+ * تصویر آپلودشده در کتابخانه رسانه ذخیره و نشانی /api/media/<id> برمی‌گردد.
+ */
 function ImageInput({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [busy, setBusy] = React.useState(false);
+  const [err, setErr] = React.useState<string | null>(null);
+  const fileRef = React.useRef<HTMLInputElement>(null);
+
+  const upload = async (file: File) => {
+    setBusy(true);
+    setErr(null);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        headers: { "x-admin-key": getKey() },
+        body: fd,
+      });
+      const data = (await res.json()) as { url?: string; error?: string };
+      if (!res.ok || !data.url) throw new Error(data.error || "آپلود ناموفق بود");
+      onChange(data.url);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "آپلود ناموفق بود");
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
-    <div className="flex items-center gap-3">
-      <div className="relative h-16 w-20 shrink-0 overflow-hidden rounded-xl border border-white/12 bg-white/5">
-        {value ? (
-          <img src={value} alt="پیش‌نمایش" className="h-full w-full object-cover" />
-        ) : (
-          <ImageIcon className="absolute inset-0 m-auto h-5 w-5 text-white/25" />
-        )}
+    <div>
+      <div className="flex items-center gap-3">
+        <div className="relative h-16 w-20 shrink-0 overflow-hidden rounded-xl border border-white/12 bg-white/5">
+          {value ? (
+            <img src={value} alt="پیش‌نمایش" className="h-full w-full object-cover" />
+          ) : (
+            <ImageIcon className="absolute inset-0 m-auto h-5 w-5 text-white/25" />
+          )}
+          {busy && (
+            <span className="absolute inset-0 flex items-center justify-center bg-black/55 backdrop-blur-sm">
+              <Loader2 className="h-4 w-4 animate-spin text-teal-200" />
+            </span>
+          )}
+        </div>
+        <div className="flex-1">
+          <TextInput value={value} onChange={onChange} dir="ltr" placeholder="/uploads/... یا /api/media/..." />
+          <div className="mt-1.5 flex items-center gap-2">
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) upload(f);
+                e.target.value = "";
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={busy}
+              className="flex items-center gap-1.5 rounded-lg bg-gradient-to-l from-teal-400/90 to-teal-300/90 px-3 py-1.5 text-[10.5px] font-black text-[oklch(0.2_0.03_205)] transition-all hover:brightness-110 disabled:opacity-50 cursor-pointer"
+            >
+              {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Upload className="h-3 w-3" />}
+              {busy ? "در حال آپلود..." : "آپلود از دستگاه"}
+            </button>
+            {value && (
+              <button
+                type="button"
+                onClick={() => onChange("")}
+                className="rounded-lg border border-white/12 px-2.5 py-1.5 text-[10.5px] font-bold text-white/45 transition-colors hover:bg-white/8 hover:text-white cursor-pointer"
+              >
+                پاک کردن
+              </button>
+            )}
+          </div>
+        </div>
       </div>
-      <div className="flex-1">
-        <TextInput value={value} onChange={onChange} dir="ltr" placeholder="/uploads/..." />
-        <p className="mt-1 text-[10px] text-white/35">مسیر تصویر از پوشه public</p>
-      </div>
+      <p className={cn("mt-1 text-[10px]", err ? "text-red-300" : "text-white/35")}>
+        {err ?? "تصویر از کامپیوتر آپلود کنید یا مسیر آن را دستی وارد کنید"}
+      </p>
     </div>
   );
 }

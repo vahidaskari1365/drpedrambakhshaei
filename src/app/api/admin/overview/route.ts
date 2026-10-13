@@ -73,6 +73,18 @@ export async function GET(req: Request) {
       if (idx !== undefined) days[idx].activity += 1;
     }
 
+    // ─── بازدیدکنندگان سایت (برای نوار داشبورد) ───
+    const startToday = new Date();
+    startToday.setHours(0, 0, 0, 0);
+    const weekAgo = new Date(startToday);
+    weekAgo.setDate(weekAgo.getDate() - 6);
+    const [visitToday, visitWeek, visitAll, visitUniques] = await Promise.all([
+      db.visit.count({ where: { createdAt: { gte: startToday } } }),
+      db.visit.count({ where: { createdAt: { gte: weekAgo } } }),
+      db.visit.count(),
+      db.visit.findMany({ where: { vid: { not: "" } }, distinct: ["vid"], select: { vid: true } }),
+    ]);
+
     // ─── سئو ───
     let sitemapUrls = 0;
     try {
@@ -95,6 +107,12 @@ export async function GET(req: Request) {
       totalWords,
       volume,
       overrides,
+      visits: {
+        today: visitToday,
+        week: visitWeek,
+        total: visitAll,
+        unique: visitUniques.length,
+      },
       requests: {
         total: requests.length,
         ...byStatus,

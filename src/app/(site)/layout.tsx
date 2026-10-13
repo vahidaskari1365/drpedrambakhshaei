@@ -1,6 +1,7 @@
 import { Chrome } from "@/components/site/chrome";
 import { HashRedirect } from "@/components/site/hash-redirect";
 import { ContentProvider } from "@/components/site/content-provider";
+import { VisitTracker } from "@/components/site/visit-tracker";
 import { JsonLd, physicianJsonLd, websiteJsonLd } from "@/lib/seo";
 import { getMergedContent } from "@/lib/content-store";
 
@@ -24,6 +25,7 @@ export default async function SiteLayout({
       <ContentProvider content={content}>
         <Chrome>{children}</Chrome>
       </ContentProvider>
+      <VisitTracker />
       <HashRedirect />
     </>
   );

@@ -84,6 +84,7 @@ export interface Overview {
   totalWords: number;
   volume: { key: string; label: string; words: number }[];
   overrides: { key: string; updatedAt: string; size: number }[];
+  visits: { today: number; week: number; total: number; unique: number };
   requests: {
     total: number;
     new: number;
@@ -106,6 +107,28 @@ export interface TestRow {
   pass: boolean;
   detail: string;
   ms: number;
+}
+
+/** خروجی تب بازدیدها — /api/admin/analytics */
+export interface Analytics {
+  generatedAt: string;
+  totals: { today: number; yesterday: number; week: number; month: number; all: number; unique: number };
+  daily: { iso: string; label: string; visits: number; uniques: number }[];
+  topPaths: { path: string; label: string; count: number }[];
+  devices: { label: string; value: number }[];
+  hours: { hour: number; label: string; count: number }[];
+  referrers: { label: string; count: number }[];
+  recent: { path: string; label: string; device: string; referrer: string; createdAt: string }[];
+}
+
+/** خروجی کتابخانه رسانه — /api/admin/media */
+export interface MediaRow {
+  id: string;
+  filename: string;
+  mime: string;
+  size: number;
+  url: string;
+  createdAt: string;
 }
 
 export interface TestResult {

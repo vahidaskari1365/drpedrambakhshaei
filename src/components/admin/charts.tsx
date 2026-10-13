@@ -15,6 +15,8 @@ import {
   PieChart,
   Pie,
   Cell,
+  BarChart,
+  Bar,
   RadialBarChart,
   RadialBar,
   PolarAngleAxis,
@@ -154,6 +156,112 @@ export function VolumeBars({ data, max }: { data: { label: string; words: number
           </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+/* ─────────── نمودارهای بازدید ─────────── */
+
+/** نمودار ساحتی بازدید ۳۰ روزه — بازدید صفحه و بازدیدکننده یکتا */
+export function VisitsArea({ data }: { data: { label: string; visits: number; uniques: number }[] }) {
+  return (
+    <div dir="ltr" className="h-[260px] w-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
+          <defs>
+            <linearGradient id="gVisits" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={TEAL} stopOpacity={0.5} />
+              <stop offset="100%" stopColor={TEAL} stopOpacity={0.02} />
+            </linearGradient>
+            <linearGradient id="gUniq" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={GOLD} stopOpacity={0.45} />
+              <stop offset="100%" stopColor={GOLD} stopOpacity={0.02} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 6" stroke="rgba(255,255,255,0.07)" vertical={false} />
+          <XAxis dataKey="label" tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 10 }} tickLine={false} axisLine={false} interval={4} />
+          <YAxis tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 10 }} tickLine={false} axisLine={false} width={34} allowDecimals={false} />
+          <Tooltip content={<ChartTooltip />} />
+          <Area type="monotone" dataKey="visits" name="بازدید صفحه" stroke={TEAL} strokeWidth={2.5} fill="url(#gVisits)" />
+          <Area type="monotone" dataKey="uniques" name="بازدیدکننده یکتا" stroke={GOLD} strokeWidth={2} fill="url(#gUniq)" />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+/** میله‌های افقی صفحات پربازدید */
+export function PagesBars({ data }: { data: { label: string; count: number }[] }) {
+  return (
+    <div dir="ltr" className="h-[280px] w-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} layout="vertical" margin={{ top: 4, right: 18, left: 4, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 6" stroke="rgba(255,255,255,0.07)" horizontal={false} />
+          <XAxis type="number" tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 10 }} tickLine={false} axisLine={false} allowDecimals={false} />
+          <YAxis
+            type="category"
+            dataKey="label"
+            width={118}
+            tick={{ fill: "rgba(255,255,255,0.62)", fontSize: 10.5 }}
+            tickLine={false}
+            axisLine={false}
+          />
+          <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(255,255,255,0.04)" }} />
+          <Bar dataKey="count" name="بازدید" radius={[0, 8, 8, 0]} barSize={16}>
+            {data.map((_, i) => (
+              <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+/** دونات عمومی — توزیع دستگاه‌ها یا هر دسته دیگری */
+export function SimpleDonut({ data, unit = "بازدید" }: { data: { label: string; value: number }[]; unit?: string }) {
+  const total = data.reduce((a, d) => a + d.value, 0) || 1;
+  return (
+    <div className="relative h-[240px] w-full" dir="ltr">
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+          <Tooltip content={<ChartTooltip />} />
+          <Pie
+            data={data}
+            dataKey="value"
+            nameKey="label"
+            innerRadius="62%"
+            outerRadius="86%"
+            paddingAngle={3}
+            strokeWidth={0}
+          >
+            {data.map((_, i) => (
+              <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+            ))}
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+      <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+        <p className="text-2xl font-black text-white tabular-nums">{faNum(total)}</p>
+        <p className="text-[11px] text-white/50">{unit}</p>
+      </div>
+    </div>
+  );
+}
+
+/** میله‌های عمودی توزیع ساعتی بازدید */
+export function HoursBars({ data }: { data: { label: string; count: number }[] }) {
+  return (
+    <div dir="ltr" className="h-[220px] w-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 6" stroke="rgba(255,255,255,0.07)" vertical={false} />
+          <XAxis dataKey="label" tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 9 }} tickLine={false} axisLine={false} interval={2} />
+          <YAxis tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 10 }} tickLine={false} axisLine={false} width={30} allowDecimals={false} />
+          <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(255,255,255,0.04)" }} />
+          <Bar dataKey="count" name="بازدید" radius={[6, 6, 0, 0]} fill={TEAL} />
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   );
 }

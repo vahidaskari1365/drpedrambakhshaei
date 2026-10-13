@@ -6,7 +6,7 @@
  */
 import * as React from "react";
 import Image from "next/image";
-import { Save, RotateCcw, Loader2, Plus, FileText, ExternalLink, Sparkles } from "lucide-react";
+import { Save, RotateCcw, Loader2, Plus, FileText, ExternalLink, Sparkles, Trash2, ChevronUp, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import type { BlogArticle } from "@/lib/blog-data";
@@ -15,6 +15,7 @@ import { api, faNum } from "./shared";
 import { FieldsEditor, JsonInput } from "./fields";
 
 const META_FIELDS = [
+  { k: "slug", label: "نشانی مقاله (slug) — انگلیسی و بدون فاصله", type: "text" as const },
   { k: "metaTitle", label: "عنوان سئو (Title)", type: "text" as const },
   { k: "h1", label: "تیتر اصلی مقاله (H1)", type: "text" as const },
   { k: "kicker", label: "برچسب بالای تیتر", type: "text" as const },
@@ -39,11 +40,18 @@ export function BlogTab({
   const [idx, setIdx] = React.useState(0);
   const [dirty, setDirty] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
+  const [confirmDel, setConfirmDel] = React.useState<number | null>(null);
 
   React.useEffect(() => {
     setBlog(content.blog);
     setDirty(false);
   }, [content]);
+
+  React.useEffect(() => {
+    if (confirmDel === null) return;
+    const t = setTimeout(() => setConfirmDel(null), 3000);
+    return () => clearTimeout(t);
+  }, [confirmDel]);
 
   const article = blog[Math.min(idx, blog.length - 1)];
 
@@ -136,25 +144,77 @@ export function BlogTab({
         </button>
         <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-slim lg:flex-col lg:overflow-visible">
           {blog.map((a, i) => (
-            <button
+            <div
               key={a.slug}
-              type="button"
-              onClick={() => setIdx(i)}
               className={cn(
-                "flex shrink-0 items-center gap-3 rounded-2xl border p-2.5 text-right transition-all lg:w-full cursor-pointer",
+                "flex shrink-0 items-center gap-1 rounded-2xl border p-1.5 transition-all lg:w-full",
                 i === idx ? "border-teal-300/30 bg-teal-300/10" : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06]"
               )}
             >
-              <span className="relative h-12 w-16 shrink-0 overflow-hidden rounded-xl">
-                <Image src={a.cover} alt="" fill sizes="64px" className="object-cover" />
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="line-clamp-1 block text-[12px] font-bold text-white/85">{a.h1}</span>
-                <span className="mt-0.5 block text-[10px] text-white/40">
-                  {faNum(a.wordCount)} کلمه · {faNum(a.keywords.length)} کلیدواژه
+              <button type="button" onClick={() => setIdx(i)} className="flex min-w-0 flex-1 items-center gap-3 rounded-xl p-1 text-right cursor-pointer">
+                <span className="relative h-12 w-16 shrink-0 overflow-hidden rounded-xl">
+                  <Image src={a.cover} alt="" fill sizes="64px" className="object-cover" />
                 </span>
-              </span>
-            </button>
+                <span className="min-w-0 flex-1">
+                  <span className="line-clamp-1 block text-[12px] font-bold text-white/85">{a.h1}</span>
+                  <span className="mt-0.5 block text-[10px] text-white/40">
+                    {faNum(a.wordCount)} کلمه · {faNum(a.keywords.length)} کلیدواژه
+                  </span>
+                </span>
+              </button>
+              <div className="flex shrink-0 flex-col gap-0.5 lg:flex-row">
+                <button
+                  type="button"
+                  aria-label="انتقال به بالا"
+                  disabled={i === 0}
+                  onClick={() => {
+                    const next = [...blog];
+                    [next[i - 1], next[i]] = [next[i], next[i - 1]];
+                    setBlog(next);
+                    setDirty(true);
+                  }}
+                  className="flex h-6 w-6 items-center justify-center rounded-md text-white/30 transition-colors hover:bg-white/8 hover:text-white/70 disabled:opacity-20 cursor-pointer"
+                >
+                  <ChevronUp className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="انتقال به پایین"
+                  disabled={i === blog.length - 1}
+                  onClick={() => {
+                    const next = [...blog];
+                    [next[i + 1], next[i]] = [next[i], next[i + 1]];
+                    setBlog(next);
+                    setDirty(true);
+                  }}
+                  className="flex h-6 w-6 items-center justify-center rounded-md text-white/30 transition-colors hover:bg-white/8 hover:text-white/70 disabled:opacity-20 cursor-pointer"
+                >
+                  <ChevronDown className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="حذف مقاله"
+                  onClick={() => {
+                    if (confirmDel !== i) {
+                      setConfirmDel(i);
+                      return;
+                    }
+                    setConfirmDel(null);
+                    setBlog(blog.filter((_, j) => j !== i));
+                    setIdx(0);
+                    setDirty(true);
+                    toast(`«${a.h1.slice(0, 30)}» از بلاگ حذف شد — برای اعمال، ذخیره کنید`, "ok");
+                  }}
+                  className={cn(
+                    "flex h-6 items-center justify-center rounded-md px-1 transition-colors cursor-pointer",
+                    confirmDel === i ? "bg-red-400/25 text-red-200" : "text-white/30 hover:bg-red-400/15 hover:text-red-300"
+                  )}
+                  title={confirmDel === i ? "برای تأیید حذف دوباره بزنید" : "حذف مقاله"}
+                >
+                  {confirmDel === i ? <span className="text-[9px] font-black">تأیید؟</span> : <Trash2 className="h-3.5 w-3.5" />}
+                </button>
+              </div>
+            </div>
           ))}
         </div>
       </aside>

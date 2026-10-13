@@ -28,23 +28,30 @@ import {
   BellRing,
   CheckCircle2,
   XCircle,
+  Eye,
+  TrendingUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { SiteContent } from "@/lib/site-content";
 import { api, getKey, setKey, clearKey, faNum, faTimeAgo, type Overview } from "./shared";
 import { ActivityArea, DistributionDonut, ScoreRing, VolumeBars } from "./charts";
+import { Kpi } from "./kpi";
 import { ContentTab } from "./content-tab";
 import { BlogTab } from "./blog-tab";
 import { RequestsTab } from "./requests-tab";
 import { ReportsTab } from "./reports-tab";
 import { TestsTab } from "./tests-tab";
 import { ActivityTab } from "./activity-tab";
+import { AnalyticsTab } from "./analytics-tab";
+import { MediaTab } from "./media-tab";
 
-type TabId = "dashboard" | "content" | "blog" | "requests" | "reports" | "tests" | "activity";
+type TabId = "dashboard" | "analytics" | "content" | "media" | "blog" | "requests" | "reports" | "tests" | "activity";
 
 const TABS: { id: TabId; label: string; icon: typeof LayoutDashboard }[] = [
   { id: "dashboard", label: "داشبورد", icon: LayoutDashboard },
+  { id: "analytics", label: "بازدیدها", icon: Eye },
   { id: "content", label: "محتوای سایت", icon: Database },
+  { id: "media", label: "رسانه‌ها", icon: Images },
   { id: "blog", label: "مقالات بلاگ", icon: Newspaper },
   { id: "requests", label: "درخواست‌ها", icon: Inbox },
   { id: "reports", label: "گزارش‌ها", icon: BarChart3 },
@@ -151,56 +158,56 @@ function LoginGate({ onOk }: { onOk: () => void }) {
   );
 }
 
-/* ─────────── کارت KPI ─────────── */
-
-function Kpi({
-  icon: Icon,
-  label,
-  value,
-  sub,
-  tone = "teal",
-  delay = 0,
-}: {
-  icon: typeof LayoutDashboard;
-  label: string;
-  value: string;
-  sub?: string;
-  tone?: "teal" | "gold" | "violet";
-  delay?: number;
-}) {
-  const tones = {
-    teal: "from-teal-400/25 to-teal-400/5 text-teal-200",
-    gold: "from-gold/25 to-gold/5 text-amber-200",
-    violet: "from-violet-400/25 to-violet-400/5 text-violet-200",
-  } as const;
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 22 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
-      className="glass-dark relative overflow-hidden rounded-3xl p-4"
-    >
-      <div className="flex items-start justify-between gap-2">
-        <div>
-          <p className="text-[11px] font-bold text-white/45">{label}</p>
-          <p className="mt-1.5 text-2xl font-black tabular-nums text-white">{value}</p>
-          {sub && <p className="mt-0.5 text-[10.5px] text-white/35">{sub}</p>}
-        </div>
-        <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br", tones[tone])}>
-          <Icon className="h-4.5 w-4.5" />
-        </span>
-      </div>
-    </motion.div>
-  );
-}
-
 /* ─────────── داشبورد ─────────── */
 
 function Dashboard({ overview, content, go }: { overview: Overview; content: SiteContent; go: (t: TabId) => void }) {
   const c = overview.counts;
   const maxWords = Math.max(...overview.volume.map((v) => v.words), 1);
+  const v = overview.visits;
   return (
     <div className="space-y-5">
+      {/* نوار بازدیدکنندگان */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        className="glass-dark relative overflow-hidden rounded-3xl p-5"
+      >
+        <div className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-teal-300/8 blur-3xl" />
+        <div className="relative flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-400/25 to-gold/25">
+              <Eye className="h-5 w-5 text-teal-200" />
+            </span>
+            <div>
+              <h3 className="text-[14px] font-black text-white">بازدیدکنندگان سایت</h3>
+              <p className="mt-0.5 text-[10.5px] text-white/40">آمار زنده از ورود واقعی کاربران به صفحات</p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            {[
+              { label: "امروز", value: v.today },
+              { label: "۷ روز اخیر", value: v.week },
+              { label: "کل بازدید", value: v.total },
+              { label: "بازدیدکننده یکتا", value: v.unique },
+            ].map((s) => (
+              <div key={s.label} className="text-center">
+                <p className="text-xl font-black tabular-nums text-white">{faNum(s.value)}</p>
+                <p className="text-[10px] font-bold text-white/40">{s.label}</p>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => go("analytics")}
+              className="flex items-center gap-1.5 rounded-xl border border-teal-300/30 bg-teal-300/10 px-4 py-2.5 text-[12px] font-black text-teal-100 transition-colors hover:bg-teal-300/20 cursor-pointer"
+            >
+              <TrendingUp className="h-4 w-4" />
+              گزارش گرافیکی بازدید ←
+            </button>
+          </div>
+        </div>
+      </motion.section>
+
       {/* KPIها */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
         <Kpi icon={Scissors} label="خدمات" value={faNum(c.services)} sub={`${faNum(c.brands)} برند ایمپلنت`} delay={0} />
@@ -553,9 +560,11 @@ export function AdminApp() {
                   transition={{ duration: 0.3 }}
                 >
                   {tab === "dashboard" && <Dashboard overview={overview} content={content} go={setTab} />}
+                  {tab === "analytics" && <AnalyticsTab toast={toast} refreshKey={dataVersion} />}
                   {tab === "content" && (
                     <ContentTab content={content} overrides={overrides} onSaved={setContent} toast={toast} />
                   )}
+                  {tab === "media" && <MediaTab toast={toast} />}
                   {tab === "blog" && <BlogTab content={content} onSaved={setContent} toast={toast} />}
                   {tab === "requests" && <RequestsTab toast={toast} refreshKey={dataVersion} />}
                   {tab === "reports" && <ReportsTab overview={overview} content={content} />}

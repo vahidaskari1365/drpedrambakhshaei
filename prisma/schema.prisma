@@ -61,3 +61,35 @@ model ActivityLog {
   summary   String
   createdAt DateTime @default(now())
 }
+
+/**
+ * آمار بازدیدکنندگان سایت — هر رکورد یک بازدید صفحه
+ * vid = شناسه یکتای بازدیدکننده (localStorage) برای محاسبه بازدیدکننده یکتا
+ * device = desktop | mobile | tablet
+ */
+model Visit {
+  id        String   @id @default(cuid())
+  path      String
+  vid       String   @default("")
+  referrer  String   @default("")
+  device    String   @default("desktop")
+  ua        String   @default("")
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([path])
+  @@index([vid])
+}
+
+/**
+ * رسانه‌های آپلودشده از پنل ادمین (مثل کتابخانه رسانه وردپرس)
+ * تصویر به‌صورت base64 در دیتابیس ذخیره و از /api/media/<id> سرو می‌شود
+ */
+model Media {
+  id        String   @id @default(cuid())
+  filename  String
+  mime      String
+  size      Int
+  data      String
+  createdAt DateTime @default(now())
+}
