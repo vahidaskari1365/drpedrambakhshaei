@@ -102,8 +102,9 @@ function LoginGate({ onOk }: { onOk: () => void }) {
     try {
       await api("/api/admin/overview");
       onOk();
-    } catch {
-      setError("کلید مدیریت درست نیست");
+    } catch (e) {
+      // پیام دقیق سرور (خطای کلید، قفل IP یا ...) نمایش داده می‌شود
+      setError(e instanceof Error ? e.message : "کلید مدیریت درست نیست");
       clearKey();
     } finally {
       setBusy(false);
@@ -149,9 +150,10 @@ function LoginGate({ onOk }: { onOk: () => void }) {
           ورود به پنل
         </button>
         <p className="mt-4 text-center text-[10.5px] leading-5 text-white/30">
-          کلید پیش‌فرض این نسخه: <b className="text-white/50" dir="ltr">drpedram</b>
+          <ShieldCheck className="mr-1 inline h-3 w-3 align-[-2px]" />
+          کلید مدیریت محرمانه است و فقط نزد مدیر سایت
           <br />
-          (در سرور واقعی با متغیر محیطی ADMIN_KEY تغییر می‌کند)
+          بعد از ۵ تلاش ناموفق، ورود موقتاً قفل می‌شود
         </p>
       </motion.form>
     </div>

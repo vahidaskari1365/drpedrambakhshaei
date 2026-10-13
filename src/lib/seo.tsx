@@ -343,12 +343,24 @@ export function crumbFor(path: string) {
   return found ? { name: found.label, path } : { name: path, path };
 }
 
-/** JSON-LD را به تگ اسکریپت تبدیل می‌کند */
+/**
+ * JSON-LD را به تگ اسکریپت تبدیل می‌کند — با Escape کامل ضد XSS:
+ * محتوای ویرایش‌شده از پنل (عنوان‌ها، نظرات و ...) حتی اگر «</script>» یا
+ * کاراکترهای یونیکد خطرناک داشته باشند، هرگز از تگ اسکریپت خارج نمی‌شوند.
+ */
+function safeJsonLd(data: object): string {
+  return JSON.stringify(data)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+}
+
 export function JsonLd({ data }: { data: object }) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
 }

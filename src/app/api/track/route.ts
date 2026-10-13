@@ -1,14 +1,19 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 /**
  * ثبت بازدید صفحه — بدون احراز هویت، سبک و مقاوم
  * مسیرهای پنل ادمین ثبت نمی‌شوند تا آمار سایت واقعی بماند.
+ * ضد Flood: حداکثر ۶۰ بازدید در دقیقه از هر IP — بالاتر از الگوی انسانی است.
  */
 export async function POST(req: Request) {
   try {
+    const rl = rateLimit(req, "track", 60, 60 * 1000);
+    if (!rl.ok) return NextResponse.json({ ok: false });
+
     const body = (await req.json().catch(() => null)) as {
       path?: unknown;
       vid?: unknown;

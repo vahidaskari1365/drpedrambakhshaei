@@ -25,6 +25,10 @@ export async function PUT(req: Request) {
     if (!body.key || body.data === undefined) {
       return NextResponse.json({ error: "کلید یا داده ارسال نشده" }, { status: 400 });
     }
+    // فقط کلیدهای شناخته‌شده مجموعه‌های محتوایی مجازند — ضد آلودگی دیتابیس
+    if (!(body.key in CONTENT_LABELS)) {
+      return NextResponse.json({ error: "کلید محتوای ناشناخته" }, { status: 400 });
+    }
     const meta = await saveOverride(body.key, body.data, body.summary);
     const content = await getMergedContent();
     return NextResponse.json({

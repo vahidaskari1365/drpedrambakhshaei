@@ -16,6 +16,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
         "Content-Type": row.mime || "image/jpeg",
         "Content-Length": String(bytes.byteLength),
         "Cache-Control": "public, max-age=31536000, immutable",
+        // ضد اسنیفینگ و ضد اجرای اسکریپت داخل تصاویر (دفاع عمقی XSS)
+        "X-Content-Type-Options": "nosniff",
+        "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+        "Content-Disposition": "inline",
       },
     });
   } catch {

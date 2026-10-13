@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { rateLimit } from "@/lib/rate-limit";
 
 const schema = z.object({
   name: z.string().trim().min(2, "نام وارد شده کوتاه است").max(120),
@@ -12,27 +13,15 @@ const schema = z.object({
   message: z.string().trim().max(2000).optional(),
 });
 
-// شماره‌های تکراری در بازه کوتاه را محدود می‌کند (ضد اسپم ساده)
-const rate = new Map<string, { count: number; reset: number }>();
-const LIMIT = 5;
-const WINDOW = 10 * 60 * 1000;
-
+// ضد اسپم: حداکثر ۵ درخواست در ۱۰ دقیقه از هر IP (موتور مشترک با سقف حافظه)
 export async function POST(req: Request) {
   try {
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
-    const now = Date.now();
-    const entry = rate.get(ip);
-    if (entry && now < entry.reset) {
-      if (entry.count >= LIMIT) {
-        return NextResponse.json(
-          { error: "تعداد درخواست‌ها زیاد است؛ کمی بعد تلاش کنید" },
-          { status: 429 }
-        );
-      }
-      entry.count += 1;
-    } else {
-      rate.set(ip, { count: 1, reset: now + WINDOW });
+    const rl = rateLimit(req, "contact", 5, 10 * 60 * 1000);
+    if (!rl.ok) {
+      return NextResponse.json(
+        { error: "تعداد درخواست‌ها زیاد است؛ کمی بعد تلاش کنید" },
+        { status: 429, headers: { "Retry-After": String(rl.retryAfterSec) } }
+      );
     }
 
     const body = await req.json();
