@@ -283,3 +283,20 @@ Stage Summary:
 - کل زیرساخت CI/CD آماده است: هر push به main = بیلد + آپلود + ری‌استارت خودکار روی هاست ایران
 - روی هاست فقط ۳ کار یک‌بار برای همیشه: ساخت Node.js App (startup=server.js، root=drpedram-app) + ۳ متغیر محیطی (NODE_ENV، DATABASE_URL، ADMIN_KEY) + ۳ secret گیت‌هاب
 - منتظر: توکن جدید گیت‌هاب (توکن قبلی باطل شده) + اکانت FTP برای secrets
+
+---
+Task ID: 12
+Agent: main
+Task: مهاجرت دیتابیس پروداکشن به PostgreSQL (به‌خواست کاربر) + راهنمای قدم‌به‌قدم cPanel
+
+Work Log:
+- پیام کاربر: «می‌خوام دیتابیس بسازیم توی هاست؛ مرحله‌به‌مرحله بگو چیکار کنم» — دیتابیس PostgreSQL روی هاست ساخته شود
+- src/lib/db-bootstrap.ts دومُداله شد: postgresql:// → ساخت خودکار همه ۷ جدول با DDL استاندارد Prisma (CREATE TABLE IF NOT EXISTS) در اولین اجرای سرور روی هاست + پاکسازی بازدید ۱۲۰روزه با syntax PG؛ file: → مسیر قبلی SQLite برای توسعه سندباکس (قالب + WAL) — صفر دستور SQL دستی روی هاست
+- deploy.yml: گام جدید sed سوییچ provider به postgresql قبل از prisma generate + بیلد (توسعه sqlite می‌ماند، پروداکشن PG)؛ حذف گام‌های template.db/db-push از CI (دیگر لازم نیست — بوت‌استرپ ران‌تایم خودش جداول می‌سازد)؛ DATABASE_URL ساختگی برای بیلد
+- تأیید grep: تنها $queryRawهای کد در health.ts (SELECT 1 عمومی) و db-bootstrap است — هیچ sqlite-ism دیگری در اپ نیست؛ scripts/seed-visits فقط توسعه‌ای است
+- نصب PostgreSQL در سندباکس ممکن نشد (sudo لازم) → تست ران‌تایم PG با اولین اجرای workflow روی هاست انجام می‌شود؛ DDL مطابق خروجی استاندارد prisma db push برای PG است
+
+Stage Summary:
+- معماری نهایی: توسعه = SQLite سندباکس (پیش‌نمایش پایدار) | پروداکشن = PostgreSQL هاست با بوت‌استرپ خودکار جداول
+- کاربر باید در cPanel: دیتابیس+یوزر PG بسازد، Node.js App (startup=server.js, root=drpedram-app)، ۳ env var، و اکانت FTP اختصاصی به مسیر drpedram-app بسازد
+- DATABASE_URL پروداکسشن: postgresql://user:pass@localhost:5432/dbname?connection_limit=5

@@ -25,16 +25,17 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Prepare database template (schema only, no data)
+      # محیط توسعه با SQLite کار می‌کند؛ پروداکشن (هاست ایران) با PostgreSQL
+      - name: Switch Prisma to PostgreSQL (production)
         run: |
-          mkdir -p db
-          export DATABASE_URL="file:$PWD/db/template.db"
-          bunx prisma db push --skip-generate --accept-data-loss
-          bunx prisma generate
+          sed -i 's/provider = "sqlite"/provider = "postgresql"/' prisma/schema.prisma
+          grep -n 'provider' prisma/schema.prisma
 
-      - name: Build (standalone bundle)
+      - name: Prisma generate + Build (standalone bundle)
+        env:
+          DATABASE_URL: postgresql://build:build@localhost:5432/build
         run: |
-          export DATABASE_URL="file:$PWD/db/template.db"
+          bunx prisma generate
           bun run build
           test -f .next/standalone/server.js || { echo "standalone output missing"; exit 1; }
           test -d .next/standalone/.next/static || { echo "static assets missing"; exit 1; }
@@ -43,11 +44,8 @@ jobs:
       - name: Assemble deploy bundle
         run: |
           rm -rf bundle
-          mkdir -p bundle
+          mkdir -p bundle/tmp
           cp -a .next/standalone/. bundle/
-          mkdir -p bundle/db bundle/tmp
-          cp -f db/template.db bundle/db/template.db
-          rm -f bundle/db/custom.db bundle/db/custom.db-journal bundle/db/custom.db-wal bundle/db/custom.db-shm
           date +%s > bundle/tmp/restart.txt
           tar -czf deploy-bundle.tar.gz -C bundle .
           echo "files: $(find bundle -type f | wc -l) | size: $(du -sh bundle | cut -f1) | tarball: $(du -sh deploy-bundle.tar.gz | cut -f1)"
