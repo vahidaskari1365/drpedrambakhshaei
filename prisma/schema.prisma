@@ -93,3 +93,63 @@ model Media {
   data      String
   createdAt DateTime @default(now())
 }
+
+/**
+ * مقاله‌های منتشرشده از مسیر خودکار (ایجنت محتوا) یا API انتشار
+ * id = slug یکتا؛ upsert بر اساس آن یعنی انتشار تکراری = به‌روزرسانی
+ * article = JSON کامل BlogArticle برای رندر بدون بیلد مجدد
+ */
+model BlogPost {
+  id          String   @id
+  title       String
+  description String   @default("")
+  published   Boolean  @default(true)
+  publishedAt DateTime @default(now())
+  tags        String   @default("[]")
+  keywords    String   @default("[]")
+  readingTime Int      @default(5)
+  coverImage  String   @default("")
+  article     String   @default("{}")
+  contentHash String   @default("")
+  source      String   @default("agent")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([publishedAt])
+}
+
+/**
+ * دفتر اجرای ایجنت‌ها — job history (الگوی OpenClaw Automations)
+ * هر اجرا یک رکورد؛ داشبورد پنل از همین سوخت می‌گیرد
+ */
+model AgentRun {
+  id         String   @id @default(cuid())
+  agent      String
+  status     String
+  trigger    String   @default("manual")
+  summary    String   @default("")
+  details    String   @default("{}")
+  durationMs Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@index([agent, createdAt])
+}
+
+/** بانک ایده‌های محتوایی — صف کار ایجنت ۱ (rotation با priority) */
+model TopicIdea {
+  id        String    @id @default(cuid())
+  title     String
+  angle     String    @default("")
+  keywords  String    @default("[]")
+  priority  Int       @default(50)
+  used      Boolean   @default(false)
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+/** تنظیمات ایجنت‌ها — تک‌رکورد با id ثابت "agents" */
+model AgentConfig {
+  id        String   @id @default("agents")
+  data      String   @default("{}")
+  updatedAt DateTime @updatedAt
+}

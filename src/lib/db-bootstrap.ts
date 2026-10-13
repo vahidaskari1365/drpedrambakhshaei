@@ -70,6 +70,49 @@ CREATE TABLE IF NOT EXISTS "Media" (
   "data" TEXT NOT NULL,
   "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+CREATE TABLE IF NOT EXISTS "BlogPost" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "title" TEXT NOT NULL,
+  "description" TEXT NOT NULL DEFAULT '',
+  "published" BOOLEAN NOT NULL DEFAULT true,
+  "publishedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "tags" TEXT NOT NULL DEFAULT '[]',
+  "keywords" TEXT NOT NULL DEFAULT '[]',
+  "readingTime" INTEGER NOT NULL DEFAULT 5,
+  "coverImage" TEXT NOT NULL DEFAULT '',
+  "article" TEXT NOT NULL DEFAULT '{}',
+  "contentHash" TEXT NOT NULL DEFAULT '',
+  "source" TEXT NOT NULL DEFAULT 'agent',
+  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updatedAt" TIMESTAMP(3) NOT NULL
+);
+CREATE INDEX IF NOT EXISTS "BlogPost_publishedAt_idx" ON "BlogPost"("publishedAt");
+CREATE TABLE IF NOT EXISTS "AgentRun" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "agent" TEXT NOT NULL,
+  "status" TEXT NOT NULL,
+  "trigger" TEXT NOT NULL DEFAULT 'manual',
+  "summary" TEXT NOT NULL DEFAULT '',
+  "details" TEXT NOT NULL DEFAULT '{}',
+  "durationMs" INTEGER NOT NULL DEFAULT 0,
+  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS "AgentRun_agent_createdAt_idx" ON "AgentRun"("agent", "createdAt");
+CREATE TABLE IF NOT EXISTS "TopicIdea" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "title" TEXT NOT NULL,
+  "angle" TEXT NOT NULL DEFAULT '',
+  "keywords" TEXT NOT NULL DEFAULT '[]',
+  "priority" INTEGER NOT NULL DEFAULT 50,
+  "used" BOOLEAN NOT NULL DEFAULT false,
+  "usedAt" TIMESTAMP(3),
+  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS "AgentConfig" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "data" TEXT NOT NULL DEFAULT '{}',
+  "updatedAt" TIMESTAMP(3) NOT NULL
+);
 `;
 
 export async function bootstrapDatabase(): Promise<void> {

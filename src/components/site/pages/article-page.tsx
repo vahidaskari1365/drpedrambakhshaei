@@ -272,26 +272,33 @@ function BlockRenderer({ block }: { block: ArticleBlock }) {
       // در ArticlePage قبل از رسیدن به اینجا با دیتای واقعی مقاله رندر می‌شوند
       return null;
     case "links":
-      return (
-        <div className="my-7 rounded-2xl border border-border/60 bg-card p-5">
-          <p className="mb-3.5 text-[14px] font-black">{block.title}</p>
-          <div className="grid gap-2.5 sm:grid-cols-3">
-            {block.links.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="group rounded-xl bg-background/70 p-4 transition-colors hover:bg-primary/5 cursor-pointer"
-              >
-                <span className="flex items-center gap-1.5 text-[13px] font-extrabold text-primary">
-                  {l.label}
-                  <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
-                </span>
-                <span className="mt-1 block text-[12px] leading-6 text-muted-foreground">{l.desc}</span>
-              </Link>
-            ))}
+      // مقاوم در برابر خروجی AI — آیتم‌های بدون href نادیده و url→href نرمال می‌شود
+      {
+        const safeLinks = (block.links ?? [])
+          .map((l) => ({ ...l, href: l.href ?? (l as { url?: string }).url ?? "" }))
+          .filter((l) => typeof l.href === "string" && l.href.startsWith("/"));
+        if (!safeLinks.length) return null;
+        return (
+          <div className="my-7 rounded-2xl border border-border/60 bg-card p-5">
+            <p className="mb-3.5 text-[14px] font-black">{block.title}</p>
+            <div className="grid gap-2.5 sm:grid-cols-3">
+              {safeLinks.map((l, i) => (
+                <Link
+                  key={`${l.href}-${i}`}
+                  href={l.href}
+                  className="group rounded-xl bg-background/70 p-4 transition-colors hover:bg-primary/5 cursor-pointer"
+                >
+                  <span className="flex items-center gap-1.5 text-[13px] font-extrabold text-primary">
+                    {l.label}
+                    <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
+                  </span>
+                  <span className="mt-1 block text-[12px] leading-6 text-muted-foreground">{l.desc}</span>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      );
+        );
+      }
     case "cta":
       return <CtaBox />;
     default:

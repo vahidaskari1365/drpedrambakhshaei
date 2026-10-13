@@ -30,6 +30,7 @@ import {
   XCircle,
   Eye,
   TrendingUp,
+  Bot,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { SiteContent } from "@/lib/site-content";
@@ -44,11 +45,13 @@ import { TestsTab } from "./tests-tab";
 import { ActivityTab } from "./activity-tab";
 import { AnalyticsTab } from "./analytics-tab";
 import { MediaTab } from "./media-tab";
+import { AgentsTab } from "./agents-tab";
 
-type TabId = "dashboard" | "analytics" | "content" | "media" | "blog" | "requests" | "reports" | "tests" | "activity";
+type TabId = "dashboard" | "agents" | "analytics" | "content" | "media" | "blog" | "requests" | "reports" | "tests" | "activity";
 
 const TABS: { id: TabId; label: string; icon: typeof LayoutDashboard }[] = [
   { id: "dashboard", label: "داشبورد", icon: LayoutDashboard },
+  { id: "agents", label: "ایجنت‌ها", icon: Bot },
   { id: "analytics", label: "بازدیدها", icon: Eye },
   { id: "content", label: "محتوای سایت", icon: Database },
   { id: "media", label: "رسانه‌ها", icon: Images },
@@ -580,6 +583,7 @@ export function AdminApp() {
                   transition={{ duration: 0.3 }}
                 >
                   {tab === "dashboard" && <Dashboard overview={overview} content={content} go={setTab} />}
+                  {tab === "agents" && <AgentsTab toast={toast} />}
                   {tab === "analytics" && <AnalyticsTab toast={toast} refreshKey={dataVersion} />}
                   {tab === "content" && (
                     <ContentTab content={content} overrides={overrides} onSaved={setContent} toast={toast} />

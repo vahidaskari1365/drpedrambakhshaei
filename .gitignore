@@ -63,3 +63,11 @@ prompt
 server.log
 # Skills directory
 /skills/tool-results/
+
+# خروجی بیلد release.sh (باندل‌های دیپلوی) — هرگز در گیت
+/release-out/
+*.tar.gz
+
+# کلون سنگین openclaw — فقط مرجع معماری، در ریپو نمی‌رود
+/skills/openclaw/
+/tool-results/

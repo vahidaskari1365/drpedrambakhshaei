@@ -10,6 +10,7 @@ import {
   type ContentKey,
   type SiteContent,
 } from "./site-content";
+import { listDbArticles } from "./blog/posts";
 
 export interface OverrideMeta {
   key: ContentKey;
@@ -45,15 +46,32 @@ export async function getOverridesMap(): Promise<{
   }
 }
 
-/** محتوای نهایی سایت = پیش‌فرض‌ها + بازنویسی‌های ادمین */
+/**
+ * محتوای نهایی سایت = پیش‌فرض‌ها + بازنویسی‌های ادمین + مقاله‌های دیتابیس (ایجنت/API)
+ * مقاله‌های دیتابیس با اسلاگ تکراری نادیده و بقیه بر اساس تاریخ جدیدترین مرتب می‌شوند
+ */
 export async function getMergedContent(): Promise<SiteContent> {
+  let merged: SiteContent;
   try {
     const { map } = await getOverridesMap();
-    return mergeContent(map);
+    merged = mergeContent(map);
   } catch (e) {
     console.error("[content-store] merge failed, using defaults:", e);
-    return mergeContent(null);
+    merged = mergeContent(null);
   }
+  try {
+    const dbPosts = await listDbArticles();
+    const slugs = new Set(merged.blog.map((a) => a.slug));
+    for (const post of dbPosts) {
+      if (!slugs.has(post.slug)) merged.blog.push(post);
+    }
+    if (dbPosts.length) {
+      merged.blog.sort((x, y) => (y.publishDate || "").localeCompare(x.publishDate || ""));
+    }
+  } catch (e) {
+    console.error("[content-store] db posts merge skipped:", e);
+  }
+  return merged;
 }
 
 /** ذخیره بازنویسی یک مجموعه + ثبت فعالیت */

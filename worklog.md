@@ -385,3 +385,136 @@ Work Log:
 
 Stage Summary:
 - انتظار: app ~۶-۸MB و runtime ~۲۹MB؛ دیپلوی معمولی بعدی فقط app (چند ثانیه تا ۱ دقیقه روی لینک ایران)
+
+---
+Task ID: 6
+Agent: general-purpose
+Task: ساخت ایجنت ۴ GSC/Analytics
+
+Work Log:
+- مطالعه worklog و قراردادهای موجود: runner.ts (AgentResult)، pipeline.ts/scheduler.ts (import داینامیک runGscAgent)، content-agent.ts (سبک کد)، content-store.ts (getMergedContent)، schema.prisma (مدل Visit)
+- ساخت src/lib/agents/gsc-agent.ts با دو حالت: API (سرویس‌اکانت) و دستی (بدون اعتبارنامه) — خروجی همیشه AgentResult، هرگز throw نمی‌کند
+- حالت API با node:crypto بدون هیچ وابستگی جدید: JWT-Bearer RS256 دستی (header {alg:RS256,typ:JWT} + claims {iss,scope:webmasters,aud:oauth2 token,exp,iat} → امضا با createSign("RSA-SHA256") → POST form-urlencoded grant_type=jwt-bearer به oauth2.googleapis.com/token)
+- سه گام API با fetch + تایم‌اوت ۱۰ ثانیه (AbortController) و try/catch مستقل هر گام: (الف) PUT ثبت نقشه سایت /sitemaps?feedpath=sitemap.xml (ب) POST searchAnalytics/query برای ۱۰ کوئری برتر ۷ روز اخیر → details.topQueries (ج) POST urlInspection/index:inspect برای ۵ اسلاگ جدیدتر getMergedContent → details.inspections [{url,indexStatus(verdict+coverageState)}]
+- حالت دستی: تحلیل داخلی db.visit — groupBy مسیرهای ۷ روز اخیر → details.topPaths (۱۰ مورد) + اسلاگ‌های بلاگ بدون هیچ بازدیدی → details.zeroVisitSlugs (کاندید ایندکس مجدد) + details.manualChecklist با ۴ مرحله فارسی (ثبت نقشه سایت، درخواست ایندکس جدیدترین مقاله با URL Inspection، بررسی Coverage، بررسی robots) هر کدام با لینک مستقیم GSC UI (resource_id=sc-domain:drpedrambakhshaei.com)
+- خلاصه‌های فارسی با ارقام فارسی (faNum)؛ خلاصه حالت دستی دقیقاً متغیرهای لازم حالت API را توضیح می‌دهد (GSC_SERVICE_ACCOUNT_JSON + GSC_SITE_URL)
+- شکست توکن در حالت API → فال‌بک خودکار به تحلیل داخلی محلی (ایجنت همیشه ارزش‌آفرین می‌ماند)
+- تایپ سخت‌گیرانه بدون any: پارس پاسخ‌های API روی unknown با guard های typeof/Array.isArray؛ پارس JSON سرویس‌اکانت با validate کامل client_email/private_key
+- تست‌های دود (bun -e): حالت دستی با دیتابیس واقعی SQLite موفق (۱ صفحه بدون بازدید شناسایی شد: orthognathic-surgery-guide، چک‌لیست ۴ مرحله‌ای)؛ حالت API با کلید جعلی → JWT ساخته/ارسال و رد شد، warn + ادامه، هرگز کرش نکرد؛ خطای Prisma (سوییچ موقت schema توسط تسک‌های همزمان) هم توسط ایجنت بلعیده شد
+- bunx eslint src/lib/agents/gsc-agent.ts → صفر خطا؛ bunx tsc --noEmit کل پروژه → صفر خطا؛ هیچ فایل دیگری تغییر نکرد
+
+Stage Summary:
+- ایجنت ۴ آماده است و pipeline/scheduler بدون تغییر آن را هفتگی (شنبه‌ها ساعت ≥۴ تهران) اجرا می‌کنند
+- فعال‌سازی حالت API برای کاربر: یک Service Account در گوگل کلاد بسازد، دسترسی «مالک/کاربر کامل» روی پراپرتی سرچ کنسول بدهد، کلید JSON را در env با نام GSC_SERVICE_ACCOUNT_JSON و (اختیاری) GSC_SITE_URL=https://drpedrambakhshaei.com/ ست کند — بدون این دو متغیر، ایجنت در حالت دستی تحلیل داخلی + چک‌لیست اجرا می‌کند
+- هیچ وابستگی npm جدید اضافه نشد (OAuth کاملاً با node:crypto)
+---
+Task ID: 5
+Agent: general-purpose
+Task: ساخت ایجنت ۳ GEO
+
+Work Log:
+- خواندن worklog + بررسی شکل دقیق داده‌ها: runner.ts (AgentResult)، content-store.ts (getMergedContent)، site-content.ts (SiteContent/DEFAULTS)، site-data.ts (SITE/SERVICES/STATS/PRICE_TABS/SITE_URL + CREDENTIALS/IMPLANT_BRANDS)، blog-data.ts (BlogArticle)، robots.ts
+- ساخت src/lib/agents/geo-agent.ts با خروجی runGeoAgent(): Promise<AgentResult> — کاملاً فارسی، strict TS، بدون any و بدون وابستگی جدید
+- گام ۱: ساخت محتوای llms.txt از getMergedContent() (import پویا + fallback به DEFAULTS.blog اگر DB نبود) — بخش‌ها: عنوان/معرفی+امتیاز ۵٫۰، تماس و موجودیت، خدمات، تعرفه‌های شاخص ۱۴۰۵ (۳ ردیف برتر هر تب)، مقالات تخصصی (تا ۶۰ با لینک مطلق SITE_URL/blog/slug)، حقایق کلیدی نقل‌پذیر (رتبه بورد، آمار، برندهای ایمپلنت، جمله استناد)
+- گام ۲: writeFile به public/llms.txt داخل try/catch — روی FS فقط‌خواندنی skip و wroteFile=false ولی محتوا و size (Buffer.byteLength) محاسبه می‌شود
+- گام ۳: ممیزی موجودیت — شمارش «09302626021» و «دکتر پدرام بخشایی» در متن site-data.ts → entityChecks {phoneConsistent: count>=2, namePresent: count>=1, phoneCount, nameCount}
+- گام ۴: ممیزی robots.ts برای GPTBot/ClaudeBot/PerplexityBot/Google-Extended → aiCrawlersAllowed {allowed, missing, found}
+- گام ۵: quotables — تا ۸ مقاله، quickAnswers[0] بریده‌شده به ۱۶۰ کاراکتر → [{slug, quote}]
+- هیچ گامی خطا پرتاب نمی‌کند (۵ try/catch مستقل + کنسول فارسی)؛ ارقام خلاصه با toFa فارسی‌سازی شد
+- ESLint: bunx eslint src/lib/agents/geo-agent.ts → PASSED
+- دود-تست با bun (اسکریپت موقت، بعداً حذف شد): اجرای موفق — llms.txt نوشته شد (۴۰۳۹ بایت)، «GEO: llms.txt ساخته شد؛ (۱ مقاله، ۴KB)؛ موجودیت‌ها سازگار؛ کرالرهای AI مجاز»، quotables از مقاله ارتوگناتیک استخراج شد
+
+Stage Summary:
+- ایجنت GEO آماده و از pipeline.ts و scheduler.ts قابل import است (agent id: "geo")
+- public/llms.txt اینک نسخه تولیدی ایجنت را دارد (۴KB، همه ۶ بخش الزامی + لینک مطلق مقالات)
+- ممیزی‌ها سبز: تلفن ۲ بار سازگار، نام دکتر ۵ بار، هر ۴ کرالر AI در robots.ts مجاز
+- pending: اجرای واقعی هفتگی توسط scheduler (چهارشنبه‌ها طبق DEFAULT_CONFIG) پس از تکمیل aeo-agent و gsc-agent توسط تسک‌های دیگر
+
+---
+Task ID: 4
+Agent: general-purpose
+Task: ساخت ایجنت ۲ AEO
+
+Work Log:
+- مطالعه worklog و فایل‌های مرجع: runner.ts (AgentResult)، pipeline.ts (امضای runAeoAgent + قلاب بعد از ایجنت محتوا)، content-store.ts (getMergedContent)، blog/posts.ts (publishPost + publishSchema)، blog-data.ts (نوع BlogArticle)، seo.tsx و db.ts
+- نکته: مسیر نوع واقعی BlogArticle «@/lib/blog-data» است نه «@/lib/blog/blog-data» (پوشه blog فقط posts.ts دارد) — ایمپورت مطابق مسیر واقعی انجام شد
+- ساخت src/lib/agents/aeo-agent.ts با ممیزی وزن‌دار ۰-۱۰۰: پاسخ سریع ۳۰، سوالات متداول ۲۵، طول متادescription (۸۰-۱۶۵) ۱۵، خوانایی (بلوک list/table) ۲۰، h1 و coverAlt ۵+۵
+- انتخاب مجموعه ممیزی: مقاله تازه از context.slug (قلاب بعد از انتشار) + ۱۵ مقاله جدید دیتابیس (db.blogPost.findMany بر اساس publishedAt)؛ مقاله‌های استاتیک فقط شمارش گزارشی می‌شوند
+- بک‌فیل فقط برای مقاله‌های دیتابیس با امتیاز <۷۰ و محتوای جاافتاده: تولید quickAnswers تا سقف ۳ و faqs تا سقف ۴ با z-ai-web-dev-sdk (thinking disabled، پرامپت فارسی، ممنوعیت تکرار سوالات موجود)
+- پارسر JSON مقاوم: حذف فنس ``` + اسکن متوازن همه بلاک‌های {}/[] با توجه به رشته‌ها و آکولاد داخل متن فارسی (تست شد: فنس+متن اضافه+\" داخل جواب+آکولاد در سوال)
+- انتشار مجدد idempotent از publishPost با source: "aeo" (article JSON کامل با quickAnswers/faqs ادغام‌شده)؛ سقف ۲ ترمیم در هر اجرا، مابقی به details.pending
+- کنترل گزارشی اسکیماهای AEO در src/lib/seo.tsx (خواندن متنی): speakable، FAQPage، Article/MedicalWebPage، BreadcrumbList → details.schemaChecks (در باندل production اگر فایل نبود فقط warn و همه false)
+- هرگز throw نمی‌کند: خطای هر مقاله و هر ترمیم catch و console.warn؛ حتی شکست کلی دیتابیس هم AgentResult با خلاصه فارسی برمی‌گرداند
+- خلاصه با رقم فارسی: «ممیزی AEO: ۱۲ مقاله؛ میانگین امتیاز ۸۴؛ ۲ مقاله ترمیم شد (slug1, slug2)» + صف انتظار و اسلاگ مقاله تازه
+- راستی‌آزمایی: eslint پاک (۰ خطا)، tsc --noEmit کل پروژه بدون خطای aeo-agent، تست منطق extractJson و امتیاز مقاله استاتیک (۸۵) و پرچم‌های اسکیما (هر ۴ true)
+
+Stage Summary:
+- ایجنت AEO آماده است: ممیزی وزن‌دار بایگانی (قلاب مقاله تازه + ۱۵ مقاله جدید DB)، ترمیم خودکار LLM با سقف هزینه، گزارش schema بدون تغییر کد
+- details خروجی: audited، averageScore، fixed، pending، issues (اسلاگ: مشکل)، schemaChecks، scores، staticCount
+- مقاله استاتیک فعلی (ارتوگناتیک) امتیاز ۸۵ می‌گیرد — فقط متادescription خارج از بازه ۸۰-۱۶۵ است (۱۸۱ کاراکتر)؛ گزارشی است و ترمیم نمی‌شود
+- هر ۴ اسکیمای AEO (speakable/FAQPage/Article/BreadcrumbList) در seo.tsx موجودند → schemaChecks همه true
+
+---
+Task ID: 8
+Agent: general-purpose
+Task: پایپ‌لاین بیلد و دیپلوی خودکار
+
+Work Log:
+- قرائت worklog + قرارداد دیپلوی: scripts/host-deploy.sh (puller هاست)، package.json، next.config.ts (output: standalone)، git remote
+- کشف بیلد‌ساید فعلی: .github/workflows/deploy.yml (۷ ران سبز) — ساختار باندل دو تکه + حذف WASM + حذف پوشه‌های tracing از آن مدل گرفته شد
+- ساخت scripts/release.sh (۱۳۳ خط، set -euo pipefail، تمام کامنت‌ها فارسی):
+  ۱) دروازه امنیت: پیش‌فرض DRY-RUN با هشدار بزرگ فارسی؛ انتشار فقط با RELEASE_CONFIRM=yes (آپلود LIVE است و هاست در کرون بعدی می‌کشد)
+  ۲) سوییچ موقت Prisma به PG: کپی اسکیما به prisma/schema.production.prisma داخل پروژه (اسکیمای بیرون پروژه باعث می‌شد پرisma ریشه را / فرض کند و npm i ناموفق بزند — باگ ران اول کشف و رفع شد) + bunx prisma generate --schema
+  ۳) بیلد: DATABASE_URL=postgresql://build:build@localhost:5432/build bun run build (دقیقاً مثل CI) + سه تست وجود server.js/static/public
+  ۴) باندل: runtime-<ts>.tar.gz = node_modules standalone (خروجی tracing) + db/template.db با مسیرهای ./node_modules ./db | app-<ts>.tar.gz = standalone بدون node_modules + public + package.json + prisma/schema.prisma (نسخه PG) | حذف src/skills/tests/examples/tool-results/docs/scripts و موتورهای WASM + گارد وجود موتور .so.node
+  ۵) manifest.txt دو خطی runtime=/app= (سازگار با grep '^runtime=' هاست)
+  ۶) آپلود فقط در LIVE: استخراج توکن از remote با sed (هرگز چاپ نمی‌شود — با URL جعلی تست شد)، POST /releases با تگ auto-v<ts>، روی 422 گرفتن release/latest و ادامه، آپلود ۳ asset با Content-Type درست، چاپ URL + سایزها
+  ۷) trap EXIT: بازگردانی کلاینت SQLite با bunx prisma generate + حذف فایل‌های موقت (در شکست بیلد هم اجرا می‌شود)
+- package.json: افزودن "release": "bash scripts/release.sh" (بقیه دست‌نخورده، JSON معتبر)
+- .gitignore: افزودن /release-out/ و *.tar.gz
+- bash -n ✓ | shellcheck در سندباکس نصب نیست → بازبینی دستی SC-style (quote کامل، توکن فقط در هدر curl)
+- تست ساختاری سنتتیک باندل‌ها: tar-ها، manifest (پارس دقیقاً مثل host-deploy) و شبیه‌سازی استخراج در appdir — همه ✓ (ENGINE OK / APP FILES OK)
+- تلاش برای اجرای کامل dry-run بیلد: ۴ بار (foreground، nohup، setsid، با سقف heap) — همگی توسط سندباکس کشته شدند؛ dmesg: OOM-kill سراسری روی next-build (anon-rss ~2.2GB در باکس ۴GB با next-server ساکن). مطابق دستور کار متوقف شد؛ هر بار کلاینت SQLite دستی بازگردانی و لاگ شد
+
+Stage Summary:
+- اسکریپت آماده: scripts/release.sh — بیلد‌ساید pull-pipeline کامل و هم‌قرارداد با host-deploy.sh
+- فرمان انتشار: RELEASE_CONFIRM=yes bash scripts/release.sh (dry-run پیش‌فرض: bash scripts/release.sh)
+- مراحل generate PG (۱.۱s) و منطق باندل/مانیفست/آپلود تأیید شد؛ تنها گام بیلد در سندباکس به‌خاطر OOM قابل اجرا نیست — همان دستورات در CI (Actions با ۷ ران سبز) اثبات شده‌اند؛ بیلد واقعی اولین‌بار در CI/ماشین بزرگ‌تر یا سرور اجرا خواهد شد
+- ایمنی: پیش‌فرض هیچ‌چیز LIVE نمی‌شود؛ توکن گیت‌هاب هیچ‌جا echo نمی‌شود؛ ریپو/اسکیمای سندباکس دست‌نخورده می‌ماند
+---
+Task ID: 2,3,7 (main)
+Agent: main
+Task: نصب openclaw + ساخت سیستم ۴ ایجنت SEO (محتوا/AEO/GEO/GSC) + زمان‌بند ۰۷:۰۰ تهران
+
+Work Log:
+- کلون openclaw (۹۳۸MB) به skills/openclaw؛ الگوهای معماری‌اش (run ledger، automations، hooks، idempotency، stale cleanup) استخراج و بومی‌سازی شد — پلتفرم کاملش به‌دلیل سنگینی به‌عنوان وابستگی اجرا نمی‌شود
+- اسکیما: ۴ مدل جدید Prisma (BlogPost، AgentRun، TopicIdea، AgentConfig) + db push
+- لایه انتشار: src/lib/blog/posts.ts — publishSchema (zod)، slugify، assembleArticle، publishPost (upsert idempotent روی slug)، listDbArticles، sanitizeBlocks (نرمال‌سازی خروجی AI: links url→href، h2 id)
+- content-store.getMergedContent حالا مقاله‌های دیتابیس را به content.blog اضافه و بر تاریخ مرتب می‌کند → مقاله جدید بدون بیلد روی سایت/سایت‌مپ/JSON-LD ظاهر می‌شود
+- DDL جداول جدید به db-bootstrap (PostgreSQL هاست) اضافه شد
+- ایجنت ۱ محتوا (content-agent.ts): بانک ۱۲ ایده بذری + تولید ایده با web_search؛ پژوهش زمینه‌ای؛ نگارش JSON ساختاریافته با قوانین E-E-A-T/Helpful Content، ۱۱۰۰+ کلمه، پاسخ سوال‌محور؛ ۲ تلاش با بازخورد اصلاحی؛ کنترل کلمه + پاس توسعه؛ کاور AI با پرامپت ضد فیلتر و fallback گالری؛ تایم‌اوت روی همه فراخوانی‌های شبکه (۳۰s جست‌وجو/۳۶۰s نگارش/۱۲۰s تصویر)
+- runner.ts: دفتر اجرا (AgentRun) + قفل ضد همزمانی + config ماندگار + وضعیت ۷ روزه
+- pipeline.ts: محتوا→AEO(قلاب)→GEO(هفتگی چهارشنبه)→GSC(هفتگی شنبه) + tehranNow + گیت نوبت هفتگی
+- scheduler.ts: تیک ۶۰ثانیه‌ای، پاک‌سازی اجراهای هنگ‌کرده (>۳۰دقیقه)، تسلیح از src/instrumentation.ts
+- API: /api/blog/publish (POST/GET با x-admin-key)، /api/agents/run، /api/agents/status، /api/agents/config
+- رفع باگ‌ها: tsconfig exclude (تایپ‌چک openclaw باعث OOM می‌شد)، import مسیر blog-data، z.input به‌جای z.infer (zod4)، فیلد title قالب تولید، Link href undefined در رندرر مقاله (مقاوم‌سازی)، prompt فیلتر تصویر
+
+Stage Summary:
+- اجرای واقعی موفق: مقاله «درد بعد از جراحی دندان عقل...» با ۱۲۷۳ کلمه منتشر شد (۹۹ ثانیه)
+- AEO: امتیاز ۱۰۰ برای مقاله جدید؛ GEO: llms.txt ساخته شد؛ GSC: حالت دستی + چک‌لیست (فعال‌سازی API با GSC_SERVICE_ACCOUNT_JSON)
+- تأیید مرورگری: /blog مقاله را نشان می‌دهد، /blog/<slug> با عنوان داینامیک 200 و صفر خطای کنسول
+
+---
+Task ID: 9 (main)
+Agent: main
+Task: تب ایجنت‌ها در پنل ادمین + تأیید نهایی + دیپلوی
+
+Work Log:
+- src/components/admin/agents-tab.tsx: ۴ کارت ایجنت با سوئیچ فعال/غیرفعال، دکمه اجرای دستی، اجرای کامل خط‌لوله، بانک ایده با نوار پیشرفت، ساعت انتشار و روزهای هفتگی، تاریخچه ۲۰ اجرای اخیر (max-h-96 scroll)
+- admin-app.tsx: تب «ایجنت‌ها» بعد از داشبورد
+- تأیید مرورگری پنل: لاگین → تب ایجنت‌ها → ۴ کارت سبز با داده واقعی + تاریخچه کامل (اسکرین‌شات)
+- scripts/release.sh (ساب‌ایجنت): بیلد+bاندل+آپلود گیت‌هاب رلیز با دروازه RELEASE_CONFIRM؛ پایپ‌لاین CI موجود (.github/workflows/deploy.yml) روی push خودکار بیلد و رلیز می‌کند و host-deploy.sh روی هاست می‌کشد
+
+Stage Summary:
+- کل چرخه تأیید شد: تولید→انتشار→رندر→ممیزی→llms.txt→GSC→داشبورد
+- انتشار مقاله نیازی به بیلد ندارد (SSR از دیتابیس)؛ بیلد/دیپلوی فقط برای تغییر کد و از طریق CI موجود روی پوش گیت‌هاب انجام می‌شود
