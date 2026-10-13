@@ -41,12 +41,15 @@ export function BlogTab({
   const [dirty, setDirty] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const [confirmDel, setConfirmDel] = React.useState<number | null>(null);
+  // اسلاگ‌هایی که کلاینت موقع بارگذاری دیده بود — برای حذف امنِ مقاله‌های دیتابیس (ضد مسابقه با ایجنت‌ها)
+  const [knownSlugs, setKnownSlugs] = React.useState<string[]>(() => content.blog.map((a) => a.slug));
 
   // همگام‌سازی با محتوای والد — الگوی تنظیم در رندر (بدون اثر آبشاری)
   const [prevContent, setPrevContent] = React.useState(content);
   if (prevContent !== content) {
     setPrevContent(content);
     setBlog(content.blog);
+    setKnownSlugs(content.blog.map((a) => a.slug));
     setDirty(false);
   }
 
@@ -68,7 +71,12 @@ export function BlogTab({
     try {
       const res = await api<{ content: SiteContent }>("/api/admin/content", {
         method: "PUT",
-        body: JSON.stringify({ key: "blog", data: blog, summary: `بلاگ ذخیره شد (${blog.length} مقاله)` }),
+        body: JSON.stringify({
+          key: "blog",
+          data: blog,
+          knownSlugs,
+          summary: `بلاگ ذخیره شد (${blog.length} مقاله)`,
+        }),
       });
       onSaved(res.content);
       setDirty(false);
@@ -160,8 +168,18 @@ export function BlogTab({
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="line-clamp-1 block text-[12px] font-bold text-white/85">{a.h1}</span>
-                  <span className="mt-0.5 block text-[10px] text-white/40">
-                    {faNum(a.wordCount)} کلمه · {faNum(a.keywords.length)} کلیدواژه
+                  <span className="mt-0.5 flex items-center gap-1.5 text-[10px] text-white/40">
+                    {a.src && (
+                      <span
+                        className="rounded-md bg-teal-300/15 px-1.5 py-px font-bold text-teal-200"
+                        title={a.src === "api" ? "از طریق API منتشر شده" : a.src === "admin" ? "از همین پنل ساخته شده" : "منتشرشده توسط ایجنت خودکار"}
+                      >
+                        {a.src === "api" ? "API" : a.src === "admin" ? "دستی" : "ایجنت"}
+                      </span>
+                    )}
+                    <span>
+                      {faNum(a.wordCount)} کلمه · {faNum(a.keywords.length)} کلیدواژه
+                    </span>
                   </span>
                 </span>
               </button>
@@ -315,8 +333,8 @@ export function BlogTab({
         </motion.div>
 
         <p className="mt-3 flex items-center gap-1.5 px-1 text-[11px] text-white/35">
-          <RotateCcw className="h-3 w-3" />
-          مسیر مقاله از slug ساخته می‌شود؛ بعد از تغییر slug و ذخیره، مسیر جدید فعال و مسیر قبلی ۴۰۴ می‌شود.
+          <RotateCcw className="h-3 w-3 shrink-0" />
+          مقاله‌های نشان‌دار (ایجنت/API) در دیتابیس زندگی می‌کنند؛ ویرایش و حذفشان با ذخیره مستقیم روی دیتابیس اعمال می‌شود. مسیر مقاله از slug ساخته می‌شود؛ بعد از تغییر slug و ذخیره، مسیر جدید فعال و مسیر قبلی ۴۰۴ می‌شود.
         </p>
       </section>
     </div>

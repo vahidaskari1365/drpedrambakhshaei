@@ -237,14 +237,14 @@ export async function listDbArticles(): Promise<BlogArticle[]> {
     try {
       const parsed = JSON.parse(row.article) as Partial<BlogArticle>;
       if (parsed?.slug && Array.isArray(parsed.blocks)) {
-        out.push({ ...parsed, slug: parsed.slug || row.id } as BlogArticle);
+        out.push({ ...parsed, slug: parsed.slug || row.id, src: row.source } as BlogArticle);
         continue;
       }
     } catch {
       /* JSON خراب → از فیلدهای پایه می‌سازیم */
     }
-    out.push(
-      assembleArticle(
+    out.push({
+      ...assembleArticle(
         publishSchema.parse({
           title: row.title,
           description: row.description,
@@ -255,8 +255,93 @@ export async function listDbArticles(): Promise<BlogArticle[]> {
           article: {},
         }),
         row.coverImage
-      )
-    );
+      ),
+      src: row.source,
+    });
   }
   return out;
+}
+
+/* ───────────────── همگام‌سازی پنل ادمین ↔ دیتابیس ───────────────── */
+
+export interface PanelSyncResult {
+  /** اسلاگ‌هایی که از پنل روی ردیف دیتابیس نوشته شدند */
+  updated: string[];
+  /** اسلاگ‌هایی که با حذف از پنل، ردیفشان هم پاک شد */
+  deleted: string[];
+}
+
+/**
+ * مقاله‌های دیتابیس (ایجنت/API) از پنل ادمین ویرایش/حذف می‌شوند — نتیجه مستقیم روی
+ * جدول BlogPost نوشته می‌شود تا منبع حقیقت دوتکه نشود:
+ * - ویرایش: ردیف همان اسلاگ به‌روز می‌شود (مقاله از override پنل هم حذف می‌شود تا
+ *   به‌روزرسانی بعدی ایجنت‌ها دیده شود)
+ * - حذف: فقط ردیف‌هایی پاک می‌شوند که کلاینت موقع بارگذاری دیده بود (knownSlugs) —
+ *   ضد مسابقه با انتشار همزمان ایجنت‌ها؛ پیش‌نویس‌های منتشرنشده دست‌نخورده می‌مانند
+ * هرگز خطا بالا نمی‌دهد — خطای هر آیتم log و رد می‌شود.
+ */
+export async function syncBlogFromPanel(
+  payload: BlogArticle[],
+  knownSlugs?: string[]
+): Promise<PanelSyncResult> {
+  const result: PanelSyncResult = { updated: [], deleted: [] };
+  const payloadSlugs = new Set(payload.map((a) => a.slug));
+  let dbSlugs: string[] = [];
+  try {
+    const rows = await db.blogPost.findMany({ select: { id: true } });
+    dbSlugs = rows.map((r) => r.id);
+  } catch (e) {
+    console.error("[blog/panel-sync] read failed:", e);
+    return result;
+  }
+
+  // ۱) ویرایش — هر مقاله payload که در دیتابیس هست، مستقیم در ردیف نوشته می‌شود
+  for (const slug of dbSlugs) {
+    const a = payload.find((x) => x.slug === slug);
+    if (!a) continue;
+    try {
+      await db.blogPost.update({
+        where: { id: slug },
+        data: {
+          title: a.metaTitle || a.h1 || slug,
+          description: a.metaDesc || "",
+          tags: JSON.stringify(a.tags ?? []),
+          keywords: JSON.stringify(a.keywords ?? []),
+          readingTime: a.readingMinutes || 5,
+          coverImage: a.cover ?? "",
+          article: JSON.stringify(a),
+          contentHash: hashOf(a).slice(0, 16),
+        },
+      });
+      result.updated.push(slug);
+    } catch (e) {
+      console.error(`[blog/panel-sync] update ${slug} failed:`, e);
+    }
+  }
+
+  // ۲) حذف — فقط منتشرشده‌هایی که کلاینت دیده بود و در ذخیره نیستند
+  if (Array.isArray(knownSlugs) && knownSlugs.length > 0) {
+    const known = new Set(knownSlugs);
+    for (const slug of dbSlugs) {
+      if (!known.has(slug) || payloadSlugs.has(slug)) continue;
+      try {
+        const row = await db.blogPost.findUnique({ where: { id: slug }, select: { published: true } });
+        if (!row?.published) continue; // پیش‌نویس نامرئی در پنل — دست نمی‌زنیم
+        await db.blogPost.delete({ where: { id: slug } });
+        result.deleted.push(slug);
+        await logActivity("agent.post.deleted", slug, `مقاله «${slug}» از پنل ادمین حذف شد`);
+      } catch (e) {
+        console.error(`[blog/panel-sync] delete ${slug} failed:`, e);
+      }
+    }
+  }
+
+  if (result.updated.length > 0 || result.deleted.length > 0) {
+    await logActivity(
+      "content.update",
+      "blog",
+      `همگام‌سازی پنل ↔ دیتابیس: ${result.updated.length} ویرایش، ${result.deleted.length} حذف`
+    );
+  }
+  return result;
 }

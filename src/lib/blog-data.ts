@@ -37,6 +37,8 @@ export interface BlogArticle {
   quickAnswers: { q: string; a: string }[];
   faqs: { q: string; a: string }[];
   blocks: ArticleBlock[];
+  /** منبع انتشار — فقط مقاله‌های دیتابیس دارند (agent/api/admin/aeo/...)؛ استاتیک‌ها ندارند */
+  src?: string;
 }
 
 export const ARTICLES: BlogArticle[] = [
