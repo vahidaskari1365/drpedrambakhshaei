@@ -300,3 +300,21 @@ Stage Summary:
 - معماری نهایی: توسعه = SQLite سندباکس (پیش‌نمایش پایدار) | پروداکشن = PostgreSQL هاست با بوت‌استرپ خودکار جداول
 - کاربر باید در cPanel: دیتابیس+یوزر PG بسازد، Node.js App (startup=server.js, root=drpedram-app)، ۳ env var، و اکانت FTP اختصاصی به مسیر drpedram-app بسازد
 - DATABASE_URL پروداکسشن: postgresql://user:pass@localhost:5432/dbname?connection_limit=5
+
+---
+Task ID: 13
+Agent: main
+Task: اجرای اولین دیپلوی واقعی — ست Secrets، پوش، مانیتور CI و دیباگ FTP
+
+Work Log:
+- کاربر فرستاد: FTP (deploy@drpedrambakhshaei.com / server ftp.drpedrambakhshaei.com / port 21) + توکن گیت‌هاب جدید fine-grained
+- توکن تأیید شد (repo access ✓ + secrets API ✓)؛ remote با توکن ست شد
+- کشف بحرانی: ریپوی گیت‌هاب دوباره تاریخچه قدیمیِ آلوده (PII: .env، db/custom.db، download/) را داشت — سندباکس force update کرده بود → git push --force تاریخچه پاک‌شده (099a83a) → تأیید: درخت ریپوی ریموت صفر فایل PII
+- ۶ secret با PyNaCl (sealed box) ست شد: FTP_HOST / FTP_USERNAME / FTP_PASSWORD / FTP_PORT=21 / FTP_PROTOCOL=ftp / FTP_SERVER_DIR=drpedram-app/ — همگی HTTP 201
+- اولین اجرای workflow (run 38384408799): Checkout/Setup Bun/Install/سوییچ PG/Prisma generate/Build standalone/Assemble — **همگی موفق** ✅ | FTP → **530 Login authentication failed** (سرور جواب داد ولی creds رد شد — احتمالاً دامنه به سرور دیگری اشاره می‌کند یا پسورد/میزبان اشتباه)
+- fix ورک‌فلو: input نامعتبر dangerous-clean-server حذف؛ گام ذخیره artifact قبل از FTP آمد (فال‌بک همیشه موجود)؛ گام Smoke test بعد از دیپلوی (curl دامنه + IP با Host header) اضافه شد
+- FTP_HOST به مقدار دقیق cPanel (ftp.drpedrambakhshaei.com) آپدیت شد (204) — هر دو رکورد A به 185.10.74.200 اشاره می‌کنند؛ NSها: clns1/2.iranhost.com
+
+Stage Summary:
+- کل مسیر CI (بیلد PG روی اکشنز) تأیید شد؛ تنها حلقه باقی‌مانده: لاگین FTP — پس از اصلاح creds/سرور، re-run کامل دیپلوی می‌کند
+- ریپو دوباره تمیز شد ولی مکانیزم سندباکس می‌تواند دوباره برگرداند → توصیه نهایی به کاربر: یک‌بار Delete+Recreate ریپو (پاکسازی قطعی از سرورهای گیت‌هاب)

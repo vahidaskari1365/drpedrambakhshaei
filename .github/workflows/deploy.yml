@@ -50,6 +50,13 @@ jobs:
           tar -czf deploy-bundle.tar.gz -C bundle .
           echo "files: $(find bundle -type f | wc -l) | size: $(du -sh bundle | cut -f1) | tarball: $(du -sh deploy-bundle.tar.gz | cut -f1)"
 
+      - name: Save bundle artifact (fallback for manual extract)
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-bundle
+          path: deploy-bundle.tar.gz
+          retention-days: 7
+
       - name: Deploy via FTP (incremental + auto restart)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -61,11 +68,13 @@ jobs:
           security: loose
           local-dir: bundle/
           server-dir: ${{ secrets.FTP_SERVER_DIR || 'drpedram-app/' }}
-          dangerous-clean-server: false
 
-      - name: Save bundle artifact (fallback for manual extract)
-        uses: actions/upload-artifact@v4
-        with:
-          name: deploy-bundle
-          path: deploy-bundle.tar.gz
-          retention-days: 7
+      - name: Smoke test after deploy (site liveness)
+        continue-on-error: true
+        run: |
+          sleep 25
+          SRV_IP=$(getent hosts ftp.drpedrambakhshaei.com | awk '{print $1}' | head -1)
+          echo "server ip: $SRV_IP"
+          echo "-- via domain:"; curl -sk -m 30 -o /dev/null -w "HTTP %{http_code}\n" https://drpedrambakhshaei.com/ || true
+          echo "-- via server IP with Host header:"; curl -sk -m 30 -o /dev/null -w "HTTP %{http_code}\n" --resolve drpedrambakhshaei.com:443:$SRV_IP https://drpedrambakhshaei.com/ || true
+          echo "-- plain HTTP via IP:"; curl -s -m 30 -o /dev/null -w "HTTP %{http_code}\n" --resolve drpedrambakhshaei.com:80:$SRV_IP http://drpedrambakhshaei.com/ || true
