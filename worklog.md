@@ -518,3 +518,23 @@ Work Log:
 Stage Summary:
 - کل چرخه تأیید شد: تولید→انتشار→رندر→ممیزی→llms.txt→GSC→داشبورد
 - انتشار مقاله نیازی به بیلد ندارد (SSR از دیتابیس)؛ بیلد/دیپلوی فقط برای تغییر کد و از طریق CI موجود روی پوش گیت‌هاب انجام می‌شود
+---
+Task ID: 10 (main)
+Agent: main
+Task: قابلیت «همه مطالب در پنل ادمین دیده شوند و قابل ادیت باشند» + رفع خرابی dev server
+
+Work Log:
+- کشف و رفع تداخل روتر: پوشه‌های تکراری untracked قدیمی (src/app/{page.tsx,template.tsx,about,blog,contact,faq,gallery,prices,reviews,services,api/route.ts}) حذف شدند — نسخه‌های رسمی در src/app/(site)/ هستند؛ صفحه اصلی و /api/agents/status از 500 به 200 رسیدند
+- کشف و ترمیم خرابی SQLite سندباکس («database disk image is malformed» — پیامد killهای OOM جلسه قبل): db/custom.db حذف، dev server ری‌استارت، bootstrap از template.db ساخت، سپس db:push برای جداول جدید و کپی نسخه سالم به template.db (برای بوت‌استرپ‌های آینده)
+- src/lib/blog-data.ts: فیلد اختیاری src?: string به BlogArticle برای نشان منبع
+- src/lib/blog/posts.ts: listDbArticles حالا src=row.source ضمیمه می‌کند + تابع جدید syncBlogFromPanel(payload, knownSlugs) — write-through ویرایش‌های پنل روی جدول BlogPost + حذف امن ردیف‌ها (فقط اسلاگ‌هایی که کلاینت دیده بود — ضد مسابقه با انتشار همزمان ایجنت؛ پیش‌نویس‌های منتشرنشده دست‌نخورده)؛ هرگز throw نمی‌کند
+- src/app/api/admin/content/route.ts: PUT برای key=blog — اول sync دیتابیس، بعد مقاله‌های نوشته‌شده در DB از override خارج می‌شوند (منبع حقیقت یگانه = جدول BlogPost)؛ یادداشت همگام‌سازی به summary فعالیت اضافه می‌شود
+- src/components/admin/blog-tab.tsx: ارسال knownSlugs هنگام ذخیره (state با الگوی تنظیم حین رندر — react-hooks/refs رعایت شد) + نشان «ایجنت/API/دستی» کنار مقاله‌های دیتابیس + توضیح راهنما
+- تست API هفت‌مرحله‌ای: انتشار(source=agent)→نمایش با نشان→ویرایش از پنل→نوشته‌شدن واقعی ردیف DB (h1 جدید در article JSON، override فقط استاتیک)→حذف از پنل→ردیف DB صفر
+- تست مرورگری: ورود پنل→تب مقالات→نشان «ایجنت» دیده شد→ویرایش H1→ذخیره (توست موفق، DB به‌روز)→حذف با تأیید→ذخیره→DB صفر؛ صفر خطای کنسول
+- bun run lint کل پروژه پاک؛ commit b895e1a و push به origin/main → CI بیلد و رلیز می‌کند و کرون هاست می‌کشد
+
+Stage Summary:
+- از این پس هر مقاله‌ای که ایجنت‌ها یا API منتشر کند بلافاصله در پنل ادمین (تب مقالات بلاگ) با نشان منبع دیده می‌شود و ویرایش/حذف آن مستقیم روی دیتابیس اعمال می‌شود
+- حذف مقاله از پنل دیگر «زنده شدن دوباره» ندارد؛ به‌روزرسانی بعدی ایجنت‌ها هم ویرایش ادمین را از بین نمی‌برد (row-level write-through)
+- dev server سالم: / ، /reviews ، /blog ، /api/agents/status همگی 200؛ template.db جدید شامل هر ۱۱ جدول
