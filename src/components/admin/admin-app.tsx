@@ -355,7 +355,9 @@ export function AdminApp() {
   const [overrides, setOverrides] = React.useState<{ key: string; updatedAt: string }[]>([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const [dataVersion, setDataVersion] = React.useState(0);
-  const [clock, setClock] = React.useState("");
+  const [clock, setClock] = React.useState(() =>
+    new Intl.DateTimeFormat("fa-IR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(new Date())
+  );
   const [toasts, setToasts] = React.useState<{ id: number; msg: string; kind: "ok" | "err" }[]>([]);
 
   const toast = React.useCallback((msg: string, kind: "ok" | "err" = "ok") => {
@@ -382,29 +384,45 @@ export function AdminApp() {
     }
   }, [toast]);
 
-  // احراز هویت اولیه با کلید ذخیره‌شده
+  // احراز هویت اولیه با کلید ذخیره‌شده — غیرهمگام (بدون setState همگام در اثر)
   React.useEffect(() => {
     if (typeof window === "undefined") return;
-    if (getKey()) {
-      api("/api/admin/overview")
-        .then(() => setAuthed(true))
-        .catch(() => clearKey())
-        .finally(() => setChecked(true));
-    } else {
-      setChecked(true);
-    }
+    let alive = true;
+    const validate = async () => {
+      if (getKey()) {
+        try {
+          await api("/api/admin/overview");
+          if (alive) setAuthed(true);
+        } catch {
+          clearKey();
+        }
+      }
+      if (alive) setChecked(true);
+    };
+    const t = setTimeout(validate, 0);
+    return () => {
+      alive = false;
+      clearTimeout(t);
+    };
   }, []);
 
   React.useEffect(() => {
-    if (authed) loadAll();
+    if (!authed) return;
+    let alive = true;
+    (async () => {
+      // بعد از میکروتسک — بدون setState همگام در بدنه اثر
+      await Promise.resolve();
+      if (alive) await loadAll();
+    })();
+    return () => {
+      alive = false;
+    };
   }, [authed, loadAll]);
 
-  // ساعت زنده
+  // ساعت زنده — فقط با تایمر (بدون فراخوانی همگام اولیه)
   React.useEffect(() => {
-    const tick = () =>
-      setClock(new Intl.DateTimeFormat("fa-IR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(new Date()));
-    tick();
-    const t = setInterval(tick, 1000);
+    const fmt = new Intl.DateTimeFormat("fa-IR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    const t = setInterval(() => setClock(fmt.format(new Date())), 1000);
     return () => clearInterval(t);
   }, []);
 

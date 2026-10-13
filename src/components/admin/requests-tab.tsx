@@ -25,19 +25,21 @@ export function RequestsTab({
   const [filter, setFilter] = React.useState<string>("all");
   const [busyId, setBusyId] = React.useState<string | null>(null);
 
-  const load = React.useCallback(async () => {
-    try {
-      const res = await api<{ requests: ContactRequestRow[] }>("/api/admin/requests");
-      setRows(res.requests);
-    } catch (e) {
-      toast(e instanceof Error ? e.message : "بارگذاری ناموفق بود", "err");
-      setRows([]);
-    }
-  }, [toast]);
-
   React.useEffect(() => {
-    load();
-  }, [load, refreshKey]);
+    let alive = true;
+    (async () => {
+      try {
+        const res = await api<{ requests: ContactRequestRow[] }>("/api/admin/requests");
+        if (alive) setRows(res.requests);
+      } catch (e) {
+        toast(e instanceof Error ? e.message : "بارگذاری ناموفق بود", "err");
+        if (alive) setRows([]);
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [toast, refreshKey]);
 
   const setStatus = async (id: string, status: string) => {
     setBusyId(id);

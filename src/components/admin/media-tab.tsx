@@ -24,7 +24,6 @@ export function MediaTab({
   const dragRef = React.useRef<HTMLDivElement>(null);
 
   const load = React.useCallback(async () => {
-    setLoading(true);
     try {
       const res = await api<{ media: MediaRow[] }>("/api/admin/media");
       setMedia(res.media);
@@ -36,7 +35,15 @@ export function MediaTab({
   }, [toast]);
 
   React.useEffect(() => {
-    load();
+    let alive = true;
+    (async () => {
+      // فراخوانی بعد از یک میکروتسک — بدون رندر آبشاری همگام
+      await Promise.resolve();
+      if (alive) await load();
+    })();
+    return () => {
+      alive = false;
+    };
   }, [load]);
 
   // بستن حالت تأیید حذف بعد از ۳ ثانیه

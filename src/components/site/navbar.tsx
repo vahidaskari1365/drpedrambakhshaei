@@ -33,10 +33,12 @@ export function Navbar() {
     lastY.current = y;
   });
 
-  // بستن منو با تغییر مسیر
-  React.useEffect(() => {
+  // بستن منو با تغییر مسیر — الگوی تنظیم در رندر (بدون اثر آبشاری)
+  const [prevPathname, setPrevPathname] = React.useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   // قفل اسکرول در منوی موبایل
   React.useEffect(() => {

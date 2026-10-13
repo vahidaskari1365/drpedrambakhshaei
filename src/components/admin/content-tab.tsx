@@ -151,10 +151,13 @@ export function ContentTab({
   const [saving, setSaving] = React.useState(false);
   const [resetting, setResetting] = React.useState(false);
 
-  React.useEffect(() => {
+  // همگام‌سازی پیش‌نویس با تب فعال / محتوای والد — الگوی تنظیم در رندر
+  const [prevSync, setPrevSync] = React.useState({ activeKey, content });
+  if (prevSync.activeKey !== activeKey || prevSync.content !== content) {
+    setPrevSync({ activeKey, content });
     setDraft(content[activeKey]);
     setDirty(false);
-  }, [activeKey, content]);
+  }
 
   const overrideMap = new Map(overrides.map((o) => [o.key, o.updatedAt]));
 

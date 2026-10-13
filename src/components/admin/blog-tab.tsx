@@ -42,10 +42,13 @@ export function BlogTab({
   const [saving, setSaving] = React.useState(false);
   const [confirmDel, setConfirmDel] = React.useState<number | null>(null);
 
-  React.useEffect(() => {
+  // همگام‌سازی با محتوای والد — الگوی تنظیم در رندر (بدون اثر آبشاری)
+  const [prevContent, setPrevContent] = React.useState(content);
+  if (prevContent !== content) {
+    setPrevContent(content);
     setBlog(content.blog);
     setDirty(false);
-  }, [content]);
+  }
 
   React.useEffect(() => {
     if (confirmDel === null) return;

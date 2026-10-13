@@ -25,9 +25,9 @@ export function AnalyticsTab({
   const [loading, setLoading] = React.useState(true);
 
   const load = React.useCallback(async () => {
-    setLoading(true);
     try {
-      setData(await api<Analytics>("/api/admin/analytics"));
+      const res = await api<Analytics>("/api/admin/analytics");
+      setData(res);
     } catch (e) {
       toast(e instanceof Error ? e.message : "خطا در بارگذاری آمار", "err");
     } finally {
@@ -36,8 +36,21 @@ export function AnalyticsTab({
   }, [toast]);
 
   React.useEffect(() => {
-    load();
-  }, [load, refreshKey]);
+    let alive = true;
+    (async () => {
+      try {
+        const res = await api<Analytics>("/api/admin/analytics");
+        if (alive) setData(res);
+      } catch (e) {
+        toast(e instanceof Error ? e.message : "خطا در بارگذاری آمار", "err");
+      } finally {
+        if (alive) setLoading(false);
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [toast, refreshKey]);
 
   if (loading && !data) {
     return (

@@ -85,9 +85,12 @@ export function JsonInput({ value, onChange, label }: { value: unknown; onChange
   const [err, setErr] = React.useState<string | null>(null);
   const [dirty, setDirty] = React.useState(false);
 
-  React.useEffect(() => {
+  // همگام‌سازی با مقدار بیرونی وقتی دست‌نخورده است — الگوی تنظیم در رندر
+  const [prevSync, setPrevSync] = React.useState({ value, dirty });
+  if (prevSync.value !== value || prevSync.dirty !== dirty) {
+    setPrevSync({ value, dirty });
     if (!dirty) setText(JSON.stringify(value, null, 2));
-  }, [value, dirty]);
+  }
 
   return (
     <div>
