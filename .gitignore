@@ -34,11 +34,12 @@ yarn-error.log*
 .env*
 
 # database — حاوی اطلاعات شخصی است، هرگز در گیت
-/db/
+/db/*
 *.db
 *.db-journal
 *.db-wal
 *.db-shm
+!db/template.db
 
 # داده‌های خام استخراجی (شامل اطلاعات شخصی)
 /download/

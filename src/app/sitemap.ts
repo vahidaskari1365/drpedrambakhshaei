@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site-data";
 import { getMergedContent } from "@/lib/content-store";
 
+/** زنده — مقاله‌های جدید پنل ادمین بلافاصله وارد نقشه سایت می‌شوند */
+export const dynamic = "force-dynamic";
+
 /** نقشه سایت — صفحات اصلی + مقالات بلاگ (شامل مقاله‌های جدید پنل ادمین) */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();

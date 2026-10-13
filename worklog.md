@@ -260,3 +260,26 @@ Stage Summary:
 - سایت حالا لایه‌به‌لایه ضد هک است: CSP+۱۰ هدر امنیتی، قفل brute-force ادمین، کلید قوی محرمانه، ضد XSS در آپلود/JSON-LD، ضد flood همه APIهای باز، و **اطلاعات شخصی بیماران از کل تاریخچه گیت‌هاب پاک شد**
 - کلید جدید پنل در .env (ADMIN_KEY) — فقط نزد مدیر؛ بعد از ۵ تلاش غلط، IP قفل ۱۵دقیقه‌ای می‌شود
 - باقی‌مانده: ۱۱ وابستگی ترانزتیو (بدون fix آپ‌استریم) + پوش با توکن جدید + توصیه: چرخش توکن گیت‌هاب قبلی (افشا شده در چت)
+
+---
+Task ID: 11
+Agent: main
+Task: پایپ‌لاین استقرار روی هاست اشتراکی ایران (cPanel + Node.js) — بیلد و دیپلوی خودکار با GitHub Actions
+
+Work Log:
+- پیام کاربر: دامنه drpedrambakhshaei.com، هاست ایران با cPanel و Node.js؛ گردش کار: ادیت با ایجنت → گیت‌هاب → بیلد خودکار → دیپلوی خودکار به هاست
+- تصمیم دیتابیس: SQLite داخلی (صفر تنظیم در cPanel — PostgreSQL لازم نیست)؛ WAL + busy_timeout برای همزمانی امن بین پروسس‌های Passenger
+- src/instrumentation.ts + src/lib/db-bootstrap.ts: بوت‌استرپ خودکار دیتابیس در اولین اجرا روی هاست (کپی db/template.db → custom.db، WAL، پاکسازی بازدیدهای بالای ۱۲۰ روز) — صفر دستور دستی
+- db/template.db: اسکیمای خالی اسکیمادار کامیت شد (gitignore: /db/* + !db/template.db)
+- 🐛 رفع باگ تولیدی مهم: صفحات (site) در پروداکشن استاتیک بیلد می‌شدند و ویرایش‌های پنل ادمین را نشان نمی‌دادند → export const dynamic="force-dynamic" به (site)/layout.tsx و sitemap.ts → همه صفحات محتوایی ƒ Dynamic (تأیید در خروجی بیلد)؛ sitemap هم زنده شد
+- src/lib/db.ts: لاگ کوئری فقط در dev (پروداکشن بی‌صدا)
+- .github/workflows/deploy.yml: push به main → بیلد standalone با Bun 1.3.14 → باندل (server.js + node_modules ترس‌شده + static + public + template.db + tmp/restart.txt با timestamp برای ری‌استارت خودکار Passenger) → آپلود افزایشی FTP (SamKirkland v4.3.5) + آرتیفکت tar.gz فال‌بک برای استخراج دستی
+- secrets موردنیاز: FTP_HOST / FTP_USERNAME / FTP_PASSWORD (+ اختیاری FTP_PORT، FTP_PROTOCOL، FTP_SERVER_DIR)
+- **تست کامل باندل پروداکشن** (شبیه‌سازی هاست روی پورت 3100): / و /services و /blog و /sitemap.xml همگی 200؛ POST /api/track → ok:true؛ /api/admin/overview بدون کلید 401 و با کلید 200؛ custom.db خودکار از قالب ساخته شد (WAL فعال)؛ تایتل فارسی SSR سالم
+- ADMIN_KEY جدید ۳۲کاراکتری تولید و در .env ثبت شد (برای ست کردن در cPanel به کاربر اعلام شد)
+- dev سرور احیا (200)؛ lint پاس با صفر خطا
+
+Stage Summary:
+- کل زیرساخت CI/CD آماده است: هر push به main = بیلد + آپلود + ری‌استارت خودکار روی هاست ایران
+- روی هاست فقط ۳ کار یک‌بار برای همیشه: ساخت Node.js App (startup=server.js، root=drpedram-app) + ۳ متغیر محیطی (NODE_ENV، DATABASE_URL، ADMIN_KEY) + ۳ secret گیت‌هاب
+- منتظر: توکن جدید گیت‌هاب (توکن قبلی باطل شده) + اکانت FTP برای secrets

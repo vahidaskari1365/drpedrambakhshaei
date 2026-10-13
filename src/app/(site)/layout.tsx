@@ -5,6 +5,9 @@ import { VisitTracker } from "@/components/site/visit-tracker";
 import { JsonLd, physicianJsonLd, websiteJsonLd } from "@/lib/seo";
 import { getMergedContent } from "@/lib/content-store";
 
+/** رندر زنده در هر درخواست — ویرایش‌های پنل ادمین بلافاصله در SSR دیده می‌شوند */
+export const dynamic = "force-dynamic";
+
 /**
  * پوسته صفحات عمومی سایت — محتوای زنده (پیش‌فرض + ویرایش‌های پنل ادمین)
  * سمت سرور خوانده و به کل درخت کامپوننت تزریق می‌شود؛ یعنی SSR، SEO
