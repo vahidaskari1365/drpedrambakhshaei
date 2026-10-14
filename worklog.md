@@ -538,3 +538,37 @@ Stage Summary:
 - از این پس هر مقاله‌ای که ایجنت‌ها یا API منتشر کند بلافاصله در پنل ادمین (تب مقالات بلاگ) با نشان منبع دیده می‌شود و ویرایش/حذف آن مستقیم روی دیتابیس اعمال می‌شود
 - حذف مقاله از پنل دیگر «زنده شدن دوباره» ندارد؛ به‌روزرسانی بعدی ایجنت‌ها هم ویرایش ادمین را از بین نمی‌برد (row-level write-through)
 - dev server سالم: / ، /reviews ، /blog ، /api/agents/status همگی 200؛ template.db جدید شامل هر ۱۱ جدول
+
+---
+Task ID: 11
+Agent: Z.ai Code (main)
+Task: عیب‌یابی 404 سایت پروداکشن — تحلیل خروجی ترمینال هاست (node Permission denied، کرش Prisma، curl 260 بایتی) و رفع مشکل موتور Prisma روی هاست cPanel
+
+Work Log:
+- تحلیل خروجی ترمینال کاربر: node در PATH ترمینال cPanel مجاز نیست (طبیعی) — نود واقعی در /home/drpedram/nodevenv/drpedram-app/22/bin/node پیدا شد و با آن اپ بوت شد: «✓ Next.js 16.4.0 Ready» یعنی node_modules و server.js سالم‌اند (npm install کاربر خرابکاری نکرده بود)
+- خطای بحرانی کشف شد: PrismaClientInitializationError — «Prisma Client was generated for debian-openssl-3.0.x, but the actual deployment required debian-openssl-1.0.x» (هاست cPanel ایران OpenSSL 1.0.x دارد)
+- fix: prisma/schema.prisma — binaryTargets = ["native", "debian-openssl-1.0.x"] به generator اضافه شد؛ bunx prisma generate موفق؛ هر دو موتور در node_modules/.prisma/client تأیید شد (libquery_engine-debian-openssl-1.0.x.so.node = 21.7MB)
+- commit 5fc401b push شد → CI run #13 در جریان؛ چون schema.prisma در هش runtime bundle است، runtime جدید منتشر می‌شود و deploy.sh روی هاست node_modules را به‌صورت تمیز جایگزین می‌کند (خودترمیمی npm install کاربر)
+- تحلیل curl -H "Host: ..." از سرور: HTTP 200 ولی Content-Length: 260 و Last-Modified: 2023 = صفحه پیش‌فرض cPanel ⇒ اپ هنوز به دامنه در Passenger وصل نیست (نیاز به SAVE+RESTART با Domain درست در Setup Node.js App)
+- تحلیل هشدار «export: '=production': not a valid identifier» در wrapper نود: یکی از Environment variables ثبت‌شده در پنل cPanel Name خالی دارد (مقدار production) — باید در UI اصلاح شود
+- DNS از سمت سندباکس چک شد: drpedrambakhshaei.com → A: 185.10.74.200 (هاست قدیمی ihglobaldns) + AAAA: 2a02:dfc0:3:2::116 (Roshangar AS61055)؛ سرور جدید linux503 = 213.176.126.133 ⇒ ترافیک اصلاً به سرور جدید نمی‌رسد؛ getent روی هاست کاربر هم هنوز 185.10.74.200 می‌دهد
+
+Stage Summary:
+- ریشه 404 سه‌لایه است: (۱) DNS به هاست قدیمی اشاره می‌کند (اصلی‌ترین)، (۲) اپ به دامنه در Passenger متصل نیست (صفحه پیش‌فرض cPanel)، (۳) موتور Prisma ناسازگار (فیکس شد و در رلیز جدید است)
+- فیکس Prisma: binaryTargets ["native","debian-openssl-1.0.x"] — از این پس هر بیلد CI هر دو موتور را باندل می‌کند
+- تعلیمات به کاربر: تغییر A/AAAA در پنل DNS، حذف متغیر بی‌نام در Node.js App، اجرای deploy.sh بعد از اتمام CI، SAVE+RESTART اپ
+
+---
+Task ID: 11-b
+Agent: Z.ai Code (main)
+Task: رفع شکست CI پس از فیکس Prisma و انتشار رلیز سالم
+
+Work Log:
+- CI run #13 شکست خورد در گام Assemble: چک قدیمی «test -f ...libquery_engine-*.so.node» با glob چندفایلی (حالا ۲ موتور) خطای «binary operator expected» می‌داد — باگ اسکریپت بود نه باندل (خبر خوب: هر دو موتور در standalone بودند)
+- fix: .github/workflows/deploy.yml — چک به ls-based تغییر کرد + لاگ تعداد موتورها اضافه شد؛ chmod 644 برای بازگردانی mode
+- commit 1f59061 push → CI run #14: completed success؛ «engines: 2» در لاگ تأیید شد
+- رلیز منتشر شد: deploy-20261014-055203 | app-20261014-055156.tar.gz (7.9MB) | runtime-ff7a7b2d.tar.gz (39MB)
+- runtime hash عوض شد (ff7a7b2d ≠ a06b23b6 قبلی) ⇒ deploy.sh روی هاست runtime را دانلود و node_modules را تمیز جایگزین می‌کند (خودترمیمی npm install کاربر + موتور 1.0.x)
+
+Stage Summary:
+- رلیز سالم روی releases/latest است؛ منتظر: کاربر deploy.sh بزند → تست standalone (انتظار: db-bootstrap موفق بدون خطای Prisma) → SAVE+RESTART اپ در cPanel → تغییر DNS (هنوز 185.10.74.200)
