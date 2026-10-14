@@ -1,21 +1,41 @@
 #!/bin/bash
 # ============================================================
-# host-deploy v2 — نصب روی هاست ایران (cPanel) در ~/bin/deploy.sh
+# host-deploy v3 — نصب روی هاست ایران (cPanel) در ~/bin/deploy.sh
 #
 # معماری Pull: هاست خودش باندل را از GitHub Releases می‌کشد.
 # باندل دو تکه است:
 #   runtime-*.tar.gz  → node_modules (فقط وقتی وابستگی‌ها عوض شوند دانلود می‌شود)
 #   app-*.tar.gz      → کد و صفحات (هر دیپلوی، فقط چند مگ)
 # manifest.txt می‌گوید کدام فایل‌ها؛ دانلودها قابل ادامه (resume) هستند.
+#
+# v3: قفل ضداجرای همزمان (کرون + اجرای دستی روی یک فایل part می‌نوشتند و
+#     tar با «trailing garbage» می‌مرد) + نام part یکتا برای هر اجرا +
+#     تست سلامت gzip قبل از بازکردن + جایگزینی کامل node_modules
+#     (ترمیم خرابی ناشی از npm install روی هاست)
 # ============================================================
 set -euo pipefail
 
-REPO="vahidaskari1365/drpedrambakhshaei"
+REPO="${DEPLOY_REPO:-vahidaskari1365/drpedrambakhshaei}"
 APP_DIR="$HOME/drpedram-app"
 BASE_URL="https://github.com/$REPO/releases/latest/download"
 
 mkdir -p "$APP_DIR/tmp"
 cd "$APP_DIR"
+
+# ۰) قفل ضداجرای همزمان — دو curl همزمان روی یک فایل = فایل خراب
+if command -v flock >/dev/null 2>&1; then
+  exec 9>"$APP_DIR/.deploy.lock"
+  if ! flock -n 9; then
+    echo "$(date '+%F %T') another deploy is running — skip this round"
+    exit 0
+  fi
+else
+  if ! mkdir "$APP_DIR/.deploy.lockdir" 2>/dev/null; then
+    echo "$(date '+%F %T') another deploy is running — skip this round"
+    exit 0
+  fi
+  trap 'rmdir "$APP_DIR/.deploy.lockdir" 2>/dev/null' EXIT
+fi
 
 # ۱) مانيفست نسخه فعلی گیت‌هاب (چند صد بایت)
 if ! curl -4 -sL --retry 3 --retry-delay 5 --max-time 60 -o .manifest.new "$BASE_URL/manifest.txt"; then
@@ -31,7 +51,7 @@ fi
 RT_OLD=$(grep '^runtime=' .deploy-manifest 2>/dev/null | cut -d= -f2 || echo "")
 AP_OLD=$(grep '^app='     .deploy-manifest 2>/dev/null | cut -d= -f2 || echo "")
 
-# پاک‌سازی فایل‌های نیمه‌دانلود قدیمی (بیش از ۲ روز)
+# پاک‌سازی فایل‌های نیمه‌دانلود قدیمی (بیش از ۲ روز) — نام part الان یکتاست
 find . -maxdepth 1 -name '.part-*' -mtime +2 -delete 2>/dev/null || true
 
 # سازگاری با curl قدیمی (CentOS/CloudLinux 7.29): --retry-all-errors فقط در curl >= 7.71 هست
@@ -46,20 +66,37 @@ if [ -n "${CURL_VER:-}" ]; then
   fi
 fi
 
-pull() { # $1=asset-name
+download_verified() { # $1=asset-name → مسیر فایل part سالم را چاپ می‌کند
+  local PART=".part-$1.$$"
   echo "$(date '+%F %T') downloading $1 ..."
   # shellcheck disable=SC2086
-  curl -4 -L -C - $CURL_RETRY_FLAGS --max-time 2400 \
-    -o ".part-$1" "$BASE_URL/$1"
-  tar -xzf ".part-$1" -C "$APP_DIR"
-  rm -f ".part-$1"
+  curl -4 -L -C - $CURL_RETRY_FLAGS --max-time 2400 -o "$PART" "$BASE_URL/$1"
+  # تست سلامت کل جریان گیزپ — فایل ناقص/دونوع‌نویسی‌شده هرگز باز نمی‌شود
+  if ! gzip -t "$PART" 2>/dev/null; then
+    echo "$(date '+%F %T') ERROR: $1 corrupt — دوباره deploy.sh بزنید (از سرعت کم ایران، دانلود از سر گرفته می‌شود)"
+    rm -f "$PART"
+    exit 1
+  fi
+  printf '%s' "$PART"
+}
+
+pull() { # $1=asset-name — دانلود + تست + بازکردن
+  local PART
+  PART=$(download_verified "$1")
+  tar -xzf "$PART" -C "$APP_DIR"
+  rm -f "$PART"
 }
 
 CHANGED=0
 
 # ۲) runtime base — فقط وقتی وابستگی‌ها/اسکیمای دیتابیس عوض شده باشند
 if [ "$RT_NEW" != "$RT_OLD" ]; then
-  pull "$RT_NEW"
+  RT_PART=$(download_verified "$RT_NEW")
+  echo "$(date '+%F %T') runtime changed — clean replacing node_modules ..."
+  # جایگزینی کامل نه ادغام: هر ردپای npm install دستی پاک می‌شود
+  rm -rf "$APP_DIR/node_modules"
+  tar -xzf "$RT_PART" -C "$APP_DIR"
+  rm -f "$RT_PART"
   CHANGED=1
 fi
 
