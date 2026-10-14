@@ -57,8 +57,9 @@ local-*
 *.log
 dev.log
 dev.out.log
-test
-prompt
+# فقط پوشه‌های ریشه — بدون اسلش، هر فایل/پوشه‌ای در هر عمقی را می‌بلعد (باگ مسیر API قبلی)
+/test
+/prompt
 
 server.log
 # Skills directory
