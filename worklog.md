@@ -621,3 +621,25 @@ Work Log:
 Stage Summary:
 - v3.1 ضدگلوله: capture تمیز، دوباره تست سلامت، محافظ مسیر؛ کرون از این پس امن
 - وضعیت هاست: node_modules حذف شده، منتظر اجرای موفق v3.1؛ app bundle قدیمی ولی کامل روی دیسک
+
+---
+Task ID: 11-f
+Agent: Z.ai Code (main)
+Task: تشخیص فقط-خواندنی لاگ پروڈاکشن هاست (خروجی پیست‌شده کاربر) — نگاشت هر خط لاگ به کد
+
+Work Log:
+- خبر بزرگ در خود لاگ: اپ روی هاست زنده است — scheduler مسلح، دیتابیس وصل، ایجنت‌ها اجرا می‌شوند ⇒ node_modules ترمیم شده و Passenger اپ را بالا آورده
+- خط ۱ «export: =production: not a valid identifier» ← متغیر env بدون Name در cPanel (آیتم معلق لیست 11) — wrapper nodevenv خط ۱۰ export خراب می‌زند؛ ریسک: NODE_ENV درست ست نشده باشد
+- «Configuration file not found or invalid. Please create .z-ai-config» ← ریشه اصلی: .z-ai-config در .gitignore است (خط ۵۶) ⇒ هیچ‌وقت با باندل به هاست نرسیده؛ SDK ترتیب جستجو: project → home → /etc
+- content-agent: webResearch و idea-generation با catch آرام skip می‌شوند (دو خط warn لاگ) ولی گام ۳ ZAI.create() بدون try/catch است ⇒ throw ⇒ «[agents:content] failed»
+- اسپم تکراری: scheduledTodayDone وضعیت failed را قبول نمی‌کند ⇒ scheduler هر ۶۰ ثانیه دوباره تلاش می‌کند (طراحی: retry تا موفقیت) — با ساختن کانفیگ خودش خودترمیم می‌شود
+- GEO ENOENT site-data.ts / robots.ts ← release.sh خط ۷۸ عمداً src/ را از باندل حذف می‌کند؛ geo-agent fail-safe است (هرگز throw نمی‌کند)، llms.txt ساخته و در public/ نوشته می‌شود (fs هاست نوشتنی است) — فقط ممیزی‌ها گزارش خطا می‌دهند؛ کنترل: rg «server.close» در کل پروژه = هیچ ⇒ خطای داخلی Next standalone هنگام خاموش‌شدن/ری‌استارت Passenger است، بی‌ضرر
+- robots زنده: public/robots.txt سرو می‌شود (Allow: / برای همه شامل کرالرهای AI) ⇒ از نظر GEO سایت الان هم آزاد است؛ شکست ممیزی صرفاً گزارشی است
+- aeo-agent هم ZAI.create دارد (lazy، خط ۳۵۹) ⇒ کانفیگ برایش الزامی؛ gsc-agent وابسته به ZAI نیست
+- کانفیگ سندباکس (internal-api.z.ai + توکن chat-scoped) قابل انتقال به هاست نیست — کاربر باید API Key خودش از پلتفرم Z.AI بسازد
+
+Stage Summary:
+- تشخیص کامل بدون هیچ تغییر در ریپو/هاست (احترام به دستور توقف کاربر)
+- مسیر ترمیم محتوا: (۱) cPanel: حذف سطر env بدون Name + اطمینان از NODE_ENV=production، (۲) ساخت ~/drpedram-app/.z-ai-config با کلید خود کاربر + chmod 600، (۳) ری‌استارت اپ ⇒ scheduler ≤۶۰ ثانیه بعد مقاله امروز را منتشر می‌کند
+- پس از اجازه کاربر: release.sh دو فایل src/lib/site-data.ts و src/app/robots.ts را به باندل برگرداند (رفع ENOENT جیو) + می‌توان v3.2 گارد host-deploy.sh را در همان push برد
+- معلق‌های قبلی پابرجا: حذف A رکورد ۱۳۳ (IP بانک)، AutoSSL، تأیید DEPLOYED OK
