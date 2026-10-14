@@ -55,7 +55,10 @@ jobs:
           date +%s > bundle/tmp/restart.txt
           # حذف موتورهای WASM دیتابیس‌های استفاده‌نشده (MySQL/SQLServer/Cockroach/...) — حدود ۵۵MB صرفه‌جویی
           find bundle/node_modules/@prisma/client/runtime -name "*wasm*" -delete || true
-          test -f bundle/node_modules/.prisma/client/libquery_engine-*.so.node || { echo "query engine missing!"; exit 1; }
+          # ls با glob: اگر هیچ موتوری نباشد شکست می‌خورد؛ با چند موتور (1.0.x + 3.0.x) هم درست کار می‌کند
+          # (test -f با glob چندفایلی «binary operator expected» می‌دهد)
+          ls bundle/node_modules/.prisma/client/libquery_engine-*.so.node > /dev/null 2>&1 || { echo "query engine missing!"; exit 1; }
+          echo "engines: $(ls bundle/node_modules/.prisma/client/ | grep -c libquery_engine)"
           RT_HASH=$( (cat bun.lock package.json prisma/schema.prisma; du -sb bundle/node_modules) | sha256sum | cut -c1-8 )
           RT_NAME="runtime-$RT_HASH.tar.gz"
           AP_NAME="app-$(date -u +%Y%m%d-%H%M%S).tar.gz"
