@@ -66,14 +66,15 @@ if [ -n "${CURL_VER:-}" ]; then
   fi
 fi
 
-download_verified() { # $1=asset-name → مسیر فایل part سالم را چاپ می‌کند
+download_verified() { # $1=asset-name → مسیر فایل part سالم را «فقط» در stdout چاپ می‌کند
   local PART=".part-$1.$$"
-  echo "$(date '+%F %T') downloading $1 ..."
+  # پیام‌های پیشرفت باید به stderr بروند — اگر stdout بروند داخل نام فایل capture می‌شوند!
+  echo "$(date '+%F %T') downloading $1 ..." >&2
   # shellcheck disable=SC2086
   curl -4 -L -C - $CURL_RETRY_FLAGS --max-time 2400 -o "$PART" "$BASE_URL/$1"
   # تست سلامت کل جریان گیزپ — فایل ناقص/دونوع‌نویسی‌شده هرگز باز نمی‌شود
   if ! gzip -t "$PART" 2>/dev/null; then
-    echo "$(date '+%F %T') ERROR: $1 corrupt — دوباره deploy.sh بزنید (از سرعت کم ایران، دانلود از سر گرفته می‌شود)"
+    echo "$(date '+%F %T') ERROR: $1 corrupt — دوباره deploy.sh بزنید (از سرعت کم ایران، دانلود از سر گرفته می‌شود)" >&2
     rm -f "$PART"
     exit 1
   fi
@@ -92,6 +93,17 @@ CHANGED=0
 # ۲) runtime base — فقط وقتی وابستگی‌ها/اسکیمای دیتابیس عوض شده باشند
 if [ "$RT_NEW" != "$RT_OLD" ]; then
   RT_PART=$(download_verified "$RT_NEW")
+  # محافظ: مسیر part باید دقیقاً یک نام فایل تمیز باشد (نه حاوی پیام لاگ)
+  case "$RT_PART" in
+    .part-*tar.gz) ;;
+    *) echo "$(date '+%F %T') ERROR: bad part path — bug guard" >&2; exit 1 ;;
+  esac
+  # فهرست کامل آرشیو را هم تست کن (علاوه بر gzip -t)
+  if ! tar -tzf "$RT_PART" > /dev/null 2>&1; then
+    echo "$(date '+%F %T') ERROR: $RT_PART tar listing failed — دوباره deploy.sh بزنید" >&2
+    rm -f "$RT_PART"
+    exit 1
+  fi
   echo "$(date '+%F %T') runtime changed — clean replacing node_modules ..."
   # جایگزینی کامل نه ادغام: هر ردپای npm install دستی پاک می‌شود
   rm -rf "$APP_DIR/node_modules"
