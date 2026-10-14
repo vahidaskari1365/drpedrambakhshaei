@@ -85,6 +85,8 @@ pull() { # $1=asset-name — دانلود + تست + بازکردن
   local PART
   PART=$(download_verified "$1")
   tar -xzf "$PART" -C "$APP_DIR"
+  # robots.txt استاتیکِ کهنه نباید بماند — مسیر داینامیک src/app/robots.ts (با Sitemap و کرالرهای AI) باید سرو شود
+  rm -f "$APP_DIR/public/robots.txt"
   rm -f "$PART"
 }
 

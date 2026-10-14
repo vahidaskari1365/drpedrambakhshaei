@@ -259,9 +259,119 @@ const FALLBACK_COVERS = [
   "/uploads/clinic-photo-2.jpg",
 ];
 
-async function generateCover(topic: string): Promise<{ src: string; alt: string; ai: boolean }> {
-  const alt = `تصویر اختصاصی مقاله: ${topic}`;
-  // پرامپت اول ممکن است فیلتر محتوای تصویری (کدهای ۱۳xx) را فعال کند — نسخه خنثی جایگزین
+/** سایت‌های استوک — واترمارک و محدودیت کپی‌رایت؛ از نتایج جست‌وجو حذف می‌شوند */
+const STOCK_SOURCES =
+  /(alamy|shutterstock|gettyimages|istockphoto|dreamstime|123rf|depositphotos|freepik|adobe\.stock)/i;
+
+type SearchHit = { original_url?: string; original_width?: string; original_height?: string; source?: string };
+type CoverResult = { src: string; alt: string; ai: boolean; searched: boolean };
+
+/** از روی عنوان فارسی، یک عبارت جست‌وجوی انگلیسی کوتاه برای پیدا کردن عکس واقعی می‌سازد */
+async function englishImageQuery(zai: Awaited<ReturnType<typeof ZAI.create>>, topic: string): Promise<string> {
+  try {
+    const res = await withTimeout(
+      zai.chat.completions.create({
+        messages: [
+          {
+            role: "assistant",
+            content:
+              "Convert a Persian dental / oral-maxillofacial surgery article title into ONE short English web image-search query (5-8 words) that finds a REAL clinical or radiographic photo matching the topic. Reply with the query only — no quotes, no explanation.",
+          },
+          { role: "user", content: topic },
+        ],
+        thinking: { type: "disabled" },
+      }),
+      45_000,
+      "ساخت عبارت جست‌وجوی تصویر"
+    );
+    const q = (res.choices?.[0]?.message?.content ?? "")
+      .split("\n")[0]
+      .replace(/["'`*]/g, "")
+      .trim();
+    if (q.length >= 8 && q.length <= 120 && /^[a-z0-9 ,\-()&]+$/i.test(q)) return q;
+  } catch (e) {
+    console.warn(
+      "[content-agent] image query derivation failed, searching with topic:",
+      e instanceof Error ? e.message.slice(0, 100) : e
+    );
+  }
+  return topic;
+}
+
+/** عکس واقعیِ مرتبط با موضوع را از جست‌وجوی وب پیدا و در رسانه ذخیره می‌کند */
+async function searchWebCover(zai: Awaited<ReturnType<typeof ZAI.create>>, topic: string): Promise<{ src: string } | null> {
+  try {
+    const query = await englishImageQuery(zai, topic);
+    const search = (await withTimeout(
+      zai.images.search.create({ query, count: 8, gl: "us", rank: false }) as Promise<{
+        success?: boolean;
+        results?: SearchHit[];
+      }>,
+      40_000,
+      "جست‌وجوی تصویر وب"
+    )) as { success?: boolean; results?: SearchHit[] };
+    const hits = (search.results ?? []).filter((h) => {
+      const w = parseInt(h.original_width ?? "0", 10);
+      const h_ = parseInt(h.original_height ?? "0", 10);
+      const url = h.original_url ?? "";
+      return (
+        url.startsWith("http") &&
+        w >= 700 &&
+        h_ >= 400 &&
+        w > h_ && // کاور افقی است
+        !STOCK_SOURCES.test(h.source ?? "") &&
+        !STOCK_SOURCES.test(url)
+      );
+    });
+    for (const hit of hits.slice(0, 3)) {
+      try {
+        const res = await withTimeout(
+          fetch(hit.original_url as string, { signal: AbortSignal.timeout(12_000) }),
+          15_000,
+          "دانلود تصویر کاندید"
+        );
+        const mime = (res.headers.get("content-type") ?? "").split(";")[0];
+        if (!res.ok || !mime.startsWith("image/")) continue;
+        const buf = Buffer.from(await res.arrayBuffer());
+        if (buf.length < 12_000 || buf.length > 5 * 1024 * 1024) continue;
+        const ext = mime.includes("png") ? "png" : mime.includes("webp") ? "webp" : mime.includes("gif") ? "gif" : "jpg";
+        const media = await db.media.create({
+          data: {
+            filename: `agent-cover-${Date.now()}.${ext}`,
+            mime,
+            size: buf.length,
+            data: buf.toString("base64"),
+          },
+        });
+        return { src: `/api/media/${media.id}` };
+      } catch (e) {
+        console.warn(
+          "[content-agent] cover candidate failed, trying next:",
+          e instanceof Error ? e.message.slice(0, 90) : e
+        );
+      }
+    }
+  } catch (e) {
+    console.warn("[content-agent] web cover search failed:", e instanceof Error ? e.message.slice(0, 120) : e);
+  }
+  return null;
+}
+
+/**
+ * کاور مقاله — طبق دستور مدیر سایت اول جست‌وجوی وب برای «عکس واقعی مرتبط با موضوع»،
+ * بعد تولید AI خنثی، و در آخر گالری ثابت. هرگز throw نمی‌کند.
+ */
+async function generateCover(topic: string): Promise<CoverResult> {
+  const alt = `تصویر مقاله: ${topic}`;
+  // ۱) جست‌وجوی وب — عکس واقعی مرتبط با موضوع
+  try {
+    const zai = await ZAI.create();
+    const found = await searchWebCover(zai, topic);
+    if (found) return { ...found, alt, ai: false, searched: true };
+  } catch (e) {
+    console.warn("[content-agent] cover search skipped:", e instanceof Error ? e.message.slice(0, 120) : e);
+  }
+  // ۲) تولید AI — پرامپت خنثی (پرامپت تخصصی ممکن است فیلتر محتوای تصویری را فعال کند)
   const prompts = [
     `Elegant modern medical clinic editorial illustration, soft studio light, teal and porcelain color palette, abstract clean shapes, calm professional atmosphere, no text, no watermark, photorealistic 3D render`,
     `Minimal abstract 3D render of a bright modern dental clinic interior, teal and cream palette, soft light, no people, no text, no watermark`,
@@ -281,7 +391,7 @@ async function generateCover(topic: string): Promise<{ src: string; alt: string;
           const media = await db.media.create({
             data: { filename: `agent-cover-${Date.now()}.png`, mime: "image/png", size: buffer.length, data: base64 },
           });
-          return { src: `/api/media/${media.id}`, alt, ai: true };
+          return { src: `/api/media/${media.id}`, alt, ai: true, searched: false };
         }
       } catch (e) {
         console.warn("[content-agent] cover prompt rejected, trying neutral:", e instanceof Error ? e.message.slice(0, 120) : e);
@@ -290,8 +400,9 @@ async function generateCover(topic: string): Promise<{ src: string; alt: string;
   } catch (e) {
     console.warn("[content-agent] cover generation failed, using fallback:", e instanceof Error ? e.message.slice(0, 120) : e);
   }
+  // ۳) گالری ثابت
   const idx = hashOf(topic).charCodeAt(0) % FALLBACK_COVERS.length;
-  return { src: FALLBACK_COVERS[idx], alt, ai: false };
+  return { src: FALLBACK_COVERS[idx], alt, ai: false, searched: false };
 }
 
 /* ───────────────── اجرای ایجنت ───────────────── */
@@ -402,7 +513,7 @@ export async function runContentAgent(): Promise<AgentResult> {
   await db.topicIdea.update({ where: { id: topic.id }, data: { used: true, usedAt: new Date() } }).catch(() => {});
 
   return {
-    summary: `مقاله «${articleData.title}» منتشر شد — ${result.wordCount} کلمه، ${Math.max(2, Math.round(result.wordCount / 190))} دقیقه مطالعه، کاور ${cover.ai ? "تولید AI" : "از گالری"}`,
+    summary: `مقاله «${articleData.title}» منتشر شد — ${result.wordCount} کلمه، ${Math.max(2, Math.round(result.wordCount / 190))} دقیقه مطالعه، کاور ${cover.searched ? "جست‌وجوی وب (مرتبط با موضوع)" : cover.ai ? "تولید AI" : "از گالری"}`,
     details: {
       slug: result.id,
       title: articleData.title,
@@ -411,6 +522,7 @@ export async function runContentAgent(): Promise<AgentResult> {
       topic: topic.title,
       cover: cover.src,
       coverAi: cover.ai,
+      coverSearched: cover.searched,
       research: factsWeb.length,
     },
   };
