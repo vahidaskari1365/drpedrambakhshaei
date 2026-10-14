@@ -572,3 +572,19 @@ Work Log:
 
 Stage Summary:
 - رلیز سالم روی releases/latest است؛ منتظر: کاربر deploy.sh بزند → تست standalone (انتظار: db-bootstrap موفق بدون خطای Prisma) → SAVE+RESTART اپ در cPanel → تغییر DNS (هنوز 185.10.74.200)
+
+---
+Task ID: 11-c
+Agent: Z.ai Code (main)
+Task: رفع ناسازگاری deploy.sh با curl قدیمی هاست (7.29) که مانع دانلود runtime بود
+
+Work Log:
+- خروجی کاربر: «curl: option --retry-all-errors: is unknown» در حین دانلود runtime-ff7a7b2d ⇒ دانلود قطع، node_modules جایگزین نشد، خطای Prisma باقی ماند (طبیعی)
+- علت: --retry-all-errors فقط در curl >= 7.71 هست؛ هاست CentOS/CloudLinux با curl 7.29
+- fix: scripts/host-deploy.sh — تشخیص نسخه curl (major/minor parsing) و افزودن شرطی فلگ؛ تست شبیه‌سازی برای 7.29/7.71/8.5/خالی = درست
+- commit 6ed8248 push → CI run #15 (بیلد app جدید؛ runtime نامش تغییر نمی‌کند)
+- راه‌حل فوری کاربر بدون دانلود مجدد: sed -i 's/ --retry-all-errors//' ~/bin/deploy.sh
+
+Stage Summary:
+- نسخه canonical اسکریپت در ریپو سازگار با curl قدیمی شد (کرون آینده هم امن است)
+- منتظر: کاربر sed بزند → deploy.sh → DEPLOYED OK → تست standalone (انتظار db-bootstrap موفق) → SAVE+RESTART cPanel → DNS
