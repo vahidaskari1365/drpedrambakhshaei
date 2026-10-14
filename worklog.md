@@ -588,3 +588,19 @@ Work Log:
 Stage Summary:
 - نسخه canonical اسکریپت در ریپو سازگار با curl قدیمی شد (کرون آینده هم امن است)
 - منتظر: کاربر sed بزند → deploy.sh → DEPLOYED OK → تست standalone (انتظار db-bootstrap موفق) → SAVE+RESTART cPanel → DNS
+
+---
+Task ID: 11-d
+Agent: Z.ai Code (main)
+Task: رفع خرابی «trailing garbage» در دانلود runtime هاست — host-deploy v3
+
+Work Log:
+- تشخیص ریشه: دانلود دستی ۰۹:۳۲–۰۹:۴۸ (۱۶ دقیقه، ۲۵۲KB/s) با کرون */20 (شلیک ۰۹:۴۰) همپوشان شد؛ دو curl همزمان با -C - روی یک .part-*.tar.gz نوشتند ⇒ فایل دو-نویسی، gzip «decompression OK, trailing garbage ignored» و tar با status 2 مرد
+- وضعیت هاست پس از شکست: node_modules = حاصل استخراج ناقص/ادغامی، .deploy-manifest به‌روز نشده، .part بزرگ باقی مانده
+- host-deploy v3 نوشته شد: قفل flock (fallback: mkdir lockdir)، نام part یکتا با $$، download_verified با gzip -t (فایل خراب رد و exit 1)، تعویض کامل node_modules (rm -rf قبل از استخراج runtime — ردپای npm install هم پاک)، حفظ سازگاری curl 7.29 و resume
+- تست محلی: bash -n OK؛ شبیه‌سازی تایید: فایل سالم ACCEPT، فایل با trailing garbage REJECT
+- commit ec60feb push → CI بیلد app جدید؛ رفرش اسکریپت کاربر از raw.githubusercontent
+
+Stage Summary:
+- اسکریپت ضدگلوله شد: اجرای همزمان دیگر غیرممکن، دانلود خراب هرگز باز نمی‌شود، node_modules همیشه تمیز جایگزین می‌شود
+- گام بعدی کاربر: curl از raw برای رفرش deploy.sh → bash ~/bin/deploy.sh (دانلود مجدد ۱۶ دقیقه‌ای) → DEPLOYED OK → تست standalone → cPanel (env var، Domain/SAVE/RESTART) → DNS
