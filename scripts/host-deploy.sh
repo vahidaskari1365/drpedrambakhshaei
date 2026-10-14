@@ -34,9 +34,22 @@ AP_OLD=$(grep '^app='     .deploy-manifest 2>/dev/null | cut -d= -f2 || echo "")
 # پاک‌سازی فایل‌های نیمه‌دانلود قدیمی (بیش از ۲ روز)
 find . -maxdepth 1 -name '.part-*' -mtime +2 -delete 2>/dev/null || true
 
+# سازگاری با curl قدیمی (CentOS/CloudLinux 7.29): --retry-all-errors فقط در curl >= 7.71 هست
+CURL_RETRY_FLAGS="--retry 5 --retry-delay 5"
+CURL_VER=$(curl --version 2>/dev/null | head -1 | awk '{print $2}')
+if [ -n "${CURL_VER:-}" ]; then
+  CV_MAJ=${CURL_VER%%.*}
+  CV_REST=${CURL_VER#*.}
+  CV_MIN=${CV_REST%%.*}
+  if [ "${CV_MAJ:-0}" -gt 7 ] 2>/dev/null || { [ "${CV_MAJ:-0}" = 7 ] && [ "${CV_MIN:-0}" -ge 71 ] 2>/dev/null; }; then
+    CURL_RETRY_FLAGS="$CURL_RETRY_FLAGS --retry-all-errors"
+  fi
+fi
+
 pull() { # $1=asset-name
   echo "$(date '+%F %T') downloading $1 ..."
-  curl -4 -L -C - --retry 5 --retry-delay 5 --retry-all-errors --max-time 2400 \
+  # shellcheck disable=SC2086
+  curl -4 -L -C - $CURL_RETRY_FLAGS --max-time 2400 \
     -o ".part-$1" "$BASE_URL/$1"
   tar -xzf ".part-$1" -C "$APP_DIR"
   rm -f ".part-$1"
