@@ -6,6 +6,9 @@
 
 generator client {
   provider = "prisma-client-js"
+  // هاست پروداکشن (cPanel ایران) OpenSSL 1.0.x دارد؛ بدون این خط Prisma
+  // روی سرور با خطای «could not locate the Query Engine» کرش می‌کند
+  binaryTargets = ["native", "debian-openssl-1.0.x"]
 }
 
 datasource db {
