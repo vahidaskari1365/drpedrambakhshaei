@@ -688,3 +688,20 @@ Stage Summary:
 - ۵ مقاله ۱۰۰۰+ کلمه‌ای اورجینال روی سایت زنده است + sitemap/llms.txt به‌روز؛ پشته JSON-LD کامل (Physician/WebSite/MedicalWebPage/FAQPage/Breadcrumb)
 - ایجنت‌ها فعال‌اند (autoPublish=true)؛ تنها گمشده: ~/drpedram-app/.z-ai-config روی هاست — به محض ساخته‌شدن، ایجنت محتوا خودکار مقاله می‌سازد و اسپم قطع می‌شود
 - معلق‌های قبلی پابرجا: حذف A رکورد ۱۳۳، AutoSSL، متغیر env بدون Name در cPanel، اتصال GSC (منتظر JSON سرویس‌اکانت کاربر)
+
+---
+Task ID: 12-b
+Agent: Z.ai Code (main)
+Task: راستی‌آزمایی وضعیت زنده پروداکشن بعد از ساخت .z-ai-config توسط کاربر + پاسخ «کجای کار را ببینیم»
+
+Work Log:
+- کاربر فایل ~/drpedram-app/.z-ai-config را ساخت ولی با متن جای‌نگه‌دار فارسی «کلید_API_خودت» (نه کلید واقعی)
+- GET /api/agents/status پروداکشن: autoPublish=true؛ geo=success (llms.txt با ۶ مقاله)؛ content=failed با خطای «Cannot convert argument to a ByteString» — ریشه: کاراکتر غیرASCII در هدر Authorization ⇒ تأیید قطعی که کلید واقعی هنوز ست نشده؛ history پر از رکوردهای failed تیک‌های ۶۰ ثانیه‌ای
+- تأیید زنده تحویل‌دادنی‌های Task 12: هر ۵ مقاله HTTP 200، sitemap=15 URL، llms.txt زنده
+- بررسی کد SDK (node_modules/z-ai-web-dev-sdk/dist/index.js): loadConfig در هر ZAI.create() فایل را از نو می‌خواند، بدون کش ⇒ پس از جایگزینی کلید، ری‌استارت اپ لازم نیست؛ تیک بعدی خودترمیم است
+- مسیرهای مانیتورینگ شناسایی و به کاربر داده شد: پنل /admin → تب «ایجنت‌ها» (وضعیت هر ایجنت + آخرین اجرا + تاریخچه ۲۰ اجرای اخیر + اجرای دستی + سوییچ انتشار خودکار)، /blog، sitemap.xml، llms.txt، لاگ خطای cPanel
+
+Stage Summary:
+- همه تحویل‌دادنی‌های Task 12 روی پروداکشن زنده و تأییدشده‌اند؛ ایجنت‌ها فعال‌اند (autoPublish=true)
+- تنها گام باقی‌مانده سمت کاربر: جایگزینی متن جای‌نگه‌دار با کلید واقعی Z.AI با یک خط sed (کلید از کنسول z.ai)؛ تا ۶۰ ثانیه بعد content agent خودترمیم می‌شود
+- هیچ تغییری در ریپو یا هاست لازم نبود؛ خطای ByteString تا اصلاح کلید هر تیک تکرار می‌شود (بی‌خطر برای سایت، فقط رکورد failed در AgentRun)
