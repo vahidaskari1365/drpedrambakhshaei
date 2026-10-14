@@ -604,3 +604,20 @@ Work Log:
 Stage Summary:
 - اسکریپت ضدگلوله شد: اجرای همزمان دیگر غیرممکن، دانلود خراب هرگز باز نمی‌شود، node_modules همیشه تمیز جایگزین می‌شود
 - گام بعدی کاربر: curl از raw برای رفرش deploy.sh → bash ~/bin/deploy.sh (دانلود مجدد ۱۶ دقیقه‌ای) → DEPLOYED OK → تست standalone → cPanel (env var، Domain/SAVE/RESTART) → DNS
+
+---
+Task ID: 11-e
+Agent: Z.ai Code (main)
+Task: رفع باگ capture در host-deploy v3 (v3.1) + ترمیم وضعیت هاست (node_modules حذف‌شده)
+
+Work Log:
+- باگ v3: echo پیام «downloading...» در download_verified به stdout رفت و در $(...) capture شد ⇒ RT_PART = «خط لاگ\n.part-...» ⇒ tar اسم غلط گرفت و مرد؛ چون rm -rf node_modules قبل از tar بود، node_modules هاست حذف شد (Cannot find module 'next')
+- نکتهٔ مثبت: فایل ۳۷MB دانلودشده gzip -t را رد کرده و سالم روی دیسک مانده (.part-runtime-ff7a7b2d.tar.gz.2146209) — دانلود مجدد لازم نیست اگر ترمیم دستی بخواهد
+- خطر همزمان: کرون هر ۲۰ دقیقه با v3 معیوب، هر بار ۳۷MB دانلود و در tar می‌مرد (part ها انبار می‌شدند) — تا رفرش اسکریپت به v3.1 باید متوقف شود
+- v3.1 (commit f09a1b2): پیام‌ها به stderr، stdout فقط نام فایل، محافظ case روی شکل مسیر part + tar -tzf کامل قبل از rm -rf
+- تست: bash -n OK؛ شبیه‌سازی capture تمیز OK؛ محافظ مسیر آلوده را می‌گیرد OK
+- راه ترمیم کاربر: رفرش deploy.sh از raw (v3.1) → bash ~/bin/deploy.sh (دانلود مجدد runtime + app → DEPLOYED OK) یا ترمیم دستی از part موجود
+
+Stage Summary:
+- v3.1 ضدگلوله: capture تمیز، دوباره تست سلامت، محافظ مسیر؛ کرون از این پس امن
+- وضعیت هاست: node_modules حذف شده، منتظر اجرای موفق v3.1؛ app bundle قدیمی ولی کامل روی دیسک
