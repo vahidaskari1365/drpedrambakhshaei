@@ -643,3 +643,20 @@ Stage Summary:
 - مسیر ترمیم محتوا: (۱) cPanel: حذف سطر env بدون Name + اطمینان از NODE_ENV=production، (۲) ساخت ~/drpedram-app/.z-ai-config با کلید خود کاربر + chmod 600، (۳) ری‌استارت اپ ⇒ scheduler ≤۶۰ ثانیه بعد مقاله امروز را منتشر می‌کند
 - پس از اجازه کاربر: release.sh دو فایل src/lib/site-data.ts و src/app/robots.ts را به باندل برگرداند (رفع ENOENT جیو) + می‌توان v3.2 گارد host-deploy.sh را در همان push برد
 - معلق‌های قبلی پابرجا: حذف A رکورد ۱۳۳ (IP بانک)، AutoSSL، تأیید DEPLOYED OK
+
+---
+Task ID: 11-g
+Agent: Z.ai Code (main)
+Task: توقف فوری ایجنت‌های زمان‌بندی‌شده در پروڈاکشن (دستور صریح کاربر)
+
+Work Log:
+- مسیر اجرا: POST /api/agents/config با هدر x-admin-key از سندباکس (curl --resolve به 213.176.126.163 + -k برای گواهی self-signed)
+- GET اولیه: کانفیگ فعلی خوانده شد — همه ایجنت‌ها enabled و autoPublish=true
+- POST {"autoPublish":false} → پاسخ ok:true؛ GET تأییدی: autoPublish=false روی هاست (ذخیره در جدول AgentConfig دیتابیس — ماندگار روی ری‌استارت و دیپلوی)
+- اثر: تیک ۶۰ ثانیه‌ای scheduler همچنان می‌چرخد ولی هر سه مسیر زمان‌بندی (content/geo/gsc) به autoPublish وابسته‌اند ⇒ دیگر هیچ اجرایی شروع نمی‌شود؛ اسپم لاگ تا یک دقیقه قطع می‌شود
+- اجراهای دستی از پنل ادمین همچنان فعال‌اند (autoPublish فقط اتوماسیون را می‌بندد)
+- فعال‌سازی مجدد در آینده: سوییچ «انتشار خودکار» در تب Agents پنل، یا POST {"autoPublish":true}
+
+Stage Summary:
+- اتوماسیون ایجنت‌ها در پروڈاکشن خاموش شد (تأییدشده با GET دوم)؛ کانفیگ در DB ماندگار است
+- مشکل ریشه‌ای (نبودن .z-ai-config روی هاست) پابرجاست — قبل از روشن‌کردن مجدد باید ساخته شود وگرنه دوباره اسپم خطا برمی‌گردد
