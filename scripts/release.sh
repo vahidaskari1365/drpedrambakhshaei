@@ -75,7 +75,11 @@ B="$STAGE/app"
 mkdir -p "$B/tmp"
 cp -a .next/standalone/. "$B/"
 # tracing پوشه‌های غیرلازم ریپو را هم به standalone کشانده — حذف (تأییدشده در ران ۷: همه صفحات 200)
-( cd "$B" && rm -rf src skills tool-results tests examples scripts docs .github db prisma .agent* *.md )
+( cd "$B" && rm -rf skills tool-results tests examples scripts docs .github db prisma .agent* *.md )
+# دو فایل سورس که geo-agent در اجرا با fs می‌خواند باید در باندل بمانند (بدون آن‌ها ممیزی GEO روی هاست ENOENT می‌دهد)
+mkdir -p "$B/src/lib" "$B/src/app"
+cp src/lib/site-data.ts "$B/src/lib/site-data.ts"
+cp src/app/robots.ts "$B/src/app/robots.ts"
 # موتورهای WASM دیتابیس‌های استفاده‌نشده (~۵۵MB) حذف؛ موتور واقعی .so.node می‌ماند
 find "$B/node_modules/@prisma/client/runtime" -name '*wasm*' -delete 2>/dev/null || true
 test -f "$B"/node_modules/.prisma/client/libquery_engine-*.so.node || { echo "ERR: موتور Prisma یافت نشد"; exit 1; }

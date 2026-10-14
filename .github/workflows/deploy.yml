@@ -51,7 +51,11 @@ jobs:
           mkdir -p bundle/tmp
           cp -a .next/standalone/. bundle/
           # tracing بیلد پوشه‌های غیرلازم ریپو را هم به standalone کشانده — حذف (تست بوت: همه صفحات 200)
-          ( cd bundle && rm -rf src skills tool-results tests examples scripts docs .github db prisma .agent* *.md )
+          ( cd bundle && rm -rf skills tool-results tests examples scripts docs .github db prisma .agent* *.md )
+          # دو فایل سورس که geo-agent در اجرا با fs می‌خواند باید در باندل بمانند (بدون آن‌ها ممیزی GEO روی هاست ENOENT می‌دهد)
+          mkdir -p bundle/src/lib bundle/src/app
+          cp src/lib/site-data.ts bundle/src/lib/site-data.ts
+          cp src/app/robots.ts bundle/src/app/robots.ts
           date +%s > bundle/tmp/restart.txt
           # حذف موتورهای WASM دیتابیس‌های استفاده‌نشده (MySQL/SQLServer/Cockroach/...) — حدود ۵۵MB صرفه‌جویی
           find bundle/node_modules/@prisma/client/runtime -name "*wasm*" -delete || true
