@@ -660,3 +660,31 @@ Work Log:
 Stage Summary:
 - اتوماسیون ایجنت‌ها در پروڈاکشن خاموش شد (تأییدشده با GET دوم)؛ کانفیگ در DB ماندگار است
 - مشکل ریشه‌ای (نبودن .z-ai-config روی هاست) پابرجاست — قبل از روشن‌کردن مجدد باید ساخته شود وگرنه دوباره اسپم خطا برمی‌گردد
+
+---
+Task ID: 12
+Agent: Z.ai Code (main)
+Task: نگارش و انتشار ۵ مقاله ۱۰۰۰+ کلمه‌ای + ۵ کار AEO + ۵ کار GEO + فعال‌سازی مجدد ایجنت‌ها (دستور کاربر)
+
+Work Log:
+- قرارداد انتشار خوانده شد: POST /api/blog/publish با publishSchema (zod) — بلوک‌ها، شمارش کلمه، upsert روی slug
+- scripts/draft-articles.ts نوشته شد: تولید سه‌مرحله‌ای (p1 متادیتا+۲ سکشن / p2 دو سکشن+list/table / p3 سکشن پایانی+faqs+cta) چون خروجی تک‌مرحله‌ای به سقف توکن می‌خورد و JSON بریده می‌شد
+- اعتبارسنجی محلی: کپی دقیق articleWordCount سایت + قاعده سخت ضد آمار ساختگی (درصد/میلی‌متر ممنوع) + ساختار بلوک‌ها
+- درس‌ها: اجرای موازی ۴تایی → 429؛ job پس‌زمینه بین فراخوانی‌های Bash کشته می‌شود → دو subagent موازی با اجرای سنکرون (Task 2-b: مقاله ۲+۳، Task 2-c: مقاله ۴+۵)
+- ۵ مقاله یکتا ساخته شد (موضوع‌ها عمداً خارج از SEED_TOPICS ایجنت محتوا تا مقاله‌های آینده تکراری نشوند):
+  1) digital-guided-implant-surgery — ۱۲۷۳ کلمه (ایمپلنت دیجیتال/گاید جراحی)
+  2) pericoronitis-wisdom-gum-infection — ۱۰۹۶ کلمه (پری‌کورونیت)
+  3) dental-abscess-facial-space-infection — ۱۱۲۶ کلمه (آبسه و عفونت فضاهای فک)
+  4) jaw-fracture-facial-trauma-surgery — ۱۲۳۶ کلمه (شکستگی فک/تروما)
+  5) impacted-canine-exposure-surgery — ۱۲۵۴ کلمه (نیش نهفته+ارتودنسی)
+- انتشار روی هاست ایران: هر ۵ مقاله POST به /api/blog/publish → همه ok:true با wordCount دقیقاً برابر محاسبه محلی
+- تأیید زنده: هر ۵ صفحه 200؛ همه در /blog فهرست شده‌اند؛ sitemap از ۱۰ به ۱۵ URL رسید و مقالات جدید داخلش هستند
+- کارهای AEO (تأیید روی صفحه زنده): ۱) ساختار پاسخ‌محور ۵ h2 سوالی + پاسخ مستقیم بعد از هر h2 ۲) بلوک quickAnswers (۴ مورد) در هر مقاله و رندر واقعی ۳) FAQPage JSON-LD زنده ✓ ۴) MedicalWebPage + Physician + BreadcrumbList JSON-LD زنده ✓ ۵) title/metaDesc/canonical/og:image یکتا برای هر مقاله ✓
+- کارهای GEO: ۱) اجرای دستی geo-agent روی هاست با skipWeeklyGate → llms.txt بازسازی شد (۶ مقاله، ۶.۴KB) ۲) تأیید زنده /llms.txt شامل هر ۵ URL جدید ۳) ممیزی موجودیت: تلفن 09302626021 در صفحه اصلی (گزارش «نیازمند بازبینی» صرفاً به‌خاطر ENOENT شناخته‌شده src/ در باندل است) ۴) ممیزی robots زنده: Allow:/ برای همه شامل کرالرهای AI ۵) jumle-quote: ۴ پاسخ سریع قابل استناد در هر مقاله (۲۰ جمله نقل‌پذیر جدید)
+- فعال‌سازی مجدد ایجنت‌ها: POST autoPublish:true → تأیید GET؛ تیک بعدی اجرا شد
+- وضعیت پس از فعال‌سازی: geo=success (اجرای دستی)؛ content=failed «Configuration file not found... .z-ai-config» → کانفیگ Z.AI هنوز روی هاست ساخته نشده؛ scheduler هر ۶۰ ثانیه retry می‌کند تا فایل ساخته شود
+
+Stage Summary:
+- ۵ مقاله ۱۰۰۰+ کلمه‌ای اورجینال روی سایت زنده است + sitemap/llms.txt به‌روز؛ پشته JSON-LD کامل (Physician/WebSite/MedicalWebPage/FAQPage/Breadcrumb)
+- ایجنت‌ها فعال‌اند (autoPublish=true)؛ تنها گمشده: ~/drpedram-app/.z-ai-config روی هاست — به محض ساخته‌شدن، ایجنت محتوا خودکار مقاله می‌سازد و اسپم قطع می‌شود
+- معلق‌های قبلی پابرجا: حذف A رکورد ۱۳۳، AutoSSL، متغیر env بدون Name در cPanel، اتصال GSC (منتظر JSON سرویس‌اکانت کاربر)
