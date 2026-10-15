@@ -767,3 +767,22 @@ Stage Summary:
 - مقاله آبسه عکس واقعی کلینیکی گرفت؛ مقاله‌های شکستگی/ارتوگناتیک هنوز عکس مشترک دارند (منتظر عکس از کاربر)
 - robots.txt زنده حالا Sitemap + بستن /api و /admin + ۱۴ کرالر AI دارد
 - یادآوری پابرجا: کلید Z.AI واقعی، JSON سرویس‌اکانت GSC، رفرش deploy.sh هاست از raw، حذف A رکورد ۱۳۳، AutoSSL
+---
+Task ID: 15
+Agent: Z.ai Code (main)
+Task: تغییر پالت رنگی سایت به سبز + سرمه‌ای (درخواست مستقیم کاربر)
+
+Work Log:
+- ریشه‌یابی: پالت قدیمی «پترول/تیل» (oklch hue ۱۹۰-۲۰۵) در دو لایه بود: (۱) متغیرهای :root/.dark و کلاس‌های برند petrol/sage/gold در globals.css — همه کامپوننت‌ها از همین متغیرها تغذیه می‌شدند، (۲) ده‌ها مقدار hardcode oklch و کلاس‌های teal-* داخل خود فایل‌های کامپوننت
+- globals.css: primary/accent/ring/chart/sidebar به سبز جراحی oklch(0.5 0.115 152)؛ خانواده petrol به سرمه‌ای (petrol=oklch(0.23 0.05 262), petrol-deep=0.16, petrol-soft=0.31)؛ sage به سبز روشن hue 150؛ طلا دست‌نخورده (هارمونی با سبز+سرمه‌ای)؛ dark mode با زمینه سرمه‌ای‌فام بازنویسی شد
+- ابزارهای CSS داخل globals.css: selection، اسکرول‌بار، text-gradient (تیره/روشن)، aurora، glass-dark، card-sage، scroll-progress، divider-fade، logo-halo و logo-glow (بنفش/آبی → سبز/سرمه‌ای)، cinema-sweep، vignette، admin-root پنل مدیریت
+- ۳۰+ فایل کامپوننت: همه teal-* → emerald-* (سایت + پنل ادمین)؛ تمام oklchهای hardcode قدیمی (hue 190/185/175/180/192/200/205/210/295/255/300) به 152/155/150 (سبز) یا 262/264 (سرمه‌ای) شیفت — کلید و tone «teal» هیرو به «green»
+- layout.tsx themeColor: روشن #f7fbf7 (سبزفام) / تیره #151721 (سرمه‌ای‌فام)
+- گار باگ‌یابی جانبی: قبل از شروع، فایل src/app/api/admin/upload/route.ts در working tree حذف شده بود (دستکاری خارج از جلسه) → git checkout HEAD بازگرداند؛ کامیت c76520e فقط فیکس .gitignore را شامل بود (سالم)
+- راستی‌آزمایی زنده (agent-browser): صفحه اصلی — هیرو سبز (دکمه‌ها/پیل منوی فعال/متن گرادیانی سبز)، CTA و فوتر سرمه‌ای عمیق، نوار پیشرفت سبز→طلا؛ صفحه /blog — هیرو سرمه‌ای + تیتر گرادیانی سبز؛ dev.log بدون خطا؛ lint تمیز
+- دیپلوی: کامیت 5b3cd98 → CI completed/success
+
+Stage Summary:
+- سایت حالا سبز (primary/دکمه‌ها/لینک‌ها) + سرمه‌ای (بخش‌های تیره، هیرو صفحات، فوتر، پنل ادمین) است؛ طلای متناسب به‌عنوان اکسنت ثابت ماند
+- کل تغییرات متغیرمحور بود → بدون تغییر یک خط در منطق کامپوننت‌ها؛ فقط رنگ‌ها
+- معلق پابرجا: کلید واقعی Z.AI در .z-ai-config هاست (هنوز placeholder)، JSON سرویس‌اکانت GSC، حذف A رکورد ۱۳۳، AutoSSL
