@@ -652,16 +652,11 @@ export function HomePage() {
             </motion.a>
           </div>
 
-          {/* Magic UI — Marquee: نظرات واقعی در حرکت بی‌نهایت */}
-          <div className="mask-fade-x space-y-4">
-            <Marquee pauseOnHover className="p-0 [--mg-duration:52s]" repeat={3}>
-              {reviews.slice(1, 5).map((r) => (
-                <ReviewCard key={`row1-${r.author}`} r={r} />
-              ))}
-            </Marquee>
-            <Marquee pauseOnHover reverse className="p-0 [--mg-duration:60s]" repeat={3}>
-              {reviews.slice(5, 9).map((r) => (
-                <ReviewCard key={`row2-${r.author}`} r={r} />
+          {/* جریان پیوسته نظرات — کارت‌ها دونه‌دونه از راست وارد و از چپ خارج می‌شوند (حلقه بی‌نهایت بی‌درز) */}
+          <div className="mask-fade-x">
+            <Marquee pauseOnHover className="p-0 [--mg-duration:150s] [--mg-gap:1.25rem]" repeat={2}>
+              {reviews.map((r) => (
+                <ReviewCard key={`mq-${r.author}`} r={r} />
               ))}
             </Marquee>
           </div>
