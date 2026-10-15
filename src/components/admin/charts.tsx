@@ -37,7 +37,7 @@ function ChartTooltip({ active, payload, label }: {
 }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-2xl border border-white/10 bg-[oklch(0.2_0.025_205/0.95)] px-4 py-2.5 text-xs shadow-2xl backdrop-blur-xl">
+    <div className="rounded-2xl border border-white/10 bg-[oklch(0.2_0.025_262/0.95)] px-4 py-2.5 text-xs shadow-2xl backdrop-blur-xl">
       {label ? <p className="mb-1 font-bold text-white/90">{label}</p> : null}
       {payload.map((p, i) => (
         <p key={i} className="flex items-center gap-2 text-white/70">

@@ -47,11 +47,11 @@ export function ReportsTab({ overview, content }: { overview: Overview | null; c
                 key={c.id}
                 className={cn(
                   "flex items-start gap-3 rounded-2xl border px-4 py-3",
-                  c.pass ? "border-teal-300/15 bg-teal-300/[0.05]" : c.warn ? "border-gold/25 bg-gold/[0.06]" : "border-red-400/25 bg-red-400/[0.06]"
+                  c.pass ? "border-emerald-300/15 bg-emerald-300/[0.05]" : c.warn ? "border-gold/25 bg-gold/[0.06]" : "border-red-400/25 bg-red-400/[0.06]"
                 )}
               >
                 {c.pass ? (
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-teal-300" />
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
                 ) : c.warn ? (
                   <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
                 ) : (
@@ -85,14 +85,14 @@ export function ReportsTab({ overview, content }: { overview: Overview | null; c
           {/* GEO */}
           <section className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
             <h3 className="mb-3 flex items-center gap-2 text-[13px] font-black text-white">
-              <Bot className="h-4 w-4 text-teal-300" />
+              <Bot className="h-4 w-4 text-emerald-300" />
               آمادگی GEO / AEO
             </h3>
             <ul className="space-y-2.5 text-[12px] text-white/65">
-              <li className="flex justify-between"><span>کرالرهای AI مجاز (robots)</span><b className="text-teal-200">{faNum(overview.seo.aiCrawlers)}</b></li>
-              <li className="flex justify-between"><span>URLهای sitemap</span><b className="text-teal-200">{faNum(overview.seo.sitemapUrls)}</b></li>
-              <li className="flex justify-between"><span>llms.txt + llms-full.txt</span><b className="text-teal-200">فعال</b></li>
-              <li className="flex justify-between"><span>پاسخ سریع در مقالات</span><b className="text-teal-200">{faNum(content.blog.reduce((a, x) => a + x.quickAnswers.length, 0))} نکته</b></li>
+              <li className="flex justify-between"><span>کرالرهای AI مجاز (robots)</span><b className="text-emerald-200">{faNum(overview.seo.aiCrawlers)}</b></li>
+              <li className="flex justify-between"><span>URLهای sitemap</span><b className="text-emerald-200">{faNum(overview.seo.sitemapUrls)}</b></li>
+              <li className="flex justify-between"><span>llms.txt + llms-full.txt</span><b className="text-emerald-200">فعال</b></li>
+              <li className="flex justify-between"><span>پاسخ سریع در مقالات</span><b className="text-emerald-200">{faNum(content.blog.reduce((a, x) => a + x.quickAnswers.length, 0))} نکته</b></li>
             </ul>
           </section>
 
@@ -116,7 +116,7 @@ export function ReportsTab({ overview, content }: { overview: Overview | null; c
             <Search className="h-4 w-4 text-gold" />
             کلیدواژه‌های هدف بلاگ
           </h3>
-          <span className="rounded-full bg-teal-300/10 px-3 py-1 text-[11px] font-bold text-teal-200">
+          <span className="rounded-full bg-emerald-300/10 px-3 py-1 text-[11px] font-bold text-emerald-200">
             پوشش در تیترها/پاسخ‌ها: {faNum(coverage)}٪
           </span>
         </div>
@@ -138,7 +138,7 @@ export function ReportsTab({ overview, content }: { overview: Overview | null; c
                   <td className="line-clamp-1 max-w-[280px] px-3 py-2.5 text-white/50">{r.article}</td>
                   {[r.inTitle, r.inH2, r.inQA].map((ok, j) => (
                     <td key={j} className="px-3 py-2.5">
-                      {ok ? <CheckCircle2 className="h-4 w-4 text-teal-300" /> : <span className="text-white/15">—</span>}
+                      {ok ? <CheckCircle2 className="h-4 w-4 text-emerald-300" /> : <span className="text-white/15">—</span>}
                     </td>
                   ))}
                 </tr>

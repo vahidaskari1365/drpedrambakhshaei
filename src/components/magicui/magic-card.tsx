@@ -58,7 +58,7 @@ export function MagicCard(props: MagicCardProps) {
 
   const gradientColor = isOrbMode(props)
     ? undefined
-    : (props.gradientColor ?? "oklch(0.52 0.09 190 / 0.08)");
+    : (props.gradientColor ?? "oklch(0.52 0.1 152 / 0.08)");
   const gradientOpacity = isOrbMode(props)
     ? undefined
     : (props.gradientOpacity ?? 1);

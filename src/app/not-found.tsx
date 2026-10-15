@@ -8,7 +8,7 @@ export default function NotFound() {
     <section className="bg-petrol-deep grain relative flex min-h-[80vh] flex-col items-center justify-center overflow-hidden px-5 py-24 text-center">
       <div className="aurora" />
       <div className="relative">
-        <p className="text-7xl font-black tracking-tight text-teal-300 sm:text-8xl">۴۰۴</p>
+        <p className="text-7xl font-black tracking-tight text-emerald-300 sm:text-8xl">۴۰۴</p>
         <h1 className="mt-4 text-2xl font-black text-background sm:text-3xl">
           این صفحه پیدا نشد
         </h1>
@@ -32,7 +32,7 @@ export default function NotFound() {
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-bold text-[oklch(0.17_0.025_205)] transition-transform hover:scale-[1.03] active:scale-95 cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-bold text-[oklch(0.17_0.025_262)] transition-transform hover:scale-[1.03] active:scale-95 cursor-pointer"
           >
             <Compass className="h-4 w-4" />
             بازگشت به صفحه اصلی

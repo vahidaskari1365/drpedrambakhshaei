@@ -54,7 +54,7 @@ function QuickAnswers({ items }: { items: { q: string; a: string }[] }) {
 const CALLOUT_STYLES = {
   info: { icon: Info, wrap: "border-primary/25 bg-primary/5", head: "text-primary" },
   warn: { icon: AlertTriangle, wrap: "border-amber-500/30 bg-amber-500/8", head: "text-amber-600 dark:text-amber-400" },
-  tip: { icon: Lightbulb, wrap: "border-teal-500/30 bg-teal-500/8", head: "text-teal-600 dark:text-teal-400" },
+  tip: { icon: Lightbulb, wrap: "border-emerald-500/30 bg-emerald-500/8", head: "text-emerald-600 dark:text-emerald-400" },
 } as const;
 
 function Callout({ block }: { block: Extract<ArticleBlock, { type: "callout" }> }) {
@@ -126,7 +126,7 @@ function CtaBox() {
           <a
             href={`tel:${site.phone}`}
             dir="ltr"
-            className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-bold text-[oklch(0.17_0.025_205)] transition-transform duration-300 hover:scale-[1.04] active:scale-95 cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-bold text-[oklch(0.17_0.025_262)] transition-transform duration-300 hover:scale-[1.04] active:scale-95 cursor-pointer"
           >
             <Phone className="h-4 w-4" />
             {site.phone}
@@ -337,7 +337,7 @@ export function ArticlePage({ article: articleProp }: { article: BlogArticle }) 
               مقالات
             </Link>
             <span aria-hidden>/</span>
-            <span aria-current="page" className="font-bold text-teal-300">
+            <span aria-current="page" className="font-bold text-emerald-300">
               {article.category}
             </span>
           </nav>
@@ -346,7 +346,7 @@ export function ArticlePage({ article: articleProp }: { article: BlogArticle }) 
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease, delay: 0.08 }}
-            className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-background/15 bg-background/10 px-4 py-1.5 text-xs font-bold tracking-widest text-teal-300 backdrop-blur"
+            className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-background/15 bg-background/10 px-4 py-1.5 text-xs font-bold tracking-widest text-emerald-300 backdrop-blur"
           >
             {article.kicker}
           </motion.span>

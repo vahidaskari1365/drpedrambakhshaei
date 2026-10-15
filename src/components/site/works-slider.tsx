@@ -97,7 +97,7 @@ export function WorksSlider({ className }: { className?: string }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.85, ease, delay: i * 0.08 }}
-            className="group relative aspect-[4/5] w-[78vw] shrink-0 snap-center overflow-hidden rounded-[2rem] border border-border/60 shadow-[0_30px_70px_-35px_oklch(0.35_0.05_205/0.55)] transition-all duration-500 hover:-translate-y-2 sm:w-[46vw] lg:aspect-[3/4] lg:w-[calc(25%-15px)]"
+            className="group relative aspect-[4/5] w-[78vw] shrink-0 snap-center overflow-hidden rounded-[2rem] border border-border/60 shadow-[0_30px_70px_-35px_oklch(0.35_0.05_262/0.55)] transition-all duration-500 hover:-translate-y-2 sm:w-[46vw] lg:aspect-[3/4] lg:w-[calc(25%-15px)]"
             aria-label={`${s.title} — ${s.subtitle}`}
           >
             <Image
@@ -107,7 +107,7 @@ export function WorksSlider({ className }: { className?: string }) {
               className="object-cover transition-transform duration-[1.6s] ease-out group-hover:scale-110"
               sizes="(max-width: 640px) 78vw, (max-width: 1024px) 46vw, 25vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.14_0.025_205/0.9)] via-[oklch(0.16_0.03_205/0.15)] to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.14_0.025_262/0.9)] via-[oklch(0.16_0.03_262/0.15)] to-transparent" />
             <span className="absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-background/85 px-3 py-1.5 text-[10px] font-black text-primary backdrop-blur">
               <Sparkles className="h-3 w-3" />
               {s.tag}

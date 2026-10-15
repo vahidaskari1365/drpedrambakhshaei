@@ -32,7 +32,7 @@ function SkillBar({ label, value, delay }: { label: string; value: number; delay
           initial={{ width: 0 }}
           animate={go ? { width: `${value}%` } : { width: 0 }}
           transition={{ duration: 1.4, ease, delay }}
-          className="h-full rounded-full bg-gradient-to-l from-primary to-teal-400"
+          className="h-full rounded-full bg-gradient-to-l from-primary to-emerald-400"
         />
       </div>
     </div>

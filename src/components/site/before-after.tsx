@@ -84,7 +84,7 @@ export function BeforeAfter({
         onPointerCancel={stop}
         onKeyDown={onKey}
         className={cn(
-          "group relative aspect-[16/9] w-full touch-none select-none overflow-hidden rounded-[2rem] border border-background/15 bg-petrol-deep shadow-[0_40px_90px_-40px_oklch(0.06_0.02_205/0.9)] outline-none focus-visible:ring-2 focus-visible:ring-teal-300",
+          "group relative aspect-[16/9] w-full touch-none select-none overflow-hidden rounded-[2rem] border border-background/15 bg-petrol-deep shadow-[0_40px_90px_-40px_oklch(0.06_0.02_262/0.9)] outline-none focus-visible:ring-2 focus-visible:ring-emerald-300",
           dragging ? "cursor-grabbing" : "cursor-grab"
         )}
       >
@@ -112,10 +112,10 @@ export function BeforeAfter({
         </div>
 
         {/* برچسب‌ها */}
-        <span className="pointer-events-none absolute right-4 top-4 rounded-full bg-[oklch(0.15_0.02_205/0.72)] px-3.5 py-1.5 text-xs font-black text-background backdrop-blur">
+        <span className="pointer-events-none absolute right-4 top-4 rounded-full bg-[oklch(0.15_0.02_262/0.72)] px-3.5 py-1.5 text-xs font-black text-background backdrop-blur">
           {beforeLabel}
         </span>
-        <span className="pointer-events-none absolute left-4 top-4 rounded-full bg-teal-400/85 px-3.5 py-1.5 text-xs font-black text-[oklch(0.15_0.03_205)] backdrop-blur">
+        <span className="pointer-events-none absolute left-4 top-4 rounded-full bg-emerald-400/85 px-3.5 py-1.5 text-xs font-black text-[oklch(0.15_0.03_262)] backdrop-blur">
           {afterLabel}
         </span>
 
@@ -127,7 +127,7 @@ export function BeforeAfter({
           <div className="absolute inset-y-0 -translate-x-1/2 border-r-2 border-dashed border-background/80" />
           <div
             className={cn(
-              "absolute top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-background/40 bg-background/95 text-[oklch(0.2_0.03_205)] shadow-[0_10px_30px_-8px_oklch(0.08_0.02_205/0.8)] backdrop-blur transition-transform",
+              "absolute top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-background/40 bg-background/95 text-[oklch(0.2_0.03_262)] shadow-[0_10px_30px_-8px_oklch(0.08_0.02_262/0.8)] backdrop-blur transition-transform",
               dragging ? "scale-110" : "group-hover:scale-105"
             )}
           >
@@ -141,7 +141,7 @@ export function BeforeAfter({
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.6 }}
-            className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-[oklch(0.15_0.02_205/0.72)] px-4 py-2 text-[11px] font-bold text-background backdrop-blur"
+            className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-[oklch(0.15_0.02_262/0.72)] px-4 py-2 text-[11px] font-bold text-background backdrop-blur"
           >
             <MoveHorizontal className="h-3.5 w-3.5 animate-pulse-soft" />
             دستگیره را بکشید

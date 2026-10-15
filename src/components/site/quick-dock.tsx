@@ -28,7 +28,7 @@ export function QuickDock() {
       <div className="pointer-events-auto">
         <Dock iconSize={42} iconMagnification={56}>
           {items.map(({ href, label, Icon, external }) => (
-            <DockIcon key={label} className="text-teal-100">
+            <DockIcon key={label} className="text-emerald-100">
               <a
                 href={href}
                 aria-label={label}

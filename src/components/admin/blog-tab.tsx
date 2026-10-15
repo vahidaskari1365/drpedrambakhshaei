@@ -134,7 +134,7 @@ export function BlogTab({
       <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-10 text-center">
         <FileText className="mx-auto mb-3 h-8 w-8 text-white/25" />
         <p className="text-sm text-white/60">هنوز مقاله‌ای وجود ندارد.</p>
-        <button type="button" onClick={addArticle} className="mt-4 rounded-xl bg-teal-300 px-4 py-2 text-[12.5px] font-black text-[oklch(0.2_0.03_205)] cursor-pointer">
+        <button type="button" onClick={addArticle} className="mt-4 rounded-xl bg-emerald-300 px-4 py-2 text-[12.5px] font-black text-[oklch(0.2_0.03_262)] cursor-pointer">
           ساخت اولین مقاله
         </button>
       </div>
@@ -148,7 +148,7 @@ export function BlogTab({
         <button
           type="button"
           onClick={addArticle}
-          className="mb-3 flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-teal-300/30 py-2.5 text-[12px] font-black text-teal-200 transition-colors hover:bg-teal-300/10 cursor-pointer"
+          className="mb-3 flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-emerald-300/30 py-2.5 text-[12px] font-black text-emerald-200 transition-colors hover:bg-emerald-300/10 cursor-pointer"
         >
           <Plus className="h-3.5 w-3.5" />
           مقاله جدید
@@ -159,7 +159,7 @@ export function BlogTab({
               key={a.slug}
               className={cn(
                 "flex shrink-0 items-center gap-1 rounded-2xl border p-1.5 transition-all lg:w-full",
-                i === idx ? "border-teal-300/30 bg-teal-300/10" : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06]"
+                i === idx ? "border-emerald-300/30 bg-emerald-300/10" : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06]"
               )}
             >
               <button type="button" onClick={() => setIdx(i)} className="flex min-w-0 flex-1 items-center gap-3 rounded-xl p-1 text-right cursor-pointer">
@@ -171,7 +171,7 @@ export function BlogTab({
                   <span className="mt-0.5 flex items-center gap-1.5 text-[10px] text-white/40">
                     {a.src && (
                       <span
-                        className="rounded-md bg-teal-300/15 px-1.5 py-px font-bold text-teal-200"
+                        className="rounded-md bg-emerald-300/15 px-1.5 py-px font-bold text-emerald-200"
                         title={a.src === "api" ? "از طریق API منتشر شده" : a.src === "admin" ? "از همین پنل ساخته شده" : "منتشرشده توسط ایجنت خودکار"}
                       >
                         {a.src === "api" ? "API" : a.src === "admin" ? "دستی" : "ایجنت"}
@@ -267,7 +267,7 @@ export function BlogTab({
               type="button"
               onClick={save}
               disabled={!dirty || saving}
-              className="flex items-center gap-1.5 rounded-xl bg-gradient-to-l from-teal-400 to-teal-300 px-4 py-2 text-[12.5px] font-black text-[oklch(0.2_0.03_205)] shadow-lg shadow-teal-400/25 transition-all hover:brightness-110 disabled:opacity-40 disabled:shadow-none cursor-pointer"
+              className="flex items-center gap-1.5 rounded-xl bg-gradient-to-l from-emerald-400 to-emerald-300 px-4 py-2 text-[12.5px] font-black text-[oklch(0.2_0.03_262)] shadow-lg shadow-emerald-400/25 transition-all hover:brightness-110 disabled:opacity-40 disabled:shadow-none cursor-pointer"
             >
               {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
               ذخیره و انتشار

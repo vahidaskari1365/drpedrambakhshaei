@@ -78,7 +78,7 @@ function ContactBeams() {
       <div className="flex flex-col items-center gap-2">
         <div
           ref={centerRef}
-          className="relative z-10 flex size-16 items-center justify-center rounded-full border border-primary/25 bg-gradient-to-b from-[oklch(0.55_0.09_190)] to-[oklch(0.44_0.08_192)] text-primary-foreground shadow-[0_14px_34px_-12px] shadow-primary/60"
+          className="relative z-10 flex size-16 items-center justify-center rounded-full border border-primary/25 bg-gradient-to-b from-[oklch(0.55_0.1_152)] to-[oklch(0.44_0.09_155)] text-primary-foreground shadow-[0_14px_34px_-12px] shadow-primary/60"
         >
           <Phone className="h-6 w-6" aria-hidden="true" />
         </div>
@@ -206,7 +206,7 @@ export function Contact() {
             <ContactBeams />
 
             {/* Magic UI — Globe: کره تعاملی با مارکر تهران */}
-            <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-b from-[oklch(0.965_0.012_185)] to-[oklch(0.93_0.022_185)] shadow-sm">
+            <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-b from-[oklch(0.965_0.012_150)] to-[oklch(0.93_0.022_150)] shadow-sm">
               <div className="relative h-[320px]">
                 <div className="relative mx-auto aspect-square h-full">
                   <Globe />

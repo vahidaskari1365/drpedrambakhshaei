@@ -40,7 +40,7 @@ export function Dock({
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "mx-auto flex h-[58px] w-max items-center justify-center gap-2 rounded-3xl border border-background/20 bg-petrol-deep/85 p-2 shadow-[0_18px_50px_-16px_oklch(0.1_0.03_205/0.7)] backdrop-blur-xl",
+        "mx-auto flex h-[58px] w-max items-center justify-center gap-2 rounded-3xl border border-background/20 bg-petrol-deep/85 p-2 shadow-[0_18px_50px_-16px_oklch(0.1_0.03_262/0.7)] backdrop-blur-xl",
         className
       )}
     >

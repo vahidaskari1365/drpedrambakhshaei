@@ -77,7 +77,7 @@ function Toasts({ items }: { items: { id: number; msg: string; kind: "ok" | "err
             className={cn(
               "flex items-center gap-2.5 rounded-2xl border px-4 py-3 text-[12.5px] font-bold shadow-2xl backdrop-blur-xl",
               t.kind === "ok"
-                ? "border-teal-300/30 bg-[oklch(0.25_0.03_205/0.95)] text-teal-100"
+                ? "border-emerald-300/30 bg-[oklch(0.25_0.03_262/0.95)] text-emerald-100"
                 : "border-red-400/30 bg-[oklch(0.28_0.05_25/0.95)] text-red-100"
             )}
           >
@@ -124,8 +124,8 @@ function LoginGate({ onOk }: { onOk: () => void }) {
         className="glass-dark gold-top-line w-full max-w-sm rounded-[2rem] p-8"
       >
         <div className="mb-6 text-center">
-          <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-400/25 to-gold/25">
-            <Lock className="h-6 w-6 text-teal-200" />
+          <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400/25 to-gold/25">
+            <Lock className="h-6 w-6 text-emerald-200" />
           </span>
           <h1 className="text-xl font-black text-white">پنل مدیریت</h1>
           <p className="mt-1.5 text-[12px] text-white/50">سایت دکتر پدرام بخشایی</p>
@@ -140,14 +140,14 @@ function LoginGate({ onOk }: { onOk: () => void }) {
           dir="ltr"
           onChange={(e) => setKeyState(e.target.value)}
           autoFocus
-          className="w-full rounded-xl border border-white/12 bg-white/[0.06] px-4 py-3 text-center text-sm tracking-widest text-white outline-none transition-all focus:border-teal-300/50 focus:ring-4 focus:ring-teal-300/10"
+          className="w-full rounded-xl border border-white/12 bg-white/[0.06] px-4 py-3 text-center text-sm tracking-widest text-white outline-none transition-all focus:border-emerald-300/50 focus:ring-4 focus:ring-emerald-300/10"
           placeholder="••••••••"
         />
         {error && <p className="mt-2 text-center text-[11.5px] font-bold text-red-300">{error}</p>}
         <button
           type="submit"
           disabled={busy || !key.trim()}
-          className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-l from-teal-400 to-teal-300 py-3 text-[13.5px] font-black text-[oklch(0.2_0.03_205)] shadow-lg shadow-teal-400/25 transition-all hover:brightness-110 disabled:opacity-40 cursor-pointer"
+          className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-l from-emerald-400 to-emerald-300 py-3 text-[13.5px] font-black text-[oklch(0.2_0.03_262)] shadow-lg shadow-emerald-400/25 transition-all hover:brightness-110 disabled:opacity-40 cursor-pointer"
         >
           {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldCheck className="h-4 w-4" />}
           ورود به پنل
@@ -178,11 +178,11 @@ function Dashboard({ overview, content, go }: { overview: Overview; content: Sit
         transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
         className="glass-dark relative overflow-hidden rounded-3xl p-5"
       >
-        <div className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-teal-300/8 blur-3xl" />
+        <div className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-emerald-300/8 blur-3xl" />
         <div className="relative flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-400/25 to-gold/25">
-              <Eye className="h-5 w-5 text-teal-200" />
+            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400/25 to-gold/25">
+              <Eye className="h-5 w-5 text-emerald-200" />
             </span>
             <div>
               <h3 className="text-[14px] font-black text-white">بازدیدکنندگان سایت</h3>
@@ -204,7 +204,7 @@ function Dashboard({ overview, content, go }: { overview: Overview; content: Sit
             <button
               type="button"
               onClick={() => go("analytics")}
-              className="flex items-center gap-1.5 rounded-xl border border-teal-300/30 bg-teal-300/10 px-4 py-2.5 text-[12px] font-black text-teal-100 transition-colors hover:bg-teal-300/20 cursor-pointer"
+              className="flex items-center gap-1.5 rounded-xl border border-emerald-300/30 bg-emerald-300/10 px-4 py-2.5 text-[12px] font-black text-emerald-100 transition-colors hover:bg-emerald-300/20 cursor-pointer"
             >
               <TrendingUp className="h-4 w-4" />
               گزارش گرافیکی بازدید ←
@@ -234,7 +234,7 @@ function Dashboard({ overview, content, go }: { overview: Overview; content: Sit
           <div className="mb-2 flex items-center justify-between">
             <h3 className="text-[13px] font-black text-white">۱۴ روز اخیر — درخواست تماس و فعالیت پنل</h3>
             <span className="flex items-center gap-3 text-[10.5px] text-white/40">
-              <span className="flex items-center gap-1"><i className="h-2 w-2 rounded-full bg-teal-300" /> درخواست</span>
+              <span className="flex items-center gap-1"><i className="h-2 w-2 rounded-full bg-emerald-300" /> درخواست</span>
               <span className="flex items-center gap-1"><i className="h-2 w-2 rounded-full bg-gold" /> فعالیت</span>
             </span>
           </div>
@@ -281,7 +281,7 @@ function Dashboard({ overview, content, go }: { overview: Overview; content: Sit
           <button
             type="button"
             onClick={() => go("reports")}
-            className="mt-4 text-[11.5px] font-bold text-teal-300 hover:text-teal-200 cursor-pointer"
+            className="mt-4 text-[11.5px] font-bold text-emerald-300 hover:text-emerald-200 cursor-pointer"
           >
             مشاهده گزارش کامل سئو ←
           </button>
@@ -309,7 +309,7 @@ function Dashboard({ overview, content, go }: { overview: Overview; content: Sit
           <button
             type="button"
             onClick={() => go("activity")}
-            className="mt-3 text-[11.5px] font-bold text-teal-300 hover:text-teal-200 cursor-pointer"
+            className="mt-3 text-[11.5px] font-bold text-emerald-300 hover:text-emerald-200 cursor-pointer"
           >
             تایم‌لاین کامل ←
           </button>
@@ -325,7 +325,7 @@ function Dashboard({ overview, content, go }: { overview: Overview; content: Sit
       >
         <div className="mb-3 flex items-center justify-between">
           <h3 className="text-[13px] font-black text-white">آخرین درخواست‌های مشاوره</h3>
-          <button type="button" onClick={() => go("requests")} className="text-[11.5px] font-bold text-teal-300 hover:text-teal-200 cursor-pointer">
+          <button type="button" onClick={() => go("requests")} className="text-[11.5px] font-bold text-emerald-300 hover:text-emerald-200 cursor-pointer">
             مدیریت درخواست‌ها ←
           </button>
         </div>
@@ -432,7 +432,7 @@ export function AdminApp() {
   if (!checked) {
     return (
       <div className="admin-root flex min-h-screen items-center justify-center">
-        <Loader2 className="h-7 w-7 animate-spin text-teal-300/60" />
+        <Loader2 className="h-7 w-7 animate-spin text-emerald-300/60" />
       </div>
     );
   }
@@ -460,10 +460,10 @@ export function AdminApp() {
       {/* چیدمان دسکتاپ: سایدبار + محتوا */}
       <div className="flex flex-1">
         {/* سایدبار */}
-        <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-l border-white/8 bg-[oklch(0.15_0.022_205/0.7)] p-4 backdrop-blur-xl lg:flex">
+        <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-l border-white/8 bg-[oklch(0.15_0.022_262/0.7)] p-4 backdrop-blur-xl lg:flex">
           <div className="mb-6 flex items-center gap-2.5 px-1">
-            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-400/25 to-gold/25">
-              <Stethoscope className="h-5 w-5 text-teal-200" />
+            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400/25 to-gold/25">
+              <Stethoscope className="h-5 w-5 text-emerald-200" />
             </span>
             <div>
               <p className="text-[13px] font-black text-white">پنل مدیریت</p>
@@ -481,20 +481,20 @@ export function AdminApp() {
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "relative flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-[12.5px] font-bold transition-colors cursor-pointer",
-                    active ? "text-teal-100" : "text-white/55 hover:bg-white/5 hover:text-white"
+                    active ? "text-emerald-100" : "text-white/55 hover:bg-white/5 hover:text-white"
                   )}
                 >
                   {active && (
                     <motion.span
                       layoutId="admin-pill"
-                      className="absolute inset-0 rounded-xl bg-gradient-to-l from-teal-300/20 to-transparent shadow-[inset_0_0_0_1px] shadow-teal-300/25"
+                      className="absolute inset-0 rounded-xl bg-gradient-to-l from-emerald-300/20 to-transparent shadow-[inset_0_0_0_1px] shadow-emerald-300/25"
                       transition={{ type: "spring", stiffness: 380, damping: 32 }}
                     />
                   )}
                   <t.icon className="relative z-10 h-4 w-4" />
                   <span className="relative z-10">{t.label}</span>
                   {t.id === "requests" && overview && overview.requests.new > 0 && (
-                    <span className="relative z-10 ml-auto rounded-full bg-teal-300/20 px-1.5 text-[10px] font-black tabular-nums text-teal-100">
+                    <span className="relative z-10 ml-auto rounded-full bg-emerald-300/20 px-1.5 text-[10px] font-black tabular-nums text-emerald-100">
                       {faNum(overview.requests.new)}
                     </span>
                   )}
@@ -531,7 +531,7 @@ export function AdminApp() {
         {/* ستون اصلی */}
         <div className="min-w-0 flex-1">
           {/* نوار بالا */}
-          <header className="sticky top-0 z-40 border-b border-white/8 bg-[oklch(0.15_0.022_205/0.75)] backdrop-blur-xl">
+          <header className="sticky top-0 z-40 border-b border-white/8 bg-[oklch(0.15_0.022_262/0.75)] backdrop-blur-xl">
             <div className="flex items-center justify-between gap-3 px-4 py-3 sm:px-6">
               <div className="flex items-center gap-2 overflow-x-auto scrollbar-slim lg:hidden">
                 {TABS.map((t) => (
@@ -541,7 +541,7 @@ export function AdminApp() {
                     onClick={() => setTab(t.id)}
                     className={cn(
                       "flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[11.5px] font-bold transition-colors cursor-pointer",
-                      tab === t.id ? "bg-teal-300/15 text-teal-100" : "text-white/50 hover:bg-white/5"
+                      tab === t.id ? "bg-emerald-300/15 text-emerald-100" : "text-white/50 hover:bg-white/5"
                     )}
                   >
                     <t.icon className="h-3.5 w-3.5" />
@@ -571,7 +571,7 @@ export function AdminApp() {
           <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-5 sm:px-6">
             {!overview || !content ? (
               <div className="flex h-64 items-center justify-center">
-                <Loader2 className="h-7 w-7 animate-spin text-teal-300/60" />
+                <Loader2 className="h-7 w-7 animate-spin text-emerald-300/60" />
               </div>
             ) : (
               <AnimatePresence mode="wait">

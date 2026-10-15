@@ -117,19 +117,19 @@ export function MediaTab({
         ref={dragRef}
         onDragOver={(e) => {
           e.preventDefault();
-          dragRef.current?.classList.add("border-teal-300/50", "bg-teal-300/5");
+          dragRef.current?.classList.add("border-emerald-300/50", "bg-emerald-300/5");
         }}
-        onDragLeave={() => dragRef.current?.classList.remove("border-teal-300/50", "bg-teal-300/5")}
+        onDragLeave={() => dragRef.current?.classList.remove("border-emerald-300/50", "bg-emerald-300/5")}
         onDrop={(e) => {
           e.preventDefault();
-          dragRef.current?.classList.remove("border-teal-300/50", "bg-teal-300/5");
+          dragRef.current?.classList.remove("border-emerald-300/50", "bg-emerald-300/5");
           if (e.dataTransfer.files.length) uploadFiles(e.dataTransfer.files);
         }}
         className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-dashed border-white/20 bg-white/[0.03] p-5 transition-colors"
       >
         <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-400/25 to-gold/25">
-            <Images className="h-5 w-5 text-teal-200" />
+          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400/25 to-gold/25">
+            <Images className="h-5 w-5 text-emerald-200" />
           </span>
           <div>
             <h2 className="text-[14px] font-black text-white">کتابخانه رسانه</h2>
@@ -154,7 +154,7 @@ export function MediaTab({
             type="button"
             onClick={() => fileRef.current?.click()}
             disabled={uploading}
-            className="flex items-center gap-2 rounded-xl bg-gradient-to-l from-teal-400 to-teal-300 px-5 py-2.5 text-[13px] font-black text-[oklch(0.2_0.03_205)] shadow-lg shadow-teal-400/25 transition-all hover:brightness-110 disabled:opacity-50 cursor-pointer"
+            className="flex items-center gap-2 rounded-xl bg-gradient-to-l from-emerald-400 to-emerald-300 px-5 py-2.5 text-[13px] font-black text-[oklch(0.2_0.03_262)] shadow-lg shadow-emerald-400/25 transition-all hover:brightness-110 disabled:opacity-50 cursor-pointer"
           >
             {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
             {uploading ? "در حال آپلود..." : "آپلود تصویر"}
@@ -165,7 +165,7 @@ export function MediaTab({
       {/* شبکه رسانه‌ها */}
       {loading ? (
         <div className="flex h-48 items-center justify-center">
-          <Loader2 className="h-7 w-7 animate-spin text-teal-300/60" />
+          <Loader2 className="h-7 w-7 animate-spin text-emerald-300/60" />
         </div>
       ) : media.length === 0 ? (
         <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-12 text-center">
@@ -205,7 +205,7 @@ export function MediaTab({
                     className={cn(
                       "flex flex-1 items-center justify-center gap-1 rounded-lg border py-1.5 text-[10.5px] font-bold transition-colors cursor-pointer",
                       copiedId === m.id
-                        ? "border-teal-300/40 bg-teal-300/10 text-teal-200"
+                        ? "border-emerald-300/40 bg-emerald-300/10 text-emerald-200"
                         : "border-white/12 text-white/60 hover:bg-white/8 hover:text-white"
                     )}
                   >

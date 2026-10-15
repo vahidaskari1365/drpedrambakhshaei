@@ -22,7 +22,7 @@ export function Kpi({
   delay?: number;
 }) {
   const tones = {
-    teal: "from-teal-400/25 to-teal-400/5 text-teal-200",
+    teal: "from-emerald-400/25 to-emerald-400/5 text-emerald-200",
     gold: "from-gold/25 to-gold/5 text-amber-200",
     violet: "from-violet-400/25 to-violet-400/5 text-violet-200",
   } as const;

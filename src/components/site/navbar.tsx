@@ -160,7 +160,7 @@ export function Navbar() {
                       onClick={() => setOpen(false)}
                       className={cn(
                         "group flex items-center justify-between rounded-2xl px-4 py-3.5 text-2xl font-extrabold tracking-tight transition-colors cursor-pointer",
-                        route === item.href ? "text-teal-300" : "text-background/80 hover:text-background"
+                        route === item.href ? "text-emerald-300" : "text-background/80 hover:text-background"
                       )}
                     >
                       {item.label}
@@ -187,7 +187,7 @@ export function Navbar() {
               <a
                 href={`tel:${site.phone}`}
                 dir="ltr"
-                className="flex items-center justify-center gap-2 rounded-full bg-background py-4 text-base font-bold text-[oklch(0.17_0.025_205)] cursor-pointer"
+                className="flex items-center justify-center gap-2 rounded-full bg-background py-4 text-base font-bold text-[oklch(0.17_0.025_262)] cursor-pointer"
               >
                 <Phone className="h-4 w-4" />
                 {site.phone}

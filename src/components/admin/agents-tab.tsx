@@ -59,7 +59,7 @@ const AGENT_META: Record<string, { label: string; desc: string; icon: typeof Pen
     label: "ایجنت محتوا",
     desc: "هر روز ۰۷:۰۰ یک مقاله ۱۰۰۰+ کلمه‌ای یکتا با کاور اختصاصی منتشر می‌کند",
     icon: PenLine,
-    tint: "text-teal-300 border-teal-300/25 bg-teal-300/5",
+    tint: "text-emerald-300 border-emerald-300/25 bg-emerald-300/5",
   },
   aeo: {
     label: "ایجنت AEO",
@@ -86,7 +86,7 @@ const WEEKDAYS = ["یکشنبه", "دوشنبه", "سه‌شنبه", "چهارش
 const STATUS_META: Record<string, { icon: typeof CheckCircle2; cls: string; label: string }> = {
   success: { icon: CheckCircle2, cls: "text-emerald-300", label: "موفق" },
   failed: { icon: XCircle, cls: "text-red-300", label: "ناموفق" },
-  running: { icon: Loader2, cls: "text-teal-300 animate-spin", label: "در حال اجرا" },
+  running: { icon: Loader2, cls: "text-emerald-300 animate-spin", label: "در حال اجرا" },
   skipped: { icon: MinusCircle, cls: "text-zinc-400", label: "رد شد" },
 };
 
@@ -181,7 +181,7 @@ export function AgentsTab({ toast }: { toast: Toast }) {
           <button
             onClick={() => void run("pipeline")}
             disabled={busy !== ""}
-            className="flex items-center gap-2 rounded-full bg-gradient-to-l from-teal-500 to-teal-400 px-4 py-2 text-[12px] font-black text-teal-950 transition hover:brightness-110 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-full bg-gradient-to-l from-emerald-500 to-emerald-400 px-4 py-2 text-[12px] font-black text-emerald-950 transition hover:brightness-110 disabled:opacity-50"
           >
             {busy === "pipeline" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Play className="h-3.5 w-3.5" />}
             اجرای کامل خط‌لوله
@@ -220,7 +220,7 @@ export function AgentsTab({ toast }: { toast: Toast }) {
                   onClick={() => void patchConfig({ enabled: { ...config.enabled, [a.agent]: !enabled } })}
                   className={cn(
                     "relative h-6 w-11 shrink-0 rounded-full transition",
-                    enabled ? "bg-teal-400/90" : "bg-zinc-600/60"
+                    enabled ? "bg-emerald-400/90" : "bg-zinc-600/60"
                   )}
                 >
                   <span
@@ -286,7 +286,7 @@ export function AgentsTab({ toast }: { toast: Toast }) {
 
         <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
           <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-teal-300" />
+            <Clock className="h-4 w-4 text-emerald-300" />
             <p className="text-[13px] font-black text-white">زمان‌بندی هفتگی</p>
           </div>
           <div className="mt-3 grid grid-cols-2 gap-3">
@@ -301,7 +301,7 @@ export function AgentsTab({ toast }: { toast: Toast }) {
                   const v = Math.min(23, Math.max(0, Number(e.target.value) || 0));
                   void patchConfig({ contentHour: v });
                 }}
-                className="mt-1 w-full rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-[13px] font-bold text-white outline-none focus:border-teal-400/50"
+                className="mt-1 w-full rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-[13px] font-bold text-white outline-none focus:border-emerald-400/50"
               />
             </label>
             <label className="block">
@@ -309,7 +309,7 @@ export function AgentsTab({ toast }: { toast: Toast }) {
               <select
                 value={config.geoWeekday}
                 onChange={(e) => void patchConfig({ geoWeekday: Number(e.target.value) })}
-                className="mt-1 w-full rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-[13px] font-bold text-white outline-none focus:border-teal-400/50"
+                className="mt-1 w-full rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-[13px] font-bold text-white outline-none focus:border-emerald-400/50"
               >
                 {WEEKDAYS.map((w, i) => (
                   <option key={w} value={i}>{w}</option>

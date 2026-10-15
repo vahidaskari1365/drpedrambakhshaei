@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { api, faDate, faTimeAgo, type Overview } from "./shared";
 
 const KIND_META: Record<string, { icon: typeof PencilLine; cls: string; label: string }> = {
-  "content.update": { icon: PencilLine, cls: "bg-teal-300/12 text-teal-200", label: "ویرایش محتوا" },
+  "content.update": { icon: PencilLine, cls: "bg-emerald-300/12 text-emerald-200", label: "ویرایش محتوا" },
   "content.reset": { icon: RotateCcw, cls: "bg-gold/12 text-amber-200", label: "بازنشانی" },
   "request.status": { icon: UserCheck, cls: "bg-violet-300/12 text-violet-200", label: "پیگیری درخواست" },
 };

@@ -44,7 +44,7 @@ function setByPath<T>(obj: T, path: string, value: unknown): T {
 /* ─────────── ورودی‌های پایه ─────────── */
 
 const inputCls =
-  "w-full rounded-xl border border-white/12 bg-white/[0.06] px-3.5 py-2.5 text-[13px] text-white placeholder:text-white/25 outline-none transition-all focus:border-teal-300/50 focus:bg-white/[0.09] focus:ring-4 focus:ring-teal-300/10";
+  "w-full rounded-xl border border-white/12 bg-white/[0.06] px-3.5 py-2.5 text-[13px] text-white placeholder:text-white/25 outline-none transition-all focus:border-emerald-300/50 focus:bg-white/[0.09] focus:ring-4 focus:ring-emerald-300/10";
 
 export function TextInput({
   value,
@@ -160,7 +160,7 @@ function ImageInput({ value, onChange }: { value: string; onChange: (v: string) 
           )}
           {busy && (
             <span className="absolute inset-0 flex items-center justify-center bg-black/55 backdrop-blur-sm">
-              <Loader2 className="h-4 w-4 animate-spin text-teal-200" />
+              <Loader2 className="h-4 w-4 animate-spin text-emerald-200" />
             </span>
           )}
         </div>
@@ -182,7 +182,7 @@ function ImageInput({ value, onChange }: { value: string; onChange: (v: string) 
               type="button"
               onClick={() => fileRef.current?.click()}
               disabled={busy}
-              className="flex items-center gap-1.5 rounded-lg bg-gradient-to-l from-teal-400/90 to-teal-300/90 px-3 py-1.5 text-[10.5px] font-black text-[oklch(0.2_0.03_205)] transition-all hover:brightness-110 disabled:opacity-50 cursor-pointer"
+              className="flex items-center gap-1.5 rounded-lg bg-gradient-to-l from-emerald-400/90 to-emerald-300/90 px-3 py-1.5 text-[10.5px] font-black text-[oklch(0.2_0.03_262)] transition-all hover:brightness-110 disabled:opacity-50 cursor-pointer"
             >
               {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Upload className="h-3 w-3" />}
               {busy ? "در حال آپلود..." : "آپلود از دستگاه"}
@@ -230,7 +230,7 @@ function ListField({ items, onChange, itemLabel }: { items: string[]; onChange: 
       <button
         type="button"
         onClick={() => onChange([...items, ""])}
-        className="flex items-center gap-1.5 rounded-lg border border-dashed border-white/20 px-3 py-1.5 text-[11px] font-bold text-white/50 transition-colors hover:border-teal-300/40 hover:text-teal-200 cursor-pointer"
+        className="flex items-center gap-1.5 rounded-lg border border-dashed border-white/20 px-3 py-1.5 text-[11px] font-bold text-white/50 transition-colors hover:border-emerald-300/40 hover:text-emerald-200 cursor-pointer"
       >
         <Plus className="h-3 w-3" />
         افزودن {itemLabel ?? "آیتم"}
@@ -271,7 +271,7 @@ function KvListField({ items, onChange }: { items: { label: string; value: strin
       <button
         type="button"
         onClick={() => onChange([...items, { label: "", value: "" }])}
-        className="flex items-center gap-1.5 rounded-lg border border-dashed border-white/20 px-3 py-1.5 text-[11px] font-bold text-white/50 transition-colors hover:border-teal-300/40 hover:text-teal-200 cursor-pointer"
+        className="flex items-center gap-1.5 rounded-lg border border-dashed border-white/20 px-3 py-1.5 text-[11px] font-bold text-white/50 transition-colors hover:border-emerald-300/40 hover:text-emerald-200 cursor-pointer"
       >
         <Plus className="h-3 w-3" />
         افزودن ردیف
@@ -307,7 +307,7 @@ export function ObjListField({
           `آیتم ${faNum(i + 1)}`;
         const isOpen = open === i;
         return (
-          <div key={i} className={cn("overflow-hidden rounded-2xl border transition-colors", isOpen ? "border-teal-300/25 bg-white/[0.05]" : "border-white/10 bg-white/[0.03]")}>
+          <div key={i} className={cn("overflow-hidden rounded-2xl border transition-colors", isOpen ? "border-emerald-300/25 bg-white/[0.05]" : "border-white/10 bg-white/[0.03]")}>
             <div className="flex items-center gap-2 px-3 py-2.5">
               <button
                 type="button"
@@ -315,7 +315,7 @@ export function ObjListField({
                 className="flex flex-1 items-center gap-2 text-right cursor-pointer"
                 aria-expanded={isOpen}
               >
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-teal-300/20 to-gold/20 text-[10px] font-black text-teal-200">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-300/20 to-gold/20 text-[10px] font-black text-emerald-200">
                   {faNum(i + 1)}
                 </span>
                 <span className="line-clamp-1 flex-1 text-[12.5px] font-bold text-white/85">{String(title).slice(0, 60)}</span>
@@ -372,7 +372,7 @@ export function ObjListField({
           onChange([...items, addTemplate ? addTemplate() : Object.fromEntries(fields.map((f) => [f.k, f.type === "number" ? 0 : f.type === "list" ? [] : f.type === "objlist" ? [] : ""]))]);
           setOpen(items.length);
         }}
-        className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-white/20 py-2.5 text-[12px] font-bold text-white/50 transition-colors hover:border-teal-300/40 hover:text-teal-200 cursor-pointer"
+        className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-white/20 py-2.5 text-[12px] font-bold text-white/50 transition-colors hover:border-emerald-300/40 hover:text-emerald-200 cursor-pointer"
       >
         <Plus className="h-3.5 w-3.5" />
         افزودن {label ?? "آیتم جدید"}

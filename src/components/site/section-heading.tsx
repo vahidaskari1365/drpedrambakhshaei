@@ -28,7 +28,7 @@ export function SectionHeading({
         transition={{ duration: 0.7, ease }}
         className={cn(
           "mb-3 inline-flex items-center gap-1.5 text-xs font-bold tracking-widest",
-          dark ? "text-teal-300" : "text-primary"
+          dark ? "text-emerald-300" : "text-primary"
         )}
       >
         <Sparkles className="h-3.5 w-3.5 shrink-0" />

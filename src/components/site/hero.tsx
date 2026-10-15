@@ -59,12 +59,12 @@ const PARTICLES = Array.from({ length: 14 }, (_, i) => ({
   dur: 9 + ((i * 17) % 9),
   delay: -1 * ((i * 1.37) % 9),
   dx: (i % 2 === 0 ? 1 : -1) * (6 + ((i * 5) % 9)),
-  tone: i % 3 === 0 ? "gold" : i % 4 === 1 ? "teal" : "white",
+  tone: i % 3 === 0 ? "gold" : i % 4 === 1 ? "green" : "white",
 }));
 
 const TONE_BG: Record<string, string> = {
   gold: "bg-[oklch(0.8_0.13_85/0.75)]",
-  teal: "bg-[oklch(0.78_0.09_185/0.6)]",
+  green: "bg-[oklch(0.78_0.09_152/0.6)]",
   white: "bg-white/70",
 };
 
@@ -83,7 +83,7 @@ export function Hero() {
   const my = useMotionValue(36);
   const sx = useSpring(mx, { stiffness: 55, damping: 18 });
   const sy = useSpring(my, { stiffness: 55, damping: 18 });
-  const spotlight = useMotionTemplate`radial-gradient(560px circle at ${sx}% ${sy}%, oklch(0.92 0.05 190 / 0.13), transparent 68%)`;
+  const spotlight = useMotionTemplate`radial-gradient(560px circle at ${sx}% ${sy}%, oklch(0.92 0.05 155 / 0.13), transparent 68%)`;
   const onMove = (e: React.MouseEvent<HTMLElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
     mx.set(((e.clientX - r.left) / r.width) * 100);
@@ -117,11 +117,11 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background" />
       </motion.div>
 
-      {/* شفق قطبی سینمایی — بلاب‌های شناور (تیل/طلایی/بنفشِ لوگو) */}
+      {/* شفق قطبی سینمایی — بلاب‌های شناور (سبز/طلایی/سرمه‌ای) */}
       <div className="pointer-events-none absolute inset-0 -z-[6] overflow-hidden" aria-hidden="true">
-        <div className="orb-a absolute -top-[12%] right-[-10%] h-[44vw] max-h-[600px] w-[44vw] max-w-[600px] rounded-full bg-[oklch(0.6_0.1_190/0.32)] blur-[100px]" />
+        <div className="orb-a absolute -top-[12%] right-[-10%] h-[44vw] max-h-[600px] w-[44vw] max-w-[600px] rounded-full bg-[oklch(0.6_0.11_152/0.32)] blur-[100px]" />
         <div className="orb-b absolute bottom-[-16%] left-[-8%] h-[38vw] max-h-[520px] w-[38vw] max-w-[520px] rounded-full bg-[oklch(0.8_0.12_85/0.2)] blur-[100px]" />
-        <div className="orb-c absolute left-[16%] top-[28%] h-[30vw] max-h-[420px] w-[30vw] max-w-[420px] rounded-full bg-[oklch(0.58_0.16_295/0.16)] blur-[100px]" />
+        <div className="orb-c absolute left-[16%] top-[28%] h-[30vw] max-h-[420px] w-[30vw] max-w-[420px] rounded-full bg-[oklch(0.58_0.15_262/0.16)] blur-[100px]" />
       </div>
 
       {/* ذرات معلق غبار طلایی */}

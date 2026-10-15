@@ -8,7 +8,7 @@ import { api, faNum, faDate } from "./shared";
 import type { ContactRequestRow } from "./shared";
 
 const STATUS: Record<string, { label: string; cls: string }> = {
-  new: { label: "جدید", cls: "bg-teal-300/15 text-teal-200 border-teal-300/30" },
+  new: { label: "جدید", cls: "bg-emerald-300/15 text-emerald-200 border-emerald-300/30" },
   contacted: { label: "تماس گرفته شد", cls: "bg-gold/15 text-amber-200 border-gold/30" },
   done: { label: "انجام شد", cls: "bg-white/10 text-white/80 border-white/20" },
   archived: { label: "بایگانی", cls: "bg-white/5 text-white/40 border-white/10" },
@@ -71,7 +71,7 @@ export function RequestsTab({
               onClick={() => setFilter(id)}
               className={cn(
                 "flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[12px] font-bold transition-colors cursor-pointer",
-                filter === id ? "border-teal-300/40 bg-teal-300/10 text-teal-100" : "border-white/10 text-white/50 hover:bg-white/5"
+                filter === id ? "border-emerald-300/40 bg-emerald-300/10 text-emerald-100" : "border-white/10 text-white/50 hover:bg-white/5"
               )}
             >
               {id === "new" && <Inbox className="h-3 w-3" />}
@@ -84,7 +84,7 @@ export function RequestsTab({
 
       {rows === null ? (
         <div className="flex h-40 items-center justify-center">
-          <Loader2 className="h-6 w-6 animate-spin text-teal-300/60" />
+          <Loader2 className="h-6 w-6 animate-spin text-emerald-300/60" />
         </div>
       ) : filtered.length === 0 ? (
         <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-10 text-center">
@@ -112,7 +112,7 @@ export function RequestsTab({
                   <a
                     href={`tel:${r.phone}`}
                     dir="ltr"
-                    className="flex items-center gap-1.5 rounded-xl border border-white/15 px-3 py-2 text-[12px] font-black tabular-nums text-teal-200 hover:bg-teal-300/10 cursor-pointer"
+                    className="flex items-center gap-1.5 rounded-xl border border-white/15 px-3 py-2 text-[12px] font-black tabular-nums text-emerald-200 hover:bg-emerald-300/10 cursor-pointer"
                   >
                     <Phone className="h-3.5 w-3.5" />
                     {r.phone}
@@ -122,13 +122,13 @@ export function RequestsTab({
                     disabled={busyId === r.id}
                     onChange={(e) => setStatus(r.id, e.target.value)}
                     aria-label="تغییر وضعیت"
-                    className="h-9 rounded-xl border border-white/15 bg-[oklch(0.2_0.025_205)] px-2.5 text-[11.5px] font-bold text-white/80 outline-none cursor-pointer"
+                    className="h-9 rounded-xl border border-white/15 bg-[oklch(0.2_0.025_262)] px-2.5 text-[11.5px] font-bold text-white/80 outline-none cursor-pointer"
                   >
                     {Object.entries(STATUS).map(([id, s]) => (
                       <option key={id} value={id}>{s.label}</option>
                     ))}
                   </select>
-                  {busyId === r.id && <Loader2 className="h-4 w-4 animate-spin text-teal-300" />}
+                  {busyId === r.id && <Loader2 className="h-4 w-4 animate-spin text-emerald-300" />}
                 </div>
               </div>
             </article>

@@ -55,7 +55,7 @@ export function AnalyticsTab({
   if (loading && !data) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-7 w-7 animate-spin text-teal-300/60" />
+        <Loader2 className="h-7 w-7 animate-spin text-emerald-300/60" />
       </div>
     );
   }
@@ -65,7 +65,7 @@ export function AnalyticsTab({
       <div className="glass-dark rounded-3xl p-10 text-center">
         <EyeOff className="mx-auto mb-3 h-8 w-8 text-white/25" />
         <p className="text-sm text-white/60">آماری در دسترس نیست</p>
-        <button type="button" onClick={load} className="mt-4 rounded-xl bg-teal-300 px-4 py-2 text-[12.5px] font-black text-[oklch(0.2_0.03_205)] cursor-pointer">
+        <button type="button" onClick={load} className="mt-4 rounded-xl bg-emerald-300 px-4 py-2 text-[12.5px] font-black text-[oklch(0.2_0.03_262)] cursor-pointer">
           تلاش دوباره
         </button>
       </div>
@@ -103,7 +103,7 @@ export function AnalyticsTab({
         <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
           <h3 className="text-[13px] font-black text-white">۳۰ روز اخیر — بازدید صفحه و بازدیدکننده یکتا</h3>
           <span className="flex items-center gap-3 text-[10.5px] text-white/40">
-            <span className="flex items-center gap-1"><i className="h-2 w-2 rounded-full bg-teal-300" /> بازدید صفحه</span>
+            <span className="flex items-center gap-1"><i className="h-2 w-2 rounded-full bg-emerald-300" /> بازدید صفحه</span>
             <span className="flex items-center gap-1"><i className="h-2 w-2 rounded-full bg-gold" /> یکتا</span>
             <button
               type="button"
@@ -204,7 +204,7 @@ export function AnalyticsTab({
               const DeviceIcon = DEVICE_ICON[v.device as keyof typeof DEVICE_ICON] ?? Monitor;
               return (
                 <li key={i} className="flex items-center gap-3 rounded-2xl bg-white/[0.04] px-3.5 py-2.5">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-teal-300/12 text-teal-200">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-emerald-300/12 text-emerald-200">
                     <DeviceIcon className="h-4 w-4" />
                   </span>
                   <div className="min-w-0 flex-1">

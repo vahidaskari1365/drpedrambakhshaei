@@ -29,7 +29,7 @@ export function Breadcrumbs() {
         خانه
       </Link>
       <ChevronLeft className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-      <span aria-current="page" className="font-bold text-teal-300">
+      <span aria-current="page" className="font-bold text-emerald-300">
         {current.label}
       </span>
     </nav>

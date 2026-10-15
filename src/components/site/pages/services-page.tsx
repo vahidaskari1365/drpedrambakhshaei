@@ -45,7 +45,7 @@ export function ServicesPage() {
               {/* تصویر سینمایی — Magic UI Glare Hover */}
               <div className={cn("relative", i % 2 === 1 && "lg:order-2")}>
                 <GlareHover color="#f0c869" opacity={0.28} size={220} className="w-full">
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[2.5rem] border border-[oklch(0.5_0.06_175/0.15)] shadow-[0_40px_90px_-40px_oklch(0.4_0.06_175/0.5)]">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-[2.5rem] border border-[oklch(0.5_0.06_152/0.15)] shadow-[0_40px_90px_-40px_oklch(0.4_0.06_152/0.5)]">
                   <Image
                     src={s.image}
                     alt={s.title}
@@ -53,7 +53,7 @@ export function ServicesPage() {
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.2_0.03_205/0.5)] via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.2_0.03_262/0.5)] via-transparent to-transparent" />
                   <span className="absolute right-5 top-5 rounded-full bg-background/85 px-3.5 py-1.5 text-xs font-black text-primary backdrop-blur">
                     ۰{i + 1}
                   </span>
@@ -78,7 +78,7 @@ export function ServicesPage() {
                 <p className="mb-2 text-xs font-bold tracking-widest text-primary">{s.subtitle}</p>
                 <h2 className="text-2xl font-black tracking-tight sm:text-[2rem] sm:leading-[1.25]">{s.title}</h2>
                 <p className="mt-4 text-[14px] leading-8 text-muted-foreground">{s.desc}</p>
-                <p className="mt-3 rounded-2xl border border-[oklch(0.55_0.06_175/0.12)] bg-[oklch(0.97_0.01_180)] p-4 text-[13px] leading-7 text-foreground/75">
+                <p className="mt-3 rounded-2xl border border-[oklch(0.55_0.06_152/0.12)] bg-[oklch(0.97_0.01_150)] p-4 text-[13px] leading-7 text-foreground/75">
                   {s.longDesc}
                 </p>
 
@@ -164,7 +164,7 @@ export function ServicesPage() {
                   transition={{ duration: 0.7, ease, delay: i * 0.08 }}
                   className="glass-dark gold-top-line flex items-start gap-3 rounded-2xl p-4"
                 >
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal-400/15 text-xs font-black text-teal-300">
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-400/15 text-xs font-black text-emerald-300">
                     ۰{i + 1}
                   </span>
                   <p className="text-[13px] font-medium leading-6 text-background/85">{p}</p>
@@ -197,7 +197,7 @@ export function ServicesPage() {
           >
             <a
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-black text-[oklch(0.2_0.03_205)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-black text-[oklch(0.2_0.03_262)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
             >
               رزرو نوبت
               <ArrowLeft className="h-4 w-4" />

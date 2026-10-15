@@ -53,81 +53,81 @@
 
 :root {
   --radius: 1.25rem;
-  /* پورسلین گرم — اپل‌استایل */
-  --background: oklch(0.985 0.003 95);
-  --foreground: oklch(0.18 0.01 95);
+  /* پورسلین سبزِ روشن — اپل‌استایل */
+  --background: oklch(0.985 0.004 150);
+  --foreground: oklch(0.18 0.015 262);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.01 95);
+  --card-foreground: oklch(0.18 0.015 262);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.01 95);
-  /* تیل جراحی — آرام و پریمیوم */
-  --primary: oklch(0.52 0.09 190);
-  --primary-foreground: oklch(0.985 0.005 190);
-  --secondary: oklch(0.96 0.006 95);
-  --secondary-foreground: oklch(0.25 0.01 95);
-  --muted: oklch(0.955 0.005 95);
-  --muted-foreground: oklch(0.5 0.01 95);
-  --accent: oklch(0.55 0.1 190);
-  --accent-foreground: oklch(0.985 0.005 190);
+  --popover-foreground: oklch(0.18 0.015 262);
+  /* سبز جراحی — آرام و پریمیوم */
+  --primary: oklch(0.5 0.115 152);
+  --primary-foreground: oklch(0.985 0.01 150);
+  --secondary: oklch(0.96 0.006 150);
+  --secondary-foreground: oklch(0.25 0.02 262);
+  --muted: oklch(0.955 0.005 150);
+  --muted-foreground: oklch(0.5 0.015 262);
+  --accent: oklch(0.53 0.115 152);
+  --accent-foreground: oklch(0.985 0.01 150);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.905 0.006 95);
-  --input: oklch(0.905 0.006 95);
-  --ring: oklch(0.52 0.09 190);
-  --chart-1: oklch(0.52 0.09 190);
-  --chart-2: oklch(0.7 0.12 80);
-  --chart-3: oklch(0.4 0.06 190);
+  --border: oklch(0.905 0.006 150);
+  --input: oklch(0.905 0.006 150);
+  --ring: oklch(0.5 0.115 152);
+  --chart-1: oklch(0.5 0.115 152);
+  --chart-2: oklch(0.7 0.12 85);
+  --chart-3: oklch(0.34 0.07 262);
   --chart-4: oklch(0.8 0.1 90);
-  --chart-5: oklch(0.65 0.08 170);
-  --sidebar: oklch(0.985 0.003 95);
-  --sidebar-foreground: oklch(0.18 0.01 95);
-  --sidebar-primary: oklch(0.52 0.09 190);
-  --sidebar-primary-foreground: oklch(0.985 0.005 190);
-  --sidebar-accent: oklch(0.96 0.006 95);
-  --sidebar-accent-foreground: oklch(0.25 0.01 95);
-  --sidebar-border: oklch(0.905 0.006 95);
-  --sidebar-ring: oklch(0.52 0.09 190);
-  /* پالت برند — پترول عمیق + سِیج جراحی + طلایی */
-  --petrol: oklch(0.24 0.03 205);
-  --petrol-deep: oklch(0.17 0.025 205);
-  --petrol-soft: oklch(0.32 0.04 202);
-  --sage: oklch(0.955 0.016 175);
-  --sage-deep: oklch(0.92 0.024 175);
+  --chart-5: oklch(0.65 0.09 155);
+  --sidebar: oklch(0.985 0.004 150);
+  --sidebar-foreground: oklch(0.18 0.015 262);
+  --sidebar-primary: oklch(0.5 0.115 152);
+  --sidebar-primary-foreground: oklch(0.985 0.01 150);
+  --sidebar-accent: oklch(0.96 0.006 150);
+  --sidebar-accent-foreground: oklch(0.25 0.02 262);
+  --sidebar-border: oklch(0.905 0.006 150);
+  --sidebar-ring: oklch(0.5 0.115 152);
+  /* پالت برند — سرمه‌ای عمیق + سبز جراحی + طلایی */
+  --petrol: oklch(0.23 0.05 262);
+  --petrol-deep: oklch(0.16 0.045 264);
+  --petrol-soft: oklch(0.31 0.06 261);
+  --sage: oklch(0.955 0.018 150);
+  --sage-deep: oklch(0.92 0.028 150);
   --gold: oklch(0.78 0.13 85);
   --gold-deep: oklch(0.68 0.12 80);
 }
 
 .dark {
-  --background: oklch(0.145 0.008 95);
-  --foreground: oklch(0.96 0.005 95);
-  --card: oklch(0.19 0.008 95);
-  --card-foreground: oklch(0.96 0.005 95);
-  --popover: oklch(0.19 0.008 95);
-  --popover-foreground: oklch(0.96 0.005 95);
-  --primary: oklch(0.72 0.1 185);
-  --primary-foreground: oklch(0.15 0.01 190);
-  --secondary: oklch(0.24 0.008 95);
-  --secondary-foreground: oklch(0.96 0.005 95);
-  --muted: oklch(0.24 0.008 95);
-  --muted-foreground: oklch(0.68 0.008 95);
-  --accent: oklch(0.72 0.1 185);
-  --accent-foreground: oklch(0.15 0.01 190);
+  --background: oklch(0.15 0.012 262);
+  --foreground: oklch(0.96 0.005 150);
+  --card: oklch(0.19 0.014 262);
+  --card-foreground: oklch(0.96 0.005 150);
+  --popover: oklch(0.19 0.014 262);
+  --popover-foreground: oklch(0.96 0.005 150);
+  --primary: oklch(0.76 0.13 152);
+  --primary-foreground: oklch(0.16 0.03 155);
+  --secondary: oklch(0.24 0.012 262);
+  --secondary-foreground: oklch(0.96 0.005 150);
+  --muted: oklch(0.24 0.012 262);
+  --muted-foreground: oklch(0.68 0.012 262);
+  --accent: oklch(0.76 0.13 152);
+  --accent-foreground: oklch(0.16 0.03 155);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.72 0.1 185);
-  --chart-1: oklch(0.72 0.1 185);
-  --chart-2: oklch(0.8 0.12 80);
-  --chart-3: oklch(0.55 0.07 190);
+  --ring: oklch(0.76 0.13 152);
+  --chart-1: oklch(0.76 0.13 152);
+  --chart-2: oklch(0.8 0.12 85);
+  --chart-3: oklch(0.6 0.08 262);
   --chart-4: oklch(0.85 0.1 90);
-  --chart-5: oklch(0.7 0.08 170);
-  --sidebar: oklch(0.19 0.008 95);
-  --sidebar-foreground: oklch(0.96 0.005 95);
-  --sidebar-primary: oklch(0.72 0.1 185);
-  --sidebar-primary-foreground: oklch(0.15 0.01 190);
-  --sidebar-accent: oklch(0.24 0.008 95);
-  --sidebar-accent-foreground: oklch(0.96 0.005 95);
+  --chart-5: oklch(0.7 0.1 155);
+  --sidebar: oklch(0.19 0.014 262);
+  --sidebar-foreground: oklch(0.96 0.005 150);
+  --sidebar-primary: oklch(0.76 0.13 152);
+  --sidebar-primary-foreground: oklch(0.16 0.03 155);
+  --sidebar-accent: oklch(0.24 0.012 262);
+  --sidebar-accent-foreground: oklch(0.96 0.005 150);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.72 0.1 185);
+  --sidebar-ring: oklch(0.76 0.13 152);
 }
 
 @layer base {
@@ -159,7 +159,7 @@
     letter-spacing: -0.01em;
   }
   ::selection {
-    background: oklch(0.52 0.09 190 / 0.18);
+    background: oklch(0.5 0.115 152 / 0.18);
   }
   ::-webkit-scrollbar {
     width: 10px;
@@ -168,13 +168,13 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: oklch(0.6 0.05 190 / 0.35);
+    background: oklch(0.6 0.05 262 / 0.35);
     border-radius: 999px;
     border: 2px solid transparent;
     background-clip: content-box;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: oklch(0.5 0.07 190 / 0.55);
+    background: oklch(0.5 0.07 262 / 0.55);
     background-clip: content-box;
     border: 2px solid transparent;
   }
@@ -184,14 +184,14 @@
 @layer utilities {
   .scrollbar-slim {
     scrollbar-width: thin;
-    scrollbar-color: oklch(0.7 0.02 190 / 0.4) transparent;
+    scrollbar-color: oklch(0.7 0.02 262 / 0.4) transparent;
   }
   .scrollbar-slim::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   .scrollbar-slim::-webkit-scrollbar-thumb {
-    background: oklch(0.7 0.02 190 / 0.4);
+    background: oklch(0.7 0.02 262 / 0.4);
     border-radius: 999px;
   }
   .scrollbar-slim::-webkit-scrollbar-track {
@@ -202,9 +202,9 @@
   .text-gradient {
     background: linear-gradient(
       120deg,
-      oklch(0.18 0.01 95) 20%,
-      oklch(0.52 0.09 190) 60%,
-      oklch(0.6 0.1 185) 80%
+      oklch(0.18 0.015 262) 20%,
+      oklch(0.5 0.115 152) 60%,
+      oklch(0.62 0.12 155) 80%
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -215,23 +215,23 @@
   .text-gradient-light {
     background: linear-gradient(
       120deg,
-      oklch(0.97 0.01 190) 15%,
+      oklch(0.97 0.01 155) 15%,
       oklch(0.78 0.13 85) 55%,
-      oklch(0.75 0.1 185) 90%
+      oklch(0.78 0.1 152) 90%
     );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  /* پترول عمیق — زمینه بخش‌های تیره سینمایی */
+  /* سرمه‌ای عمیق — زمینه بخش‌های تیره سینمایی */
   .bg-petrol {
     background-color: var(--petrol);
-    color: oklch(0.97 0.008 190);
+    color: oklch(0.97 0.008 260);
   }
   .bg-petrol-deep {
     background-color: var(--petrol-deep);
-    color: oklch(0.97 0.008 190);
+    color: oklch(0.97 0.008 260);
   }
 
   /* سِیج جراحی — زمینه روشن رنگی */
@@ -261,7 +261,7 @@
     aspect-ratio: 1.4;
     top: -18%;
     inset-inline-start: -12%;
-    background: radial-gradient(closest-side, oklch(0.55 0.1 190 / 0.5), transparent);
+    background: radial-gradient(closest-side, oklch(0.55 0.11 152 / 0.5), transparent);
   }
   .aurora::after {
     width: 48%;
@@ -271,10 +271,10 @@
     background: radial-gradient(closest-side, oklch(0.72 0.11 85 / 0.32), transparent);
   }
   .aurora-sage::before {
-    background: radial-gradient(closest-side, oklch(0.72 0.09 175 / 0.55), transparent);
+    background: radial-gradient(closest-side, oklch(0.72 0.1 150 / 0.55), transparent);
   }
   .aurora-sage::after {
-    background: radial-gradient(closest-side, oklch(0.6 0.09 190 / 0.35), transparent);
+    background: radial-gradient(closest-side, oklch(0.6 0.09 262 / 0.35), transparent);
   }
 
   /* پس‌زمینه یخ‌زده منوی موبایل — ۹۸٪ پترول */
@@ -287,28 +287,28 @@
     background: linear-gradient(
       to bottom,
       var(--petrol-deep),
-      oklch(0.3 0.045 200),
+      oklch(0.3 0.055 262),
       var(--petrol)
     );
   }
 
   /* کارت شیشه‌ای روی زمینه تیره */
   .glass-dark {
-    background: oklch(0.97 0.008 190 / 0.06);
+    background: oklch(0.97 0.008 260 / 0.06);
     backdrop-filter: blur(20px) saturate(1.5);
     -webkit-backdrop-filter: blur(20px) saturate(1.5);
-    border: 1px solid oklch(0.97 0.008 190 / 0.12);
+    border: 1px solid oklch(0.97 0.008 260 / 0.12);
     box-shadow:
-      0 20px 50px -20px oklch(0.08 0.02 205 / 0.5),
-      inset 0 1px 0 oklch(0.97 0.008 190 / 0.14);
+      0 20px 50px -20px oklch(0.08 0.03 262 / 0.5),
+      inset 0 1px 0 oklch(0.97 0.008 260 / 0.14);
   }
 
   /* کارت روشن روی زمینه سِیج */
   .card-sage {
-    background: oklch(0.985 0.008 175);
-    border: 1px solid oklch(0.55 0.06 175 / 0.14);
+    background: oklch(0.985 0.008 150);
+    border: 1px solid oklch(0.55 0.07 152 / 0.14);
     box-shadow:
-      0 14px 40px -18px oklch(0.45 0.05 175 / 0.25),
+      0 14px 40px -18px oklch(0.45 0.06 152 / 0.25),
       inset 0 1px 0 oklch(1 0 0 / 0.7);
   }
 
@@ -332,7 +332,7 @@
     -webkit-backdrop-filter: blur(20px) saturate(1.6);
     border: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
     box-shadow:
-      0 12px 40px -12px oklch(0.2 0.02 190 / 0.18),
+      0 12px 40px -12px oklch(0.2 0.03 262 / 0.18),
       inset 0 1px 0 color-mix(in oklab, oklch(1 0 0) 55%, transparent);
   }
 
@@ -452,8 +452,8 @@
     z-index: 70;
     background: linear-gradient(
       to left,
-      oklch(0.52 0.09 190),
-      oklch(0.72 0.11 175),
+      oklch(0.5 0.115 152),
+      oklch(0.66 0.12 150),
       oklch(0.78 0.13 85)
     );
     transform-origin: right;
@@ -463,7 +463,7 @@
   /* خط جداکننده گرادیانی بخش‌ها */
   .divider-fade {
     height: 1px;
-    background: linear-gradient(to left, transparent, oklch(0.6 0.06 190 / 0.35), transparent);
+    background: linear-gradient(to left, transparent, oklch(0.6 0.06 262 / 0.35), transparent);
   }
 
   /* ─── لوگوی متحرک سینمایی ─── */
@@ -502,8 +502,8 @@
     background: conic-gradient(
       from 20deg,
       transparent 0deg,
-      oklch(0.56 0.24 300) 42deg,
-      oklch(0.6 0.2 255) 88deg,
+      oklch(0.62 0.19 152) 42deg,
+      oklch(0.5 0.16 262) 88deg,
       oklch(0.8 0.14 85) 126deg,
       transparent 172deg,
       transparent 360deg
@@ -538,8 +538,8 @@
     pointer-events: none;
     background: radial-gradient(
       closest-side,
-      oklch(0.56 0.2 295 / 0.32),
-      oklch(0.58 0.17 255 / 0.16) 55%,
+      oklch(0.6 0.18 152 / 0.32),
+      oklch(0.5 0.15 262 / 0.16) 55%,
       transparent 74%
     );
     filter: blur(10px);
@@ -585,7 +585,7 @@
       90deg,
       transparent,
       oklch(1 0 0 / 0.08) 42%,
-      oklch(0.9 0.05 190 / 0.11) 58%,
+      oklch(0.9 0.05 155 / 0.11) 58%,
       transparent
     );
     filter: blur(26px);
@@ -610,7 +610,7 @@
     background: radial-gradient(
       120% 95% at 50% 32%,
       transparent 52%,
-      oklch(0.24 0.03 210 / 0.2) 100%
+      oklch(0.24 0.04 262 / 0.2) 100%
     );
   }
   /* درخشش متحرک روی متن گرادیانی */
@@ -726,11 +726,11 @@
 /* ═══════════ پنل مدیریت ═══════════ */
 .admin-root {
   background:
-    radial-gradient(52% 40% at 88% -6%, oklch(0.45 0.08 195 / 0.28), transparent 70%),
+    radial-gradient(52% 40% at 88% -6%, oklch(0.45 0.09 262 / 0.28), transparent 70%),
     radial-gradient(46% 36% at 6% 104%, oklch(0.5 0.09 85 / 0.1), transparent 70%),
-    radial-gradient(40% 30% at 50% 120%, oklch(0.45 0.1 295 / 0.07), transparent 70%),
-    oklch(0.145 0.02 205);
-  color: oklch(0.95 0.01 205);
+    radial-gradient(40% 30% at 50% 120%, oklch(0.45 0.1 152 / 0.07), transparent 70%),
+    oklch(0.145 0.025 262);
+  color: oklch(0.95 0.01 260);
 }
 .admin-root ::selection {
   background: oklch(0.78 0.13 85 / 0.35);
@@ -745,8 +745,8 @@
   appearance: textfield;
 }
 .admin-root select option {
-  background: oklch(0.2 0.025 205);
-  color: oklch(0.95 0.01 205);
+  background: oklch(0.2 0.03 262);
+  color: oklch(0.95 0.01 260);
 }
 .admin-root .scrollbar-slim::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.14);

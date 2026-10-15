@@ -153,7 +153,7 @@ export function TestsTab({
         <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-4">
           <ScoreRing score={allRows.length ? Math.round((passed / allRows.length) * 100) : 0} />
           <div className="mt-1 flex justify-center gap-4 text-[11px]">
-            <span className="flex items-center gap-1.5 text-teal-300">
+            <span className="flex items-center gap-1.5 text-emerald-300">
               <CheckCircle2 className="h-3.5 w-3.5" /> {faNum(passed)} موفق
             </span>
             <span className="flex items-center gap-1.5 text-red-300">
@@ -173,7 +173,7 @@ export function TestsTab({
               type="button"
               onClick={run}
               disabled={running}
-              className="flex items-center gap-2 rounded-2xl bg-gradient-to-l from-teal-400 to-gold px-6 py-3 text-[13.5px] font-black text-[oklch(0.2_0.03_205)] shadow-xl shadow-gold/20 transition-all hover:brightness-110 active:scale-95 disabled:opacity-50 cursor-pointer"
+              className="flex items-center gap-2 rounded-2xl bg-gradient-to-l from-emerald-400 to-gold px-6 py-3 text-[13.5px] font-black text-[oklch(0.2_0.03_262)] shadow-xl shadow-gold/20 transition-all hover:brightness-110 active:scale-95 disabled:opacity-50 cursor-pointer"
             >
               {running ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
               {running ? "در حال اجرا..." : "اجرای تست کامل"}
@@ -199,11 +199,11 @@ export function TestsTab({
                       transition={{ duration: 0.35, delay: i * 0.04 }}
                       className={cn(
                         "flex items-center gap-3 rounded-2xl border px-4 py-3",
-                        r.pass ? "border-teal-300/15 bg-teal-300/[0.05]" : "border-red-400/25 bg-red-400/[0.06]"
+                        r.pass ? "border-emerald-300/15 bg-emerald-300/[0.05]" : "border-red-400/25 bg-red-400/[0.06]"
                       )}
                     >
                       {r.pass ? (
-                        <CheckCircle2 className="h-4.5 w-4.5 shrink-0 text-teal-300" />
+                        <CheckCircle2 className="h-4.5 w-4.5 shrink-0 text-emerald-300" />
                       ) : (
                         <XCircle className="h-4.5 w-4.5 shrink-0 text-red-300" />
                       )}
@@ -218,7 +218,7 @@ export function TestsTab({
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label="باز کردن مسیر"
-                          className="shrink-0 text-white/30 hover:text-teal-200 cursor-pointer"
+                          className="shrink-0 text-white/30 hover:text-emerald-200 cursor-pointer"
                         >
                           <ExternalLink className="h-3.5 w-3.5" />
                         </a>

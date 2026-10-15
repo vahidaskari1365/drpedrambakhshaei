@@ -17,12 +17,12 @@ export function Prices() {
   return (
     <section id="prices" className="relative py-20 lg:py-28" aria-label="تعرفه خدمات">
       {/* زمینه تیره سینمایی */}
-      <div className="absolute inset-0 -z-10 bg-[oklch(0.19_0.01_190)] dark:bg-[oklch(0.12_0.01_190)]" />
+      <div className="absolute inset-0 -z-10 bg-[oklch(0.18_0.025_262)] dark:bg-[oklch(0.12_0.015_262)]" />
       <div
         className="absolute inset-0 -z-10 opacity-60"
         style={{
           background:
-            "radial-gradient(60% 50% at 20% 0%, oklch(0.4 0.07 190 / 0.55), transparent 70%), radial-gradient(50% 40% at 90% 100%, oklch(0.35 0.06 185 / 0.45), transparent 70%)",
+            "radial-gradient(60% 50% at 20% 0%, oklch(0.42 0.08 262 / 0.55), transparent 70%), radial-gradient(50% 40% at 90% 100%, oklch(0.38 0.07 155 / 0.45), transparent 70%)",
         }}
       />
 
@@ -45,7 +45,7 @@ export function Prices() {
               onClick={() => setTab(i)}
               className={cn(
                 "relative shrink-0 rounded-full px-5 py-2.5 text-sm font-bold transition-colors cursor-pointer",
-                tab === i ? "text-[oklch(0.19_0.01_190)]" : "text-background/70 hover:text-background"
+                tab === i ? "text-[oklch(0.18_0.025_262)]" : "text-background/70 hover:text-background"
               )}
             >
               {tab === i && (
@@ -90,7 +90,7 @@ export function Prices() {
                   >
                     <td className="px-6 py-4 text-sm font-bold">{r.item}</td>
                     <td className="px-6 py-4 text-xs leading-6 text-background/70">{r.extra}</td>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm font-black tabular-nums text-teal-200">{r.price}</td>
+                    <td className="whitespace-nowrap px-6 py-4 text-sm font-black tabular-nums text-emerald-200">{r.price}</td>
                   </motion.tr>
                 ))}
               </tbody>
@@ -112,7 +112,7 @@ export function Prices() {
                   className="flex items-center justify-between rounded-2xl border border-background/10 bg-background/5 px-4 py-3"
                 >
                   <span className="text-[13px] font-medium text-background/85">{e.item}</span>
-                  <span className="text-xs font-black tabular-nums text-teal-200">{e.price}</span>
+                  <span className="text-xs font-black tabular-nums text-emerald-200">{e.price}</span>
                 </motion.div>
               ))}
             </div>
@@ -125,7 +125,7 @@ export function Prices() {
             </p>
             <a
               href="/contact"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-black text-[oklch(0.19_0.01_190)] transition-transform duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-black text-[oklch(0.18_0.025_262)] transition-transform duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
             >
               <PhoneCall className="h-4 w-4" />
               دریافت برآورد دقیق

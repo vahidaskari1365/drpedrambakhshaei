@@ -51,7 +51,7 @@ export function ReviewsPage() {
             className="glass-dark gold-top-line relative mx-auto w-full max-w-sm rounded-[2.5rem] p-8 text-center"
           >
             <div className="mb-4 flex items-center justify-center gap-1.5">
-              <MapPin className="h-4 w-4 text-teal-300" />
+              <MapPin className="h-4 w-4 text-emerald-300" />
               <span className="text-xs font-bold text-background/60">نظرات گوگل مپ</span>
             </div>
             <p className="text-[4.5rem] font-black leading-none tracking-tight text-background" aria-label="امتیاز ۵ از ۵">
@@ -67,7 +67,7 @@ export function ReviewsPage() {
               href={site.reviewsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-background px-6 py-3.5 text-sm font-black text-[oklch(0.2_0.03_205)] transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer"
+              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-background px-6 py-3.5 text-sm font-black text-[oklch(0.2_0.03_262)] transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer"
             >
               مشاهده همه نظرات در گوگل
               <ExternalLink className="h-4 w-4" />
@@ -93,7 +93,7 @@ export function ReviewsPage() {
                 transition={{ duration: 0.8, ease, delay: i * 0.08 }}
                 className="glass-dark rounded-3xl p-6"
               >
-                <p className="text-2xl font-black text-teal-300">{s.value}</p>
+                <p className="text-2xl font-black text-emerald-300">{s.value}</p>
                 <p className="mt-1 text-sm font-extrabold text-background">{s.label}</p>
                 <p className="mt-0.5 text-xs text-background/50">{s.desc}</p>
               </motion.div>
@@ -157,11 +157,11 @@ export function ReviewsPage() {
                   i === 0 && "gold-top-line"
                 )}
               >
-                <Quote className="mb-3 h-5 w-5 text-teal-300/40" />
+                <Quote className="mb-3 h-5 w-5 text-emerald-300/40" />
                 <blockquote className="text-[13px] leading-7 text-background/85">{r.text}</blockquote>
                 <figcaption className="mt-4 flex items-center justify-between gap-3 border-t border-background/10 pt-4">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal-400/15 text-sm font-black text-teal-300">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-400/15 text-sm font-black text-emerald-300">
                       {r.author.charAt(0)}
                     </span>
                     <div>
@@ -197,7 +197,7 @@ export function ReviewsPage() {
                 href={site.reviewsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-black text-[oklch(0.2_0.03_205)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-black text-[oklch(0.2_0.03_262)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
               >
                 <Star className="h-4 w-4" />
                 ثبت نظر در گوگل

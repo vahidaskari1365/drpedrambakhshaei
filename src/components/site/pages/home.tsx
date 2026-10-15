@@ -46,11 +46,11 @@ const ease = [0.16, 1, 0.3, 1] as const;
 function ReviewCard({ r }: { r: SiteContent["reviews"][number] }) {
   return (
     <figure className="glass-dark relative flex w-[300px] shrink-0 flex-col rounded-3xl p-6 sm:w-[380px]">
-      <Quote className="mb-3 h-5 w-5 text-teal-300/50" />
+      <Quote className="mb-3 h-5 w-5 text-emerald-300/50" />
       <blockquote className="flex-1 text-[13px] leading-7 text-background/85">{r.text}</blockquote>
       <figcaption className="mt-4 flex items-center justify-between gap-3 border-t border-background/10 pt-4">
         <div className="flex items-center gap-3">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-400/15 text-sm font-black text-teal-300">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-400/15 text-sm font-black text-emerald-300">
             {r.author.charAt(0)}
           </span>
           <div>
@@ -155,7 +155,7 @@ export function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.9, ease, delay: i * 0.1 }}
-                className="group relative flex flex-col overflow-hidden rounded-[2rem] border border-[oklch(0.5_0.06_175/0.12)] bg-card shadow-[0_24px_60px_-35px_oklch(0.4_0.05_175/0.5)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_36px_80px_-35px_oklch(0.4_0.06_175/0.6)] cursor-pointer"
+                className="group relative flex flex-col overflow-hidden rounded-[2rem] border border-[oklch(0.5_0.06_152/0.12)] bg-card shadow-[0_24px_60px_-35px_oklch(0.4_0.05_152/0.5)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_36px_80px_-35px_oklch(0.4_0.06_152/0.6)] cursor-pointer"
                 aria-label={s.title}
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
@@ -166,7 +166,7 @@ export function HomePage() {
                     className="object-cover transition-transform duration-[1.6s] ease-out group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.18_0.03_205/0.55)] via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.18_0.03_262/0.55)] via-transparent to-transparent" />
                   <span className="absolute right-4 top-4 rounded-full bg-background/85 px-3 py-1 text-[11px] font-black text-primary backdrop-blur">
                     ۰{i + 1}
                   </span>
@@ -230,7 +230,7 @@ export function HomePage() {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.9, ease }}
             >
-              <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-teal-400/10 px-3 py-1.5 text-xs font-bold text-teal-300">
+              <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-3 py-1.5 text-xs font-bold text-emerald-300">
                 <Sparkles className="h-3.5 w-3.5" />
                 {beforeAfter.kicker}
               </p>
@@ -241,7 +241,7 @@ export function HomePage() {
               <div className="mt-6 flex flex-wrap gap-3">
                 <a
                   href="/gallery"
-                  className="shimmer inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-bold text-[oklch(0.2_0.03_205)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
+                  className="shimmer inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-bold text-[oklch(0.2_0.03_262)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
                 >
                   همه نمونه کارها
                   <ArrowLeft className="h-4 w-4" />
@@ -286,7 +286,7 @@ export function HomePage() {
               <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{whyUs.text}</p>
               <a
                 href="/about"
-                className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-teal-300 transition-all duration-300 hover:gap-3 cursor-pointer"
+                className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-emerald-300 transition-all duration-300 hover:gap-3 cursor-pointer"
               >
                 بیشتر درباره دکتر بخشایی
                 <ArrowLeft className="h-4 w-4" />
@@ -309,11 +309,11 @@ export function HomePage() {
                     glowSize={360}
                     glowBlur={72}
                     glowOpacity={0.5}
-                    className="gold-top-line rounded-2xl shadow-[0_20px_50px_-30px_oklch(0.05_0.03_205/0.9)] backdrop-blur-md"
-                    style={{ "--mg-card-bg": "oklch(0.3 0.05 205 / 0.55)" } as React.CSSProperties}
+                    className="gold-top-line rounded-2xl shadow-[0_20px_50px_-30px_oklch(0.05_0.03_262/0.9)] backdrop-blur-md"
+                    style={{ "--mg-card-bg": "oklch(0.3 0.05 262 / 0.55)" } as React.CSSProperties}
                   >
                     <div className="flex items-start gap-3 p-4">
-                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal-400/15 text-xs font-black text-teal-300">
+                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-400/15 text-xs font-black text-emerald-300">
                         ۰{i + 1}
                       </span>
                       <p className="text-[13px] font-medium leading-6 text-background/85">{p}</p>
@@ -374,7 +374,7 @@ export function HomePage() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.8, ease, delay: (i % 4) * 0.08 }}
                 className={cn(
-                  "group relative overflow-hidden rounded-[1.75rem] border border-border/60 shadow-[0_24px_60px_-38px_oklch(0.4_0.05_205/0.55)] transition-all duration-500 hover:-translate-y-1.5 cursor-pointer",
+                  "group relative overflow-hidden rounded-[1.75rem] border border-border/60 shadow-[0_24px_60px_-38px_oklch(0.4_0.05_262/0.55)] transition-all duration-500 hover:-translate-y-1.5 cursor-pointer",
                   i === 0 && "sm:col-span-2 lg:row-span-2"
                 )}
                 aria-label={`${g.title} — مشاهده در گالری`}
@@ -388,7 +388,7 @@ export function HomePage() {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.16_0.03_205/0.8)] via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.16_0.03_262/0.8)] via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-100" />
                 <span className="absolute inset-x-4 bottom-3.5 text-[13px] font-extrabold text-background">{g.title}</span>
               </motion.a>
             ))}
@@ -429,7 +429,7 @@ export function HomePage() {
                   </span>
                 ))}
               </OrbitingCircles>
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-[oklch(0.5_0.06_175/0.15)] shadow-[0_40px_90px_-40px_oklch(0.4_0.06_175/0.55)]">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-[oklch(0.5_0.06_152/0.15)] shadow-[0_40px_90px_-40px_oklch(0.4_0.06_152/0.55)]">
                 <Image
                   src="/uploads/doctor-portrait.jpg"
                   alt="دکتر پدرام بخشایی — متخصص جراحی دهان، فک و صورت"
@@ -437,7 +437,7 @@ export function HomePage() {
                   className="object-cover object-top"
                   sizes="(max-width: 1024px) 90vw, 380px"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.18_0.03_205/0.35)] via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.18_0.03_262/0.35)] via-transparent to-transparent" />
               </div>
               <div className="absolute -bottom-5 right-5 left-5 rounded-2xl bg-card/90 px-5 py-3.5 shadow-xl backdrop-blur-xl">
                 <p className="text-sm font-black">Dr. Pedram Bakhshaei</p>
@@ -527,13 +527,13 @@ export function HomePage() {
                 className="glass-dark gold-top-line group relative flex flex-col rounded-[1.75rem] p-6 transition-all duration-500 hover:-translate-y-2 cursor-pointer"
                 aria-label={`تعرفه ${p.title}`}
               >
-                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-teal-400/15">
-                  <Wallet className="h-5 w-5 text-teal-300" />
+                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-400/15">
+                  <Wallet className="h-5 w-5 text-emerald-300" />
                 </span>
                 <h3 className="mt-4 text-lg font-black text-background">{p.title}</h3>
-                <p className="mt-3 text-2xl font-black tracking-tight text-teal-300 tabular-nums">{p.price} تومان</p>
+                <p className="mt-3 text-2xl font-black tracking-tight text-emerald-300 tabular-nums">{p.price} تومان</p>
                 <p className="mt-1.5 flex-1 text-[12px] leading-6 text-background/55">{p.note}</p>
-                <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-teal-300 transition-all duration-300 group-hover:gap-3">
+                <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-emerald-300 transition-all duration-300 group-hover:gap-3">
                   جدول کامل تعرفه
                   <ArrowLeft className="h-4 w-4" />
                 </span>
@@ -711,7 +711,7 @@ export function HomePage() {
             <ShimmerButton
               href="/contact"
               shimmerColor="#f0c869"
-              className="shadow-[0_16px_40px_-14px_oklch(0.05_0.02_205/0.8)]"
+              className="shadow-[0_16px_40px_-14px_oklch(0.05_0.02_262/0.8)]"
             >
               <span className="inline-flex items-center gap-2.5 text-sm font-black">
                 <CalendarCheck className="h-4.5 w-4.5" />

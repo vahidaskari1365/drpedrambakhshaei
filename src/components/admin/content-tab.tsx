@@ -212,7 +212,7 @@ export function ContentTab({
                 onClick={() => setActiveKey(key)}
                 className={cn(
                   "group flex shrink-0 items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-[12.5px] font-bold transition-all lg:w-full cursor-pointer",
-                  active ? "bg-gradient-to-l from-teal-300/20 to-transparent text-teal-100 shadow-[inset_0_0_0_1px] shadow-teal-300/25" : "text-white/60 hover:bg-white/5 hover:text-white"
+                  active ? "bg-gradient-to-l from-emerald-300/20 to-transparent text-emerald-100 shadow-[inset_0_0_0_1px] shadow-emerald-300/25" : "text-white/60 hover:bg-white/5 hover:text-white"
                 )}
               >
                 {overrideMap.has(key) ? (
@@ -222,7 +222,7 @@ export function ContentTab({
                 )}
                 <span className="flex-1 text-right whitespace-nowrap">{CONTENT_LABELS[key]}</span>
                 {count !== undefined && (
-                  <span className={cn("rounded-full px-1.5 py-0.5 text-[10px] tabular-nums", active ? "bg-teal-300/20 text-teal-100" : "bg-white/8 text-white/45")}>
+                  <span className={cn("rounded-full px-1.5 py-0.5 text-[10px] tabular-nums", active ? "bg-emerald-300/20 text-emerald-100" : "bg-white/8 text-white/45")}>
                     {faNum(count)}
                   </span>
                 )}
@@ -256,7 +256,7 @@ export function ContentTab({
               type="button"
               onClick={save}
               disabled={!dirty || saving}
-              className="flex items-center gap-1.5 rounded-xl bg-gradient-to-l from-teal-400 to-teal-300 px-4 py-2 text-[12.5px] font-black text-[oklch(0.2_0.03_205)] shadow-lg shadow-teal-400/25 transition-all hover:brightness-110 disabled:opacity-40 disabled:shadow-none cursor-pointer"
+              className="flex items-center gap-1.5 rounded-xl bg-gradient-to-l from-emerald-400 to-emerald-300 px-4 py-2 text-[12.5px] font-black text-[oklch(0.2_0.03_262)] shadow-lg shadow-emerald-400/25 transition-all hover:brightness-110 disabled:opacity-40 disabled:shadow-none cursor-pointer"
             >
               {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
               ذخیره و اعمال روی سایت
@@ -278,7 +278,7 @@ export function ContentTab({
               value={String(draft ?? "")}
               rows={5}
               onChange={(e) => { setDraft(e.target.value); setDirty(true); }}
-              className="w-full resize-y rounded-xl border border-white/12 bg-white/[0.06] px-3.5 py-3 text-[13px] leading-8 text-white outline-none focus:border-teal-300/50"
+              className="w-full resize-y rounded-xl border border-white/12 bg-white/[0.06] px-3.5 py-3 text-[13px] leading-8 text-white outline-none focus:border-emerald-300/50"
             />
           )}
 
@@ -291,7 +291,7 @@ export function ContentTab({
                     value={item}
                     rows={2}
                     onChange={(e) => { setDraft((draft as string[]).map((x, j) => (j === i ? e.target.value : x))); setDirty(true); }}
-                    className="w-full resize-y rounded-xl border border-white/12 bg-white/[0.06] px-3.5 py-2.5 text-[13px] leading-7 text-white outline-none focus:border-teal-300/50"
+                    className="w-full resize-y rounded-xl border border-white/12 bg-white/[0.06] px-3.5 py-2.5 text-[13px] leading-7 text-white outline-none focus:border-emerald-300/50"
                   />
                   <button
                     type="button"
@@ -306,7 +306,7 @@ export function ContentTab({
               <button
                 type="button"
                 onClick={() => { setDraft([...(draft as string[]), ""]); setDirty(true); }}
-                className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-white/20 py-2.5 text-[12px] font-bold text-white/50 hover:border-teal-300/40 hover:text-teal-200 cursor-pointer"
+                className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-white/20 py-2.5 text-[12px] font-bold text-white/50 hover:border-emerald-300/40 hover:text-emerald-200 cursor-pointer"
               >
                 + افزودن پاراگراف
               </button>
@@ -333,7 +333,7 @@ export function ContentTab({
         </motion.div>
 
         <p className="mt-3 flex items-center gap-1.5 px-1 text-[11px] text-white/35">
-          <CheckCircle2 className="h-3.5 w-3.5 text-teal-300/60" />
+          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-300/60" />
           بعد از ذخیره، صفحات سایت در بازدید بعدی (SSR) با محتوای جدید رندر می‌شوند.
         </p>
       </section>

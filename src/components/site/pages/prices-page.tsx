@@ -27,7 +27,7 @@ function FaqRow({ q, a, index }: { q: string; a: string; index: number }) {
       >
         <span className="text-[14px] font-bold text-background/90">{q}</span>
         <ChevronDown
-          className={cn("h-4.5 w-4.5 shrink-0 text-teal-300 transition-transform duration-300", open && "rotate-180")}
+          className={cn("h-4.5 w-4.5 shrink-0 text-emerald-300 transition-transform duration-300", open && "rotate-180")}
         />
       </button>
       <motion.div
@@ -83,11 +83,11 @@ export function PricesPage() {
                 transition={{ duration: 0.9, ease, delay: i * 0.1 }}
                 className="glass-dark gold-top-line rounded-[1.75rem] p-6"
               >
-                <h3 className="mb-5 text-center text-base font-black text-teal-300">{c.title}</h3>
+                <h3 className="mb-5 text-center text-base font-black text-emerald-300">{c.title}</h3>
                 <ol className="space-y-4">
                   {c.factors.map((f, j) => (
                     <li key={f.title} className="flex items-start gap-3">
-                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal-400/15 text-[11px] font-black text-teal-300">
+                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-400/15 text-[11px] font-black text-emerald-300">
                         {(j + 1).toLocaleString("fa-IR")}
                       </span>
                       <div>
@@ -121,8 +121,8 @@ export function PricesPage() {
               </div>
             </div>
             <div className="glass-dark flex items-start gap-3 rounded-2xl p-5">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-teal-400/15">
-                <BadgeCheck className="h-5 w-5 text-teal-300" />
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-400/15">
+                <BadgeCheck className="h-5 w-5 text-emerald-300" />
               </span>
               <div>
                 <p className="text-sm font-black text-background">تخفیف مراجعین شهرستانی</p>
@@ -180,7 +180,7 @@ export function PricesPage() {
             <p className="mb-5 text-sm text-background/60">برای برآورد دقیق هزینه شرایط خود، نوبت مشاوره بگیرید</p>
             <a
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-black text-[oklch(0.2_0.03_205)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-black text-[oklch(0.2_0.03_262)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
             >
               <PhoneCall className="h-4 w-4" />
               رزرو نوبت و برآورد دقیق

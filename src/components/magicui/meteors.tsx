@@ -56,12 +56,12 @@ export function Meteors({
             } as React.CSSProperties
           }
           className={cn(
-            "animate-mg-meteor pointer-events-none absolute size-0.5 rotate-[var(--mg-angle)] rounded-full bg-teal-200/90 shadow-[0_0_0_1px_#ffffff10]",
+            "animate-mg-meteor pointer-events-none absolute size-0.5 rotate-[var(--mg-angle)] rounded-full bg-emerald-200/90 shadow-[0_0_0_1px_#ffffff10]",
             className
           )}
         >
           {/* دنباله شهاب */}
-          <div className="pointer-events-none absolute top-1/2 -z-10 h-px w-12 -translate-y-1/2 bg-gradient-to-r from-teal-200/80 to-transparent" />
+          <div className="pointer-events-none absolute top-1/2 -z-10 h-px w-12 -translate-y-1/2 bg-gradient-to-r from-emerald-200/80 to-transparent" />
         </span>
       ))}
     </>

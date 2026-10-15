@@ -138,7 +138,7 @@ export function GalleryPage() {
                   exit={{ opacity: 0, scale: 0.94 }}
                   transition={{ duration: 0.7, ease, delay: (i % 3) * 0.08 }}
                   onClick={() => setLightbox(i)}
-                  className="group relative overflow-hidden rounded-[1.75rem] border border-border/60 bg-card shadow-[0_24px_60px_-35px_oklch(0.4_0.05_205/0.5)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_34px_70px_-30px_oklch(0.4_0.06_205/0.6)] cursor-pointer"
+                  className="group relative overflow-hidden rounded-[1.75rem] border border-border/60 bg-card shadow-[0_24px_60px_-35px_oklch(0.4_0.05_262/0.5)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_34px_70px_-30px_oklch(0.4_0.06_262/0.6)] cursor-pointer"
                   aria-label={`بزرگ‌نمایی ${g.title}`}
                 >
                   <GlareHover color="#f0c869" opacity={0.3} size={230} className="w-full">
@@ -152,7 +152,7 @@ export function GalleryPage() {
                       />
                     </div>
                   </GlareHover>
-                  <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.16_0.03_205/0.85)] via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-100" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.16_0.03_262/0.85)] via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-100" />
                   <div className="absolute inset-x-4 bottom-4 flex items-center justify-between">
                     <span className="text-sm font-extrabold text-background">{g.title}</span>
                     <span className="flex h-8 w-8 items-center justify-center rounded-full bg-background/20 text-background backdrop-blur transition-transform duration-300 group-hover:scale-110">
@@ -199,7 +199,7 @@ export function GalleryPage() {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.9, ease }}
             >
-              <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-teal-400/10 px-3 py-1.5 text-xs font-bold text-teal-300">
+              <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-3 py-1.5 text-xs font-bold text-emerald-300">
                 <Sparkles className="h-3.5 w-3.5" />
                 {beforeAfter.kicker}
               </p>
@@ -209,7 +209,7 @@ export function GalleryPage() {
               <p className="mt-4 max-w-lg text-[14px] leading-8 text-background/70">{beforeAfter.desc}</p>
               <a
                 href="/contact"
-                className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-teal-300 transition-all duration-300 hover:gap-3 cursor-pointer"
+                className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-emerald-300 transition-all duration-300 hover:gap-3 cursor-pointer"
               >
                 رزرو مشاوره برای طرح مشابه
                 <ArrowLeft className="h-4 w-4" />
@@ -233,7 +233,7 @@ export function GalleryPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, ease }}
-                className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-teal-400/10 px-3 py-1.5 text-xs font-bold text-teal-300"
+                className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-3 py-1.5 text-xs font-bold text-emerald-300"
               >
                 <Camera className="h-3.5 w-3.5" />
                 ثبت‌شده در گوگل مپ
@@ -274,7 +274,7 @@ export function GalleryPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.8, ease, delay: i * 0.08 }}
-                className="group relative overflow-hidden rounded-3xl border border-background/10 shadow-[0_20px_50px_-25px_oklch(0.08_0.02_205/0.9)] transition-all duration-500 hover:-translate-y-1.5 hover:border-background/25 cursor-pointer"
+                className="group relative overflow-hidden rounded-3xl border border-background/10 shadow-[0_20px_50px_-25px_oklch(0.08_0.02_262/0.9)] transition-all duration-500 hover:-translate-y-1.5 hover:border-background/25 cursor-pointer"
                 aria-label={`بزرگ‌نمایی ${g.title}`}
               >
                 <div className="relative aspect-[3/4]">
@@ -286,7 +286,7 @@ export function GalleryPage() {
                     sizes="(max-width: 640px) 50vw, 20vw"
                   />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.13_0.02_205/0.85)] via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.13_0.02_262/0.85)] via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-100" />
                 <span className="absolute inset-x-3 bottom-3 text-[12px] font-extrabold text-background">{g.title}</span>
               </motion.button>
             ))}
@@ -302,7 +302,7 @@ export function GalleryPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[80] flex items-center justify-center bg-[oklch(0.1_0.02_205/0.94)] p-4 backdrop-blur-xl sm:p-5"
+            className="fixed inset-0 z-[80] flex items-center justify-center bg-[oklch(0.1_0.02_262/0.94)] p-4 backdrop-blur-xl sm:p-5"
             role="dialog"
             aria-modal="true"
             aria-label={filtered[lightbox].title}
@@ -360,7 +360,7 @@ export function GalleryPage() {
                     onClick={() => setLightbox(i)}
                     aria-label={`عکس ${i + 1}`}
                     className={`h-2 rounded-full transition-all cursor-pointer ${
-                      i === lightbox ? "w-8 bg-teal-300" : "w-2 bg-background/25 hover:bg-background/40"
+                      i === lightbox ? "w-8 bg-emerald-300" : "w-2 bg-background/25 hover:bg-background/40"
                     }`}
                   />
                 ))}

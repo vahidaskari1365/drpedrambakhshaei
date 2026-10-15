@@ -35,7 +35,7 @@ export function PageHero({
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease, delay: 0.1 }}
-          className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-background/15 bg-background/10 px-4 py-1.5 text-xs font-bold tracking-widest text-teal-300 backdrop-blur"
+          className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-background/15 bg-background/10 px-4 py-1.5 text-xs font-bold tracking-widest text-emerald-300 backdrop-blur"
         >
           <Sparkles className="h-3.5 w-3.5" />
           {kicker}
