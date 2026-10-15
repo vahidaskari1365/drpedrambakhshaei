@@ -721,6 +721,13 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  /* استثنا: نوار جریان نظرات (درخواست صاحب سایت) باید همیشه در حرکت باشد؛
+     در غیر این صورت با فعال‌بودن «حذف انیمیشن‌ها» در گوشی کاربر، نوار کاملاً می‌ایستد */
+  .animate-mg-marquee,
+  .animate-mg-marquee-vertical {
+    animation-duration: var(--mg-duration, 40s) !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 /* ═══════════ پنل مدیریت ═══════════ */

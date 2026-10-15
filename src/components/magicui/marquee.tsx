@@ -52,7 +52,9 @@ export function Marquee({
           className={cn("flex shrink-0 justify-around [gap:var(--mg-gap,1rem)]", {
             "animate-mg-marquee flex-row": !vertical,
             "animate-mg-marquee-vertical flex-col": vertical,
-            "group-hover:[animation-play-state:paused]": pauseOnHover,
+            // توقف با هاور فقط روی دستگاه‌های دارای ماوس — در موبایل، هاورِ لمسی گیر می‌کند
+            // و نوار را برای همیشه متوقف می‌کند (باگ «نظرات حرکت نمی‌کنند»)
+            "[@media(hover:hover)]:group-hover:[animation-play-state:paused]": pauseOnHover,
             "[animation-direction:reverse]": reverse,
           })}
         >

@@ -619,16 +619,6 @@ export function HomePage() {
         <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
             <div>
-              <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, ease }}
-                className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-amber-400/10 px-3 py-1.5 text-xs font-bold text-amber-300"
-              >
-                <Star className="h-3.5 w-3.5 fill-current" />
-                {site.rating.score} در گوگل · {site.rating.count} نظر
-              </motion.p>
               <motion.h2
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
