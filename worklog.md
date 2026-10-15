@@ -802,3 +802,24 @@ Work Log:
 Stage Summary:
 - نظرات صفحه اول حالا دونه‌دونه از راست وارد و از چپ خارج می‌شوند، پیوسته و بی‌نهایت؛ pauseOnHover هم فعال است
 - باگ جهت Marquee برای کل سایت (هر سه مصرف‌کننده) ریشه‌ای رفع شد
+
+---
+Task ID: 16
+Agent: Z.ai Code (main)
+Task: حذف نشان «۵٫۰ در گوگل · ۹ نظر» از صفحه اول + رفع توقف کامل نوار نظرات (نظرات حرکت نمی‌کردند)
+
+Work Log:
+- بازرسی تولید (prod HTML/CSS): مارک‌آپ marquee و keyframes درست بودند؛ در مرورگر واقعی نوار با سرعت ۳۳px/s حرکت می‌کرد ⇒ مشکل سمت دستگاه کاربر بود، نه کد
+- ریشه‌یابی: قانون سراسری prefers-reduced-motion در globals.css با animation-duration:.01ms!important و animation-iteration-count:1!important حلقه‌ی ۱۵۰ ثانیه‌ای را روی گوشی‌هایی که «حذف انیمیشن‌ها» فعال است (باتری‌سیور اندروید / Reduce Motion iOS) کاملاً متوقف می‌کرد — علت قطعی یخ‌زدگی
+- ریسک دوم: group-hover:[animation-play-state:paused] در موبایل بعد از یک تپ، :hover گیر می‌کند و نوار برای همیشه pause می‌شود
+- حذف نشان امتیاز: motion.p «{score} در گوگل · {count} نظر» از بخش نظرات home.tsx حذف شد (Star هنوز در ReviewCard استفاده می‌شود)
+- globals.css: استثنای marquee داخل همان بلاک reduced-motion اضافه شد — .animate-mg-marquee(-vertical) با specificity بالاتر و ترتیب بعدی: animation-duration:var(--mg-duration,40s)!important + iteration-count:infinite!important
+- marquee.tsx: توقف با هاور فقط روی دستگاه‌های دارای ماوس: [@media(hover:hover)]:group-hover:[animation-play-state:paused]
+- نکته فنی: Turbopack dev پس از ویرایش‌های سریع globals.css/marquee.tsx ری‌کامپایل نکرد؛ با append یک کامنت (تغییر اندازه فایل) watcher بیدار شد
+- تأیید مرورگر (agent-browser): نشان حذف شد؛ حرکت ۶۶px در ۲ ثانیه؛ قواعد جدید در CSS کامپایل‌شده بررسی شد (ترتیب cascade + @media(hover:hover))
+- lint گذشت؛ commit efa197c (به‌همراه 4361640 فقط worklog) push شد؛ CI: success
+
+Stage Summary:
+- تولید: نشان «۵٫۰ در گوگل · ۹ نظر» حذف می‌شود و نوار نظرات دیگر روی هیچ دستگاهی نمی‌ایستد (حتی با Reduce Motion فعال)
+- فایل‌ها: src/components/site/pages/home.tsx، src/components/magicui/marquee.tsx، src/app/globals.css
+- باقی‌مانده (خواسته قبلی کاربر): تطبیق خودکار عکس بلاگ‌ها با موضوع (جستجوی گوگل) + رفع دکمه «تست جامع سایت» پنل ادمین
