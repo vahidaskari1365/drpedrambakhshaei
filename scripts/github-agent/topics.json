@@ -1,0 +1,276 @@
+{
+  "topics": [
+    {
+      "id": "t-implant-cost-1405",
+      "title": "هزینه ایمپلنت دندان در ۱۴۰۵؛ چه عواملی قیمت را تعیین می‌کنند؟",
+      "angle": "برند ایمپلنت، پیوند استخوان، اسکن سه‌بعدی و تکنیک جراح — با جدول بازه‌های قیمتی برندهای شاخص",
+      "keywords": ["هزینه ایمپلنت دندان", "قیمت ایمپلنت دندان ۱۴۰۵", "ایمپلنت ارزان", "برند ایمپلنت دندان"],
+      "imageEn": "titanium dental implant screw and crown model on dentist desk, clean modern clinic lighting, macro photography",
+      "category": "ایمپلنت دندان"
+    },
+    {
+      "id": "t-wisdom-signs",
+      "title": "نشانه‌های دندان عقل نهفته؛ چه زمانی جراحی واقعاً لازم است؟",
+      "angle": "تفکیک درد طبیعی رشد از درد خطرناک، نقش رادیوگرافی پانورامیک، فهرست علائم هشدار",
+      "keywords": ["دندان عقل نهفته", "نشانه دندان عقل", "جراحی دندان عقل", "درد دندان عقل"],
+      "imageEn": "panoramic dental x-ray of wisdom teeth displayed on clinic lightbox monitor, blue medical tones",
+      "category": "دندان نهفته"
+    },
+    {
+      "id": "t-wisdom-aftercare",
+      "title": "مراقبت‌های بعد از جراحی دندان عقل؛ برنامه دقیق روز اول تا روز هفتم",
+      "angle": "جدول روزبه‌روز: کمپرس سرد و گرم، تغذیه، داروها، مسواک — و خطاهای رایجی که عفونت می‌سازند",
+      "keywords": ["مراقبت بعد از جراحی دندان عقل", "تورم بعد از جراحی دندان عقل", "نقاهت جراحی دندان عقل"],
+      "imageEn": "young person holding cold gel compress to cheek at home, cozy warm lighting, recovery concept",
+      "category": "دندان نهفته"
+    },
+    {
+      "id": "t-immediate-implant",
+      "title": "ایمپلنت فوری در همان روز کشیدن دندان؛ شرایط پذیرش و ریسک‌ها",
+      "angle": "Immediate Loading برای چه کسی ممکن است؟ مقایسه با ایمپلنت دو مرحله‌ای با جدول",
+      "keywords": ["ایمپلنت فوری", "ایمپلنت یک روزه", "بارگذاری فوری ایمپلنت", "ایمپلنت بدون جراحی"],
+      "imageEn": "3d medical illustration of dental implant immediately placed into fresh extraction socket of jaw",
+      "category": "ایمپلنت دندان"
+    },
+    {
+      "id": "t-bone-graft",
+      "title": "پیوند استخوان قبل از ایمپلنت چیست و چه کسی به آن نیاز دارد؟",
+      "angle": "انواع گرافت (اتوژن، آلوگرافت، مصنوعی)، زمان انتظار ترمیم، هزینه و مراقبت‌ها",
+      "keywords": ["پیوند استخوان ایمپلنت", "استخوان‌سازی فک", "bone graft دندان", "کمبود استخوان ایمپلنت"],
+      "imageEn": "3d illustration of jaw bone graft powder and membrane with dental implant, medical education style",
+      "category": "ایمپلنت دندان"
+    },
+    {
+      "id": "t-sinus-lift",
+      "title": "سینوس لیفت چیست؟ راه‌حل کمبود استخوان در فک بالا",
+      "angle": "روش داخلی و خارجی، مدت ترمیم، تأثیر بر موفقیت ایمپلنت‌های ناحیه خلفی فک بالا",
+      "keywords": ["سینوس لیفت", "ایمپلنت فک بالا", "کمبود استخوان فک بالا", "جراحی سینوس دندان"],
+      "imageEn": "dental x-ray illustration of maxillary sinus lift procedure with bone graft, clean medical style",
+      "category": "ایمپلنت دندان"
+    },
+    {
+      "id": "t-orthognathic-journey",
+      "title": "جراحی فک (ارتوسرجری) چگونه چهره و کیفیت زندگی را تغییر می‌دهد؟",
+      "angle": "مسیر کامل: مشاوره ارتودنسی، شبیه‌سازی سه‌بعدی، روز جراحی و بازگشت به جامعه",
+      "keywords": ["جراحی ارتوسرجری فک", "جراحی فک و صورت", "اصلاح بدشکلی فک", "عمل جراحی فک"],
+      "imageEn": "confident young woman natural smile profile in soft daylight, positive transformation concept",
+      "category": "جراحی فک و صورت"
+    },
+    {
+      "id": "t-retrognathia",
+      "title": "چانه عقب‌رفته؛ علامت‌ها، مشکلات تنفس در خواب و مسیر درمان",
+      "angle": "ارتباط رتروگناتیسم با خروپف و آپنه خواب + مقایسه درمان ارتودنسی و جراحی پیشروی فک",
+      "keywords": ["چانه عقب رفته", "جراحی پیشروی فک", "آپنه خواب", "رتروگناتیسم"],
+      "imageEn": "medical illustration comparing recessed lower jaw and corrected jaw profile, side view, clean diagram",
+      "category": "جراحی فک و صورت"
+    },
+    {
+      "id": "t-jaw-cyst",
+      "title": "کیست فک؛ ضایعه‌ای که بی‌صدا استخوان را می‌خورد",
+      "angle": "نشانه‌های زودرس، نقش پانورامیک سالانه، بیوپسی و انواع جراحی تخلیه یا برداشت کامل",
+      "keywords": ["کیست فک", "تومور فک", "ضایعه استخوانی فک", "جراحی کیست فک"],
+      "category": "جراحی فک و صورت",
+      "imageEn": "oral surgeon examining panoramic jaw x-ray on computer monitor in dim clinic room"
+    },
+    {
+      "id": "t-botox-bruxism",
+      "title": "بوتاکس برای دندان قروچه و درد فک؛ واقعاً اثر دارد؟",
+      "angle": "مکانیسم شل‌کردن عضله ماستر، ماندگاری، مقایسه با اسپلینت شبانه و عوارض احتمالی",
+      "keywords": ["بوتاکس فک", "بوتاکس دندان قروچه", "تزریق عضله ماستر", "درمان برکسیسم"],
+      "imageEn": "doctor performing precise botox injection into jaw masseter muscle, clinical closeup, sterile setting",
+      "category": "جراحی فک و صورت"
+    },
+    {
+      "id": "t-tmd-jaw-pain",
+      "title": "درد مفصل فک (TMD)؛ از کلیک مفصل تا قروچه — درمان بدون جراحی ممکن است؟",
+      "angle": "تمرینات فک، اسپلینت شفاف، فیزیوتراپی و لزوم جراحی در موارد مقاوم",
+      "keywords": ["درد مفصل فک", "TMD", "قروچه دندان", "کلیک مفصل فک"],
+      "imageEn": "person gently massaging jaw joint area in front of bathroom mirror, morning light",
+      "category": "سلامت دهان"
+    },
+    {
+      "id": "t-anesthesia-choice",
+      "title": "جراحی دهان و فک با بی‌حسی یا بیهوشی؟ انتخاب بر اساس نوع عمل",
+      "angle": "جدول مقایسه: عمل‌های کوتاه، دندان‌های نهفته چهارگانه، بیماران اضطرابی و کودکان",
+      "keywords": ["بیهوشی جراحی دندان", "بی‌حسی موضعی دندان", "جراحی با بیهوشی کامل"],
+      "imageEn": "anesthesiologist monitoring patient vitals screen in modern dental operating room, calm blue tones",
+      "category": "جراحی فک و صورت"
+    },
+    {
+      "id": "t-night-guard",
+      "title": "دندان قروچه شبانه؛ اسپلینت شفاف کی و چطور نجات‌بخش است؟",
+      "angle": "نشانه‌های ساییدگی، انواع اسپلینت سخت و نرم، عمر مفید و نگهداری درست",
+      "keywords": ["اسپلینت شبانه", "دندان قروچه در خواب", "گارد شبانه دندان", "ساییدگی دندان"],
+      "imageEn": "transparent dental night guard splint on clean wooden table closeup, soft studio light",
+      "category": "سلامت دهان"
+    },
+    {
+      "id": "t-sleep-apnea-jaw",
+      "title": "آپنه خواب و نقش جراحی فک در درمان قطعی آن",
+      "angle": "زنجیره درمان: CPAP، دستگاه پیش برنده فک، تا جراحی پیشروی دو فکی در موارد شدید",
+      "keywords": ["آپنه خواب", "خروپف شدید", "جراحی آپنه خواب", "پیشروی فک"],
+      "imageEn": "medical illustration of upper airway narrowing during sleep and corrected airway after jaw surgery",
+      "category": "جراحی فک و صورت"
+    },
+    {
+      "id": "t-cleft-lip-palate",
+      "title": "جراحی لب‌شکری و کام‌شکری؛ زمان‌بندی طلایی عمل‌ها از نوزادی تا بزرگسالی",
+      "angle": "تقویم جراحی چندمرحله‌ای، نقش تیم چندتخصصی و نتیجه بلندمدت",
+      "keywords": ["لب شکری", "کام شکری", "جراحی لب شکری", "شکاف کام"],
+      "imageEn": "tender medical illustration of cleft lip repair surgery stages, gentle colors, hopeful mood",
+      "category": "جراحی فک و صورت"
+    },
+    {
+      "id": "t-oral-biopsy",
+      "title": "زخم دهانی که خوب نمی‌شود؛ چه زمانی بیوپسی ضروری است؟",
+      "angle": "قانون دو هفته، علائم هشدار سرطان دهان، مراحل بیوپسی و خوش‌خیم بودن بیشتر ضایعات",
+      "keywords": ["بیوپسی دهان", "زخم دهان که خوب نمی شود", "ضایعه دهانی", "سرطان دهان نشانه"],
+      "imageEn": "dentist examining patient oral cavity with mirror and light, focused clinical atmosphere",
+      "category": "سلامت دهان"
+    },
+    {
+      "id": "t-tongue-tie",
+      "title": "زبان چسبیده در کودکان و بزرگسالان؛ جراحی فرنولوم کی لازم می‌شود؟",
+      "angle": "تأثیر بر تلفظ و تغذیه، تشخیص آزمون ساده، فرنولکتومی لیزری و مراقبت بعد آن",
+      "keywords": ["زبان چسبیده", "جراحی زبان چسبیده", "فرنولکتومی", "انکتولوسالیا"],
+      "imageEn": "medical illustration of tongue tie (ankyloglossia) anatomy and frenulum release, clean diagram",
+      "category": "جراحی فک و صورت"
+    },
+    {
+      "id": "t-implant-diabetes",
+      "title": "ایمپلنت دندان در بیماران دیابتی؛ امن یا پرریسک؟",
+      "angle": "نقش کنترل قند خون (HbA1c)، نرخ موفقیت در مطالعات، مراقبت‌های ویژه دوره بهبود",
+      "keywords": ["ایمپلنت در دیابت", "ایمپلنت دندان بیماران دیابتی", "قند خون و ایمپلنت"],
+      "imageEn": "glucose meter and dental implant model side by side on desk, clinical still life",
+      "category": "ایمپلنت دندان"
+    },
+    {
+      "id": "t-smoking-implant",
+      "title": "سیگار چگونه ایمپلنت دندان را شکست می‌دهد؟",
+      "angle": "مکانیسم کاهش اکسیژن بافت، نرخ شکست در سیگاری‌ها، توصیه قطع قبل و بعد جراحی",
+      "keywords": ["سیگار و ایمپلنت", "شکست ایمپلنت", "کشیدن سیگار بعد از جراحی"],
+      "imageEn": "cigarette extinguished in ashtray next to healthy tooth model, symbolic concept photo",
+      "category": "ایمپلنت دندان"
+    },
+    {
+      "id": "t-diet-jaw-surgery",
+      "title": "رژیم غذایی بعد از جراحی فک؛ برنامه هفته اول تا پایان ماه اول",
+      "angle": "جدول مایع تا نرم تا معمولی + مکمل‌های مؤثر بر ترمیم استخوان و جلوگیری از کمبود پروتئین",
+      "keywords": ["تغذیه بعد از جراحی فک", "رژیم بعد از ارتوسرجری", "غذای بعد از جراحی فک"],
+      "imageEn": "colorful blended soups and protein smoothie bowls arranged on serving tray, appetizing soft food",
+      "category": "جراحی فک و صورت"
+    },
+    {
+      "id": "t-periimplantitis",
+      "title": "عفونت دور ایمپلنت (پری‌ایمپلنتیت)؛ نشانه‌های زودرسی که نجات‌بخش است",
+      "angle": "تفاوت با عفونت لثه طبیعی، خونریزی و بوی بد، درمان لیزری و جراحی بازسازی",
+      "keywords": ["پری ایمپلنتیت", "عفونت ایمپلنت دندان", "تورم لثه دور ایمپلنت", "درمان عفونت ایمپلنت"],
+      "imageEn": "3d medical illustration of inflamed gum tissue around dental implant crown, cross section",
+      "category": "ایمپلنت دندان"
+    },
+    {
+      "id": "t-all-on-4",
+      "title": "ایمپلنت All-on-4؛ دندان ثابت برای کسانی که همه دندان‌هایشان را از دست داده‌اند",
+      "angle": "ساختار چهار ایمپلنت مایل، تفاوت با پروتز متحرک، هزینه و ماندگاری",
+      "keywords": ["ایمپلنت فول ماوث", "All on 4", "پروتز ثابت ایمپلنت", "ایمپلنت کامل فک"],
+      "imageEn": "full arch implant supported prosthesis model held by dentist gloved hand, bright clinic",
+      "category": "ایمپلنت دندان"
+    },
+    {
+      "id": "t-swelling-normal",
+      "title": "تورم بعد از جراحی فک و دندان؛ کجا طبیعی است و کجا خطر؟",
+      "angle": "قاعده اوج ۴۸ ساعت، کمپرس سرد و گرم، علائم عفونت که مراجعه فوری می‌خواهد",
+      "keywords": ["تورم بعد از جراحی", "ورم صورت بعد از جراحی دندان", "کمپرس سرد بعد جراحی"],
+      "imageEn": "person with post surgery swollen cheek applying soft ice pack, resting at home, warm light",
+      "category": "سلامت دهان"
+    },
+    {
+      "id": "t-dry-socket",
+      "title": "خشک‌دندان (Dry Socket)؛ چرا درد چند روز بعد از کشیدن شعله‌ور می‌شود؟",
+      "angle": "مکانیسم جدا شدن لخته، پیک درد روز ۳ تا ۵، درمان پماد و پیشگیری با نی نوشیدنی",
+      "keywords": ["dry socket", "خشک دندان", "درد بعد از کشیدن دندان", "لخته خون دندان"],
+      "imageEn": "medical illustration of tooth extraction socket healing stages with blood clot, diagram style",
+      "category": "سلامت دهان"
+    },
+    {
+      "id": "t-root-canal-or-implant",
+      "title": "عصب‌کشی یا ایمپلنت؟ تصمیم درست برای دندان آسیب‌دیده",
+      "angle": "چارچوب تصمیم: مقدار باقی‌مانده دندان، عود عفونت، هزینه بلندمدت هر مسیر",
+      "keywords": ["عصب کشی یا ایمپلنت", "درمان ریشه یا کشیدن دندان", "تصمیم ایمپلنت دندان"],
+      "imageEn": "split medical illustration comparing root canal treated natural tooth versus dental implant",
+      "category": "ایمپلنت دندان"
+    },
+    {
+      "id": "t-implant-elderly",
+      "title": "ایمپلنت در سالمندان؛ آیا سن بالا مانع درمان است؟",
+      "angle": "چگالی استخوان در سنین بالا، داروهای بی‌فوسفونات، تجربه موفق گروه سنی ۷۰+",
+      "keywords": ["ایمپلنت در سنین بالا", "ایمپلنت سالمندان", "دندان مصنوعی ثابت سالمندان"],
+      "imageEn": "senior man smiling while dentist shows implant model, warm respectful clinic atmosphere",
+      "category": "ایمپلنت دندان"
+    },
+    {
+      "id": "t-pregnancy-dental",
+      "title": "درمان و جراحی دهان در بارداری؛ چه کارهایی باید عقب بیفتد؟",
+      "angle": "تریمر امن برای کارهای ضروری، رادیوگرافی با محافظ، داروهای مجاز و جراحی‌های تعویقی",
+      "keywords": ["دندانپزشکی در بارداری", "جراحی دندان در بارداری", "بی حسی در بارداری"],
+      "imageEn": "pregnant woman consulting calmly with dentist in bright clinic, safety and care concept",
+      "category": "سلامت دهان"
+    },
+    {
+      "id": "t-cbct-3d-scan",
+      "title": "اسکن سه‌بعدی CBCT قبل از جراحی؛ چرا بدون آن عمل ریسکی است؟",
+      "angle": "تفاوت با رادیوگرافی دو بعدی، دیدن عصب و سینوس، نقش در ایمپلنت‌گذاری گاید‌شده",
+      "keywords": ["CBCT", "اسکن سه بعدی دندان", "رادیوگرافی سه بعدی فک", "ایمپلنت گاید شده"],
+      "imageEn": "patient standing in modern CBCT 3d dental scanner machine, futuristic clean clinic",
+      "category": "جراحی فک و صورت"
+    },
+    {
+      "id": "t-painless-modern",
+      "title": "جراحی دندان بدون درد؛ تکنیک‌های مدرن بی‌حسی و آرام‌بخشی",
+      "angle": "بی‌حسی بدون دردِ تزریق، ژل بی‌حسی سطحی، آرام‌بخشی خوراکی و بیهوشی آگاهانه",
+      "keywords": ["جراحی دندان بدون درد", "بی حسی بدون درد", "آرام بخشی دندانپزشکی", "ترس از دندانپزشکی"],
+      "imageEn": "calm dentist applying topical numbing gel before anesthesia, gentle reassuring scene",
+      "category": "سلامت دهان"
+    },
+    {
+      "id": "t-genioplasty",
+      "title": "جراحی زیبایی چانه (ژنیوپلاستی)؛ پروفایل صورت چطور عوض می‌شود؟",
+      "angle": "تفاوت با فیلر و پروتز، حرکت استخوانی جلو/عقب، هم‌زمانی با جراحی فک",
+      "keywords": ["ژنیوپلاستی", "جراحی چانه", "زیبایی چانه", "چانه زنانه یا مردانه"],
+      "imageEn": "elegant side profile portrait of balanced chin and jawline, soft studio light, beauty aesthetic",
+      "category": "جراحی فک و صورت"
+    },
+    {
+      "id": "t-torus-bone",
+      "title": "برجستگی سخت در کف دهان (توروس)؛ کی باید برداشته شود؟",
+      "angle": "خوش‌خیم بودن، تداخل با پروتز و دندان مصنوعی، جراحی ساده برداشت",
+      "keywords": ["توروس فک", "برجستگی استخوانی دهان", "توروس مندیبولار", "جراحی توروس"],
+      "imageEn": "medical illustration of torus mandibularis bony growth inside lower jaw, diagram style",
+      "category": "جراحی فک و صورت"
+    },
+    {
+      "id": "t-recurring-ulcers",
+      "title": "آفت‌های مکرر دهان؛ از کمبود ویتامین تا نشانه‌های خطر",
+      "angle": "علل تکرار، درمان‌های موضعی مؤثر، الگوی غذایی و زمان مراجعه به متخصص",
+      "keywords": ["آفت دهان مکرر", "زخم آفت دهان", "درمان آفت دهان", "آفت یا زخم سرطانی"],
+      "imageEn": "soft medical illustration of aphthous ulcer inside lip area, gentle educational style",
+      "category": "سلامت دهان"
+    },
+    {
+      "id": "t-implant-hygiene",
+      "title": "بهداشت ایمپلنت؛ مسواک، نخ دندان و واترپیک به روش درست",
+      "angle": "برس بین‌دندانی، نخ مخصوص ایمپلنت، بازدید دورهای — برنامه کامل روزانه",
+      "keywords": ["بهداشت ایمپلنت", "مسواک ایمپلنت", "نخ دندان ایمپلنت", "واترپیک ایمپلنت"],
+      "imageEn": "water flosser and interdental brushes arranged next to implant crown model on counter",
+      "category": "ایمپلنت دندان"
+    },
+    {
+      "id": "t-gum-recession-young",
+      "title": "عقب رفتن زودهنگام لثه در جوانی؛ چرا و چگونه درمان می‌شود؟",
+      "angle": "مسواک سخت و براکسیسم به‌عنوان علت، پیوند لثه، جلوگیری از حساسیت و لقی دندان",
+      "keywords": ["عقب رفتن لثه", "لثه عقب رفته جوانی", "پیوند لثه", "حساسیت دندان لثه"],
+      "imageEn": "dental illustration comparing healthy gumline and receded gum exposing tooth root",
+      "category": "سلامت دهان"
+    }
+  ]
+}

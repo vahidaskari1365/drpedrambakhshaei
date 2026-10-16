@@ -1,0 +1,55 @@
+name: ایجنت محتوا — انتشار روزانه مقاله
+
+on:
+  schedule:
+    # ۰۳:۳۰ UTC = ۰۷:۰۰ تهران (ایران از ۱۴۰۱ ساعت تابستانی ندارد)
+    # نکته: اجرای زمان‌بندی‌شده گاهی چند دقیقه دیرتر شروع می‌شود — طبیعی است
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "انتشار اجباری حتی اگر امروز مقاله منتشر شده باشد"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write   # کامیت state.json
+  models: read      # دسترسی رایگان به GitHub Models با GITHUB_TOKEN
+
+concurrency:
+  group: content-agent
+  cancel-in-progress: false
+
+jobs:
+  publish-article:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: تولید و انتشار مقاله (مدل رایگان)
+        env:
+          SITE_URL: https://drpedrambakhshaei.com
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FORCE: ${{ (github.event_name == 'workflow_dispatch' && inputs.force) && '1' || '0' }}
+        run: node scripts/github-agent/generate-article.mjs
+
+      - name: ثبت وضعیت انتشار در مخزن
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/github-agent/state.json
+          if git diff --cached --quiet; then
+            echo "وضعیت تغییری نکرد"
+          else
+            git commit -m "agent: گزارش انتشار مقاله $(TZ=Asia/Tehran date +%F)"
+            git pull --rebase origin main || true
+            git push
+          fi

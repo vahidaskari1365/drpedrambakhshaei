@@ -72,3 +72,6 @@ server.log
 # کلون سنگین openclaw — فقط مرجع معماری، در ریپو نمی‌رود
 /skills/openclaw/
 /tool-results/
+
+# فایل‌های دیباگ ایجنت محتوا (در Actions تولید می‌شوند، در مخزن نمی‌روند)
+scripts/github-agent/last-raw-*.txt
