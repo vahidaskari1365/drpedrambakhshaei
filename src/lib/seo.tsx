@@ -162,27 +162,79 @@ export function servicesJsonLd(services: ServiceItem[] = SERVICES as unknown as 
   };
 }
 
-/** اسکیمای نظرات — ریچ‌ریزالت ستاره در نتایج جستجو */
+/**
+ * تبدیل تاریخ نمایشی فارسی نظرات به ISO 8601 معتبر — الزام گوگل برای Review
+ * «بهمن ۱۴۰۴» ← 2026-02-04 | «مهر ۱۴۰۳» ← 2024-10-06 | «۷ ماه قبل» ← نسبی
+ * خروجی همیشه به گذشته کلمپ می‌شود تا گوگل هرگز «Invalid date» نگیرد.
+ */
+function reviewDateIso(display: string | undefined): string {
+  const now = new Date();
+  const todayIso = now.toISOString().slice(0, 10);
+  if (!display) return todayIso;
+
+  const toEn = (s: string) =>
+    s.replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d))).replace(/[٠-٩]/g, (d) => String("٠١٢٣٤٥٦٧٨٩".indexOf(d)));
+
+  // ۱) تاریخ نسبی — «۷ ماه قبل»، «۲ روز قبل»، «۱ سال قبل» ...
+  const rel = toEn(display).match(/(\d+)\s*(روز|هفته|ماه|سال)\s*قبل/);
+  if (rel) {
+    const n = parseInt(rel[1], 10) || 1;
+    const d = new Date(now);
+    if (rel[2] === "روز") d.setDate(d.getDate() - n);
+    else if (rel[2] === "هفته") d.setDate(d.getDate() - n * 7);
+    else if (rel[2] === "ماه") d.setMonth(d.getMonth() - n);
+    else d.setFullYear(d.getFullYear() - n);
+    return d.toISOString().slice(0, 10);
+  }
+
+  // ۲) تاریخ شمسی — «بهمن ۱۴۰۴»
+  const MONTHS: Record<string, number> = {
+    "فروردین": 1, "اردیبهشت": 2, "خرداد": 3, "تیر": 4, "مرداد": 5, "شهریور": 6,
+    "مهر": 7, "آبان": 8, "آذر": 9, "دی": 10, "بهمن": 11, "اسفند": 12,
+  };
+  const m = toEn(display).match(/(فروردین|اردیبهشت|خرداد|تیر|مرداد|شهریور|مهر|آبان|آذر|دی|بهمن|اسفند)\s*(\d{4})/);
+  if (m) {
+    const jMonth = MONTHS[m[1]];
+    const jYear = parseInt(m[2], 10);
+    // نخست فروردین سال شمسی به میلادی (جدول دقیق سال‌های اخیر)
+    const anchors: Record<number, [number, number, number]> = {
+      1400: [2021, 2, 21], 1401: [2022, 2, 21], 1402: [2023, 2, 21],
+      1403: [2024, 2, 20], 1404: [2025, 2, 21], 1405: [2026, 2, 21],
+      1406: [2027, 2, 21], 1407: [2028, 2, 21], 1408: [2029, 2, 20],
+    };
+    const [gy, gm, gd] = anchors[jYear] ?? [2025, 2, 21 + (jYear - 1404) * 365.25];
+    // روز شروع ماه شمسی: ۶ ماه اول ۳۱ روزه، بقیه ۳۰ روزه — وسط ماه (روز ۱۵)
+    const dayOffset = (jMonth <= 6 ? (jMonth - 1) * 31 : 186 + (jMonth - 7) * 30) + 14;
+    const d = new Date(Date.UTC(gy, gm, Math.round(gd)) + dayOffset * 86400000);
+    return d.toISOString().slice(0, 10) <= todayIso ? d.toISOString().slice(0, 10) : todayIso;
+  }
+
+  return todayIso;
+}
+
+/**
+ * اسکیمای نظرات — Review مستقل با itemReviewed مرجع به هویت پزشک.
+ * ⚠️ عمداً فیزیسین را دوباره تعریف نمی‌کند (قبلاً @id تکراری با layout باعث
+ * خطای «Affected pages» در سرچ کنسول می‌شد) — layout یک‌بار #physician را
+ * با aggregateRating کامل تعریف می‌کند و اینجا فقط ۹ نظر با تاریخ معتبر اضافه می‌شود.
+ */
 export function reviewsJsonLd(reviews: ReviewItem[] = REVIEWS as unknown as ReviewItem[]) {
   return {
     "@context": "https://schema.org",
-    "@type": "Physician",
-    "@id": `${SITE_URL}/#physician`,
-    name: "دکتر پدرام بخشایی",
-    url: `${SITE_URL}/reviews`,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "5.0",
-      reviewCount: "9",
-      bestRating: "5",
-    },
-    review: reviews.slice(0, 8).map((r) => ({
+    "@graph": reviews.map((r) => ({
       "@type": "Review",
+      itemReviewed: {
+        "@type": "Physician",
+        "@id": `${SITE_URL}/#physician`,
+        name: "دکتر پدرام بخشایی",
+      },
       author: { "@type": "Person", name: r.author },
+      datePublished: reviewDateIso((r as { time?: string }).time),
       reviewRating: {
         "@type": "Rating",
         ratingValue: String(r.stars),
         bestRating: "5",
+        worstRating: "1",
       },
       reviewBody: r.text,
       publisher: { "@type": "Organization", name: r.source },
