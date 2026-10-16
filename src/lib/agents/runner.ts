@@ -7,6 +7,7 @@
  *  - best-effort recording: خطای ایجنت هرگز فرآیند را نمی‌کشد
  */
 import { db } from "@/lib/db";
+import { ensureZaiConfig, friendlyAgentError } from "./zai-config";
 
 export type AgentId = "content" | "aeo" | "geo" | "gsc";
 
@@ -21,6 +22,10 @@ export interface AgentsConfig {
   geoWeekday: number; // 0=یکشنبه ... 6=شنبه — روز اجرای هفتگی GEO
   gscWeekday: number;
   autoPublish: boolean;
+  /** کلید Z.AI — از پنل ادمین ثبت می‌شود؛ هرگز به کلاینت فرستاده نمی‌شود */
+  zaiKey?: string;
+  /** اختیاری — نقطه پایانی سازگار با OpenAI (پیش‌فرض: api.z.ai/api/paas/v4) */
+  zaiBaseUrl?: string;
 }
 
 export const DEFAULT_CONFIG: AgentsConfig = {
@@ -62,6 +67,14 @@ export async function saveAgentsConfig(patch: Partial<AgentsConfig>): Promise<Ag
   return next;
 }
 
+/** نسخه امن برای کلاینت — کلید هرگز لو نمی‌رود، فقط وضعیت و ماسک */
+export function sanitizeAgentsConfig(config: AgentsConfig): AgentsConfig & { zaiKeySet: boolean; zaiKeyMasked: string } {
+  const key = config.zaiKey ?? "";
+  const masked = key ? `${key.slice(0, 3)}…${key.slice(-4)}` : "";
+  const { zaiKey: _k, ...rest } = config;
+  return { ...rest, zaiKeySet: key.length > 0, zaiKeyMasked: masked };
+}
+
 /* ───────────────── قفل ضد اجرای همزمان ───────────────── */
 
 const g = globalThis as unknown as { __agentLocks?: Set<string> };
@@ -91,6 +104,8 @@ export async function runAgent(
     data: { agent, status: "running", trigger, summary: "", details: "{}" },
   });
   try {
+    /* کلید Z.AI از تنظیمات پنل ← فایل SDK (اگر تغییر کرده باشد) */
+    await ensureZaiConfig();
     const result = await fn();
     const durationMs = Date.now() - startedAt;
     const details = JSON.stringify(result.details ?? {});
@@ -101,7 +116,8 @@ export async function runAgent(
     return { id: row.id, status: "success", summary: result.summary, details: result.details ?? {} };
   } catch (e) {
     const durationMs = Date.now() - startedAt;
-    const message = e instanceof Error ? e.message : String(e);
+    const raw = e instanceof Error ? e.message : String(e);
+    const message = friendlyAgentError(raw);
     console.error(`[agents:${agent}] failed:`, e);
     await db.agentRun.update({
       where: { id: row.id },

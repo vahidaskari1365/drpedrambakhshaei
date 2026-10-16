@@ -18,6 +18,7 @@ import {
   MinusCircle,
   Lightbulb,
   Clock,
+  KeyRound,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { api, faNum, faTimeAgo } from "./shared";
@@ -42,6 +43,9 @@ interface StatusResponse {
     geoWeekday: number;
     gscWeekday: number;
     autoPublish: boolean;
+    zaiKeySet?: boolean;
+    zaiKeyMasked?: string;
+    zaiBaseUrl?: string;
   };
   agents: {
     agent: string;
@@ -94,11 +98,14 @@ export function AgentsTab({ toast }: { toast: Toast }) {
   const [data, setData] = React.useState<StatusResponse | null>(null);
   const [busy, setBusy] = React.useState<string>("");
   const [loading, setLoading] = React.useState(true);
+  const [zaiKeyInput, setZaiKeyInput] = React.useState("");
+  const [zaiBaseUrlInput, setZaiBaseUrlInput] = React.useState("");
 
   const load = React.useCallback(async () => {
     try {
       const res = await api<StatusResponse>("/api/agents/status");
       setData(res);
+      setZaiBaseUrlInput(res.config.zaiBaseUrl || "");
     } catch (e) {
       toast(e instanceof Error ? e.message : "خطای دریافت وضعیت", "err");
     } finally {
@@ -142,6 +149,28 @@ export function AgentsTab({ toast }: { toast: Toast }) {
       toast("تنظیمات ذخیره شد", "ok");
     } catch (e) {
       toast(e instanceof Error ? e.message : "ذخیره ناموفق", "err");
+    }
+  };
+
+  /** ذخیره کلید Z.AI — فقط وقتی چیزی تایپ شده ارسال می‌شود */
+  const saveZaiKey = async () => {
+    const key = zaiKeyInput.trim();
+    if (!key) {
+      toast("اول کلید را در کادر بچسبانید", "err");
+      return;
+    }
+    setBusy("zai-key");
+    try {
+      const patch: Record<string, unknown> = { zaiKey: key };
+      if (zaiBaseUrlInput.trim()) patch.zaiBaseUrl = zaiBaseUrlInput.trim();
+      await api("/api/agents/config", { method: "POST", body: JSON.stringify(patch) });
+      setZaiKeyInput("");
+      await load();
+      toast("کلید Z.AI ذخیره شد — حالا «اجرای کامل خط‌لوله» را بزنید", "ok");
+    } catch (e) {
+      toast(e instanceof Error ? e.message : "ذخیره کلید ناموفق بود", "err");
+    } finally {
+      setBusy("");
     }
   };
 
@@ -317,6 +346,66 @@ export function AgentsTab({ toast }: { toast: Toast }) {
               </select>
             </label>
           </div>
+        </div>
+      </div>
+
+      {/* کلید هوش مصنوعی Z.AI */}
+      <div className="rounded-2xl border border-amber-300/20 bg-amber-300/[0.04] p-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <KeyRound className="h-4 w-4 text-amber-300" />
+            <p className="text-[13px] font-black text-white">کلید هوش مصنوعی (Z.AI)</p>
+            {config.zaiKeySet ? (
+              <span className="rounded-full border border-emerald-300/25 bg-emerald-300/10 px-2.5 py-0.5 text-[10.5px] font-bold text-emerald-300">
+                ثبت شده — {config.zaiKeyMasked}
+              </span>
+            ) : (
+              <span className="rounded-full border border-red-300/25 bg-red-300/10 px-2.5 py-0.5 text-[10.5px] font-bold text-red-300">
+                ثبت نشده — ایجنت‌ها کار نمی‌کنند!
+              </span>
+            )}
+          </div>
+          {config.zaiKeySet && (
+            <button
+              onClick={() => void patchConfig({ zaiKey: "__CLEAR__" })}
+              disabled={busy !== ""}
+              className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-bold text-zinc-300 transition hover:bg-white/10 disabled:opacity-50"
+            >
+              حذف کلید
+            </button>
+          )}
+        </div>
+        <p className="mt-2 text-[11.5px] leading-5 text-zinc-400">
+          کلید API از حساب <span className="font-bold text-zinc-200">z.ai</span> (بخش API Keys) را اینجا بچسبانید تا مقاله‌های خودکار
+          ساخته شوند. پس از ذخیره، دکمه «اجرای کامل خط‌لوله» را بزنید تا اولین مقاله منتشر شود.
+        </p>
+        <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
+          <input
+            type="password"
+            dir="ltr"
+            autoComplete="off"
+            value={zaiKeyInput}
+            onChange={(e) => setZaiKeyInput(e.target.value)}
+            placeholder={config.zaiKeySet ? "کلید جدید (برای تغییر)" : "sk-... / کلید API خود را بچسبانید"}
+            className="w-full rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-[12.5px] text-white placeholder:text-zinc-500 outline-none focus:border-amber-300/50"
+          />
+          <input
+            type="text"
+            dir="ltr"
+            autoComplete="off"
+            value={zaiBaseUrlInput}
+            onChange={(e) => setZaiBaseUrlInput(e.target.value)}
+            placeholder="آدرس API (پیش‌فرض: https://api.z.ai/api/paas/v4)"
+            className="w-full rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-[12.5px] text-white placeholder:text-zinc-500 outline-none focus:border-amber-300/50"
+          />
+          <button
+            onClick={() => void saveZaiKey()}
+            disabled={busy !== "" || !zaiKeyInput.trim()}
+            className="flex items-center justify-center gap-2 rounded-lg bg-gradient-to-l from-amber-500 to-amber-400 px-4 py-2 text-[12.5px] font-black text-amber-950 transition hover:brightness-110 disabled:opacity-50"
+          >
+            {busy === "zai-key" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <KeyRound className="h-3.5 w-3.5" />}
+            ذخیره کلید
+          </button>
         </div>
       </div>
 

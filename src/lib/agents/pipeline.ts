@@ -103,3 +103,12 @@ export async function scheduledTodayDone(agent: AgentId): Promise<boolean> {
   });
   return Boolean(row);
 }
+
+/** تعداد تلاش‌های زمان‌بندی‌شدهٔ امروز (شامل شکست‌ها) — برای جلوگیری از تلاش بی‌پایان */
+export async function todayScheduledAttempts(agent: AgentId): Promise<number> {
+  const { date } = tehranNow();
+  const start = new Date(`${date}T00:00:00+03:30`);
+  return db.agentRun.count({
+    where: { agent, trigger: "schedule", createdAt: { gte: start } },
+  });
+}

@@ -4,11 +4,13 @@
  */
 import { db } from "@/lib/db";
 import { getAgentsConfig, runAgent } from "./runner";
-import { runPipeline, scheduledTodayDone, tehranNow } from "./pipeline";
+import { runPipeline, scheduledTodayDone, tehranNow, todayScheduledAttempts } from "./pipeline";
 
 const g = globalThis as unknown as { __agentScheduler?: NodeJS.Timeout };
 
 const TICK_MS = 60_000;
+/** حداکثر تلاش زمان‌بندی‌شده برای ایجنت محتوا در یک روز — جلوگیری از طوفان شکست هر دقیقه */
+const MAX_CONTENT_ATTEMPTS_PER_DAY = 5;
 
 async function tick() {
   try {
@@ -20,12 +22,17 @@ async function tick() {
       })
       .catch(() => {});
 
+    /* هرس سابقه شکست‌های قدیمی — دفتر اجرا لاغر می‌ماند */
+    await db.agentRun
+      .deleteMany({ where: { status: "failed", createdAt: { lt: new Date(Date.now() - 3 * 24 * 3600_000) } } })
+      .catch(() => {});
+
     const config = await getAgentsConfig();
     const now = tehranNow();
 
-    /* ایجنت محتوا — از ساعت تعیین‌شده به بعد، اگر امروز انجام نشده */
+    /* ایجنت محتوا — از ساعت تعیین‌شده به بعد، اگر امروز انجام نشده و سقف تلاش پر نشده */
     if (config.enabled.content && config.autoPublish && now.hour >= config.contentHour) {
-      if (!(await scheduledTodayDone("content"))) {
+      if (!(await scheduledTodayDone("content")) && (await todayScheduledAttempts("content")) < MAX_CONTENT_ATTEMPTS_PER_DAY) {
         console.log(`[scheduler] daily pipeline start (Tehran ${now.hour}:${String(now.minute).padStart(2, "0")})`);
         await runPipeline("schedule");
       }
