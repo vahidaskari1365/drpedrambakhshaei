@@ -823,3 +823,26 @@ Stage Summary:
 - تولید: نشان «۵٫۰ در گوگل · ۹ نظر» حذف می‌شود و نوار نظرات دیگر روی هیچ دستگاهی نمی‌ایستد (حتی با Reduce Motion فعال)
 - فایل‌ها: src/components/site/pages/home.tsx، src/components/magicui/marquee.tsx، src/app/globals.css
 - باقی‌مانده (خواسته قبلی کاربر): تطبیق خودکار عکس بلاگ‌ها با موضوع (جستجوی گوگل) + رفع دکمه «تست جامع سایت» پنل ادمین
+
+---
+Task ID: 17
+Agent: Z.ai Code (main)
+Task: علت نبود مقاله جدید (دیروز/امروز) — عیب‌یابی و رفع کامل زنجیره ایجنت محتوا
+
+Work Log:
+- /api/agents/status روی تولید: content failed7d=2676 — خطا «Cannot convert argument to a ByteString ... value of 1705» (۱۷۰۵ = حرف «ک» فارسی)
+- ریشه: فایل .z-ai-config روی هاست همچنان متن فارسی placeholder است؛ SDK کلید را در هدر Authorization می‌گذارد و fetch مقدار غیر Latin-1 را نمی‌پذیرد ⇒ ZAI.create() در ۸ms شکست می‌خورد
+- چون scheduledTodayDone فقط «success» را می‌شمارد، زمان‌بند هر ۶۰ ثانیه دوباره تلاش می‌کرد ⇒ طوفان ۲۶۷۶ شکست در ۷ روز (≈ هر دقیقه)
+- ماژول جدید src/lib/agents/zai-config.ts: ensureZaiConfig() کلید را از تنظیمات دیتابیس (AgentConfig JSON) می‌خواند و پیش از هر اجرا .z-ai-config (cwd، mode 0600) را می‌نویسد؛ کلید غیرASCII خطای فارسی واضح می‌دهد؛ friendlyAgentError خطای ByteString را به راهنمای فارسی پنل ترجمه می‌کند
+- runner.ts: AgentsConfig += zaiKey/zaiBaseUrl (هرگز به کلاینت نمی‌رود)؛ sanitizeAgentsConfig (فقط zaiKeySet + zaiKeyMasked)؛ runAgent ← ensureZaiConfig
+- scheduler.ts: سقف ۵ تلاش زمان‌بندی در روز برای محتوا + هرس شکست‌های قدیمی‌تر از ۳ روز
+- agents-tab.tsx: کارت «کلید هوش مصنوعی (Z.AI)» — ورودی کلید (password)، آدرس API اختیاری (پیش‌فرض https://api.z.ai/api/paas/v4)، ذخیره/حذف، نشان ثبت‌شده/ثبت‌نشده
+- API config: POST اعتبارسنجی ASCII، خالی=بدون تغییر، __CLEAR__=حذف
+- تست محلی کامل: ذخیره/ماسک/حذف کلید، رد کلید فارسی (۴۰۰)، محتوای فایل نوشته‌شده، پرتاب خطای فارسی، جریان UI پنل (نشان + توست)
+- حادثه: git add -A src/ حذف session-outside مسیر upload را کامیت کرد ⇒ فوراً با checkout HEAD~1 و amend اصلاح شد (کامیت نهایی فقط ۷ فایل موردنظر)
+- commit eddc8bc ← CI success
+
+Stage Summary:
+- کاربر باید فقط از پنل ادمین ← ایجنت‌ها ← «کلید هوش مصنوعی» کلید واقعی Z.AI را وارد کند و «اجرای کامل خط‌لوله» بزند — بدون SSH
+- طوفان شکست هر دقیقه متوقف شد (سقف ۵/روز)؛ پیام خطاها در پنل فارسی و قابل‌اقدام است
+- نکته برای کلید: هر سرویس سازگار با OpenAI (z.ai رسمی: api.z.ai/api/paas/v4)
