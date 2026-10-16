@@ -29,6 +29,7 @@ import { createHash } from "node:crypto";
 const SITE_URL = (process.env.SITE_URL || "https://drpedrambakhshaei.com").replace(/\/+$/, "");
 const ADMIN_KEY = (process.env.ADMIN_KEY || "").trim();
 const GH_TOKEN = (process.env.GITHUB_TOKEN || "").trim();
+const GH_PAT = (process.env.GH_MODELS_PAT || "").trim(); // اختیاری — endpoint قدیمی گیت‌هاب مدلز با PAT شخصی
 const FORCE = process.env.FORCE === "1" || process.env.FORCE === "true";
 const DRY_RUN = process.env.DRY_RUN === "1";
 const HERE = new URL(".", import.meta.url);
@@ -119,6 +120,29 @@ async function callGithubModels(messages, maxTokens = 16000) {
   }
   const content = data?.choices?.[0]?.message?.content;
   if (!content) throw new Error("GitHub Models: پاسخ خالی بود");
+  return content;
+}
+
+/** endpoint قدیمی GitHub Models — با PAT شخصی (نه GITHUB_TOKEN) */
+async function callGithubLegacy(messages, maxTokens = 16000) {
+  const res = await fetch("https://models.inference.ai.azure.com/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${GH_PAT}`,
+      "Content-Type": "application/json",
+      "User-Agent": "drpedram-content-agent",
+    },
+    body: JSON.stringify({ model: process.env.GH_LEGACY_MODEL || "gpt-4o-mini", messages, temperature: 0.7, max_tokens: maxTokens }),
+    signal: AbortSignal.timeout(420_000),
+  });
+  const raw = await res.text();
+  if (!res.ok) throw new Error(`GitHub Legacy ${res.status}: ${raw.slice(0, 200)}`);
+  let data;
+  try { data = JSON.parse(raw); } catch {
+    throw new Error(`GitHub Legacy پاسخ JSON معتبر نداشت: ${raw.slice(0, 120)}`);
+  }
+  const content = data?.choices?.[0]?.message?.content;
+  if (!content) throw new Error("GitHub Legacy: پاسخ خالی بود");
   return content;
 }
 
@@ -572,6 +596,7 @@ async function main() {
     provider = "seed-draft";
     log("seed", `مقاله آماده از فایل بارگذاری شد: ${process.env.SEED_DRAFT}`);
   }
+  let lastRawArticle = ""; // آخرین متن خام موفق — برای پاس غنی‌سازی
   for (let attempt = 1; attempt <= 5 && !draft; attempt++) {
     const corrective =
       attempt === 1
@@ -579,7 +604,7 @@ async function main() {
         : `\n\nهشدار: تلاش قبلی رد شد (${lastErr.replace(/POLLINATIONS_WAIT_\d+\|/, "")}). قالبی که در پیام آمده را دقیقاً و کامل رعایت کن — خلاصه یا طرح‌واره ناقص قابل قبول نیست.`;
     let rawText = "";
     try {
-      /* مسیر ۱: GitHub Models با JSON ساختاریافته (مدل قوی) */
+      /* مسیر ۱: GitHub Models — JSON ساختاریافته (مدل قوی) */
       let result = null;
       if (GH_TOKEN) {
         try {
@@ -593,10 +618,26 @@ async function main() {
           result = { text, provider: "github-models" };
           log(`write#${attempt}`, "تولید با GitHub Models موفق شد");
         } catch (e) {
-          log(`write#${attempt}`, `GitHub Models ناموفق → Pollinations (${String(e.message).slice(0, 140)})`);
+          log(`write#${attempt}`, `GitHub Models ناموفق (${String(e.message).slice(0, 100)})`);
         }
       }
-      /* مسیر ۲: Pollinations با Markdown (مدل کوچک — JSON ساختاریافته تولید نمی‌کند) */
+      /* مسیر ۲: endpoint قدیمی با PAT شخصی */
+      if (!result && GH_PAT) {
+        try {
+          const text = await callGithubLegacy(
+            [
+              { role: "system", content: SYSTEM_WRITER },
+              { role: "user", content: USER_TEMPLATE(topic, usedTitles, blogLinks) + corrective },
+            ],
+            16000
+          );
+          result = { text, provider: "github-legacy" };
+          log(`write#${attempt}`, "تولید با GitHub Legacy موفق شد");
+        } catch (e) {
+          log(`write#${attempt}`, `GitHub Legacy ناموفق (${String(e.message).slice(0, 100)})`);
+        }
+      }
+      /* مسیر ۳: Pollinations با Markdown (مدل کوچک — JSON ساختاریافته تولید نمی‌کند) */
       if (!result) {
         const text = await callPollinations(
           [
@@ -609,9 +650,10 @@ async function main() {
         log(`write#${attempt}`, "تولید با Pollinations موفق شد");
       }
       rawText = result.text;
+      lastRawArticle = result.text;
       provider = result.provider;
       draft =
-        result.provider === "github-models"
+        result.provider === "github-models" || result.provider === "github-legacy"
           ? validateDraft(extractJson(result.text))
           : validateDraft(parseMarkdownArticle(result.text, topic, blogLinks));
     } catch (e) {
@@ -630,12 +672,13 @@ async function main() {
   }
   if (!draft) throw new Error(`تولید مقاله پس از ۵ تلاش ناموفق بود — آخرین خطا: ${lastErr.replace(/POLLINATIONS_WAIT_\d+\|/, "")}`);
 
-  /* ۳) کنترل کلمه — اگر زیر ۱۰۰۰ بود یک پاس توسعه (فقط با مدل قوی GitHub Models) */
+  /* ۳) کنترل کلمه — اگر زیر ۱۰۰۰ بود یک پاس توسعه */
   let words = wordCount(draft);
-  if (words < 1000 && provider === "github-models") {
-    log("extend", `مقاله ${words} کلمه است — پاس توسعه اجرا می‌شود`);
+  if (words < 1000 && (provider === "github-models" || provider === "github-legacy")) {
+    log("extend", `مقاله ${words} کلمه است — پاس توسعه JSON اجرا می‌شود`);
     try {
-      const text = await callGithubModels(
+      const extendCall = provider === "github-legacy" ? callGithubLegacy : callGithubModels;
+      const text = await extendCall(
         [
           { role: "system", content: SYSTEM_WRITER },
           {
@@ -645,7 +688,7 @@ async function main() {
         ],
         16000
       );
-      log("extend", "توسعه با GitHub Models موفق شد");
+      log("extend", "توسعه با GitHub موفق شد");
       const ext = validateDraft(extractJson(text));
       if (wordCount(ext) > words) { draft = ext; words = wordCount(ext); }
     } catch (e) {
@@ -661,13 +704,13 @@ async function main() {
           { role: "system", content: SYSTEM_MD },
           {
             role: "user",
-            content: `این مقاله فقط ${words} کلمه است. همان مقاله را با همان قالب قبلی (بلوک متادیتا + ==== + متن Markdown + بخش سوالات متداول با Q/A) بازنویسی کن و فقط بخش‌های توضیحی را با جزئیات کاربردی، مثال بالینی، مراحل درمان و توضیح ریسک‌ها غنی‌تر کن تا متن اصلی حداقل ۱۴۰۰ کلمه شود. ساختار و عنوان‌ها را تغییر نده. موضوع: «${topic.title}»\n\nمتن فعلی:\n\n${String(rawText || "").slice(0, 12000)}`,
+            content: `این مقاله فقط ${words} کلمه است. همان مقاله را با همان قالب قبلی (بلوک متادیتا + ==== + متن Markdown + بخش سوالات متداول با Q/A) بازنویسی کن و فقط بخش‌های توضیحی را با جزئیات کاربردی، مثال بالینی، مراحل درمان و توضیح ریسک‌ها غنی‌تر کن تا متن اصلی حداقل ۱۴۰۰ کلمه شود. ساختار و عنوان‌ها را تغییر نده. موضوع: «${topic.title}»\n\nمتن فعلی:\n\n${String(lastRawArticle || "").slice(0, 12000)}`,
           },
         ],
         16000
       );
       log("extend", "غنی‌سازی با Pollinations موفق شد");
-      rawText = text;
+      lastRawArticle = text;
       const ext = validateDraft(parseMarkdownArticle(text, topic, blogLinks));
       const extWords = wordCount(ext);
       if (extWords > words) { draft = ext; words = extWords; log("extend", `کلمات: ${words}`); }

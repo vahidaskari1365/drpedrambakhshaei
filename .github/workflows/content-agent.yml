@@ -38,6 +38,7 @@ jobs:
           SITE_URL: https://drpedrambakhshaei.com
           ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_MODELS_PAT: ${{ secrets.GH_MODELS_PAT }}
           FORCE: ${{ (github.event_name == 'workflow_dispatch' && inputs.force) && '1' || '0' }}
         run: node scripts/github-agent/generate-article.mjs
 
