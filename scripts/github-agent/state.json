@@ -1,7 +1,8 @@
 {
   "lastPublishDate": "2026-10-16",
   "usedTopicIds": [
-    "t-implant-cost-1405"
+    "t-implant-cost-1405",
+    "t-wisdom-signs"
   ],
   "published": [
     {
@@ -10,6 +11,15 @@
       "title": "هزینه ایمپلنت دندان در ۱۴۰۵؛ چه عواملی قیمت را تعیین می‌کنند؟",
       "words": 633,
       "topicId": "t-implant-cost-1405",
+      "provider": "pollinations-md",
+      "cover": "generated+uploaded"
+    },
+    {
+      "date": "2026-10-16",
+      "slug": "hidden-molar-symptoms-surgery-necessity",
+      "title": "نشانه‌های دندان عقل نهفته؛ چه زمانی جراحی واقعاً لازم است؟",
+      "words": 719,
+      "topicId": "t-wisdom-signs",
       "provider": "pollinations-md",
       "cover": "generated+uploaded"
     }
