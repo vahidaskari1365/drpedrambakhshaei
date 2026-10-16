@@ -874,3 +874,22 @@ Stage Summary:
 - گزارش هر اجرا در Summary خود job (فارسی) + فعالیت انتشار در پنل ادمین دیده می‌شود (ActivityLog از مسیر publishPost)
 - کلید Z.AI پنل ادمین همچنان کارساز است (مسیر درون‌برنامه‌ای) ولی دیگر ضروری نیست
 - نکته: کیفیت متن Pollinations (gpt-oss-20b) حدود ۶۰۰-۹۰۰ کلمه است؛ اگر روزی خواست کیفیت بالاتر رفت، فقط کافی است endpoint جدید GitHub Models/سرویس رایگان دیگر به زنجیره اضافه شود
+
+---
+Task ID: 19
+Agent: Z.ai Code (main)
+Task: رفع خطای سرچ کنسول «Affected pages were found — Item: دکتر پدرام بخشایی» در صفحه /reviews (اسکیمای Structured Data)
+
+Work Log:
+- استخراج و تحلیل ۴ بلوک JSON-LD صفحه زنده /reviews در پروداکشن
+- یافتن ۳ ایراد: ①دو نود Physician با @id یکسان #physician اما داده متفاوت (layout + reviewsJsonLd) ②reviewCount=9 ولی فقط ۸ نظر درج‌شده (slice(0,8)) ③نبود datePublished و worstRating در نظرات
+- بازنویسی reviewsJsonLd در src/lib/seo.tsx: حذف تعریف تکراری Physician، خروجی @graph از Review مستقل با itemReviewed مرجع، افزودن worstRating، درج همه نظرات
+- افزودن reviewDateIso(): تبدیل تاریخ نمایشی فارسی («بهمن ۱۴۰۴»، «۷ ماه قبل») به ISO معتبر با جدول anchors ۱۴۰۰-۱۴۰۸ + کلمپ ضد تاریخ آینده
+- کشف در پروداکشن: ادمین ۳ نظر اضافه کرده (۱۲ نظر کل) → physicianJsonLd امضای (site, services?, reviews?) گرفت و reviewCount از داده زنده محاسبه می‌شود؛ layout و admin/test پاس دادن content.reviews
+- commit 2b9501e (اصلاح اسکیما) و efddc75 (تطابق reviewCount=12) → هر دو CI success
+- تأیید زنده پروداکشن: یک تعریف Physician، reviewCount=12، ۱۲ نظر با datePublished/worstRating/itemReviewed — صفر مشکل
+
+Stage Summary:
+- اسکیمای نظرات اکنون کاملاً سازگار با الزامات Google Review Snippet است
+- کاربر باید در سرچ کنسول روی «VALIDATE FIX» (اعتبارسنجی مجدد) کلیک کند
+- نکته سیاستی: گوگل برای Organization/LocalBusiness نظرات خودسایت (self-serving) ستاره نمایش نمی‌دهد؛ مارکاپ درست است ولی ستاره در SERP تضمینی نیست
