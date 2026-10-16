@@ -185,6 +185,8 @@ const SYSTEM_MD = `تو نویسنده ارشد محتوای پزشکی فارس
 4. E-E-A-T: پاسخ مستقیم به سوال کاربر در پاراگراف اول هر بخش، هیچ ادعای اثبات‌نشده، ذکر ریسک‌ها.
 5. آمار/هزینه فقط از «حقایق مطب»؛ برای بقیه هشدار «متغیر است، ویزیت لازم».
 6. لحن احترام‌آمیز و امیدبخش، بدون ترساندن بیمار.
+7. هیچ‌کدام از خط‌های دستورالعمل یا پرانتزهای راهنما را در پاسخ تکرار نکن — فقط نتیجه نهایی.
+8. بخش «## سوالات متداول» با حداقل ۴ جفت Q/A الزامی است — بدون آن پاسخ رد می‌شود.
 
 قالب پاسخ: دقیقاً همان قالبی که در پایان پیام کاربر آمده — بدون هیچ توضیح اضافه قبل یا بعد از آن.`;
 
@@ -329,15 +331,20 @@ function parseMarkdownArticle(raw, topic, blogLinks) {
   const csv = (v) => String(v || "").split(/[,،]/).map((s) => s.trim()).filter(Boolean);
   const tags = csv(meta.TAGS).slice(0, 6);
   const keywords = csv(meta.KEYWORDS).slice(0, 12);
-  const title = meta.TITLE || topic.title;
+  /* ضد تکرار دستورالعمل — اگر مدل پرانتز راهنما را کپی کرده باشد */
+  const isPlaceholder = (v) => !v || /^\(|\(عنوان|عنوان مقاله\)|\(اسلاگ|\(برچسب|\(حداکثر|\(۱۲۰|\(خلاصه/.test(v);
+  const title = !isPlaceholder(meta.TITLE) ? meta.TITLE : topic.title;
+  const metaTitle = !isPlaceholder(meta.META_TITLE) ? meta.META_TITLE : title;
+  const metaDesc = !isPlaceholder(meta.META_DESC) ? meta.META_DESC : "";
+  const excerpt = !isPlaceholder(meta.EXCERPT) ? meta.EXCERPT : metaDesc;
   return {
     slug: meta.SLUG && /^[a-z0-9-]{6,90}$/.test(meta.SLUG) ? meta.SLUG : "",
     title,
     h1: title,
-    metaTitle: meta.META_TITLE || title,
-    metaDesc: meta.META_DESC || "",
-    kicker: meta.KICKER || "",
-    excerpt: meta.EXCERPT || meta.META_DESC || "",
+    metaTitle,
+    metaDesc,
+    kicker: meta.KICKER && !/\(/.test(meta.KICKER) ? meta.KICKER : "",
+    excerpt,
     category: meta.CATEGORY || topic.category || "جراحی فک و صورت",
     tags: tags.length ? tags : (topic.keywords || []).slice(0, 4),
     keywords: keywords.length ? keywords : (topic.keywords || []),
