@@ -846,3 +846,31 @@ Stage Summary:
 - کاربر باید فقط از پنل ادمین ← ایجنت‌ها ← «کلید هوش مصنوعی» کلید واقعی Z.AI را وارد کند و «اجرای کامل خط‌لوله» بزند — بدون SSH
 - طوفان شکست هر دقیقه متوقف شد (سقف ۵/روز)؛ پیام خطاها در پنل فارسی و قابل‌اقدام است
 - نکته برای کلید: هر سرویس سازگار با OpenAI (z.ai رسمی: api.z.ai/api/paas/v4)
+
+---
+Task ID: 18
+Agent: Z.ai Code (main)
+Task: «چون پول ندارم و API پولی هست نمی‌تونم — بکنش ورک‌فلو گیت‌هاب، اگه رایگان هست بگو» — ساخت ایجنت محتوای کاملاً رایگان روی GitHub Actions + عیب‌یابی ریشه نبود مقاله جدید (کلید Z.AI placeholder در هاست)
+
+Work Log:
+- تأیید عیب‌یابی قبلی: عامل محتوای درون‌برنامه‌ای به کلید Z.AI پولی نیاز دارد که کاربر ندارد ⇒ کل زنجیره به بستر رایگان GitHub Actions منتقل شد (خواسته صریح کاربر: «ورک‌فلو گیت‌هاب»)
+- زیرساخت: ریپو عمومی است (Actions رایگان نامحدود)، SSL هاست الان معتبر است (Let's Encrypt، بدون -k)، DNS عمومی درست رزلو می‌شود ⇒ Actions می‌تواند مستقیم به API سایت منتشر کند
+- API جدید POST /api/agents/publish (x-admin-key + publishSchema + publishPost idempotent) — درگاه انتشار از بیرون برای اسکریپت Actions
+- اسکریپت scripts/github-agent/generate-article.mjs (Node خالص بدون وابستگی): انتخاب موضوع از بانک ۳۴ تایی topics.json (عنوان + زاویه + کلیدواژه + پرامپت تصویر موضوع‌محور برای هر کدام) + state.json ضد تکرار (خود ورک‌فلو کامیتش می‌کند) + حذف تکراری با sitemap سایت
+- زنجیره LLM رایگان: ۱) GitHub Models با GITHUB_TOKEN (models:read) ۲) endpoint قدیمی با PAT (سیکرت GH_MODELS_PAT ست شد) ۳) Pollinations مارک‌داونی (بدون هیچ کلیدی) — کشف: models.github.ai در ۲۰۲۶ به همه درخواست‌ها «OK» متنی برمی‌گرداند (حتی بدون auth، حتی از شبکه ثالث) و legacy هم down است ⇒ عملاً Pollinations ارائه‌دهنده اصلی است
+- کشف مهم Pollinations: مدل «openai-fast» = gpt-oss-20b با reasoning؛ بدون reasoning_effort:low کل بودجه توکن را reasoning می‌خورد و content خالی می‌ماند (finish:length)؛ JSON ساختاریافته هم هر بار به شکل متفاوت خراب می‌کند ⇒ مسیر Markdown مقاوم ساخته شد: قالب متادیتا (TITLE/SLUG/...) + ==== + بدنه Markdown + بخش «سوالات متداول» Q/A → پارسر قطعی mdToBlocks (h2/h3/list/table/callout/cta) + splitFaq + repairJson برای JSON خراب + فیلتر تکرار دستورالعمل + ضد placeholder متادیتا
+- محدودیت نرخ Pollinations («۱ پاسخ هر ۳۰ ثانیه در هر IP»): صبر هوشمند بر اساس Retry-After + تا ۵ تلاش؛ روی IP مشترک سندباکس مدام 402 می‌داد ولی روی رانر اختصاصی Actions بدون مشکل
+- کاور «مرتبط با موضوع»: تصویر رایگان image.pollinations.ai (پرامپت انگلیسی موضوع‌محور هر موضوع در topics.json) → آپلود در رسانه سایت (مولتی‌پارت /api/admin/upload) → fallback گالری ثابت — خواسته قدیمی «عکس مرتبط با موضوع» این‌جا محقق شد (به‌جای جستجوی گوگل که کپی‌رایت دارد)
+- ورک‌فلو .github/workflows/content-agent.yml: cron 30 3 * * * (۰۷:۰۰ تهران — ایران دیگر ساعت تابستانی ندارد) + workflow_dispatch با گزینه force + permissions (contents:write, models:read) + concurrency + کامیت state.json با github-actions[bot]
+- سیکرت‌های ریپو: ADMIN_KEY (با libsodium sealed box از API ست شد) + GH_MODELS_PAT
+- تست: اجرای کامل محلی (DRY_RUN و واقعی روی dev) → انتشار موفق «dental-implant-cost-1405» در dev؛ سپس در Actions دو اجرای موفق روی تولید: مقاله «هزینه ایمپلنت دندان ۱۴۰۵» (۶۳۳ کلمه) و «نشانه‌های دندان عقل نهفته» (۷۱۹ کلمه) — هر دو با کاور تولیدی آپلودشده
+- باگ حین کار: rawText خارج از scope در پاس غنی‌سازی (ReferenceError گرفته می‌شد) ⇒ lastRawArticle در سطح تابع؛ گسترش پاس توسعه برای هر دو ارائه‌دهنده GitHub
+- راستی‌آزمایی تولید با agent-browser: صفحه مقاله کامل رندر می‌شود (تیتر، kicker، نویسنده، زمان مطالعه، h2 سوالی + پاسخ مستقیم، فهرست، فهرست هشدار، سوالات متداول، CTA، جعبه نویسنده)، هر دو مقاله در sitemap.xml و صفحه /blog هستند؛ CI هر دو push سبز
+- CI push سوم (08b6e43): سخت‌سازی پرامپت (الزام بخش Q/A، ممنوعیت تکرار دستورالعمل) — برای اجرای روزانه فردا
+
+Stage Summary:
+- از فردا ۰۷:۰۰ تهران هر روز خودکار یک مقاله رایگان منتشر می‌شود — هزینه: صفر (Actions رایگان + Pollinations رایگان)، بدون نیاز به کلید Z.AI
+- اجرای دستی: تب Actions ریپو ← «ایجنت محتوا» ← Run workflow (با force برای انتشار اجباری)
+- گزارش هر اجرا در Summary خود job (فارسی) + فعالیت انتشار در پنل ادمین دیده می‌شود (ActivityLog از مسیر publishPost)
+- کلید Z.AI پنل ادمین همچنان کارساز است (مسیر درون‌برنامه‌ای) ولی دیگر ضروری نیست
+- نکته: کیفیت متن Pollinations (gpt-oss-20b) حدود ۶۰۰-۹۰۰ کلمه است؛ اگر روزی خواست کیفیت بالاتر رفت، فقط کافی است endpoint جدید GitHub Models/سرویس رایگان دیگر به زنجیره اضافه شود
