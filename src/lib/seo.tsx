@@ -17,7 +17,13 @@ type PriceTab = SiteContent["priceTabs"][number];
 export const OG_IMAGE = "/uploads/og-image.jpg";
 
 /** اسکیمای پزشک — هسته هویت سایت (E-E-A-T) */
-export function physicianJsonLd(site: SiteInfo = SITE, services?: ServiceItem[]) {
+export function physicianJsonLd(
+  site: SiteInfo = SITE,
+  services?: ServiceItem[],
+  reviews?: ReviewItem[],
+) {
+  // reviewCount همیشه برابر تعداد واقعی نظرات درج‌شده در صفحه — ناسازگاریش عامل خطای سرچ کنسول بود
+  const reviewCount = String(reviews?.length ?? (REVIEWS as unknown as ReviewItem[]).length);
   return {
     "@context": "https://schema.org",
     "@type": "Physician",
@@ -61,7 +67,7 @@ export function physicianJsonLd(site: SiteInfo = SITE, services?: ServiceItem[])
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: "5.0",
-      reviewCount: "9",
+      reviewCount,
       bestRating: "5",
       worstRating: "1",
     },

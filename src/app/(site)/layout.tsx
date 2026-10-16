@@ -23,7 +23,7 @@ export default async function SiteLayout({
   return (
     <>
       {/* اسکیماهای سراسری — هویت پزشک و وب‌سایت */}
-      <JsonLd data={physicianJsonLd(content.site)} />
+      <JsonLd data={physicianJsonLd(content.site, content.services, content.reviews)} />
       <JsonLd data={websiteJsonLd()} />
       <ContentProvider content={content}>
         <Chrome>{children}</Chrome>

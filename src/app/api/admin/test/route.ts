@@ -142,7 +142,7 @@ export async function POST(req: Request) {
   const schemas: [string, () => object][] = [
     ["WebSite", () => websiteJsonLd()],
     ["Dentist/Clinic", () => clinicJsonLd(content.site)],
-    ["Physician", () => physicianJsonLd(content.site)],
+    ["Physician", () => physicianJsonLd(content.site, content.services, content.reviews)],
     ["FAQPage", () => faqJsonLd(content.faq)],
     ["Service", () => servicesJsonLd(content.services)],
     ["Review", () => reviewsJsonLd(content.reviews)],
