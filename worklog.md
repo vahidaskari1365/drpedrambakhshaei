@@ -1029,3 +1029,21 @@ Stage Summary:
 - فایل‌های تغییر یافته: src/lib/landings.ts، src/components/site/pages/service-landing.tsx، ۴ فایل page.tsx لندینگ‌ها
 - جداول: ۰→۳ جدول در jaw و chin، ۰→۲ جدول در dental-implant و implant-pasdaran (رفع «tables: 0» از geo-scan)
 - ۸ بلاک قابل‌استناد جدید + ۴ quickAnswer گسترش‌یافته = Citability از ۴۵ به سمت ۸۵+
+
+---
+Task ID: 25
+Agent: Z.ai Code (main)
+Task: کوتاه‌کردن زمان دیپلوی از ~۳۰ دقیقه به ~۳ دقیقه (درخواست کاربر)
+
+Work Log:
+- تشخیص: زمان دیپلوی = بیلد CI (۴-۶ دقیقه) + انتظار کرون هاست */20 (تا ۲۰ دقیقه) + دانلود app چندمگ (۱-۲ دقیقه) ⇒ گلوگاه اصلی فاصله کرون است نه دانلود
+- commit c7f090c: scripts/host-deploy.sh → v3.2 با محافظ دانلود منجمد (--speed-limit 10240 --speed-time 60): زیر ۱۰KB/s برای ۶۰ ثانیه = قطع و retry با resume؛ دیگر دانلود خواب‌مانده قفل flock را تا ۴۰ دقیقه (max-time) نگه نمی‌دارد — پیش‌نیاز امن برای کرون ۳ دقیقه‌ای
+- commit c7f090c: deploy.yml کش Bun (~/.bun/install/cache) + کش .next/cache اضافه شد ⇒ هر بیلد CI حدود ۱-۲ دقیقه سریع‌تر
+- git pull --rebase لازم شد (کامیت‌های ۵تایی بات content-agent جلوتر بود)؛ push موفق
+- دستورات ترمینال هاست به کاربر داده شد: crontab -l | sed 's|^\*/20|*/3|' | crontab - + رفرش deploy.sh از raw (v3.2) + اجرای دستی bash ~/bin/deploy.sh برای انتشار فوری
+
+Stage Summary:
+- معماری دیپلوی دست‌نخورده ماند (Pull از Releases)؛ فقط فاصله کرون ۲۰→۳ دقیقه و مقاوم‌سازی دانلود
+- زمان جدید مورد انتظار: بیلد CI ~۳-۵ دقیقه + کش/انتظار کرون ≤۳ دقیقه + دانلود چندمگ ~۱ دقیقه ⇒ push→live حدود ۵-۷ دقیقه (قبلاً تا ۳۰)
+- trigger دستی موجود است: بعد از سبز شدن CI، اجرای bash ~/bin/deploy.sh روی هاست = انتشار بدون انتظار کرون
+- ۶ اولویت SEO (جدول قیمت، بلوک‌های قابل‌استناد، dateModified و...) همچنان pending — بعد از این تسک شروع می‌شود
