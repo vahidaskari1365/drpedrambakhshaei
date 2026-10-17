@@ -75,3 +75,8 @@ server.log
 
 # فایل‌های دیباگ ایجنت محتوا (در Actions تولید می‌شوند، در مخزن نمی‌روند)
 scripts/github-agent/last-raw-*.txt
+
+# کلیدهای محرمانه گوگل (Search Console و ...) — هرگز در گیت
+/secrets/
+gsc-service-account*.json
+*service-account*.json
