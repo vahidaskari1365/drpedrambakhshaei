@@ -413,13 +413,18 @@ ${blogLinks.map((l) => `- ${l.href} ← ${l.label}: ${l.desc}`).join("\n")}
 function validateDraft(raw) {
   const missing = [];
   const blocks = Array.isArray(raw.blocks) ? raw.blocks : [];
-  const quickAnswers = Array.isArray(raw.quickAnswers) ? raw.quickAnswers : [];
   const faqs = Array.isArray(raw.faqs) ? raw.faqs : [];
+  let quickAnswers = Array.isArray(raw.quickAnswers) ? raw.quickAnswers : [];
   if (!raw.title && raw.metaTitle) raw.title = raw.metaTitle;
   if (!raw.title && raw.h1) raw.title = raw.h1;
   if (!raw.title) missing.push("title");
   if (!raw.h1) missing.push("h1");
   if (!raw.metaTitle) missing.push("metaTitle");
+  // fallback: اگر مدل quickAnswers نداد ولی FAQ دارد، از ۳ سوال اول FAQ بساز (AEO)
+  if (!quickAnswers.length && faqs.length) {
+    quickAnswers = faqs.slice(0, 3).map((f) => ({ q: f.q, a: f.a }));
+    raw.quickAnswers = quickAnswers;
+  }
   if (blocks.length < 8) missing.push(`blocks=${blocks.length}`);
   if (!quickAnswers.length) missing.push("quickAnswers");
   if (!faqs.length) missing.push("faqs");
