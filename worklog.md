@@ -952,3 +952,22 @@ Work Log:
 Stage Summary:
 - زیرساخت کامل شد: گزارش روزانه ۰۸:۰۰ + مانیتور هر ۳۰ دقیقه + IndexNow فوری + عامل محتوا روزانه ۰۷:۰۰ با پینگ خودکار
 - برای کاربر بعدی: ثبت‌نام‌های دستی لازم = Bing Webmaster (کلید API)، Google Business Profile (وریفای)، GA4 (اختیاری)، دایرکتوری‌های پزشکی (دکترتو/نی‌نی‌سایت/پذیرش۲۴)
+
+---
+Task ID: 23
+Agent: Z.ai Code (main)
+Task: آنالیز AIO/GEO و SXO برای drpedrambakhshaei.com به درخواست کاربر
+
+Work Log:
+- اسکیل‌های seo-geo و seo-sxo لود و طبق pipeline اجرا شد
+- اسکن ۸ صفحه سایت با scripts/seo/geo-scan.mjs (ساخته شد): status/titles/H1-H2/JSON-LD/word count/citable paragraphs/images/dates
+- بررسی robots.txt (۱۴ ربات AI همه Allow) و llms.txt (موجود، 200، غنی)
+- SERP live برای ۴ کلمه کلیدی با web_search (serp-*.json ذخیره شد)
+- بررسی JSON-LD کامل jaw-surgery: Physician با address/geo/aggregateRating/sameAs + MedicalProcedure/FAQPage/BreadcrumbList
+- بررسی مقاله بلاگ: datePublished/dateModified/Article/author ✅ ولی citable blocks صفر
+
+Stage Summary:
+- GEO Score: 63/100 (Citability 45، Multimodal 40 گپ اصلی؛ Technical 95 قوت)
+- SXO: jaw 56، chin 55، dental-implant 52 (MISMATCH HIGH: SERP جدول قیمت می‌خواهد)، implant-pasdaran 60
+- گزارش‌ها ذخیره شد: docs/GEO-ANALYSIS.md و docs/SXO-ANALYSIS.md
+- ۶ اولویت اجرا مشخص شد (جدول قیمت در dental-implant، dateModified لندینگ‌ها، بلاک‌های ۱۳۴-۱۶۷ کلمه‌ای، جدول مقایسه، سیگنال محلی، embed آپارات)
