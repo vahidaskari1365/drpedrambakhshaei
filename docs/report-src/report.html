@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+<meta charset="UTF-8">
+<title>گزارش پیشرفت پروژه — drpedrambakhshaei.com</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Estedad:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+@page { size: 794px 1123px; margin: 0; }
+:root{
+  --ink:#0e2433;        /* سرمه‌ای برند */
+  --green:#177d5f;      /* سبز برند */
+  --green-soft:#e7f2ee;
+  --gold:#c9a24b;       /* طلایی برند */
+  --paper:#f8f7f4;
+  --text:#25333d;
+  --muted:#64707a;
+  --line:#e3e1da;
+}
+html,body{ margin:0; padding:0; width:794px; background:#f8f7f4; color:var(--text);
+  font-family:'Vazirmatn',sans-serif; font-size:13.5px; line-height:1.9;
+  line-break:strict; word-break:normal; }
+p,td,li,div{ overflow-wrap:break-word; word-break:break-word; }
+img,svg{ max-width:100%; height:auto; }
+h1,h2,h3{ font-family:'Estedad','Vazirmatn',sans-serif; }
+@media screen{
+  html{ height:auto; display:flex; justify-content:center; background:#1a2b36; }
+  body{ transform-origin:top center; margin:20px auto; box-shadow:0 8px 40px rgba(0,0,0,.4); }
+}
+
+/* ---------- COVER ---------- */
+.cover{ width:794px; height:1123px; box-sizing:border-box; background:var(--ink);
+  background-image:
+    radial-gradient(circle at -40px -40px, rgba(201,162,75,.28), transparent 260px),
+    radial-gradient(circle at 834px 1163px, rgba(23,125,95,.30), transparent 280px),
+    radial-gradient(circle at 820px -60px, rgba(23,125,95,.20), transparent 220px);
+  color:#f4f1ea; break-after:page; position:relative;
+  display:flex; flex-direction:column; justify-content:center; padding:64px; }
+/* cover decorations painted as background gradients (no overflow) */
+.cover .badge{ display:inline-block; align-self:flex-start; border:1px solid var(--gold); color:var(--gold);
+  padding:5px 16px; border-radius:999px; font-size:12px; letter-spacing:.5px; margin-bottom:34px; font-weight:600; }
+.cover h1{ font-size:44px; font-weight:900; line-height:1.45; margin:0 0 10px; }
+.cover .domain{ font-size:19px; color:var(--gold); font-weight:700; direction:ltr; text-align:right;
+  font-family:'Vazirmatn',sans-serif; letter-spacing:.5px; margin-bottom:26px; }
+.cover .sub{ font-size:15.5px; color:#c8d2d8; max-width:560px; line-height:2.1; margin-bottom:40px; }
+.cover .chips{ display:flex; flex-wrap:wrap; gap:10px; max-width:600px; }
+.cover .chip{ background:rgba(244,241,234,.08); border:1px solid rgba(244,241,234,.16);
+  border-radius:10px; padding:9px 16px; font-size:12.5px; }
+.cover .chip b{ color:var(--gold); font-weight:700; }
+.cover .foot{ position:absolute; bottom:52px; right:64px; left:64px; display:flex;
+  justify-content:space-between; align-items:center;
+  font-size:11.5px; color:#93a3ad; }
+.cover .goldbar{ width:88px; height:6px; background:var(--gold); border-radius:3px; margin-bottom:30px; }
+
+/* ---------- CONTENT ---------- */
+.main-content{ background:var(--paper); padding:52px 56px 44px; }
+.sec{ margin-top:26px; }
+.sec:first-child{ margin-top:0; }
+.sec-head{ break-after:avoid; break-inside:avoid; }
+.sec-tag{ display:inline-block; background:var(--green); color:#fff; font-size:10.5px; font-weight:700;
+  padding:3px 12px; border-radius:999px; letter-spacing:.3px; }
+.sec-title{ font-size:23px; font-weight:800; color:var(--ink); margin:8px 0 4px; line-height:1.5; }
+.sec-divider{ width:64px; height:6px; background:var(--gold); border-radius:3px; margin-bottom:12px; }
+.lead{ font-size:13.5px; color:var(--text); margin:0 0 10px; text-align:justify; }
+.small-note{ font-size:11.5px; color:var(--muted); margin-top:6px; }
+
+.kpi-grid{ display:flex; flex-wrap:wrap; gap:10px; margin:14px 0 6px; max-width:100%; }
+.kpi{ flex:1 1 30%; min-width:190px; max-width:100%; background:#fff; border:1px solid var(--line);
+  border-radius:12px; padding:14px 16px; break-inside:avoid; }
+.kpi .num{ font-size:26px; font-weight:900; color:var(--green); font-family:'Estedad','Vazirmatn',sans-serif; }
+.kpi .num small{ font-size:13px; color:var(--gold); font-weight:700; }
+.kpi .lbl{ font-size:11.5px; color:var(--muted); margin-top:2px; }
+
+h3.blk{ font-size:15px; font-weight:800; color:var(--ink); margin:16px 0 6px; break-after:avoid; }
+ul.dash{ margin:4px 0 10px; padding-right:18px; }
+ul.dash li{ margin-bottom:5px; text-align:justify; }
+ul.dash li b{ color:var(--ink); }
+
+table{ width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--line);
+  margin:10px 0 6px; break-inside:avoid; font-size:12px; }
+th{ background:var(--ink); color:#f4f1ea; font-weight:700; padding:8px 10px; text-align:right; font-size:11.5px; }
+td{ padding:7px 10px; border-top:1px solid var(--line); vertical-align:top; }
+tr td:first-child{ font-weight:600; color:var(--ink); }
+td .en{ direction:ltr; unicode-bidi:embed; font-size:11px; color:var(--muted); }
+.pill{ display:inline-block; background:var(--green-soft); color:var(--green); border-radius:999px;
+  padding:1px 10px; font-size:10.5px; font-weight:700; }
+.pill.amber{ background:#f7efe0; color:#8a6a1f; }
+.pill.red{ background:#f9e9e7; color:#a1493b; }
+
+.card{ background:#fff; border:1px solid var(--line); border-right:4px solid var(--green);
+  border-radius:10px; padding:13px 16px; margin-bottom:12px; break-inside:avoid; }
+.card.gold{ border-right-color:var(--gold); }
+.card.ink{ border-right-color:var(--ink); }
+.card h4{ margin:0 0 5px; font-size:13.5px; font-weight:800; color:var(--ink); }
+.card p{ margin:0; font-size:12.5px; text-align:justify; }
+.card .mini{ font-size:11px; color:var(--muted); margin-top:4px; }
+
+.two-col{ display:flex; flex-wrap:wrap; gap:12px; max-width:100%; }
+.two-col .col{ flex:1 1 46%; min-width:280px; max-width:100%; }
+
+.bars{ background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:12px 0; break-inside:avoid; }
+.bar-row{ display:flex; align-items:center; gap:10px; margin-bottom:9px; }
+.bar-row .blabel{ flex:0 0 170px; font-size:11.5px; font-weight:600; color:var(--ink); }
+.bar-row .btrack{ flex:1 1 auto; height:10px; background:#eef0ee; border-radius:999px; overflow:hidden; }
+.bar-row .bfill{ height:100%; border-radius:999px; background:linear-gradient(270deg,var(--green),#2ea07c); }
+.bar-row .bval{ flex:0 0 44px; font-size:11.5px; font-weight:800; color:var(--green); text-align:left; }
+.bar-row.total{ border-top:1px dashed var(--line); padding-top:10px; margin-top:4px; margin-bottom:0; }
+.bar-row.total .bfill{ background:linear-gradient(270deg,var(--gold),#e0c07a); }
+.bar-row.total .bval{ color:#8a6a1f; }
+.bar-row.total .blabel{ font-weight:800; }
+
+.finding{ display:flex; gap:10px; background:#fff; border:1px solid var(--line); border-radius:10px;
+  padding:12px 14px; margin-bottom:10px; break-inside:avoid; }
+.finding .fnum{ flex:0 0 30px; height:30px; border-radius:50%; background:var(--ink); color:var(--gold);
+  font-weight:900; font-size:14px; display:flex; align-items:center; justify-content:center; font-family:'Estedad',sans-serif; }
+.finding h4{ margin:0 0 3px; font-size:13px; font-weight:800; color:var(--ink); }
+.finding p{ margin:0; font-size:12px; text-align:justify; }
+
+.callout{ background:var(--green-soft); border:1px solid #cfe4dc; border-radius:10px;
+  padding:12px 16px; margin:10px 0; font-size:12.5px; break-inside:avoid; text-align:justify; }
+.callout b{ color:var(--green); }
+
+/* ---------- ENDING ---------- */
+.ending{ width:794px; height:1123px; box-sizing:border-box; break-before:page;
+  background:var(--ink);
+  background-image:
+    radial-gradient(circle at -60px 1183px, rgba(201,162,75,.26), transparent 280px),
+    radial-gradient(circle at 854px -60px, rgba(23,125,95,.30), transparent 260px);
+  color:#f4f1ea; display:flex; flex-direction:column; justify-content:center;
+  align-items:center; text-align:center; padding:70px; position:relative; }
+/* ending decorations painted as background gradients (no overflow) */
+.ending .gl{ width:220px; height:9px; background:var(--gold); border-radius:5px; margin:26px auto; }
+.ending h2{ font-size:30px; font-weight:900; margin:0 0 4px; }
+.ending .dom{ font-size:16px; color:var(--gold); font-weight:700; direction:ltr; }
+.ending p{ max-width:520px; color:#c8d2d8; font-size:13.5px; line-height:2.1; text-align:center; }
+.ending .tags{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:26px; max-width:600px; }
+.ending .tag{ border:1px solid rgba(244,241,234,.2); border-radius:999px; padding:5px 14px; font-size:11.5px; color:#dfe6ea; }
+</style>
+</head>
+<body>
+
+<!-- ================= COVER ================= -->
+<div class="cover">
+  <div class="badge">گزارش پیشرفت پروژه</div>
+  <div class="goldbar"></div>
+  <h1>وب‌سایت دکتر پدرام بخشایی</h1>
+  <div class="domain">drpedrambakhshaei.com</div>
+  <div class="sub">گزارش جامع توسعه، زیرساخت فنی و بهینه‌سازی موتورهای جست‌وجو — شامل سئوی کلاسیک (SEO)، بهینه‌سازی موتورهای پاسخ (AEO)، جست‌وجوی مولد (GEO/AIO) و تجربه جست‌وجو (SXO)</div>
+  <div class="chips">
+    <div class="chip">دوره گزارش: از ابتدا تا مهر ۱۴۰۵</div>
+    <div class="chip">مراحل اجراشده: بیش از ۲۳ مرحله</div>
+    <div class="chip">وضعیت سایت: زنده و در حال رشد</div>
+    <div class="chip">تهیه‌شده برای: کارفرمای محترم</div>
+  </div>
+  <div class="foot">
+    <span>نسخه ۱٫۰ · گزارش رسمی پروژه</span>
+    <span>محرمانه · ویژه کارفرما</span>
+  </div>
+</div>
+
+<!-- ================= CONTENT ================= -->
+<div class="main-content">
+
+  <!-- خلاصه مدیریتی -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-tag">خلاصه مدیریتی</span>
+      <div class="sec-title">جایی که امروز ایستاده‌ایم</div>
+      <div class="sec-divider"></div>
+    </div>
+    <p class="lead">وب‌سایت دکتر پدرام بخشایی از یک سایت وردپرسی قدیمی تک‌صفحه‌ای به یک پلتفرم مدرن چندصفحه‌ای مبتنی بر Next.js با رندر سمت سرور تبدیل شده است؛ زیربنایی که هم برای گوگل کاملاً قابل ایندکس است و هم برای موتورهای هوش مصنوعی مانند ChatGPT و Google AI Overviews قابل استناد. تا امروز بیش از ۲۳ مرحله مشخص روی پروژه اجرا شده که نتیجه آن، ایندکس‌شدن کامل همه صفحات کلیدی در گوگل، ورود به صفحه اول نتایج برای کلمه «جراحی فک»، و راه‌اندازی سه ایجنت خودکار برای تولید محتوا، گزارش‌گیری و پایش است.</p>
+    <p class="lead">این گزارش ابتدا مشخصات فنی سایت و کلمات کلیدی هدف را شرح می‌دهد، سپس کارهای انجام‌شده در پنج محور SEO، AEO، GEO/AIO و SXO را با امتیازها و شواهد کمی مرور می‌کند و در پایان، نقشه راه شش‌اولویتی دوره بعد را ارائه می‌دهد. همه اعداد این گزارش از منابع واقعی — Google Search Console، خروجی زنده سایت و آنالیز SERP — استخراج شده‌اند.</p>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="num">۴ از ۴</div><div class="lbl">صفحه فرود کلیدی، ایندکس‌شده در گوگل</div></div>
+      <div class="kpi"><div class="num">۵٫۹</div><div class="lbl">میانگین رتبه «جراحی فک» در گوگل (صفحه اول)</div></div>
+      <div class="kpi"><div class="num">۲۲</div><div class="lbl">URL در نقشه سایت و ایندکس گوگل</div></div>
+      <div class="kpi"><div class="num">۹</div><div class="lbl">مقاله تخصصی اورجینال منتشرشده در بلاگ</div></div>
+      <div class="kpi"><div class="num">۶۳/۱۰۰</div><div class="lbl">امتیاز آمادگی GEO (میانگین بازار ۴۰-۵۰)</div></div>
+      <div class="kpi"><div class="num">۳</div><div class="lbl">ایجنت خودکار فعال (محتوا، گزارش، پایش)</div></div>
+    </div>
+  </div>
+
+  <!-- ۱. سایت و زیرساخت -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-tag">بخش ۱</span>
+      <div class="sec-title">مشخصات سایت و زیرساخت فنی</div>
+      <div class="sec-divider"></div>
+    </div>
+    <p class="lead">سایت جدید از پایه و به‌صورت اختصاصی برای برند دکتر پدرام بخشایی طراحی و کدنویسی شده است؛ هیچ قالب آماده‌ای در آن استفاده نشده. زبان سایت فارسی است (کد fa-IR) و چیدمان آن کاملاً راست‌به‌چپ (RTL) پیاده‌سازی شده تا هم برای کاربر ایرانی و هم برای درک صحیح موتورهای جست‌وجو بهینه باشد. ظاهر سایت به سبک مینیمال اپل با موشن‌گرافی سینمایی ساخته شده و از پالت رنگی سبز، سرمه‌ای و طلایی — هماهنگ با هویت مطب — استفاده می‌کند.</p>
+    <table>
+      <tr><th style="width:26%">لایه</th><th>فناوری به‌کاررفته</th></tr>
+      <tr><td>زبان سایت</td><td>فارسی (fa-IR) — چیدمان راست‌به‌چپ کامل RTL</td></tr>
+      <tr><td>فریم‌ورک</td><td>Next.js 16 (App Router) — رندر سمت سرور SSR</td></tr>
+      <tr><td>زبان برنامه‌نویسی</td><td>TypeScript 5 با تایپ سخت‌گیرانه</td></tr>
+      <tr><td>استایل و رابط</td><td>Tailwind CSS 4 + کامپوننت‌های shadcn/ui</td></tr>
+      <tr><td>دیتابیس</td><td>PostgreSQL در هاست (با Prisma ORM) — پنل ادمین و مقالات داینامیک</td></tr>
+      <tr><td>تیپوگرافی</td><td>فونت استداد برای تیتراژ + وزیرمتن برای متن</td></tr>
+      <tr><td>PWA</td><td>قابل نصب روی موبایل (Progressive Web App)</td></tr>
+      <tr><td>هاست</td><td>سرور اشتراکی ایران (cPanel + Node.js App) — دیتا داخل کشور</td></tr>
+      <tr><td>استقرار خودکار</td><td>GitHub Actions (بیلد و انتشار) + کرون هاست هر ~۲۰ دقیقه</td></tr>
+    </table>
+
+    <h3 class="blk">امنیت و پایداری</h3>
+    <ul class="dash">
+      <li>سپر امنیتی کامل: سیاست امنیت محتوا (CSP) به‌همراه ۱۰ هدر امنیتی استاندارد، ضد XSS در آپلود تصویر و داده‌های ساخت‌یافته، و محافظت در برابر ترافیک مشکوک روی همه APIهای باز.</li>
+      <li>قفل پنل مدیریت: پس از ۵ تلاش ناموفق ورود، آی‌پی مهاجم به‌مدت ۱۵ دقیقه قفل می‌شود؛ کلید دسترسی فقط نزد مدیر است و پنل از ایندکس گوگل خارج شده است.</li>
+      <li>حریم خصوصی: اطلاعات شخصی بیماران از کل تاریخچه مخزن کد پاک‌سازی شد و رمزهای عبور و کلیدها فقط به‌صورت رمزنگاری‌شده نگهداری می‌شوند.</li>
+    </ul>
+
+    <h3 class="blk">پنل مدیریت اختصاصی (در سطح وردپرس)</h3>
+    <p class="lead">پنل ادمین سایت امکان ویرایش همه اجزای سایت را بدون نیاز به برنامه‌نویس فراهم می‌کند: متن‌ها، عکس‌ها (آپلود مستقیم از گوشی یا کامپیوتر + کتابخانه رسانه)، قیمت‌ها، نمونه‌کارها، نظرات و مقالات بلاگ. آمار بازدیدکنندگان به‌صورت گرافیکی (نمودار روند، میله‌ای و دایره‌ای) نمایش داده می‌شود و دکمه «تست جامع سایت» با ۲۹ بند، سلامت کامل سایت را هر بار به‌صورت خودکار بررسی می‌کند (آخرین نتیجه: ۲۹ از ۲۹ موفق).</p>
+  </div>
+
+  <!-- ۲. محتوا و کلمات کلیدی -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-tag">بخش ۲</span>
+      <div class="sec-title">ساختار محتوا و کلمات کلیدی هدف</div>
+      <div class="sec-divider"></div>
+    </div>
+    <p class="lead">معماری محتوای سایت بر اساس استراتژی «صفحه فرود برای هر کلمه کلیدی» طراحی شده است: برای هر یک از چهار عبارت هدف کارفرما، یک صفحه تخصصی مستقل با تیتر، سوالات متداول، تعرفه و داده ساخت‌یافته اختصاصی ساخته شد. در کنار آن، ۹ صفحه اصلی سایت (خانه، خدمات، تعرفه‌ها، نمونه‌کارها، درباره، سوالات متداول، بلاگ، نظرات و تماس) و ۹ مقاله تخصصی بلاگ، شبکه‌ای از محتوای مرتبط ساخته‌اند که اعتبار موضوعی سایت را نزد گوگل بالا می‌برد.</p>
+    <table>
+      <tr><th style="width:30%">کلمه کلیدی هدف</th><th style="width:30%">صفحه فرود اختصاصی</th><th>وضعیت فعلی</th></tr>
+      <tr><td>جراحی فک</td><td class="en">/jaw-surgery</td><td>ایندکس ✅ — رتبه ۵٫۹ (صفحه اول) سردمدار</td></tr>
+      <tr><td>جراحی چانه</td><td class="en">/chin-surgery</td><td>ایندکس ✅ — در حال رتبه‌گیری</td></tr>
+      <tr><td>ایمپلنت دندان</td><td class="en">/dental-implant</td><td>ایندکس ✅ — در حال رتبه‌گیری</td></tr>
+      <tr><td>ایمپلنت پاسداران</td><td class="en">/implant-pasdaran</td><td>ایندکس ✅ — در حال رتبه‌گیری</td></tr>
+    </table>
+
+    <h3 class="blk">مقالات تخصصی منتشرشده (کلیدواژه‌های بلند)</h3>
+    <p class="lead">هر مقاله با متن ۱۰۰٪ اورجینال و کلیدواژه‌های یونیک نوشته شده و شامل پاسخ‌های سریع قابل استناد برای هوش مصنوعی‌ها، جدول‌های مقایسه‌ای و سوالات متداول اختصاصی است. فهرست مقالات فعلی:</p>
+    <table>
+      <tr><th style="width:52%">موضوع مقاله</th><th>کلیدواژه اصلی</th></tr>
+      <tr><td>راهنمای کامل جراحی ارتوگناتیک</td><td>جراحی ارتوگناتیک / ارتوسرجری</td></tr>
+      <tr><td>هزینه ایمپلنت دندان ۱۴۰۵</td><td>قیمت ایمپلنت دندان ۱۴۰۵</td></tr>
+      <tr><td>نشانه‌های پنهان دندان نهفته و ضرورت جراحی</td><td>دندان نهفته / دندان عقل نهفته</td></tr>
+      <tr><td>جراحی اکسپوز دندان نیش نهفته</td><td>اکسپوز دندان نیش</td></tr>
+      <tr><td>مراقبت‌های بعد از جراحی دهان و فک</td><td>مراقبت بعد از جراحی دندان</td></tr>
+      <tr><td>جراحی شکستگی فک و ترومای صورت</td><td>شکستگی فک</td></tr>
+      <tr><td>آبسه دندان و عفونت فضاهای صورت</td><td>آبسه دندان</td></tr>
+      <tr><td>پریکورونیت و عفونت لثه دندان عقل</td><td>عفونت دندان عقل</td></tr>
+      <tr><td>جراحی ایمپلنت هدایت‌شده دیجیتال</td><td>ایمپلنت دیجیتال</td></tr>
+    </table>
+    <p class="small-note">صفحه تعرفه‌ها نیز با ۲۱ آیتم قیمت ۱۴۰۵ (ایمپلنت برندهای کره‌ای، سوئیسی و برزیلی، جراحی فک، دندان نهفته و…) منتشر شده و داده قیمت لندینگ‌ها از پنل ادمین به‌صورت زنده تغذیه می‌شود.</p>
+  </div>
+
+  <!-- ۳. SEO -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-tag">بخش ۳</span>
+      <div class="sec-title">SEO — سئوی کلاسیک</div>
+      <div class="sec-divider"></div>
+    </div>
+    <p class="lead">سئوی کلاسیک، پایه همه رشد‌های بعدی است: تا وقتی صفحات در گوگل ایندکس نشوند و رتبه نگیرند، هیچ موتور پاسخ یا هوش مصنوعی هم به آن‌ها ارجاع نمی‌دهد. تمرکز این بخش بر فنی‌کردن کامل سایت، داده ساخت‌یافته، و اتصال مستقیم به Google Search Console بوده است.</p>
+    <h3 class="blk">کارهای انجام‌شده</h3>
+    <ul class="dash">
+      <li>بازسازی کامل معماری: انتقال از وردپرس (یک URL هش‌محور غیرقابل ایندکس) به ۸+ صفحه SSR مستقل با URL تمیز، متا اختصاصی و کدنویسی معنایی (semantic HTML).</li>
+      <li>داده ساخت‌یافته کامل (Schema): پیاده‌سازی ۹ نوع اسکیمای استاندارد گوگل شامل Physician (با آدرس، مختصات جغرافیایی، ساعات کاری، امتیاز ۵٫۰ و لینک شبکه‌های اجتماعی)، MedicalProcedure، FAQPage، BreadcrumbList، OfferCatalog و Article.</li>
+      <li>رفع خطای Structured Data: خطای «Affected pages — Item: دکتر پدرام بخشایی» سرچ کنسول در صفحه نظرات به‌صورت ریشه‌ای رفع شد و مارکاپ با الزامات Google Review Snippet سازگار شد.</li>
+      <li>نقشه سایت خودکار: sitemap.xml داینامیک که با هر مقاله جدید خودکار به‌روز می‌شود و از طریق API مستقیم به گوگل سابمیت می‌شود.</li>
+      <li>اتصال کامل به Google Search Console: از طریق سرویس‌اکانت رسمی گوگل (بدون نیاز به دسترسی دستی) — property از نوع Domain.</li>
+      <li>IndexNow: اطلاع‌رسانی لحظه‌ای محتوا به Bing و در نتیجه زنجیره ChatGPT Search، Copilot و DuckDuckGo — ۲۲ URL با کد موفقیت ۲۰۲ ثبت شد.</li>
+      <li>۴ صفحه فرود کلیدواژه‌محور: با تیتر، H1، FAQ و پاسخ کوتاه قابل استناد برای هر چهار عبارت هدف.</li>
+    </ul>
+    <h3 class="blk">نتایج اندازه‌گیری‌شده (Google Search Console)</h3>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="num">۱۷ / ۲۷۰</div><div class="lbl">کلیک / نمایش در ۲۸ روز اول (فقط با صفحه اصلی!)</div></div>
+      <div class="kpi"><div class="num">۵٫۹</div><div class="lbl">میانگین رتبه «جراحی فک» با ۳۳ نمایش</div></div>
+      <div class="kpi"><div class="num">۱۰۰٪</div><div class="lbl">لندینگ‌های کلیدی ایندکس‌شده (۴ از ۴)</div></div>
+    </div>
+    <p class="lead">توجه: این اعداد فقط ابتدای مسیر است — سه کلمه دیگر هنوز وارد دوره داده‌گیری نشده‌اند چون لندینگ‌هایشان تازه ایندکس شده‌اند؛ تجربه نشان می‌دهد رتبه‌گیری واقعی صفحات جدید ۴ تا ۱۲ هفته زمان می‌برد و منحنی رشد از ماه دوم شتاب می‌گیرد.</p>
+  </div>
+
+  <!-- ۴. AEO -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-tag">بخش ۴</span>
+      <div class="sec-title">AEO — بهینه‌سازی موتورهای پاسخ</div>
+      <div class="sec-divider"></div>
+    </div>
+    <p class="lead">AEO یعنی طوری محتوا را ساختار دادن که وقتی کاربر سوالی می‌پرسد («ایمپلنت دندان درد دارد؟»، «نقاهت جراحی فک چند روز است؟»)، پاسخ مستقیم ما در باکس پاسخ گوگل، باکس People Also Ask و پاسخ‌های صوتی نمایش داده شود. در بازار فارسی این فضا هنوز رقابتی نیست و فرصت اول‌بودن وجود دارد.</p>
+    <h3 class="blk">کارهای انجام‌شده</h3>
+    <ul class="dash">
+      <li>پاسخ سریع در همه مقالات: هر مقاله با ۵ پاسخ کوتاه ساخت‌یافته (۲-۳ جمله‌ای) منتشر می‌شود که دقیقاً فرمت مورد علاقه موتورهای پاسخ است.</li>
+      <li>۲۱ سوال متداول تخصصی: صفحه FAQ اختصاصی + FAQ داخل هر ۴ لندینگ، همگی با اسکیمای FAQPage.</li>
+      <li>اسکیمای Speakable: برای دستگاه‌های صوتی (دستیار صوتی) علامت‌گذاری شده است.</li>
+      <li>فایل llms.txt فارسی و غنی: راهنمای اختصاصی برای ربات‌های هوش مصنوعی که موجودیت دکتر، خدمات، تعرفه‌ها و لینک مقالات را یکجا معرفی می‌کند.</li>
+      <li>۱۴ ربات هوش مصنوعی مجاز: robots.txt سایت به همه کرالرهای AI (GPTBot، Perplexity، Claude و…) اجازه کامل داده است.</li>
+      <li>ممیزی خودکار AEO: ایجنت AEO امتیاز هر مقاله را محاسبه می‌کند — امتیاز مقالات فعلی بین ۸۵ تا ۱۰۰ است.</li>
+    </ul>
+  </div>
+
+  <!-- ۵. GEO / AIO -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-tag">بخش ۵</span>
+      <div class="sec-title">GEO / AIO — جست‌وجوی مولد و AI Overviews</div>
+      <div class="sec-divider"></div>
+    </div>
+    <p class="lead">GEO (همان AIO) یعنی دیده‌شدن در پاسخ‌های تولیدی هوش مصنوعی: وقتی کاربر در گوگل، ChatGPT یا Perplexity سوالی می‌پرسد، سیستم‌های AI از منابعی استناد می‌کنند که ساختار، اعتبار و «قابل‌استناد بودن» بالاتری دارند. آنالیز کامل سایت با معیارهای رسمی گوگل (AI Optimization Guide) و داده‌های SE Ranking انجام شد و امتیاز فعلی ۶۳ از ۱۰۰ است — بالاتر از میانگین سایت‌های فارسی پزشکی، اما با گپ‌های مشخص و قابل رفع.</p>
+    <div class="bars">
+      <div class="bar-row"><div class="blabel">دسترسی فنی (SSR + ربات‌های AI)</div><div class="btrack"><div class="bfill" style="width:95%"></div></div><div class="bval">۹۵</div></div>
+      <div class="bar-row"><div class="blabel">ساختار و خوانایی محتوا</div><div class="btrack"><div class="bfill" style="width:80%"></div></div><div class="bval">۸۰</div></div>
+      <div class="bar-row"><div class="blabel">اعتبار و سیگنال برند</div><div class="btrack"><div class="bfill" style="width:55%"></div></div><div class="bval">۵۵</div></div>
+      <div class="bar-row"><div class="blabel">قابل‌استناد بودن پاراگراف‌ها</div><div class="btrack"><div class="bfill" style="width:45%"></div></div><div class="bval">۴۵</div></div>
+      <div class="bar-row"><div class="blabel">محتوای چندرسانه‌ای</div><div class="btrack"><div class="bfill" style="width:40%"></div></div><div class="bval">۴۰</div></div>
+      <div class="bar-row total"><div class="blabel">امتیاز کل GEO</div><div class="btrack"><div class="bfill" style="width:63%"></div></div><div class="bval">۶۳</div></div>
+    </div>
+    <h3 class="blk">تفکیک پلتفرمی</h3>
+    <table>
+      <tr><th style="width:30%">پلتفرم</th><th style="width:16%">امتیاز</th><th>جمع‌بندی</th></tr>
+      <tr><td>Google AI Overviews</td><td>۷۰/۱۰۰</td><td>قوی‌ترین موقعیت ما — چون ۹۲٪ استنادها از صفحات رتبه ۱ تا ۱۰ می‌آید و ما همین تازه را گرفته‌ایم</td></tr>
+      <tr><td>Google AI Mode</td><td>۵۵/۱۰۰</td><td>نیازمند تاریخ به‌روزرسانی روی لندینگ‌ها</td></tr>
+      <tr><td>ChatGPT Search</td><td>۵۰/۱۰۰</td><td>مسیر فنی باز است (IndexNow ✅)؛ گپ اصلی: نبود پروفایل در دایرکتوری‌های پزشکی فارسی</td></tr>
+      <tr><td>Perplexity</td><td>۵۵/۱۰۰</td><td>دسترسی فنی کامل؛ نیازمند سیگنال برند بیشتر</td></tr>
+    </table>
+    <div class="two-col">
+      <div class="col">
+        <div class="card">
+          <h4>نقاط قوت فعلی</h4>
+          <p>رندر سمت سرور کامل (ربات‌های AI بدون جاوااسکریپت هم همه محتوا را می‌بینند)، اسکیمای پزشکی کامل، مجوز همه ۱۴ ربات AI، فایل llms.txt غنی و اطلاع‌رسانی فوری به Bing.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card gold">
+          <h4>گپ‌های شناسایی‌شده</h4>
+          <p>نبود بلاک‌های پاسخ ۱۵۰ کلمه‌ای (استاندارد استناد AI)، نبود تاریخ به‌روزرسانی روی لندینگ‌ها، embed نشدن ویدیوهای آپارات و نبود پروفایل در دایرکتوری‌های پزشکی — همه در نقشه راه بخش ۸ آمده‌اند.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ۶. SXO -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-tag">بخش ۶</span>
+      <div class="sec-title">SXO — تجربه جست‌وجو و هم‌راستایی با SERP</div>
+      <div class="sec-divider"></div>
+    </div>
+    <p class="lead">SXO صفحه ما را با آنچه گوگل واقعاً در نتایج جست‌وجو پاداش می‌دهد مقایسه می‌کند. آنالیز معکوس SERP برای هر ۴ کلمه هدف انجام شد: نوع صفحات برنده، فرمت محتوا، عمق و سیگنال‌های مورد انتظار گوگل استخراج و با صفحات ما تطبیق داده شد. امتیاز ۱۰۰ یعنی هم‌راستایی کامل با انتظارات گوگل.</p>
+    <table>
+      <tr><th style="width:26%">کلمه کلیدی</th><th style="width:14%">امتیاز SXO</th><th>یافته کلیدی آنالیز SERP</th></tr>
+      <tr><td>ایمپلنت پاسداران</td><td>۶۰/۱۰۰</td><td>هم‌راستا — با نقشه گوگل و ستاره امتیاز به ۷۰+ می‌رسد</td></tr>
+      <tr><td>جراحی فک</td><td>۵۶/۱۰۰</td><td>رتبه ۵٫۹ دقیقاً در خوشه صفحات پزشک؛ عمق محتوا باید بیشتر شود</td></tr>
+      <tr><td>جراحی چانه</td><td>۵۵/۱۰۰</td><td>فرصت طلایی کشف شد: تقریباً همه رقبا جراح پلاستیک یا گوش‌وحلق هستند؛ مزیت انحصاری ما «جنیوپلاستی همزمان با جراحی فک» است</td></tr>
+      <tr><td>ایمپلنت دندان</td><td>۵۲/۱۰۰</td><td>ناهماهنگی جدی: هر ۹ نتیجه برتر گوگل صفحه «قیمت با جدول و تاریخ ۱۴۰۵» است؛ صفحه ما جدول قیمت ندارد (داده هست ولی در صفحه جدا)</td></tr>
+    </table>
+    <div class="callout">جمع‌بندی SXO: سایت از نظر فنی سالم است و مشکل «رتبه نگرفتن» ندارد؛ چالش فعلی فرمت محتواست. با افزودن جدول قیمت به لندینگ ایمپلنت و عمق‌دادن به دو لندینگ دیگر، امتیازها به بالای ۷۰ می‌رسد — نقطه‌ای که ورود به ۳ رتبه اول محتمل می‌شود.</div>
+  </div>
+
+  <!-- ۷. اتوماسیون -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-tag">بخش ۷</span>
+      <div class="sec-title">اتوماسیون‌ها — سه ایجنت فعال ۲۴ ساعته</div>
+      <div class="sec-divider"></div>
+    </div>
+    <p class="lead">قلب تپنده پروژه، سه ایجنت خودکاری است که روی زیرساخت رایگان GitHub Actions اجرا می‌شوند و هزینه ماهانه‌ای ندارند. این ایجنت‌ها سایت را به یک موجود زنده تبدیل کرده‌اند که هر روز محتوای جدید تولید می‌کند، خودش را پایش می‌کند و گزارش می‌دهد — بدون دخالت انسانی.</p>
+    <div class="card">
+      <h4>🤖 ایجنت محتوا — هر روز ساعت ۰۷:۰۰ تهران</h4>
+      <p>هر روز صبح یک مقاله تخصصی اورجینال با پاسخ‌های سریع، جدول و FAQ تولید و منتشر می‌کند، تصویر کاور را از وب با موضوع تطبیق می‌دهد و بلافاصله گوگل و Bing را از محتوای جدید مطلع می‌کند. تا امروز ۹ مقاله منتشر کرده است. اجرای آن کاملاً رایگان است (GitHub Actions + Pollinations).</p>
+      <div class="mini">فعالیت هر انتشار در پنل ادمین قابل مشاهده و هر مقاله قبل از انتشار قابل ویرایش است.</div>
+    </div>
+    <div class="card ink">
+      <h4>📊 ایجنت سرچ کنسول — هر روز ساعت ۰۸:۰۰ تهران</h4>
+      <p>از طریق API رسمی گوگل به Search Console متصل است و گزارش روزانه تولید می‌کند: کلیک‌ها، نمایش‌ها، میانگین رتبه هر ۴ کلمه هدف، پربازدیدترین کوئری‌ها و وضعیت ایندکس صفحات کلیدی. گزارش‌ها به‌صورت خودکار در مخزن پروژه آرشیو می‌شوند.</p>
+    </div>
+    <div class="card gold">
+      <h4>🛡️ ایجنت پایش — هر ۳۰ دقیقه</h4>
+      <p>سلامت ۵ صفحه حیاتی (پاسخ‌گویی و سرعت)، وضعیت ایندکس ۴ لندینگ و سلامت نقشه سایت را نیم‌ساعت‌به‌نیم‌ساعت چک می‌کند و فقط در صورت بروز تغییر، هشدار ثبت می‌کند. اگر سایتی داون شود یا صفحه‌ای از ایندکس خارج شود، همان روز می‌دانیم.</p>
+    </div>
+    <p class="small-note">علاوه بر این سه ایجنت، دو ایجنت ممیزی AEO و GEO نیز به‌صورت هفتگی در پنل ادمین اجرا می‌شوند و امتیازهای بهینه‌سازی را رصد می‌کنند.</p>
+  </div>
+
+  <!-- ۸. نقشه راه -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-tag">بخش ۸</span>
+      <div class="sec-title">نقشه راه دوره بعد — ۶ اولویت اجرایی</div>
+      <div class="sec-divider"></div>
+    </div>
+    <p class="lead">بر اساس آنالیز GEO و SXO، شش اقدام زیر بیشترین اثر را روی رتبه و استناد AI دارند و همه قابل اجرای فوری هستند. سه مورد اول را می‌توان مستقیماً در کد سایت پیاده کرد؛ باقی با ورودی محتوایی/تصویری تکمیل می‌شوند.</p>
+    <div class="finding"><div class="fnum">۱</div><div><h4>جدول قیمت داخل صفحه ایمپلنت + بج «به‌روزرسانی: مهر ۱۴۰۵»</h4><p>بستن ناهماهنگی جدی SXO — گوگل در این کلمه جدول برند×قیمت می‌پاداشد؛ داده آماده است و فقط در صفحه جاسازی می‌شود.</p></div></div>
+    <div class="finding"><div class="fnum">۲</div><div><h4>تاریخ به‌روزرسانی روی هر ۴ لندینگ (نمایشی + اسکیما)</h4><p>محتوای تازه‌شده حدود ۳ برابر شانس استناد در AI Overviews دارد؛ الان هیچ لندینگی تاریخ نمایشی ندارد.</p></div></div>
+    <div class="finding"><div class="fnum">۳</div><div><h4>سه بلاک پاسخ ۱۳۴-۱۶۷ کلمه‌ای در هر لندینگ</h4><p>استاندارد طلایی استناد هوش مصنوعی (تعریف زیر H1، بلاک هزینه، بلاک نقاهت) — ضعیف‌ترین بُعد فعلی ما (۴۵/۱۰۰).</p></div></div>
+    <div class="finding"><div class="fnum">۴</div><div><h4>جدول مقایسه‌ای در جراحی فک (هزینه) و جراحی چانه (فیلر/پروتز/جراحی)</h4><p>فرمت مورد علاقه SERP + تقویت تمایز انحصاری «جنیوپلاستی همزمان با ارتوسرجری» که هیچ رقیب پلاستیکی نمی‌تواند ادعا کند.</p></div></div>
+    <div class="finding"><div class="fnum">۵</div><div><h4>سیگنال محلی در لندینگ پاسداران: نقشه + ستاره امتیاز ۵٫۰ + آدرس یکسان با پروفایل گوگل</h4><p>جست‌وجوی «ایمپلنت پاسداران» نیت محلی قوی دارد؛ SERP رقبا آدرس و تلفن در توضیحات نشان می‌دهند.</p></div></div>
+    <div class="finding"><div class="fnum">۶</div><div><h4>Embed دو-سه ویدیوی آپارات در لندینگ‌ها</h4><p>محتوای چندرسانه‌ای ۱۵۶٪ نرخ انتخاب AI را بالا می‌برد؛ کانال آپارات فعال است و فقط لینک embed لازم است.</p></div></div>
+    <h3 class="blk">اقدامات دستی مکمل (سمت کارفرما)</h3>
+    <ul class="dash">
+      <li>تکمیل وریفای Google Business Profile: ثبت آدرس واقعی مطب و تکمیل وریفای — بعد از آن، ماهانه پست و پاسخ خودکار به نظرات فعال می‌شود (ابزار آماده است).</li>
+      <li>ثبت پروفایل در دایرکتوری‌های پزشکی: دکترتو، پذیرش۲۴، نوبت و دکترخوبه — قوی‌ترین سیگنال برند برای ChatGPT و Perplexity در بازار فارسی (این دایرکتوری‌ها در صفحه اول هر ۴ کلمه حضور دارند).</li>
+      <li>ارسال لینک ویدیوهای آپارات برای embed شدن در لندینگ‌ها.</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ================= ENDING ================= -->
+<div class="ending">
+  <div class="badge" style="border:1px solid var(--gold); color:var(--gold); padding:5px 18px; border-radius:999px; font-size:12px; font-weight:600;">زیرساخت آماده است — نوبت رشد است</div>
+  <h2>سایت زنده است، ایندکس شده و اتومات است</h2>
+  <div class="gl"></div>
+  <div class="dom">drpedrambakhshaei.com</div>
+  <p style="margin-top:18px;">همه شش اولویت شناسایی‌شده در همین هفته قابل اجراست و با تکمیل آن‌ها، پروژه وارد فاز «بردن ۳ رتبه اول» و استناد در پاسخ‌های هوش مصنوعی می‌شود. گزارش ماهانه بعدی پیشرفت هر کلمه کلیدی را به‌صورت جداگانه پایش خواهد کرد.</p>
+  <div class="tags">
+    <span class="tag">Next.js 16 · TypeScript</span>
+    <span class="tag">PostgreSQL + Prisma</span>
+    <span class="tag">GitHub Actions CI/CD</span>
+    <span class="tag">Google Search Console API</span>
+    <span class="tag">IndexNow</span>
+    <span class="tag">Schema.org Medical</span>
+  </div>
+</div>
+
+</body>
+</html>

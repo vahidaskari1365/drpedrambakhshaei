@@ -971,3 +971,22 @@ Stage Summary:
 - SXO: jaw 56، chin 55، dental-implant 52 (MISMATCH HIGH: SERP جدول قیمت می‌خواهد)، implant-pasdaran 60
 - گزارش‌ها ذخیره شد: docs/GEO-ANALYSIS.md و docs/SXO-ANALYSIS.md
 - ۶ اولویت اجرا مشخص شد (جدول قیمت در dental-implant، dateModified لندینگ‌ها، بلاک‌های ۱۳۴-۱۶۷ کلمه‌ای، جدول مقایسه، سیگنال محلی، embed آپارات)
+
+---
+Task ID: 24
+Agent: Z.ai Code (main)
+Task: ساخت PDF گزارش پیشرفت پروژه برای کارفرما (فارسی RTL)
+
+Work Log:
+- جمع‌آوری کل تاریخچه از worklog (۲۴ تسک) + داده‌های زنده (sitemap ۲۲ URL، ۹ مقاله، GSC)
+- لود اسکیل pdf + brief creative-flow + fonts.md + overflow.md؛ مسیر RTL → HTML dir=rtl + Playwright
+- ساخت docs/report-src/report.html: ۹ صفحه A4 (کاور + ۷ بخش محتوا + پایان) با فونت Vazirmatn/Estedad و پالت برند سبز/سرمه‌ای/طلایی
+- رفع تداخل‌های cover_validate (خطوط تزئینی → ضخامت ۶-۹px، حلقه‌ها → گرادیان پس‌زمینه بدون overflow)
+- رفع false positive های Pass 2 (تگ‌های inline تو در تو حذف شدند؛ کاور ایزوله: هر دو Pass پاس)
+- Paged.js با RTL محتوا را می‌برید → سوئیچ به --nopaged (Chromium native) → ۹ صفحه کامل
+- QA: pdf_qa.py → PASS کامل (فونت embed، بدون صفحه خالی، بدون overflow، حاشیه متقارن)
+- خروجی: docs/گزارش-پیشرفت-سایت-drpedrambakhshaei.pdf (+ کپی drpedrambakhshaei-progress-report-fa.pdf) — ۸۸۶KB، وکتور
+
+Stage Summary:
+- گزارش کارفرما آماده است: زیرساخت فنی، کلمات کلیدی، کارهای SEO/AEO/GEO/AIO/SXO با امتیازها، اتوماسیون‌ها و نقشه راه ۶ اولویتی
+- HTML منبع قابل‌ویرایش در docs/report-src/report.html نگهداری شد
