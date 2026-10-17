@@ -990,3 +990,21 @@ Work Log:
 Stage Summary:
 - گزارش کارفرما آماده است: زیرساخت فنی، کلمات کلیدی، کارهای SEO/AEO/GEO/AIO/SXO با امتیازها، اتوماسیون‌ها و نقشه راه ۶ اولویتی
 - HTML منبع قابل‌ویرایش در docs/report-src/report.html نگهداری شد
+
+---
+Task ID: 24
+Agent: Z.ai Code (main)
+Task: پاسخ به «گزارش را از کجا دانلود کنم؟» — در دسترس کردن PDF گزارش کارفرما از طریق Preview
+
+Work Log:
+- بررسی docs/: PDF گزارش قبلاً تولید شده بود (drpedrambakhshaei-progress-report-fa.pdf، ۹۰۷KB، ۹ صفحه + نسخه با نام فارسی)
+- کپی PDF به public/report.pdf تا Next.js به‌صورت فایل استاتیک سرو کند
+- تست curl: HTTP 206/200 با هدرهای امنیتی سالم، بایت‌های %PDF-1.7 معتبر
+- افزودن دکمه شناور «دانلود گزارش PDF» (کهربایی، bottom-left) در src/app/(site)/layout.tsx — فقط با شرط NODE_ENV=development، یعنی در بیلد پروداکشن هرگز رندر نمی‌شود
+- تأیید با Agent Browser: PDF در ویوئر مرورگر ۹ صفحه رندر می‌شود (RTL فارسی صحیح)، دکمه روی صفحه اصلی نمایش داده می‌شود، کلیک → GET /report.pdf → 200
+- صفحه اصلی سالم (title: دکتر پدرام بخشایی)، بدون خطای کنسول
+
+Stage Summary:
+- دانلود PDF برای کارفرما از دو راه: ① دکمه «دانلود گزارش PDF» پایین چپ صفحه اصلی Preview ② افزودن /report.pdf به انتهای URL پیش‌نمایش
+- دکمه فقط در dev نمایش داده می‌شود؛ خطر انتشار عمومی در دامین اصلی = صفر
+- فایل‌ها: public/report.pdf (وب) + docs/گزارش-پیشرفت-سایت-drpedrambakhshaei.pdf (نام فارسی)
