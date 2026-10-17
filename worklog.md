@@ -934,3 +934,21 @@ Stage Summary:
 - ایجنت سرچ کنسول کاملاً فعال شد: هر روز ۰۸:۰۰ تهران گزارش خودکار در مخزن + امکان اجرای دستی لحظه‌ای
 - داده اولیه: کل سایت ۱۷ کلیک/۲۷۰ نمایش (فقط صفحه اصلی)؛ جراحی فک رتبه ۵٫۹ با ۳۳ نمایش؛ ۳ کلمه دیگر هنوز داده ندارند (لندینگ‌ها تازه ایندکس شده‌اند)
 - حالا می‌توان ایندکس/رتبه/کوئری‌ها را بدون دسترسی کاربر مستقیم از API رصد و مدیریت کرد
+
+---
+Task ID: 22
+Agent: Z.ai Code (main)
+Task: ایجنت مانیتور ۳۰ دقیقه‌ای + IndexNow + فیکس عامل محتوا + نقشه پلتفرم‌های SEO/AEO/GEO
+
+Work Log:
+- کشف: کامیت‌های [skip ci] دیپلوی را هم می‌بستند → کامیت خالی بدون skip برای فعال‌سازی دیپلوی
+- IndexNow راه‌اندازی شد: کلید f4d23335... (public/{key}.txt) + scripts/indexnow-submit.mjs → سابمیت ۲۲ URL موفق (202) به Bing/Copilot/ChatGPT Search/DuckDuckGo
+- گلوگاه دیپلوی فهمیده شد: گیت‌هاب فقط Release منتشر می‌کند، کرون هاست از releases/latest می‌کشد → فایل کلید بعد از pull هاست زنده شد
+- مانیتور ۳۰ دقیقه‌ای: scripts/gsc/monitor.mjs + .github/workflows/gsc-monitor.yml (cron */30) — سلامت ۵ صفحه، ایندکس ۴ لندینگ، سلامت sitemap؛ کامیت فقط در صورت تغییر؛ run آزمایشی success
+- implant-pasdaran ایندکس شد ✅ (بعد از سابمیت مجدد sitemap) — هر ۴ لندینگ الان داخل گوگل است
+- عامل محتوا امروز کرونش اجرا نشده بود → dispatch دستی → فیلدهای شکست: GitHub Models پاسخ «OK» (موقتی) + Pollinations بدون quickAnswers → fallback ساخت quickAnswers از FAQ + مرحله پینگ IndexNow بعد از انتشار → dispatch مجدد: success، مقاله امروز post-oral-surgery-care منتشر و 200
+- ربات‌های AI در robots.txt همگی مجاز بودند (GPTBot/OAI-SearchBot/PerplexityBot/ClaudeBot/...)
+
+Stage Summary:
+- زیرساخت کامل شد: گزارش روزانه ۰۸:۰۰ + مانیتور هر ۳۰ دقیقه + IndexNow فوری + عامل محتوا روزانه ۰۷:۰۰ با پینگ خودکار
+- برای کاربر بعدی: ثبت‌نام‌های دستی لازم = Bing Webmaster (کلید API)، Google Business Profile (وریفای)، GA4 (اختیاری)، دایرکتوری‌های پزشکی (دکترتو/نی‌نی‌سایت/پذیرش۲۴)
