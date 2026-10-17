@@ -912,3 +912,25 @@ Stage Summary:
 - هر ۴ کلیدواژه هدف اکنون صفحه اختصاصی با title/H1/FAQ/اسکیما و پاسخ کوتاه قابل استناد AI دارند
 - تعرفه‌ها از داده زنده پنل ادمین می‌آیند (priceTabs) — تغییر قیمت در پنل خودکار روی لندینگ‌ها اعمال می‌شود
 - کاربر باید ۴ URL جدید را در سرچ کنسول ثبت/ایندکس کند؛ رتبه‌گیری واقعی چند هفته زمان می‌برد
+
+---
+Task ID: 21
+Agent: Z.ai Code (main)
+Task: اتصال مستقیم به Google Search Console از طریق سرویس اکانت + اتوماسیون گزارش روزانه
+
+Work Log:
+- کاربر سرویس اکانت گوگل (project: armanhamrah) ساخت و JSON کلید را تحویل داد
+- ذخیره امن کلید در secrets/gsc-service-account.json (chmod 600) + gitignore کامل (پوشه secrets/)
+- ساخت scripts/gsc/gsc-lib.mjs: احراز JWT (RS256 با node:crypto) → توکن OAuth → فراخوانی Search Console API بدون هیچ وابستگی خارجی
+- ساخت scripts/gsc/check.mjs: گزارش کامل (کلی/نمایش/رتبه ۲۸روزه + ۴ کلمه هدف + کوئری‌ها/صفحات برتر + نقشه سایت + وضعیت ایندکس ۴ لندینگ با URL Inspection API)
+- ذخیره کلید به‌صورت رمزنگاری‌شده (libsodium sealed box با pynacl) به‌عنوان سکرت GSC_KEY_JSON در گیت‌هاب
+- ساخت .github/workflows/gsc-daily.yml: cron «30 4 * * *» = ۰۸:۰۰ تهران + workflow_dispatch؛ گزارش را در reports/gsc-latest.md کامیت می‌کند ([skip ci])
+- رفع باگ مسیر مطلق کلید (روی رانر گیت‌هاب ENOENT) → مسیر نسبی به import.meta.url
+- ران آزمایشی: بار اول fail، بار دوم success ✅
+- کشف مهم: ۳ لندینگ (jaw-surgery/chin-surgery/dental-implant) ایندکس شده‌اند؛ implant-pasdaran هنوز «URL is unknown to Google»
+- نقشه سایت دوباره با API سابمیت شد (PUT sitemaps) تا گوگل implant-pasdaran را سریع‌تر ببیند
+
+Stage Summary:
+- ایجنت سرچ کنسول کاملاً فعال شد: هر روز ۰۸:۰۰ تهران گزارش خودکار در مخزن + امکان اجرای دستی لحظه‌ای
+- داده اولیه: کل سایت ۱۷ کلیک/۲۷۰ نمایش (فقط صفحه اصلی)؛ جراحی فک رتبه ۵٫۹ با ۳۳ نمایش؛ ۳ کلمه دیگر هنوز داده ندارند (لندینگ‌ها تازه ایندکس شده‌اند)
+- حالا می‌توان ایندکس/رتبه/کوئری‌ها را بدون دسترسی کاربر مستقیم از API رصد و مدیریت کرد
