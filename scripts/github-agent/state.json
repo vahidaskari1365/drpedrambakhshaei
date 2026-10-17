@@ -1,8 +1,9 @@
 {
-  "lastPublishDate": "2026-10-16",
+  "lastPublishDate": "2026-10-17",
   "usedTopicIds": [
     "t-implant-cost-1405",
-    "t-wisdom-signs"
+    "t-wisdom-signs",
+    "t-wisdom-aftercare"
   ],
   "published": [
     {
@@ -22,6 +23,15 @@
       "topicId": "t-wisdom-signs",
       "provider": "pollinations-md",
       "cover": "generated+uploaded"
+    },
+    {
+      "date": "2026-10-17",
+      "slug": "post-oral-surgery-care",
+      "title": "مراقبت‌های بعد از جراحی دندان عقل؛ برنامه دقیق روز اول تا روز هفتم",
+      "words": 677,
+      "topicId": "t-wisdom-aftercare",
+      "provider": "pollinations-md",
+      "cover": "fallback"
     }
   ]
 }
