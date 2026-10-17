@@ -1,0 +1,45 @@
+# گزارش روزانه سرچ کنسول — هر روز ۰۸:۰۰ به وقت تهران
+# گزارش در reports/gsc-latest.md ذخیره و کامیت می‌شود
+name: GSC Daily Report
+
+on:
+  schedule:
+    - cron: '30 4 * * *' # ۰۸:۰۰ تهران (UTC+3:30)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: دریافت مخزن
+        uses: actions/checkout@v4
+
+      - name: نصب Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: نوشتن کلید سرویس اکانت (فقط در حافظه رانر)
+        env:
+          GSC_KEY: ${{ secrets.GSC_KEY_JSON }}
+        run: |
+          mkdir -p secrets
+          printf '%s' "$GSC_KEY" > secrets/gsc-service-account.json
+
+      - name: اجرای گزارش سرچ کنسول
+        run: node scripts/gsc/check.mjs
+
+      - name: کامیت گزارش
+        run: |
+          git config user.name "gsc-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/
+          if git diff --cached --quiet; then
+            echo "گزارش جدیدی نیست"
+          else
+            git commit -m "گزارش روزانه سرچ کنسول [skip ci]"
+            git push
+          fi
