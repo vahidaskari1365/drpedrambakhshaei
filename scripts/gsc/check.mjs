@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { listSites, searchAnalytics, listSitemaps, isoDaysAgo } from './gsc-lib.mjs';
+import { listSites, searchAnalytics, listSitemaps, inspectUrl, isoDaysAgo } from './gsc-lib.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPORT_DIR = path.resolve(__dirname, '../../reports');
@@ -18,6 +18,14 @@ const SITE_CANDIDATES = [
 
 // ۴ کلمه کلیدی هدف کمپین
 const KEYWORDS = ['جراحی فک', 'جراحی چانه', 'ایمپلنت پاسداران', 'ایمپلنت دندان'];
+
+// صفحات فرود هدف برای رصد روزانه ایندکس
+const INSPECT_PAGES = [
+  'https://drpedrambakhshaei.com/jaw-surgery',
+  'https://drpedrambakhshaei.com/chin-surgery',
+  'https://drpedrambakhshaei.com/dental-implant',
+  'https://drpedrambakhshaei.com/implant-pasdaran',
+];
 
 const LATEST = path.join(REPORT_DIR, 'gsc-latest.md');
 const HISTORY_DIR = path.join(REPORT_DIR, 'history');
@@ -114,6 +122,22 @@ async function main() {
     sitemaps = [{ path: `خطا: ${e.message}` }];
   }
 
+  // ۷) وضعیت ایندکس صفحات فرود
+  const inspections = [];
+  for (const url of INSPECT_PAGES) {
+    try {
+      const r = await inspectUrl(site, url);
+      const idx = r.inspectionResult?.indexStatusResult || {};
+      inspections.push({
+        path: url.replace('https://drpedrambakhshaei.com', '/') || '/',
+        verdict: idx.verdict || '?',
+        coverage: idx.coverageState || '-',
+      });
+    } catch (e) {
+      inspections.push({ path: url, verdict: `خطا: ${e.message.slice(0, 80)}`, coverage: '-' });
+    }
+  }
+
   // ۷) ساخت گزارش
   const today = new Date().toISOString().slice(0, 10);
   const report = [];
@@ -163,6 +187,15 @@ async function main() {
     report.push(`- ${s.path} — خطا: ${s.errors ?? '?'} — آخرین دریافت: ${s.lastDownloaded ?? '?'}`);
   }
   report.push(``);
+  report.push(`## 🔎 وضعیت ایندکس صفحات فرود`);
+  report.push(``);
+  report.push(`| صفحه | وضعیت | توضیح |`);
+  report.push(`|---|---|---|`);
+  const verdictFa = { PASS: '✅ ایندکس شده', NEUTRAL: '⏳ در انتظار', FAIL: '❌ مشکل' };
+  for (const i of inspections) {
+    report.push(`| ${i.path} | ${verdictFa[i.verdict] || i.verdict} | ${i.coverage} |`);
+  }
+  report.push(``);
 
   fs.mkdirSync(HISTORY_DIR, { recursive: true });
   const md = report.join('\n');
@@ -177,6 +210,10 @@ async function main() {
     );
   }
   console.log(`\nکلی ۲۸روزه: کلیک=${T.clicks} نمایش=${T.imp} رتبه=${T.pos.toFixed(1)}`);
+  console.log('\n🔎 وضعیت ایندکس لندینگ‌ها:');
+  for (const i of inspections) {
+    console.log(`  ${i.path}: ${verdictFa[i.verdict] || i.verdict}`);
+  }
   console.log(`\n✅ گزارش ذخیره شد: ${LATEST}`);
 }
 

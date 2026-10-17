@@ -72,7 +72,10 @@ export async function gscFetch(url, options = {}) {
     const text = await res.text();
     throw new Error(`GSC API ${res.status}: ${text}`);
   }
-  return res.json();
+  // بعضی پاسخ‌ها (مثل PUT سابمیت نقشه سایت) بدنه خالی ۲۰۴ دارند
+  const text = await res.text();
+  if (!text) return {};
+  return JSON.parse(text);
 }
 
 export function listSites() {
@@ -100,4 +103,10 @@ export function inspectUrl(siteUrl, url) {
 export function isoDaysAgo(n) {
   const d = new Date(Date.now() - n * 86400000);
   return d.toISOString().slice(0, 10);
+}
+
+export function resubmitSitemap(siteUrl, feedpath) {
+  return gscFetch(`${API}/sites/${encodeURIComponent(siteUrl)}/sitemaps/${encodeURIComponent(feedpath)}`, {
+    method: 'PUT',
+  });
 }

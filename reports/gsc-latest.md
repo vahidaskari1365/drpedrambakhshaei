@@ -54,4 +54,13 @@
 
 ## 🗺️ نقشه‌های سایت
 
-- https://drpedrambakhshaei.com/sitemap.xml — خطا: 0 — آخرین دریافت: 2026-10-16T13:57:21.132Z
+- https://drpedrambakhshaei.com/sitemap.xml — خطا: 0 — آخرین دریافت: 2026-10-17T06:09:15.971Z
+
+## 🔎 وضعیت ایندکس صفحات فرود
+
+| صفحه | وضعیت | توضیح |
+|---|---|---|
+| //jaw-surgery | ✅ ایندکس شده | Submitted and indexed |
+| //chin-surgery | ✅ ایندکس شده | Submitted and indexed |
+| //dental-implant | ✅ ایندکس شده | Submitted and indexed |
+| //implant-pasdaran | ⏳ در انتظار | Crawled - currently not indexed |
