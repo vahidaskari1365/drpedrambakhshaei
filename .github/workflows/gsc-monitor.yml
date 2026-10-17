@@ -1,0 +1,49 @@
+# مانیتور ۳۰ دقیقه‌ای — سلامت سایت + وضعیت ایندکس لندینگ‌ها
+# فقط وقتی تغییری نسبت به اجرای قبل باشد، گزارش کامیت می‌شود
+name: Site & Index Monitor
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gsc-monitor
+  cancel-in-progress: true
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: دریافت مخزن
+        uses: actions/checkout@v4
+
+      - name: نصب Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: نوشتن کلید سرویس اکانت
+        env:
+          GSC_KEY: ${{ secrets.GSC_KEY_JSON }}
+        run: |
+          mkdir -p secrets
+          printf '%s' "$GSC_KEY" > secrets/gsc-service-account.json
+
+      - name: اجرای مانیتور
+        run: node scripts/gsc/monitor.mjs
+
+      - name: کامیت در صورت تغییر
+        run: |
+          git config user.name "gsc-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/monitor-latest.md
+          if git diff --cached --quiet; then
+            echo "بدون تغییر"
+          else
+            git commit -m "مانیتور: تغییر وضعیت شناسایی شد [skip ci]"
+            git push
+          fi
