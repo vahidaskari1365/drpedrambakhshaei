@@ -12,6 +12,9 @@
 #     tar با «trailing garbage» می‌مرد) + نام part یکتا برای هر اجرا +
 #     تست سلامت gzip قبل از بازکردن + جایگزینی کامل node_modules
 #     (ترمیم خرابی ناشی از npm install روی هاست)
+# v3.2: محافظ دانلود منجمد (--speed-limit/--speed-time) برای کرون ۳ دقیقه‌ای —
+#     اگر سرعت زیر ۱۰KB/s افت کند بعد از ۶۰ ثانیه اتصال قطع و با resume تلاش
+#     مجدد می‌شود؛ دیگر یک دانلود خواب‌مانده قفل را تا ۴۰ دقیقه نگه نمی‌دارد
 # ============================================================
 set -euo pipefail
 
@@ -70,8 +73,10 @@ download_verified() { # $1=asset-name → مسیر فایل part سالم را �
   local PART=".part-$1.$$"
   # پیام‌های پیشرفت باید به stderr بروند — اگر stdout بروند داخل نام فایل capture می‌شوند!
   echo "$(date '+%F %T') downloading $1 ..." >&2
+  # محافظ کانکشن منجمد: زیر ۱۰KB/s برای ۶۰ ثانیه = قطع و retry با resume
+  # (timeout جزو خطاهای transient است — با --retry حتی روی curl 7.29 هم retry می‌شود)
   # shellcheck disable=SC2086
-  curl -4 -L -C - $CURL_RETRY_FLAGS --max-time 2400 -o "$PART" "$BASE_URL/$1"
+  curl -4 -L -C - $CURL_RETRY_FLAGS --speed-limit 10240 --speed-time 60 --max-time 2400 -o "$PART" "$BASE_URL/$1"
   # تست سلامت کل جریان گیزپ — فایل ناقص/دونوع‌نویسی‌شده هرگز باز نمی‌شود
   if ! gzip -t "$PART" 2>/dev/null; then
     echo "$(date '+%F %T') ERROR: $1 corrupt — دوباره deploy.sh بزنید (از سرعت کم ایران، دانلود از سر گرفته می‌شود)" >&2
