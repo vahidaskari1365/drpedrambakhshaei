@@ -2,8 +2,12 @@
 // بدون هیچ وابستگی خارجی — فقط node:crypto و fetch
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const KEY_PATH = process.env.GSC_KEY_PATH || '/home/z/my-project/secrets/gsc-service-account.json';
+// مسیر کلید نسبت به محل اسکریپت (هم روی سیستم محلی، هم روی رانر گیت‌هاب کار می‌کند)
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const KEY_PATH = process.env.GSC_KEY_PATH || path.resolve(__dirname, '../../secrets/gsc-service-account.json');
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const API = 'https://searchconsole.googleapis.com/webmasters/v3';
 const SCOPE = 'https://www.googleapis.com/auth/webmasters'; // خواندن + مدیریت نقشه سایت

@@ -3,7 +3,11 @@
 // خروجی: reports/gsc-latest.md + reports/history/YYYY-MM-DD.md + خلاصه در stdout
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { listSites, searchAnalytics, listSitemaps, isoDaysAgo } from './gsc-lib.mjs';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const REPORT_DIR = path.resolve(__dirname, '../../reports');
 
 const SITE_CANDIDATES = [
   'sc-domain:drpedrambakhshaei.com',
@@ -15,7 +19,6 @@ const SITE_CANDIDATES = [
 // ۴ کلمه کلیدی هدف کمپین
 const KEYWORDS = ['جراحی فک', 'جراحی چانه', 'ایمپلنت پاسداران', 'ایمپلنت دندان'];
 
-const REPORT_DIR = path.resolve(process.cwd(), 'reports');
 const LATEST = path.join(REPORT_DIR, 'gsc-latest.md');
 const HISTORY_DIR = path.join(REPORT_DIR, 'history');
 
