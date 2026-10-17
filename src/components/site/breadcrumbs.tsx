@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronLeft, Home } from "lucide-react";
 import { useSite } from "./content-provider";
+import { LANDING_LINKS } from "@/lib/landings";
 
 /**
  * نان‌برکرامب دیداری — سئوی ساختاری + ناوبری
@@ -14,7 +15,8 @@ export function Breadcrumbs() {
   const pathname = usePathname();
   if (!pathname || pathname === "/") return null;
   const current = nav.find((n) => n.href === pathname);
-  if (!current) return null;
+  const landing = LANDING_LINKS.find((l) => l.href === pathname);
+  if (!current && !landing) return null;
 
   return (
     <nav
@@ -30,7 +32,7 @@ export function Breadcrumbs() {
       </Link>
       <ChevronLeft className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
       <span aria-current="page" className="font-bold text-emerald-300">
-        {current.label}
+        {current?.label ?? landing?.label}
       </span>
     </nav>
   );

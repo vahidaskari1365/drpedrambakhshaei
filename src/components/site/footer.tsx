@@ -3,13 +3,14 @@
 import { LogoFull } from "./logo";
 import { Phone, MapPin, Instagram, SendHorizontal, MessageCircle, Play, Star } from "lucide-react";
 import { useSite } from "./content-provider";
+import { LANDING_LINKS } from "@/lib/landings";
 
 export function Footer() {
   const { site, nav } = useSite();
   return (
     <footer className="mt-auto bg-petrol-deep text-background/85" role="contentinfo">
       <div className="mx-auto max-w-7xl px-5 pb-8 pt-14 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-3">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* برند */}
           <div>
             <div className="flex items-center gap-2.5">
@@ -43,6 +44,23 @@ export function Footer() {
                   گالری مطب
                 </a>
               </li>
+            </ul>
+          </nav>
+
+          {/* صفحات تخصصی — لندینگ‌های کلیدواژه‌محور */}
+          <nav aria-label="صفحات تخصصی">
+            <h2 className="mb-4 text-sm font-black text-background">صفحات تخصصی</h2>
+            <ul className="space-y-2.5 text-[13px]">
+              {LANDING_LINKS.map((l) => (
+                <li key={l.href}>
+                  <a
+                    href={l.href}
+                    className="text-background/60 transition-colors hover:text-background cursor-pointer"
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </nav>
 

@@ -13,6 +13,12 @@ import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
+/** لینک صفحه فرود تخصصی هر خدمت — سئو لینک‌سازی داخلی با انکر کلیدواژه‌محور */
+const LANDING_FOR_SERVICE: Record<string, { href: string; label: string }> = {
+  jaw: { href: "/jaw-surgery", label: "راهنمای کامل جراحی فک" },
+  implant: { href: "/dental-implant", label: "راهنمای کامل ایمپلنت دندان" },
+};
+
 export function ServicesPage() {
   const { services, implantBrands, whyUs } = useSite();
   return (
@@ -107,6 +113,15 @@ export function ServicesPage() {
                   >
                     تعرفه این خدمت
                   </a>
+                  {LANDING_FOR_SERVICE[s.id] && (
+                    <a
+                      href={LANDING_FOR_SERVICE[s.id].href}
+                      className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/5 px-6 py-3 text-sm font-bold text-primary transition-all duration-300 hover:bg-primary/10 active:scale-95 cursor-pointer"
+                    >
+                      {LANDING_FOR_SERVICE[s.id].label}
+                      <ArrowLeft className="h-4 w-4" />
+                    </a>
+                  )}
                 </div>
               </div>
             </motion.article>
