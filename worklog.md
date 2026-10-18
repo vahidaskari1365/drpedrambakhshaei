@@ -1066,3 +1066,19 @@ Stage Summary:
 - ایندکس خودکار: هر صفحه جدید (لندینگ از دیپلوی یا مقاله از پنل ادمین) حداکثر ~۳ دقیقه بعد از دیده‌شدن در sitemap به IndexNow (Bing/Copilot/ChatGPT Search/DuckDuckGo/Yandex) سابمیت می‌شود — مشروط به رفرش deploy.sh روی هاست به v3.3 (دستور curl از raw به کاربر داده شد)
 - pending کاربر: تأیید Verify در پورتال Bing Webmaster + سابمیت sitemap.xml در پورتال + رفرش deploy.sh
 - گوگل سمت GSC از قبل اتومات است (gsc-daily/monitor)؛ این تسک سمت Bing/موتورهای IndexNow را کامل کرد
+
+---
+Task ID: 27
+Agent: Z.ai Code (main)
+Task: افزودن متاتگ تأیید Bing (msvalidate.01) به head سایت — درخواست کاربر
+
+Work Log:
+- کاربر کد متاتگ msvalidate.01 پورتال Bing را فرستاد (همان کلید فایل XML: 306F5F0994C4D8BA07AB3FD1BA21C554)
+- src/app/layout.tsx: فیلد verification.other با «msvalidate.01» به metadata روت اضافه شد → روی همه صفحات رندر می‌شود (نکته کامنت: متاتگ حذف نشود)
+- bun run lint پاک؛ رندر dev با curl تأیید شد؛ commit 0ff2c28 push شد
+- رلیز ۰۵:۰۴ UTC منتشر شد؛ هاست ~۱۴ دقیقه بعد پول کرد (الگوی */20 — تغییر کرون ۳ دقیقه‌ای هنوز توسط کاربر اعمال نشده به نظر می‌رسد)
+- تأیید زنده پروداکشن: <meta name="msvalidate.01" content="..."/> در HTML صفحه اصلی 200
+
+Stage Summary:
+- هر دو روش تأیید Bing هم‌زمان فعال است: فایل (BingSiteAuth.xml → 200) + متاتگ (msvalidate.01 در head همه صفحات) — کاربر فقط باید در پورتال Verify بزند
+- یادآوری پابرجا به کاربر: crontab */3 + رفرش deploy.sh v3.3 هنوز روی هاست اعمال نشده (پول ۱۴ دقیقه‌ای، فاصله کرون هنوز ۲۰ دقیقه)؛ تا اعمال نشود ایندکس خودکار v3.3 هم ران نمی‌شود
