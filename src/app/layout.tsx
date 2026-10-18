@@ -100,6 +100,13 @@ export const metadata: Metadata = {
     title: "دکتر بخشایی",
   },
   formatDetection: { telephone: true },
+  /* تأیید مالکیت موتورهای جست‌وجو — این متاتگ‌ها نباید حذف شوند */
+  verification: {
+    /* Bing Webmaster Tools (فایل BingSiteAuth.xml هم در ریشه هست) */
+    other: {
+      "msvalidate.01": "306F5F0994C4D8BA07AB3FD1BA21C554",
+    },
+  },
   other: {
     "geo.region": "IR-23",
     "geo.placename": "تهران، پاسداران",
