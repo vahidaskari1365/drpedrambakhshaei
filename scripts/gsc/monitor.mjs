@@ -130,10 +130,14 @@ async function main() {
   // نظر واقعی گوگل برای ریچ‌ریزالت /reviews — از آخرین خزش (ممکن است چند روز عقب باشد)
   try {
     const r = await inspectUrl(SITE, `${HOST}/reviews`);
-    const rr = r.inspectionResult?.richResultsResult || {};
+    const res = r.inspectionResult || {};
+    const rr = res.richResultsResult || {};
+    const idx = res.indexStatusResult || {};
     const types = (rr.richResultTypes || []).map((t) => `${t.type || '?'}=${t.verdict || '?'}`).join('، ') || '—';
+    const crawl = idx.lastCrawlTime ? String(idx.lastCrawlTime).slice(0, 16).replace('T', ' ') : '?';
     lines.push('');
     lines.push(`- ریچ‌ریزالت /reviews از آخرین خزش گوگل: ${rr.verdict || '?'} (${types})`);
+    lines.push(`- آخرین خزش گوگلِ /reviews: ${crawl} UTC — بعد از فیکس اسکیما (۲۰۲۶-۱۰-۱۸ ۰۶:۰۰ UTC)؟ ${idx.lastCrawlTime && String(idx.lastCrawlTime) >= '2026-10-18T06:00' ? '✅ بله — گزارش Review snippets باید سبز شود' : '⏳ هنوز نه — داده گزارش GSC قدیمی است'}`);
   } catch (e) {
     lines.push(`- ریچ‌ریزالت /reviews: خطا: ${e.message.slice(0, 60)}`);
   }
