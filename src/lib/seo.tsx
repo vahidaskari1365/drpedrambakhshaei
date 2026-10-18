@@ -219,10 +219,14 @@ function reviewDateIso(display: string | undefined): string {
 }
 
 /**
- * اسکیمای نظرات — Review مستقل با itemReviewed مرجع به هویت پزشک.
+ * اسکیمای نظرات — Review مستقل با itemReviewed نام‌دار.
  * ⚠️ عمداً فیزیسین را دوباره تعریف نمی‌کند (قبلاً @id تکراری با layout باعث
  * خطای «Affected pages» در سرچ کنسول می‌شد) — layout یک‌بار #physician را
- * با aggregateRating کامل تعریف می‌کند و اینجا فقط ۹ نظر با تاریخ معتبر اضافه می‌شود.
+ * با aggregateRating کامل تعریف می‌کند و اینجا فقط نظرات با تاریخ معتبر اضافه می‌شود.
+ * ⚠️ itemReviewed «بدون @id» است: اگر به #physician اشاره می‌کرد، گوگل نودها را
+ * با @id ادغام می‌کرد و امتیاز تجمیعی layout به داخل هر Review می‌آمد → خطای
+ * «Review has multiple aggregate ratings» در Search Console (۱۰ آیتم نامعتبر).
+ * الگوی درست مطابق نمونه‌های Google: Review مستقل + itemReviewed فقط name/type.
  */
 export function reviewsJsonLd(reviews: ReviewItem[] = REVIEWS as unknown as ReviewItem[]) {
   return {
@@ -231,7 +235,6 @@ export function reviewsJsonLd(reviews: ReviewItem[] = REVIEWS as unknown as Revi
       "@type": "Review",
       itemReviewed: {
         "@type": "Physician",
-        "@id": `${SITE_URL}/#physician`,
         name: "دکتر پدرام بخشایی",
       },
       author: { "@type": "Person", name: r.author },

@@ -3,6 +3,7 @@ import { ServiceLanding } from "@/components/site/pages/service-landing";
 import { JsonLd, OG_IMAGE, ROBOTS_META, SITE_URL, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import { IMPLANT_PASDARAN, CONTENT_UPDATED } from "@/lib/landings";
 import { SITE } from "@/lib/site-data";
+import { getMergedContent } from "@/lib/content-store";
 
 const L = IMPLANT_PASDARAN;
 
@@ -20,7 +21,9 @@ export const metadata: Metadata = {
   robots: ROBOTS_META,
 };
 
-export default function ImplantPasdaranPage() {
+export default async function ImplantPasdaranPage() {
+  /* تعداد نظرات واقعی — همگام با layout و صفحه نظرات (قبلاً hardcoded ۹ بود) */
+  const { reviews } = await getMergedContent();
   return (
     <>
       <JsonLd
@@ -90,7 +93,7 @@ export default function ImplantPasdaranPage() {
           aggregateRating: {
             "@type": "AggregateRating",
             ratingValue: "5.0",
-            reviewCount: "9",
+            reviewCount: String(reviews.length),
             bestRating: "5",
             worstRating: "1",
           },
