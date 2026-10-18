@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import { Info, PhoneCall, BadgeCheck } from "lucide-react";
+import { Info, PhoneCall } from "lucide-react";
 import { useSite } from "./content-provider";
 import { BorderBeam } from "@/components/magicui/border-beam";
 import { cn } from "@/lib/utils";
@@ -132,17 +132,6 @@ export function Prices() {
             </a>
           </div>
         </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.3 }}
-          className="mx-auto mt-8 flex max-w-2xl items-center justify-center gap-2 text-center text-xs leading-6 text-background/50"
-        >
-          <BadgeCheck className="h-4 w-4 shrink-0" />
-          برای مراجعین شهرستانی ۲۰ میلیون تومان تخفیف اسکان در جراحی فک اعمال می‌شود
-        </motion.p>
       </div>
     </section>
   );
