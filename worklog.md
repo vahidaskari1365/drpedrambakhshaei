@@ -1101,3 +1101,20 @@ Stage Summary:
 - هر ۱۰ کلمه کلیدی کاربر الان یا در محتوای واقعی‌اند یا در keywords متا؛ پریکورونیت از صفر تا FAQ تعریفی AEO/GEO رفت (بالاترین پتانسیل کلیک — کوئری اطلاعاتی با رقابت کم در حوزه OMFS)
 - هشدار صداقت: «فوق تخصص» به‌عنوان عنوان دکتر ادعا نشد (در ایران OMFS تخصص است) — در پاسخ FAQ عرف جست‌وجو با مدرک بورد تطبیق داده شد؛ هم E-E-A-T سالم ماند هم کوئری پوشش داده شد
 - pending: Verify پورتال Bing توسط کاربر → بعدش IndexNow سبز می‌شود؛ ۶ اولویت SEO هنوز در صف
+
+---
+Task ID: 29
+Agent: Z.ai Code (main)
+Task: رفع خطای Search Console «Review has multiple aggregate ratings» (۱۰ آیتم نامعتبر در /reviews) + اتومات‌سازی کشف این خطاها
+
+Work Log:
+- ریشه‌یابی با آنالیز JSON-LD زنده /reviews: layout هر صفحه #physician را با aggregateRating منتشر می‌کند و ۱۲ نود Review در /reviews با itemReviewed @id:#physician به آن ارجاع می‌دادند؛ گوگل نودها را با @id ادغام و امتیاز تجمیعی را وارد هر Review می‌کرد ⇒ «multiple aggregate ratings» ×۱۰
+- fix (commit 07ae4d6): reviewsJsonLd — @id از itemReviewed حذف شد (الگوی استاندارد Google: Review مستقل + itemReviewed فقط type/name)؛ aggregateRating واحد روی #physician layout محفوظ ماند (ستاره SERP صفحه اصلی)
+- implant-pasdaran: reviewCount کلینیک که hardcoded «۹» بود با تعداد واقعی نظرات (۱۲) از getMergedContent همگام شد؛ صفحه async شد
+- monitor.mjs بخش ④: لینت JSON-LD روی / و /reviews و /faq و ۴ لندینگ با ۳ قاعده (R1: چند aggregateRating در یک نود، R2: aggregateRating داخل Review، R3: itemReviewed→@id→نود دارای aggregateRating = تله ادغام) + وردیکت ریچ‌ریزالت /reviews از URL Inspection API — از این پس هر ۳۰ دقیقه رگرسیون اسکیما خودکار کشف می‌شود
+- تست لینت روی dev: هر ۴ صفحه ✅ (۱۵ نود /reviews سالم)؛ lint پاک
+
+Stage Summary:
+- اسکیمای /reviews دیگر هیچ مسیری برای رسیدن aggregateRating به Review ندارد؛ پس از خزش مجدد گوگل، ۱۰ آیتم نامعتبر VALID می‌شوند (کاربر باید Validate Fix بزند)
+- پاسخ سوال کاربر: ایجنت GSC قبلاً فقط پرفورمنس روزانه + سلامت/ایندکس ۳۰دقیقه‌ای بود؛ از این پس چک اسکیمای ساختاریافته هم اتومات است — خطا زودتر از ایمیل گوگل در reports/monitor-latest.md دیده می‌شود
+- پاک‌سازی کامل گزارش GSC به خزش مجدد گوگل وابسته است (معمولاً ۲-۴ هفته؛ با Validate Fix سریع‌تر)
