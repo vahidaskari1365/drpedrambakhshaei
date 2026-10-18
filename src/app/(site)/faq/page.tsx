@@ -3,9 +3,9 @@ import { FaqPage } from "@/components/site/pages/faq-page";
 import { JsonLd, OG_IMAGE, ROBOTS_META, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import { getMergedContent } from "@/lib/content-store";
 
-const TITLE = "سوالات متداول جراحی فک، ایمپلنت و دندان نهفته";
+const TITLE = "سوالات متداول جراحی فک، ایمپلنت، پریکورونیت و دندان نهفته";
 const DESC =
-  "پاسخ تخصصی به ۲۱ سوال پرتکرار: ارتوسرجری چیست و چقدر طول می‌کشد؟ ایمپلنت درد دارد؟ نقاهت جراحی فک چند روز است؟ هزینه‌ها چگونه محاسبه می‌شود؟ — پاسخ مستقیم از دکتر پدرام بخشایی";
+  "پاسخ تخصصی به ۲۴ سوال پرتکرار: ارتوسرجری چیست؟ پریکورونیت چیست و چه کسی درمانش می‌کند؟ قیمت ایمپلنت برزیلی؟ ایمپلنت درد دارد؟ نقاهت جراحی فک؟ — پاسخ مستقیم از دکتر پدرام بخشایی، جراح فک و صورت در تهران";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     "درد ایمپلنت دندان",
     "طول عمر ایمپلنت",
     "جراحی دندان نهفته درد دارد",
+    "پریکورونیت چیست",
+    "درمان پریکورونیت",
+    "قیمت ایمپلنت برزیلی",
+    "بهترین جراح فک و صورت تهران",
   ],
   alternates: { canonical: "/faq" },
   robots: ROBOTS_META,

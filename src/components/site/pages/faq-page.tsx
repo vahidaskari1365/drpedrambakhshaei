@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const GROUPS = ["همه", "ارتوسرجری", "ایمپلنت", "دندان نهفته", "هزینه‌ها"] as const;
+const GROUPS = ["همه", "ارتوسرجری", "ایمپلنت", "دندان نهفته", "عمومی", "هزینه‌ها"] as const;
 
 function groupOf(g: string): string {
   if (g === "همه") return "all";

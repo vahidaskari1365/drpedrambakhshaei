@@ -200,7 +200,7 @@ export function Hero() {
             className="mx-auto mt-6 max-w-xl text-[15px] leading-8 text-muted-foreground sm:text-lg lg:mx-0"
           >
             ارتوسرجری، جنیوپلاستی و ایمپلنت‌های پیشرفته با دانش روز دنیا،
-            تکنولوژی نوین و رتبه ۲ بورد تخصصی کشور — در پاسداران تهران.
+            تکنولوژی نوین و رتبه ۲ بورد تخصصی کشور — جراح فک و صورت در پاسداران تهران.
           </motion.p>
 
           <motion.div
