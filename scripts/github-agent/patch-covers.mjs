@@ -55,6 +55,11 @@ const PATCHES = [
     coverImage: "/uploads/cover-guided-implant.jpg",
     coverAlt: "گاید جراحی دیجیتال ایمپلنت روی مدل فک",
   },
+  {
+    slug: "impacted-canine-exposure-surgery",
+    coverImage: "/uploads/cover-canine.jpg",
+    coverAlt: "کانین نهفته در فک بالا — مفهوم جراحی اکسپوز دندان نهفته",
+  },
 ];
 
 let ok = 0;
