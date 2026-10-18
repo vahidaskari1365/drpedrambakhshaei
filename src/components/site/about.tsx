@@ -143,7 +143,7 @@ export function About() {
           </div>
         </div>
 
-        {/* تصویر مطب — نوار سینمایی */}
+        {/* تصویر دکتر — نوار سینمایی */}
         <motion.div
           initial={{ opacity: 0, y: 40, scale: 0.97 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -151,25 +151,29 @@ export function About() {
           transition={{ duration: 1, ease }}
           className="relative mt-14 overflow-hidden rounded-[2.5rem] shadow-[0_40px_90px_-36px] shadow-foreground/40"
         >
-          <div className="relative h-64 sm:h-80 lg:h-96">
-            <Image
-              src="/uploads/clinic-photo-2.jpg"
-              alt="فضای داخلی مطب دکتر پدرام بخشایی"
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 1200px"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/10 to-transparent" />
-            <div className="absolute bottom-5 right-6 left-6 flex flex-wrap items-end justify-between gap-4 sm:bottom-8">
-              <div>
-                <p className="text-xs font-bold tracking-widest text-background/70">متخصص جراحی‌های دهان، فک و صورت</p>
+          <div className="grid sm:grid-cols-5">
+            <div className="relative h-80 sm:col-span-2 sm:h-full sm:min-h-[24rem]">
+              <Image
+                src="/uploads/dr-pedram-omfs.jpg"
+                alt="دکتر پدرام بخشایی — متخصص جراحی دهان، فک و صورت، در مطب"
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 640px) 100vw, 40vw"
+              />
+            </div>
+            <div className="bg-petrol-deep grain relative flex flex-col justify-end gap-5 p-7 sm:col-span-3 sm:p-10">
+              <div className="relative">
+                <p className="text-xs font-bold tracking-widest text-background/60">دکتر پدرام بخشایی</p>
                 <p className="mt-1 text-xl font-black text-background sm:text-2xl">
-                  رتبه ممتاز بورد تخصص
+                  متخصص جراحی دهان، فک و صورت — رتبه ممتاز بورد تخصص
+                </p>
+                <p className="mt-3 max-w-md text-[13px] leading-7 text-background/70">
+                  بیش از ۱۵٬۰۰۰ واحد ایمپلنت و صدها جراحی ارتوگناتیک و بازسازی با برنامه‌ریزی سه‌بعدی دیجیتال
                 </p>
               </div>
               <a
                 href="/prices"
-                className="rounded-full bg-background px-5 py-2.5 text-sm font-bold text-foreground transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+                className="relative inline-flex w-fit items-center gap-2 rounded-full bg-background px-5 py-2.5 text-sm font-bold text-foreground transition-transform hover:scale-105 active:scale-95 cursor-pointer"
               >
                 مشاهده تعرفه‌ها
               </a>

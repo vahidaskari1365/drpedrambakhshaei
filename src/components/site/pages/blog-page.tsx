@@ -2,13 +2,12 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import { BookOpenText, Clock3, CalendarDays, ArrowLeft, Newspaper } from "lucide-react";
+import { Clock3, CalendarDays, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "../page-hero";
 import { useSite } from "../content-provider";
 import { BlurFade } from "@/components/magicui/blur-fade";
-import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -130,32 +129,6 @@ export function BlogPage() {
               ))}
             </div>
           )}
-
-          {/* نوار آماری بلاگ */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease }}
-            className="mt-10 grid gap-4 rounded-[2rem] border border-border/60 bg-card p-6 shadow-sm sm:grid-cols-3"
-          >
-            {[
-              { icon: BookOpenText, label: "مقالات اورجینال", value: `${blog.length.toLocaleString("fa-IR")} مقاله` },
-              { icon: Newspaper, label: "بدون کپی‌برداری", value: "۱۰۰٪ نگارش اختصاصی" },
-              { icon: Clock3, label: "به‌روزرسانی منظم", value: "هر ماه موضوع جدید" },
-            ].map((s) => (
-              <div key={s.label} className="flex items-center gap-3 rounded-2xl bg-background/60 p-4">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                  <s.icon className="h-5 w-5 text-primary" />
-                </span>
-                <span className="flex flex-col">
-                  {/* Magic UI — Animated Gradient Text */}
-                  <AnimatedGradientText className="text-[15px] font-extrabold">{s.value}</AnimatedGradientText>
-                  <span className="text-[12px] text-muted-foreground">{s.label}</span>
-                </span>
-              </div>
-            ))}
-          </motion.div>
         </div>
       </section>
     </>

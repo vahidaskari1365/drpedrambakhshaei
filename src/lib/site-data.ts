@@ -93,7 +93,7 @@ export const SERVICES = [
       { label: "نقاهت تک‌فک", value: "۱ هفته" },
       { label: "نقاهت دو فک", value: "۲ هفته" },
     ],
-    image: "/uploads/hero-bg.png",
+    image: "/uploads/service-ortho-art.png",
   },
   {
     id: "implant",
@@ -108,7 +108,7 @@ export const SERVICES = [
       { label: "شامل فیکسچر و اباتمنت", value: "بله" },
       { label: "پرداخت مرحله‌ای", value: "امکان‌پذیر" },
     ],
-    image: "/uploads/implant-art.png",
+    image: "/uploads/service-implant-art.png",
   },
   {
     id: "wisdom",
@@ -123,7 +123,7 @@ export const SERVICES = [
       { label: "بی‌حسی حین جراحی", value: "بدون درد" },
       { label: "جراحی همزمان ۲ دندان", value: "با تخفیف" },
     ],
-    image: "/uploads/wisdom-art.png",
+    image: "/uploads/service-wisdom-art.png",
   },
 ] as const;
 
@@ -180,7 +180,6 @@ export const WHY_US = {
     "تجربه بیش از ۱۵٬۰۰۰ واحد ایمپلنت دندانی",
     "برنامه‌ریزی سه‌بعدی دیجیتال و تکنیک‌های کم‌تهاجمی",
     "امکان پرداخت مرحله‌ای برای برخی طرح‌های درمانی",
-    "تخفیف اسکان ۲۰ میلیونی برای مراجعین شهرستانی",
   ],
 } as const;
 

@@ -555,10 +555,6 @@ export function HomePage() {
               <WalletCards className="h-4 w-4 text-amber-300" />
               امکان پرداخت مرحله‌ای برای برخی طرح‌های درمانی
             </span>
-            <span className="inline-flex items-center gap-2">
-              <BadgeCheck className="h-4 w-4 text-amber-300" />
-              تخفیف اسکان ۲۰ میلیونی مراجعین شهرستانی
-            </span>
           </motion.div>
         </div>
       </section>
