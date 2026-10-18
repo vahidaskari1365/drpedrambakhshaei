@@ -1,0 +1,29 @@
+name: پچ کاور مقاله‌های موجود — تصاویر موضوعی
+
+on:
+  workflow_dispatch: {}
+
+permissions: {}
+
+concurrency:
+  group: patch-covers
+  cancel-in-progress: false
+
+jobs:
+  patch-covers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: اعمال کاورهای موضوعی روی مقاله‌های دیتابیس
+        env:
+          SITE_URL: https://drpedrambakhshaei.com
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: node scripts/github-agent/patch-covers.mjs

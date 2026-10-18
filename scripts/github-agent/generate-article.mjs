@@ -481,23 +481,26 @@ function buildBlogLinks(existingSlugs, currentSlug) {
 /* ───────────────── کاور — تصویر مرتبط با موضوع ───────────────── */
 
 const FALLBACK_COVERS = [
-  "/uploads/clinic-photo-1.jpg",
-  "/uploads/clinic-photo-2.jpg",
-  "/uploads/doctor-portrait.jpg",
+  "/uploads/service-implant-art.png",
+  "/uploads/service-ortho-art.png",
+  "/uploads/service-wisdom-art.png",
+  "/uploads/blog-ortho-cover.jpg",
+  "/uploads/blog-wisdom-cover.jpg",
 ];
 
 /** تولید تصویر رایگان مرتبط با موضوع + آپلود در کتابخانه رسانه سایت */
 async function makeCover(topic) {
-  const prompt = `${topic.imageEn || "modern dental clinic, professional medical atmosphere"}, professional medical photography, clean bright clinical aesthetic, soft depth of field, no text, no watermark, no people faces visible`;
+  const prompt = `${topic.imageEn || "dental jaw model and dental instruments on clean clinic desk"}, clear recognizable dental medical subject, professional medical product photography, realistic 3d medical visualization, clean bright clinical aesthetic, teal and sage green palette, soft depth of field, no text, no labels, no watermark, no logo, no people faces visible`;
   const seed = Number.parseInt(sha(`${topic.id}:${todayTehran()}`).slice(0, 8), 16) % 1_000_000;
-  const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1344&height=768&nologo=true&model=flux&seed=${seed}`;
+  const makeUrl = (s) => `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1344&height=768&nologo=true&model=flux&seed=${s}`;
 
   try {
     let buf = null;
     for (let attempt = 1; attempt <= 3 && !buf; attempt++) {
+      const attemptSeed = (seed + attempt * 777) % 1_000_000; // هر تلاش seed متفاوت — از خروجی تکراری جلوگیری می‌کند
       try {
-        log("cover", `تولید تصویر رایگان مرتبط با موضوع (seed=${seed}، تلاش ${attempt})`);
-        const res = await fetch(imageUrl, { signal: AbortSignal.timeout(180_000) });
+        log("cover", `تولید تصویر رایگان مرتبط با موضوع (seed=${attemptSeed}، تلاش ${attempt})`);
+        const res = await fetch(makeUrl(attemptSeed), { signal: AbortSignal.timeout(180_000) });
         const mime = (res.headers.get("content-type") || "").split(";")[0];
         if (!res.ok || !mime.startsWith("image/")) {
           const bodyText = (await res.text()).slice(0, 120);
