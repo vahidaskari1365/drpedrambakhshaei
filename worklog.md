@@ -1047,3 +1047,22 @@ Stage Summary:
 - زمان جدید مورد انتظار: بیلد CI ~۳-۵ دقیقه + کش/انتظار کرون ≤۳ دقیقه + دانلود چندمگ ~۱ دقیقه ⇒ push→live حدود ۵-۷ دقیقه (قبلاً تا ۳۰)
 - trigger دستی موجود است: بعد از سبز شدن CI، اجرای bash ~/bin/deploy.sh روی هاست = انتشار بدون انتظار کرون
 - ۶ اولویت SEO (جدول قیمت، بلوک‌های قابل‌استناد، dateModified و...) همچنان pending — بعد از این تسک شروع می‌شود
+
+---
+Task ID: 26
+Agent: Z.ai Code (main)
+Task: افزودن BingSiteAuth.xml (Bing Webmaster Tools) + ایندکس خودکار هر صفحه جدید
+
+Work Log:
+- فایل آپلودی کاربر upload/BingSiteAuth.xml (کلید 306F5F0994C4D8BA07AB3FD1BA21C554) به public/ کپی شد
+- scripts/host-deploy.sh → v3.3: تابع ping_new_urls — هر اجرای کرون نقشه سایت زنده را با baseline (.sitemap-urls) مقایسه و «فقط URLهای تازه» را با POST به api.indexnow.org سابمیت می‌کند (بار اول bootstrap کل sitemap)؛ خطا فقط WARN و هیچ‌وقت دیپلوی را نمی‌شکند
+- تست شبیه‌سازی ۴ سناریو (bootstrap/بدون‌تغییر/صفحه‌جدید/بدون‌تغییر) + اعتبارسنجی JSON payload با node — همه سبز
+- commit e9e9ebf push شد؛ CI رلیز ۰۳:۵۳ UTC را منتشر کرد؛ هاست پول کرد و BingSiteAuth.xml روی پروداکشن 200 شد (تأیید curl)
+- کشف مهم: سابمیت IndexNow الان 403 SiteVerificationNotCompleted برمی‌گرداند (کلید فایل 200/۰.۸s سالم است) — بینگ در حال پردازش تأیید تازه است؛ کرون ۳ دقیقه‌ای v3.3 خودش retry و ترمیم می‌کند
+- لینک دانلود manifest از releases/latest (بدون rate limit API) برای تشخیص انتشار رلیز استفاده شد چون api.github.com برای IP سندباکس rate-limit بود
+
+Stage Summary:
+- تأیید مالکیت Bing با فایل زنده شد: https://drpedrambakhshaei.com/BingSiteAuth.xml → 200
+- ایندکس خودکار: هر صفحه جدید (لندینگ از دیپلوی یا مقاله از پنل ادمین) حداکثر ~۳ دقیقه بعد از دیده‌شدن در sitemap به IndexNow (Bing/Copilot/ChatGPT Search/DuckDuckGo/Yandex) سابمیت می‌شود — مشروط به رفرش deploy.sh روی هاست به v3.3 (دستور curl از raw به کاربر داده شد)
+- pending کاربر: تأیید Verify در پورتال Bing Webmaster + سابمیت sitemap.xml در پورتال + رفرش deploy.sh
+- گوگل سمت GSC از قبل اتومات است (gsc-daily/monitor)؛ این تسک سمت Bing/موتورهای IndexNow را کامل کرد
