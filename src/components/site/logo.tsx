@@ -11,7 +11,7 @@ export function LogoMark({ className }: { className?: string }) {
   return (
     <img
       src="/uploads/logo-badge.webp"
-      alt=""
+      alt="لوگوی دکتر پدرام بخشایی"
       width={144}
       height={144}
       draggable={false}
@@ -38,7 +38,7 @@ export function AnimatedLogo({ className }: { className?: string }) {
       <span aria-hidden className="logo-halo" />
       <img
         src="/uploads/logo-badge.webp"
-        alt=""
+        alt="لوگوی دکتر پدرام بخشایی"
         width={144}
         height={144}
         draggable={false}

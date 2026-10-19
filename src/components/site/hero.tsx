@@ -105,7 +105,7 @@ export function Hero() {
           <div className="kenburns absolute -inset-[4%]">
             <Image
               src="/uploads/hero-bg.png"
-              alt=""
+              alt="مطب دکتر پدرام بخشایی، متخصص جراحی دهان، فک و صورت در تهران"
               fill
               priority
               loading="eager"

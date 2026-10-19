@@ -1208,3 +1208,18 @@ Stage Summary:
 - چرخه کامل کار کرد: push → CI → release → هاست (کرون */2) → IndexNow خودکار
 - از این به بعد هر URL جدید حداکثر ~۳۰ دقیقه بعد (throttle) سابمیت می‌شود؛ وقتی بینگ کلید را validate کند خودکار به endpoint مشترک برمی‌گردد
 - باقی‌مانده کاربر: Verify پورتال Bing + سابمیت sitemap، GSC (TEST LIVE URL + REQUEST INDEXING برای /reviews)، GBP
+
+---
+Task ID: 34
+Agent: Z.ai Code (main)
+Task: رفع هشدار Bing Site Scan — Alt attribute for images is missing
+
+Work Log:
+- اسکن هر ۲۳ URL نقشه سایت: در همه صفحات ۲-۳ تگ img با alt="" خالی — سه منبع مشترک: hero-bg.png (hero.tsx) و logo-badge.webp ×۲ (LogoMark/AnimatedLogo در logo.tsx)
+- alt توصیفی فارسی اضافه شد: لوگو = «لوگوی دکتر پدرام بخشایی»، hero = «مطب دکتر پدرام بخشایی، متخصص جراحی دهان، فک و صورت در تهران» (پشتیبان کلمات برند + تخصص + موقعیت)
+- مورد چهارم alt="" در admin/blog-tab.tsx بدون تغییر ماند — پنل ادمین با robots مسدود است و اسکن نمی‌شود
+- (در همان بازه: کاربر سایت را از GSC به Bing Webmaster import کرد — sitemap سابمیت شد، Status=Processing؛ AI Performance نشان داد Copilot ۳ بار صفحه اصلی را cite کرده)
+
+Stage Summary:
+- هشدار Alt missing بینگ پس از دیپلوی رفع می‌شود؛ Re-scan بعدی بینگ باید صفر برگرداند
+- نکته: alt="" برای تصاویر تزئینی از نظر a11y درست است ولی اسکنر بینگ آن را هشدار می‌دهد — از این به بعد alt توصیفی حتی برای دکوراتیوها
