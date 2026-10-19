@@ -19,6 +19,12 @@
 #     مقایسه می‌شود و فقط URLهای تازه به IndexNow سابمیت می‌شوند
 #     (Bing/Copilot/ChatGPT Search/DuckDuckGo/Yandex). خطا فقط لاگ می‌شود و
 #     هیچ‌وقت دیپلوی را نمی‌شکند.
+# v3.4: کشف عملی — بینگ تا fetch نکردن فایل کلید روی endpoint مشترک 403 می‌دهد
+#     (یاندکس همان کلید را 200/202 قبول می‌کند) → پس از ردشدن endpoint مشترک،
+#     fallback به yandex.com/indexnow. baseline فقط در موفقیت جابه‌جا می‌شود
+#     (در شکست، دفعه بعد همان URLها retry می‌شوند) + throttle ۳۰ دقیقه‌ای
+#     ضداسپم روی کرون ۲ دقیقه‌ای + بوت‌استرپ: تا اولین سابمیت موفق، کل نقشه
+#     سابمیت می‌شود (.indexnow-ok فقط بعد از اولین موفقیت ساخته می‌شود).
 # ============================================================
 set -euo pipefail
 
@@ -103,17 +109,29 @@ pull() { # $1=asset-name — دانلود + تست + بازکردن
 
 # ── v3.3: ایندکس خودکار صفحات جدید ──────────────────────────────
 # نقشه سایت زنده را می‌گیرد، با نسخه قبل مقایسه می‌کند و فقط URLهای تازه را
-# به IndexNow می‌دهد. چون کرون هر ۳ دقیقه اجرا می‌شود، هر صفحه جدید (لندینگ
+# به IndexNow می‌دهد. چون کرون هر ۲ دقیقه اجرا می‌شود، هر صفحه جدید (لندینگ
 # جدید از دیپلوی یا مقاله جدید پنل ادمین) حداکثر چند دقیقه بعد سابمیت می‌شود.
 ping_new_urls() {
+  # throttle: حداکثر هر ۳۰ دقیقه یک تلاش سابمیت — کرون ۲ دقیقه‌ای است و در دوره
+  # 403 بینگ نباید هر ۲ دقیقه کل نقشه را اسپم کنیم
+  local NOW LAST
+  NOW=$(date +%s)
+  LAST=$(cat .indexnow-last 2>/dev/null || echo 0)
+  if [ $((NOW - LAST)) -lt 1800 ]; then return 0; fi
   local SM=".sitemap.$$.xml"
   curl -4 -sL --max-time 60 -o "$SM" "$SITE/sitemap.xml" 2>/dev/null || { rm -f "$SM"; return 0; }
   grep -o '<loc>[^<]*</loc>' "$SM" | sed -e 's|^<loc>||' -e 's|</loc>$||' | sort -u > .sitemap-urls.new || true
   rm -f "$SM"
   [ -s .sitemap-urls.new ] || { rm -f .sitemap-urls.new; return 0; }
-  # URLهای تازه = در نسخه قبل نبودند (بار اول: کل نقشه = سابمیت بوت‌استرپ)
+  # URLهای تازه = در نسخه قبل نبودند
+  # بوت‌استرپ: تا اولین سابمیت «موفق» (.indexnow-ok) کل نقشه سابمیت می‌شود —
+  # اگر اولین تلاش 403 بخورد، دفعه بعد دوباره کل نقشه تلاش می‌شود
   local NEW_LIST
-  NEW_LIST=$(comm -13 .sitemap-urls .sitemap-urls.new 2>/dev/null || cat .sitemap-urls.new)
+  if [ -f .indexnow-ok ]; then
+    NEW_LIST=$(comm -13 .sitemap-urls .sitemap-urls.new 2>/dev/null || cat .sitemap-urls.new)
+  else
+    NEW_LIST=$(cat .sitemap-urls.new)
+  fi
   if [ -n "$NEW_LIST" ]; then
     local JSON=".indexnow.$$.json" FIRST=1 U CODE
     {
@@ -126,17 +144,33 @@ ping_new_urls() {
       done <<< "$NEW_LIST"
       printf ']}'
     } > "$JSON"
+    date +%s > .indexnow-last
+    local EP CODE
+    EP='https://api.indexnow.org/indexnow'
     CODE=$(curl -4 -sL --max-time 90 -o /dev/null -w '%{http_code}' -X POST \
       -H 'Content-Type: application/json; charset=utf-8' --data-binary @"$JSON" \
-      'https://api.indexnow.org/indexnow' 2>/dev/null || echo 000)
+      "$EP" 2>/dev/null || echo 000)
+    if [ "$CODE" != "200" ] && [ "$CODE" != "202" ]; then
+      # endpoint مشترک رد کرد (تا validation کلید، بینگ 403 می‌دهد)
+      # → همان درخواست با endpoint یاندکس (کلید را همین حالا قبول می‌کند)
+      EP='https://yandex.com/indexnow'
+      CODE=$(curl -4 -sL --max-time 90 -o /dev/null -w '%{http_code}' -X POST \
+        -H 'Content-Type: application/json; charset=utf-8' --data-binary @"$JSON" \
+        "$EP" 2>/dev/null || echo 000)
+    fi
     if [ "$CODE" = "200" ] || [ "$CODE" = "202" ]; then
-      echo "$(date '+%F %T') indexnow: $(printf '%s\n' "$NEW_LIST" | wc -l | tr -d ' ') new URL(s) submitted"
+      echo "$(date '+%F %T') indexnow: $(printf '%s\n' "$NEW_LIST" | wc -l | tr -d ' ') new URL(s) submitted via $EP"
+      date +%s > .indexnow-ok
+      # baseline فقط در موفقیت جابه‌جا می‌شود — در شکست، دفعه بعد همان URLها retry می‌شوند
+      mv .sitemap-urls.new .sitemap-urls
     else
-      echo "$(date '+%F %T') WARN: indexnow ping failed (http $CODE) — ignored"
+      echo "$(date '+%F %T') WARN: indexnow ping failed (http $CODE) — retry in ~30min"
+      rm -f .sitemap-urls.new
     fi
     rm -f "$JSON"
+  else
+    mv .sitemap-urls.new .sitemap-urls
   fi
-  mv .sitemap-urls.new .sitemap-urls
 }
 
 CHANGED=0

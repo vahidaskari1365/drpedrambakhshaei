@@ -1175,3 +1175,21 @@ Stage Summary:
 - مشکل «عکس‌های بی‌ربط بلاگ» ریشه‌ای حل شد — هم کاورهای موجود، هم فال‌بک‌ها و پرامپت مقاله‌های آینده ایجنت
 - زیرساخت جدید ماندگار: PATCH API برای آپدیت کاور بدون دست‌زدن به متن + workflow قابل استفاده مجدد
 - کل پنج درخواست کاربر (Task 31+32) روی پروداکشن سبز است
+
+---
+Task ID: 33
+Agent: Z.ai Code (main)
+Task: کرون ۲ دقیقه‌ای هاست + تشخیص و رفع 403 ایندکس‌نو (host-deploy v3.4)
+
+Work Log:
+- کاربر کرون */2 + رفرش deploy.sh + اجرای دستی را زد: up-to-date ولی WARN indexnow 403
+- تشخیص با تست دستی سه endpoint: فایل کلید روی سایت 200 و درست؛ api.indexnow.org=403؛ bing.com/indexnow=403؛ yandex.com/indexnow GET=202 و POST=200 ⇒ کلید معتبر است، بینگ فقط هنوز فایل کلید را fetch/validate نکرده (رفتار شناخته‌شده بینگ: تا validation، 403)
+- باگ v3.3 کشف شد: در 403 هم baseline جابه‌جا می‌شد ⇒ URLها برای همیشه از قلم می‌افتادند؛ به‌علاوه بوت‌استرپِ 403‌خورده دیگر retry نمی‌شد
+- host-deploy.sh → v3.4: fallback به yandex.com/indexnow بعد از رد شدن endpoint مشترک؛ baseline فقط در موفقیت (200/202) جابه‌جا می‌شود؛ throttle ۳۰ دقیقه‌ای (.indexnow-last) برای کرون ۲ دقیقه‌ای؛ بوت‌استرپ با .indexnow-ok — تا اولین سابمیت موفق، کل نقشه هر تلاش سابمیت می‌شود
+- تست: bash -n OK + شبیه‌سازی تابع واقعی در /tmp — بوت‌استرپ ۲۳ URL از مسیر یاندکس موفق، throttle بی‌صدا، run بدون URL جدید بی‌صدا
+- commit + push → CI رلیز می‌کند → هاست با کرون */2 خودکار می‌کشد (نیازی به اقدام کاربر نیست)
+
+Stage Summary:
+- ایندکس‌نو دیگر تک‌نقطه‌سنگال نیست: مسیر یاندکس فعال است و URLها از همین حالا سابمیت می‌شوند؛ بینگ خودش بعد از validation کلید (چند ساعت تا ~۱ روز) 200 می‌دهد و مسیر اصلی برمی‌گردد
+- در deploy.log هاست از این به بعد: «submitted via https://yandex.com/indexnow» یا «submitted via https://api.indexnow.org/indexnow»
+- یادآوری پابرجا: Verify در پورتال Bing Webmaster + سابمیت sitemap.xml هنوز کار نشده است
