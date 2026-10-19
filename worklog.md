@@ -1193,3 +1193,18 @@ Stage Summary:
 - ایندکس‌نو دیگر تک‌نقطه‌سنگال نیست: مسیر یاندکس فعال است و URLها از همین حالا سابمیت می‌شوند؛ بینگ خودش بعد از validation کلید (چند ساعت تا ~۱ روز) 200 می‌دهد و مسیر اصلی برمی‌گردد
 - در deploy.log هاست از این به بعد: «submitted via https://yandex.com/indexnow» یا «submitted via https://api.indexnow.org/indexnow»
 - یادآوری پابرجا: Verify در پورتال Bing Webmaster + سابمیت sitemap.xml هنوز کار نشده است
+
+---
+Task ID: 33-b
+Agent: Z.ai Code (main)
+Task: تأیید نهایی اجرای host-deploy v3.4 روی هاست
+
+Work Log:
+- کاربر رفرش deploy.sh را زد؛ خروجی هاست: دانلود app-20261019-054325 (10.1MB در ۱۹ ثانیه) → DEPLOYED OK → «indexnow: 23 new URL(s) submitted via https://yandex.com/indexnow»
+- یعنی بوت‌استرپ کامل نقشه سایت (۲۳ URL) با موفقیت از مسیر fallback یاندکس سابمیت شد — مسیر 403 بینگ دور زده شد
+- چک سلامت پروداکشن بعد از دیپلوی: / و /blog و /reviews و /about و /dental-implant و /jaw-surgery و sitemap.xml همگی 200
+
+Stage Summary:
+- چرخه کامل کار کرد: push → CI → release → هاست (کرون */2) → IndexNow خودکار
+- از این به بعد هر URL جدید حداکثر ~۳۰ دقیقه بعد (throttle) سابمیت می‌شود؛ وقتی بینگ کلید را validate کند خودکار به endpoint مشترک برمی‌گردد
+- باقی‌مانده کاربر: Verify پورتال Bing + سابمیت sitemap، GSC (TEST LIVE URL + REQUEST INDEXING برای /reviews)، GBP
