@@ -175,6 +175,24 @@ function AuthorBox({ article }: { article: BlogArticle }) {
 
 /* ---------- رندر بلاک‌ها ---------- */
 
+/**
+ * تبدیل **بولد** مارک‌داون به <strong> — خروجی ایجنت محتوا در متن p و آیتم‌های
+ * لیست مارک‌داون ساده دارد؛ بدون این پارسر، ستاره‌ها خام رندر می‌شدند.
+ */
+function withBold(text: string): React.ReactNode[] {
+  return text
+    .split(/\*\*(.+?)\*\*/g)
+    .map((part, i) =>
+      i % 2 === 1 ? (
+        <strong key={i} className="font-extrabold text-foreground">
+          {part}
+        </strong>
+      ) : (
+        part
+      )
+    );
+}
+
 function BlockRenderer({ block }: { block: ArticleBlock }) {
   switch (block.type) {
     case "h2":
@@ -189,7 +207,7 @@ function BlockRenderer({ block }: { block: ArticleBlock }) {
     case "h3":
       return <h3 className="pt-4 text-[16.5px] font-extrabold leading-8">{block.text}</h3>;
     case "p":
-      return <p className="text-[14.5px] leading-8.5 text-foreground/85 lg:leading-9">{block.text}</p>;
+      return <p className="text-[14.5px] leading-8.5 text-foreground/85 lg:leading-9">{withBold(block.text)}</p>;
     case "list":
       return block.ordered ? (
         <ol className="my-3 space-y-3.5">
@@ -198,7 +216,7 @@ function BlockRenderer({ block }: { block: ArticleBlock }) {
               <span className="mt-0.5 flex h-6.5 w-6.5 shrink-0 items-center justify-center rounded-full bg-primary/12 text-[12px] font-black text-primary">
                 {i + 1}
               </span>
-              <span className="text-[14px] leading-8 text-foreground/85">{item}</span>
+              <span className="text-[14px] leading-8 text-foreground/85">{withBold(item)}</span>
             </li>
           ))}
         </ol>
@@ -207,7 +225,7 @@ function BlockRenderer({ block }: { block: ArticleBlock }) {
           {block.items.map((item, i) => (
             <li key={i} className="flex gap-3">
               <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-              <span className="text-[14px] leading-8 text-foreground/85">{item}</span>
+              <span className="text-[14px] leading-8 text-foreground/85">{withBold(item)}</span>
             </li>
           ))}
         </ul>

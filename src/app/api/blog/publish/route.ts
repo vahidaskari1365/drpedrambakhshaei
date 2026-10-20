@@ -58,6 +58,34 @@ export async function GET(request: Request) {
 }
 
 /**
+ * DELETE — حذف مقاله از دیتابیس (ردیف تکراری/کهنه که اسلاگ متفاوت دارد)
+ * بدنه: { slug } — با x-admin-key
+ */
+export async function DELETE(request: Request) {
+  const denied = checkAdmin(request);
+  if (denied) return denied;
+  try {
+    const body = (await request.json()) as { slug?: string };
+    const slug = body.slug?.trim();
+    if (!slug) {
+      return NextResponse.json({ ok: false, error: "slug الزامی است" }, { status: 400 });
+    }
+    const { db } = await import("@/lib/db");
+    const row = await db.blogPost.findUnique({ where: { id: slug }, select: { id: true } });
+    if (!row) {
+      return NextResponse.json({ ok: false, error: `مقاله «${slug}» پیدا نشد` }, { status: 404 });
+    }
+    await db.blogPost.delete({ where: { id: slug } });
+    return NextResponse.json({ ok: true, slug, action: "deleted" });
+  } catch (e) {
+    return NextResponse.json(
+      { ok: false, error: e instanceof Error ? e.message : "خطای ناشناخته" },
+      { status: 500 }
+    );
+  }
+}
+
+/**
  * PATCH — به‌روزرسانی جزئی فیلدهای کاور مقاله موجود (بدون دست‌زدن به متن)
  * بدنه: { slug, coverImage, coverAlt? } — فقط slug و coverImage الزامی‌اند
  * کاور در دو لایه ذخیره می‌شود (ستون coverImage + JSON خود مقاله) و هر دو آپدیت می‌شوند

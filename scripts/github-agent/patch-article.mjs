@@ -38,6 +38,29 @@ for (const f of files) {
     failed++;
     continue;
   }
+  // حالت حذف: { "_delete": true, "slug": "..." } → DELETE /api/blog/publish
+  if (body?._delete === true) {
+    if (!body?.slug) {
+      console.error(`${f} → پچ حذف بدون slug`);
+      failed++;
+      continue;
+    }
+    const res = await fetch(`${SITE}/api/blog/publish`, {
+      method: "DELETE",
+      headers: { "content-type": "application/json", "x-admin-key": KEY },
+      body: JSON.stringify({ slug: body.slug }),
+    });
+    const json = await res.json().catch(() => ({}));
+    console.log(`${f} → DELETE ${body.slug} → HTTP ${res.status} ${JSON.stringify(json)}`);
+    if (!res.ok || json?.ok !== true) {
+      failed++;
+      continue;
+    }
+    rmSync(path);
+    console.log(`${f} → حذف انجام شد و از صف پچ حذف شد`);
+    continue;
+  }
+
   if (!body?.slug || !body?.article || !Array.isArray(body.article.blocks)) {
     console.error(`${f} → ساختار پچ نامعتبر (slug/article/blocks)`);
     failed++;

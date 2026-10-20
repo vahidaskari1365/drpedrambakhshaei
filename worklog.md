@@ -1241,3 +1241,19 @@ Work Log:
 Stage Summary:
 - زیرساخت پچ مقاله بدون دست‌زدن به متن/تاریخ/کاور (assembleArticle از article کامل با اولویت src استفاده می‌کند؛ publishDateFa و cover حفظ می‌شود)
 - یادآوری: کیفیت خروجی ایجنت محتوا باید بررسی شود — این مقاله ۶۰۱ کلمه چند خطای محتوایی دیگر هم دارد (ریسک کلی ایجنت)
+
+---
+Task ID: 35-b
+Agent: Z.ai Code (main)
+Task: حذف ردیف تکراری قدیمی مقاله + پارسر **بولد** رندر مقاله
+
+Work Log:
+- کشف حین تأیید: مقاله /blog/immediate-implant-loading (نسخه کهنه ۱۰-۱۸ با متن هالوسینه) با آدرس جدا زنده است — محتوای تکراری SEO + در flight payload همه صفحات هم تزریق می‌شد؛ هیچ لینک داخلی به آن نیست (حذف امن)
+- DELETE /api/blog/publish (x-admin-key) اضافه شد — حذف ردیف برای تکراری‌ها/کهنه‌ها
+- patch-article.mjs پشتیبانی {"_delete":true,"slug":...} گرفت؛ فایل پچ delete-immediate-implant-loading.json ساخته شد
+- رندر مقاله: پارسر withBold اضافه شد — **بولد** مارک‌داون خروجی ایجنت در p و آیتم‌های لیست به <strong> تبدیل می‌شود (قبلاً ستاره‌ها خام نمایش داده می‌شدند)
+- نکته ریشه‌ای کشف‌شده: publishPost idempotent است ولی ایجنت محتوا در هر اجرای مجدد slug با پسوند جدید می‌سازد (immediate-implant-loading ← immediate-implant-loading-dee79) ⇒ ردیف تکراری؛ باید در نسخه بعدی generate-article.mjs از baseSlug پایدار استفاده کند
+
+Stage Summary:
+- /blog/immediate-implant-loading بعد از اجرای workflow باید 404 شود و رشته‌های کهنه از payload همه صفحات پاک شوند
+- رندر **بولد** روی همه مقاله‌های DB اعمال می‌شود (فیکس عمومی، نه فقط این مقاله)
