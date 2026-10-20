@@ -1,14 +1,14 @@
-# 🩺 مانیتور سایت — 2026-10-19 20:46 UTC
+# 🩺 مانیتور سایت — 2026-10-20 00:00 UTC
 
 ## سلامت صفحات
 
 | صفحه | وضعیت | زمان پاسخ |
 |---|---|---|
-| / | ❌ fetch failed | 10543ms |
-| /jaw-surgery | ❌ fetch failed | 10494ms |
-| /chin-surgery | ❌ fetch failed | 10495ms |
-| /dental-implant | ❌ fetch failed | 10496ms |
-| /implant-pasdaran | ❌ fetch failed | 10495ms |
+| / | ✅ 200 | 1032ms |
+| /jaw-surgery | ✅ 200 | 811ms |
+| /chin-surgery | ✅ 200 | 214ms |
+| /dental-implant | ✅ 200 | 777ms |
+| /implant-pasdaran | ✅ 200 | 224ms |
 
 ## وضعیت ایندکس لندینگ‌ها
 
@@ -21,22 +21,22 @@
 
 ## نقشه سایت
 
-- دریافت نقشه سایت: ❌ خطا
-- لندینگ‌های غایب در نقشه: ❌ /jaw-surgery, /chin-surgery, /dental-implant, /implant-pasdaran
+- دریافت نقشه سایت: ✅ 200 (890ms)
+- لندینگ‌های غایب در نقشه: ✅ هیچ
 
 ## سلامت JSON-LD
 
 | صفحه | نودها | مشکلات |
 |---|---|---|
-| / | ? | خطا: fetch failed |
-| /reviews | ? | خطا: fetch failed |
-| /faq | ? | خطا: fetch failed |
-| /jaw-surgery | ? | خطا: fetch failed |
-| /chin-surgery | ? | خطا: fetch failed |
-| /dental-implant | ? | خطا: fetch failed |
-| /implant-pasdaran | ? | خطا: fetch failed |
+| / | 2 | ✅ سالم |
+| /reviews | 15 | ✅ سالم |
+| /faq | 4 | ✅ سالم |
+| /jaw-surgery | 6 | ✅ سالم |
+| /chin-surgery | 6 | ✅ سالم |
+| /dental-implant | 6 | ✅ سالم |
+| /implant-pasdaran | 7 | ✅ سالم |
 
 - ریچ‌ریزالت /reviews از آخرین خزش گوگل: PASS (—)
 - آخرین خزش گوگلِ /reviews: 2026-10-17 10:47 UTC — بعد از فیکس اسکیما (۲۰۲۶-۱۰-۱۸ ۰۶:۰۰ UTC)؟ ⏳ هنوز نه — داده گزارش GSC قدیمی است
 
-**جمع‌بندی:** ⚠️ 6 مشکل پیدا شد
+**جمع‌بندی:** ✅ همه‌چیز سالم
