@@ -27,6 +27,28 @@ if (files.length === 0) {
   process.exit(0);
 }
 
+/**
+ * fetch با retry — مسیر GitHub Runner → سرور ایران نوسان دارد (Connect Timeout
+ * های کوتاه)؛ با ۵ تلاش و فاصله صعودی، خطای گذرا خنثی می‌شود.
+ */
+async function fetchRetry(url, options = {}, attempts = 5) {
+  let lastErr;
+  for (let i = 1; i <= attempts; i++) {
+    try {
+      return await fetch(url, {
+        ...options,
+        signal: AbortSignal.timeout(60_000), // connect+read تا ۶۰ ثانیه
+      });
+    } catch (e) {
+      lastErr = e;
+      const wait = i * 10_000;
+      console.log(`  تلاش ${i}/${attempts} ناموفق (${e?.cause?.code || e.code || e.message}) — ${wait / 1000} ثانیه صبر…`);
+      if (i < attempts) await new Promise((r) => setTimeout(r, wait));
+    }
+  }
+  throw lastErr;
+}
+
 let failed = 0;
 for (const f of files) {
   const path = join(DIR, f);
@@ -45,7 +67,7 @@ for (const f of files) {
       failed++;
       continue;
     }
-    const res = await fetch(`${SITE}/api/blog/publish`, {
+    const res = await fetchRetry(`${SITE}/api/blog/publish`, {
       method: "DELETE",
       headers: { "content-type": "application/json", "x-admin-key": KEY },
       body: JSON.stringify({ slug: body.slug }),
@@ -66,7 +88,7 @@ for (const f of files) {
     failed++;
     continue;
   }
-  const res = await fetch(`${SITE}/api/blog/publish`, {
+  const res = await fetchRetry(`${SITE}/api/blog/publish`, {
     method: "POST",
     headers: { "content-type": "application/json", "x-admin-key": KEY },
     body: JSON.stringify(body),
