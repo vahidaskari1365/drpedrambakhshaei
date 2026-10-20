@@ -1,0 +1,29 @@
+name: اعمال پچ محتوای مقاله‌ها (patches/)
+
+on:
+  workflow_dispatch: {}
+
+permissions: {}
+
+concurrency:
+  group: patch-article
+  cancel-in-progress: false
+
+jobs:
+  patch-article:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: اعمال فایل‌های پچ روی دیتابیس هاست
+        env:
+          SITE_URL: https://drpedrambakhshaei.com
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: node scripts/github-agent/patch-article.mjs
