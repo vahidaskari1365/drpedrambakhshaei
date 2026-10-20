@@ -1274,3 +1274,16 @@ Work Log:
 Stage Summary:
 - فیکس‌های آماده push: article-page.tsx (visible-always)، پچ H2 مقاله، حذف پچ کهنه، GA4 skeleton
 - آموزش: محتوای پشت انیمیشن whileInView برای صفحات محتوایی/SEO ممنوع — فقط انیمیشن‌های mount-time (animate) مجاز است
+
+---
+Task ID: 36-a
+Agent: Z.ai Code (main)
+Task: فعال‌سازی GA4 با شناسه کاربر
+
+Work Log:
+- کاربر Measurement ID را فرستاد: G-FN9XT2H1R3 (Stream ID 16163728211، Stream: Dr Pedram Bakhshaei)
+- GA_MEASUREMENT_ID در src/components/site/google-analytics.tsx از "" به "G-FN9XT2H1R3" تغییر کرد
+- push → CI → release → cron هاست (*/2) → باید تگ gtag روی همه صفحات لایو شود
+
+Stage Summary:
+- GA4 فعال شد؛ تست: Reports → Realtime باید بازدید را نشان دهد؛ قدم بعدی کاربر: لینک GA4↔Search Console از Admin → Product links

@@ -17,7 +17,7 @@ import { useEffect, useRef } from "react";
  * - anonymize_ip روشن است؛ IP کاربران نزد گوگل بی‌نام‌سازی می‌شود.
  */
 
-export const GA_MEASUREMENT_ID = ""; // ← شناسه GA4 اینجا قرار می‌گیرد
+export const GA_MEASUREMENT_ID = "G-FN9XT2H1R3"; // ← شناسه GA4 اینجا قرار می‌گیرد
 
 declare global {
   interface Window {
