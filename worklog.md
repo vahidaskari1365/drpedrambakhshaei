@@ -1287,3 +1287,23 @@ Work Log:
 
 Stage Summary:
 - GA4 فعال شد؛ تست: Reports → Realtime باید بازدید را نشان دهد؛ قدم بعدی کاربر: لینک GA4↔Search Console از Admin → Product links
+
+---
+Task ID: 37-a
+Agent: Z.ai Code (main)
+Task: انتشار مقاله «کیست فک» (t-jaw-cyst) با استانداردهای کامل SEO/AEO/GEO/AIO/SXO + کاور 3D
+
+Work Log:
+- کاور 3D با image-generation تولید شد (۶ تلاش؛ نهایی: ریشه دندان شناور در حفره کیست داخل استخوان — هم‌استایل کاورهای قبلی، 1344x768) → public/uploads/cover-jaw-cyst.jpg
+- مقاله کامل نوشته شد: scripts/github-agent/build-jaw-cyst-article.mjs (بیلدر قابل استفاده مجدد) → پچ jaw-cyst-symptoms-treatment.json
+  - ۲۱۷۶ کلمه | 38 بلاک | 8 پاسخ سریع واقعی (AEO) | 8 FAQ واقعی | 2 جدول مقایسه (فیتچرد اسنیپت) | 3 callout | 5 لینک داخلی با لیبل فارسی
+  - اصلاح خطاهای مقاله قبلی: QA/FAQ جای‌نگه‌دار خالی نماند، لیبل لینک‌ها فارسی شد
+  - بخش هزینه: صادقانه (بدون عدد جعلی — تعیین بعد از ویزیت + عوامل موثر) = E-E-A-T + SXO trust
+- پابلیش: push → dispatch patch-article workflow
+- ۲ بار failure: ConnectTimeout از GitHub Runner به هاست ایران (نوسان مسیر) → patch-article.mjs مجهز شد به fetchRetry (۵ تلاش، بک‌آف) → اجرای سوم success
+- محتوای مقاله لایو تأیید شد (H1، جدول‌ها، QA، FAQ، Article+FAQPage schema، لینک‌های داخلی) — کاور هنوز 404 بود چون ریلیز جدید هنوز با cron هاست pull نشده (نوسان شبکه هاست→گیت‌هاب؛ خودکار جبران می‌شود)
+
+Stage Summary:
+- مقاله یازدهم سایت منتشر شد: /blog/jaw-cyst-symptoms-treatment
+- درس: مسیر GitHub↔Iran دوطرفه نوسان دارد؛ همه اسکریپت‌های شبکه‌ای workflowها باید retry داشته باشند
+- باقی‌مانده تأیید: serve شدن cover-jaw-cyst.jpg بعد از pull بعدی cron (خودکار)
