@@ -1257,3 +1257,20 @@ Work Log:
 Stage Summary:
 - /blog/immediate-implant-loading بعد از اجرای workflow باید 404 شود و رشته‌های کهنه از payload همه صفحات پاک شوند
 - رندر **بولد** روی همه مقاله‌های DB اعمال می‌شود (فیکس عمومی، نه فقط این مقاله)
+
+---
+Task ID: 35-c
+Agent: Z.ai Code (main)
+Task: فیکس «بخش خالی ریسک‌ها» از دید کاربر + زیرساخت GA4
+
+Work Log:
+- بررسی لایو: محتوای بخش «چگونه می‌توانیم ریسک‌ها را کاهش دهیم» در HTML صفحه هست ولی دو مشکل واقعی پیدا شد:
+  1) متن H2 خود پچ نصفه بود («کاهش ده» بدون «یم») → در پچ اصلاح شد به «چگونه می‌توانیم ریسک‌ها را کاهش دهیم؟» + یک callout «جمع‌بندی عملی» به انتهای بخش اضافه شد
+  2) ریشه اصلی شکایت کاربر: بلاک‌های مقاله با framer-motion whileInView + initial opacity:0 + margin -40px رندر می‌شدند؛ بلاک‌های انتهای مقاله در برخی شرایط (پرش با لینک فهرست، اسکرول سریع) هرگز تریگر نمی‌شوند و برای کاربر/خزنده «نوشته‌نشده» دیده می‌شوند → انیمیشن ورود بلاک‌ها کامل حذف شد (محتوای مقاله همیشه بلافاصله visible)
+- فایل پچ کهنه delete-immediate-implant-loading.json حذف شد (اسلاگ قدیمی از قبل 404 است؛ اجرای دوباره workflow را red می‌کرد)
+- GA4: کامپوننت src/components/site/google-analytics.tsx ساخته شد (next/script afterInteractive + page_view روی مسیرهای client + استثنای /admin + anonymize_ip) و در layout ریشه سوار شد؛ GA_MEASUREMENT_ID فعلاً خالی → بدون شناسه هیچ اسکریپتی لود نمی‌شود؛ با دادن شناسه G-… یک‌خطی فعال می‌شود
+- منتظر: کاربر شناسه G-XXXXXXX را بدهد → فعال‌سازی + dispatch workflow پچ برای H2 مقاله
+
+Stage Summary:
+- فیکس‌های آماده push: article-page.tsx (visible-always)، پچ H2 مقاله، حذف پچ کهنه، GA4 skeleton
+- آموزش: محتوای پشت انیمیشن whileInView برای صفحات محتوایی/SEO ممنوع — فقط انیمیشن‌های mount-time (animate) مجاز است

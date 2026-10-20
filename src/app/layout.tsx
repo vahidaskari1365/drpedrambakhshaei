@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { PwaRegister } from "@/components/site/pwa-register";
+import { GoogleAnalytics } from "@/components/site/google-analytics";
 import { SITE_URL } from "@/lib/site-data";
 
 const vazir = Vazirmatn({
@@ -145,6 +146,7 @@ export default function RootLayout({
       >
         <Toaster />
         <PwaRegister />
+        <GoogleAnalytics />
         {children}
       </body>
     </html>

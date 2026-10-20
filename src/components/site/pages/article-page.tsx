@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Clock3,
   CalendarDays,
@@ -473,26 +473,19 @@ export function ArticlePage({ article: articleProp }: { article: BlogArticle }) 
             ))}
           </div>
 
-          {/* بلاک‌ها */}
+          {/* بلاک‌ها — بدون انیمیشن ورود؛ محتوای مقاله باید همیشه و برای همه
+              (کاربر، خزنده و حالت پرش با لینک فهرست) بلافاصله قابل دیدن باشد */}
           <div className="space-y-4">
-            <AnimatePresence>
-              {article.blocks.map((block, i) => {
-                // quickAnswers و faq در ArticlePage با دیتای واقعی رندر می‌شوند
-                if (block.type === "quickAnswers") return <QuickAnswers key={`qa-${i}`} items={article.quickAnswers} />;
-                if (block.type === "faq") return <FaqSection key={`faq-${i}`} faqs={article.faqs} />;
-                return (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 18 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.6, ease, delay: 0.03 }}
-                  >
-                    <BlockRenderer block={block} />
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
+            {article.blocks.map((block, i) => {
+              // quickAnswers و faq در ArticlePage با دیتای واقعی رندر می‌شوند
+              if (block.type === "quickAnswers") return <QuickAnswers key={`qa-${i}`} items={article.quickAnswers} />;
+              if (block.type === "faq") return <FaqSection key={`faq-${i}`} faqs={article.faqs} />;
+              return (
+                <div key={i}>
+                  <BlockRenderer block={block} />
+                </div>
+              );
+            })}
           </div>
 
           <AuthorBox article={article} />
