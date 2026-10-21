@@ -1307,3 +1307,25 @@ Stage Summary:
 - مقاله یازدهم سایت منتشر شد: /blog/jaw-cyst-symptoms-treatment
 - درس: مسیر GitHub↔Iran دوطرفه نوسان دارد؛ همه اسکریپت‌های شبکه‌ای workflowها باید retry داشته باشند
 - باقی‌مانده تأیید: serve شدن cover-jaw-cyst.jpg بعد از pull بعدی cron (خودکار)
+
+---
+Task ID: 38-a
+Agent: Z.ai Code (main)
+Task: انتشار مقاله «پیوند استخوان قبل از ایمپلنت چیست و چه کسی به آن نیاز دارد؟» (t-bone-graft) با استانداردهای کامل SEO/AEO/GEO/AIO/SXO + کاور 3D
+
+Work Log:
+- بررسی slugs لایو (sitemap): هیچ مقاله‌ای درباره پیوند استخوان وجود ندارد — موضوع آزاد
+- کاور 3D با image-generation تولید شد (اولین تلاش موفق): گرافت ذره‌ای + غشای کللاژنی روی قوس فک + ایمپلنت تیتانیومی — هم‌استایل کاورهای قبلی، 1344x768 → public/uploads/cover-bone-graft.jpg
+- مقاله کامل نوشته شد: scripts/github-agent/build-bone-graft-article.mjs → پچ patches/bone-graft-before-implant.json
+  - 2407 کلمه | 44 بلاک | 8 پاسخ سریع واقعی (AEO) | 8 FAQ واقعی | 3 جدول (علت‌های تحلیل استخوان، مقایسه 4 منبع گرافت، زمان ترمیم) | 4 callout | 5 لینک داخلی با لیبل فارسی
+  - کلیدواژه‌های کم‌رقیب پربحث: پیوند استخوان ایمپلنت، استخوان‌سازی فک، گرافت استخوان دندان، کمبود استخوان فک، bone graft دندان، هزینه پیوند استخوان، مدت ترمیم
+  - بخش هزینه صادقانه (بدون عدد جعلی — اعلام بعد از CBCT) = E-E-A-T؛ اشاره محلی تهران/پاسداران
+  - هشدار سیگار به‌عنوان عامل شکست گرافت (SXO trust + محتوای پزشکی دقیق)
+- push → CI → release → cron هاست؛ dispatch patch-article.yml (HTTP 204) → run 39557008266 success در اولین تلاش
+- تأیید لایو با agent-browser: H1، 10 بخش h2 با id، 3 جدول، QA، FAQ، CTA، 5 لینک داخلی، schema (Physician/WebSite/MedicalWebPage/FAQPage/BreadcrumbList)، og:image
+- کاور 404 بود تا cron هاست ریلیز را pull کرد (~7 دقیقه) → سپس HTTP 200 + رندر تصویر با alt صحیح تأیید شد
+
+Stage Summary:
+- مقاله دوازدهم سایت منتشر شد: /blog/bone-graft-before-implant (۲۹ مهر ۱۴۰۵)
+- الگوی بیلدر قابل استفاده مجدد برای مقاله‌های بعدی (سینوس لیفت، TMD و ...) — کپی + جایگزینی محتوا
+- درس تکراری: تأخیر کاور تا pull بعدی cron طبیعی است؛ فقط patch=DB فوری اعمال می‌شود
