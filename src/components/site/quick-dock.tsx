@@ -3,6 +3,7 @@
 import { Phone, MessageCircle, SendHorizontal, Instagram, MapPin } from "lucide-react";
 import { Dock, DockIcon } from "@/components/magicui/dock";
 import { useSite } from "./content-provider";
+import { trackSiteEvent } from "@/lib/track";
 
 /**
  * داک شناور دسترسی سریع (Magic UI Dock)
@@ -33,6 +34,7 @@ export function QuickDock() {
                 href={href}
                 aria-label={label}
                 title={label}
+                onClick={() => href.startsWith("tel:") && trackSiteEvent("call_click", { source: "dock" })}
                 className="flex size-full items-center justify-center"
                 {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               >

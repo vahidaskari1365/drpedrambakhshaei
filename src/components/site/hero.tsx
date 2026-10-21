@@ -12,6 +12,8 @@ import {
 } from "framer-motion";
 import { ArrowDown, Phone, Star, CalendarCheck, ShieldCheck, Award } from "lucide-react";
 import { useSite } from "./content-provider";
+import { openBooking } from "./booking-modal";
+import { trackSiteEvent } from "@/lib/track";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -209,15 +211,17 @@ export function Hero() {
             transition={{ duration: 1, ease, delay: 1.05 }}
             className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
           >
-            <a
-              href="/contact"
+            <button
+              type="button"
+              onClick={() => openBooking("hero")}
               className="shimmer group inline-flex items-center gap-2.5 rounded-full bg-primary px-7 py-3.5 text-sm font-bold text-primary-foreground shadow-[0_16px_40px_-14px] shadow-primary/60 transition-all duration-300 hover:shadow-primary/80 hover:brightness-110 active:scale-95 cursor-pointer"
             >
               <CalendarCheck className="h-4.5 w-4.5 transition-transform duration-300 group-hover:-rotate-6" />
               رزرو نوبت و مشاوره
-            </a>
+            </button>
             <a
               href={`tel:${site.phone}`}
+              onClick={() => trackSiteEvent("call_click", { source: "hero" })}
               dir="ltr"
               className="inline-flex items-center gap-2.5 rounded-full border border-border/80 bg-card/70 px-7 py-3.5 text-sm font-bold backdrop-blur transition-all duration-300 hover:bg-card active:scale-95 cursor-pointer"
             >

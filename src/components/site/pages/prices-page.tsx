@@ -6,6 +6,7 @@ import { ChevronDown, CreditCard, PhoneCall, BadgeCheck } from "lucide-react";
 import { Prices } from "../prices";
 import { useSite } from "../content-provider";
 import { cn } from "@/lib/utils";
+import { openBooking } from "../booking-modal";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -178,13 +179,14 @@ export function PricesPage() {
             className="mt-12 text-center"
           >
             <p className="mb-5 text-sm text-background/60">برای برآورد دقیق هزینه شرایط خود، نوبت مشاوره بگیرید</p>
-            <a
-              href="/contact"
+            <button
+              type="button"
+              onClick={() => openBooking("prices")}
               className="inline-flex items-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-black text-[oklch(0.2_0.03_262)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
             >
               <PhoneCall className="h-4 w-4" />
               رزرو نوبت و برآورد دقیق
-            </a>
+            </button>
           </motion.div>
         </div>
       </section>

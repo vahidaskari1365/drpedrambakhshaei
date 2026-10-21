@@ -149,3 +149,34 @@ export interface ContactRequestRow {
   statusLabel: string;
   createdAt: string;
 }
+
+/** خروجی تب «نوبت و تماس» — /api/admin/events */
+export interface EventStats {
+  generatedAt: string;
+  totals: {
+    modalOpenAll: number;
+    modalOpenToday: number;
+    doctoretoAll: number;
+    nobatAll: number;
+    doctoretoToday: number;
+    nobatToday: number;
+    callsAll: number;
+    callsToday: number;
+    formRequestsAll: number;
+    formRequestsToday: number;
+    platformClicks: number;
+    conversion: number;
+  };
+  daily: { iso: string; label: string; opens: number; clicks: number; calls: number }[];
+  platforms: { label: string; value: number }[];
+  sources: { label: string; count: number }[];
+  recent: {
+    id: string;
+    type: string;
+    typeLabel: string;
+    platform: string;
+    source: string;
+    path: string;
+    createdAt: string;
+  }[];
+}

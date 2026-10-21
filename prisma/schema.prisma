@@ -156,3 +156,22 @@ model AgentConfig {
   data      String   @default("{}")
   updatedAt DateTime @updatedAt
 }
+/**
+ * رویدادهای تعاملی کاربر — قلب داشبورد «نوبت و تماس» پنل ادمین
+ * type = booking_modal_open (باز شدن پنجره نوبت) | booking_platform_click (انتخاب دکترتو/نوبت) | call_click (کلیک تماس)
+ * platform = doctoreto | nobat — فقط برای booking_platform_click
+ * source = محل کلیک: hero | article | prices | landing | dock | navbar | navbar_mobile | footer | booking_modal
+ */
+model TrackEvent {
+  id        String   @id @default(cuid())
+  type      String
+  platform  String   @default("")
+  source    String   @default("")
+  path      String   @default("")
+  vid       String   @default("")
+  createdAt DateTime @default(now())
+
+  @@index([type])
+  @@index([createdAt])
+  @@index([type, createdAt])
+}

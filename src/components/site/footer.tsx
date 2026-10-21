@@ -3,6 +3,7 @@
 import { LogoFull } from "./logo";
 import { Phone, MapPin, Instagram, SendHorizontal, MessageCircle, Play, Star } from "lucide-react";
 import { useSite } from "./content-provider";
+import { trackSiteEvent } from "@/lib/track";
 import { LANDING_LINKS } from "@/lib/landings";
 
 export function Footer() {
@@ -69,7 +70,7 @@ export function Footer() {
             <h2 className="mb-4 text-sm font-black text-background">تماس با ما</h2>
             <ul className="space-y-3 text-[13px]">
               <li>
-                <a href={`tel:${site.phone}`} className="flex items-center gap-2.5 text-background/60 transition-colors hover:text-background cursor-pointer" dir="rtl">
+                <a href={`tel:${site.phone}`} onClick={() => trackSiteEvent("call_click", { source: "footer" })} className="flex items-center gap-2.5 text-background/60 transition-colors hover:text-background cursor-pointer" dir="rtl">
                   <Phone className="h-4 w-4 shrink-0" />
                   <span dir="ltr" className="tabular-nums font-bold">{site.phone}</span>
                 </a>

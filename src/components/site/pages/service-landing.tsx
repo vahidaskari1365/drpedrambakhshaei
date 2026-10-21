@@ -26,6 +26,8 @@ import {
 } from "lucide-react";
 import type { LandingConfig } from "@/lib/landings";
 import { CONTENT_UPDATED } from "@/lib/landings";
+import { openBooking } from "../booking-modal";
+import { trackSiteEvent } from "@/lib/track";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -495,6 +497,7 @@ export function ServiceLanding({ config }: { config: LandingConfig }) {
                   </p>
                   <a
                     href={`tel:${site.phoneIntl}`}
+                    onClick={() => trackSiteEvent("call_click", { source: "landing_nap" })}
                     dir="ltr"
                     className="flex items-start gap-3 text-[13.5px] font-bold leading-7 text-foreground transition-colors hover:text-primary"
                   >
@@ -516,13 +519,14 @@ export function ServiceLanding({ config }: { config: LandingConfig }) {
                     {site.rating.score} در گوگل ({site.rating.count} نظر)
                   </span>
                 </div>
-                <a
-                  href="/contact"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-black text-primary-foreground transition-all hover:opacity-90 active:scale-95"
+                <button
+                  type="button"
+                  onClick={() => openBooking("landing_nap")}
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-black text-primary-foreground transition-all hover:opacity-90 active:scale-95 cursor-pointer"
                 >
                   رزرو نوبت و مسیر مطب
                   <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                </a>
+                </button>
               </div>
               {/* نقشه گوگل — مطابق CSP: frame-src google.com */}
               <div className="overflow-hidden rounded-[2rem] border border-[oklch(0.5_0.06_152/0.15)] shadow-[0_30px_70px_-45px_oklch(0.4_0.06_152/0.5)] lg:col-span-3">
@@ -552,15 +556,17 @@ export function ServiceLanding({ config }: { config: LandingConfig }) {
             {site.address}
           </p>
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            <a
-              href="/contact"
+            <button
+              type="button"
+              onClick={() => openBooking("landing")}
               className="inline-flex items-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-black text-[oklch(0.2_0.03_262)] transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
             >
               رزرو نوبت
               <ArrowLeft className="h-4 w-4" />
-            </a>
+            </button>
             <a
               href={`tel:${site.phoneIntl}`}
+              onClick={() => trackSiteEvent("call_click", { source: "landing" })}
               dir="ltr"
               className="inline-flex items-center gap-2 rounded-full border border-background/25 bg-background/10 px-7 py-3.5 text-sm font-bold text-background backdrop-blur transition-all hover:bg-background/20 cursor-pointer"
             >

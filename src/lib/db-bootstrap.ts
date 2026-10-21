@@ -113,6 +113,18 @@ CREATE TABLE IF NOT EXISTS "AgentConfig" (
   "data" TEXT NOT NULL DEFAULT '{}',
   "updatedAt" TIMESTAMP(3) NOT NULL
 );
+CREATE TABLE IF NOT EXISTS "TrackEvent" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "type" TEXT NOT NULL,
+  "platform" TEXT NOT NULL DEFAULT '',
+  "source" TEXT NOT NULL DEFAULT '',
+  "path" TEXT NOT NULL DEFAULT '',
+  "vid" TEXT NOT NULL DEFAULT '',
+  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS "TrackEvent_type_idx" ON "TrackEvent"("type");
+CREATE INDEX IF NOT EXISTS "TrackEvent_createdAt_idx" ON "TrackEvent"("createdAt");
+CREATE INDEX IF NOT EXISTS "TrackEvent_type_createdAt_idx" ON "TrackEvent"("type", "createdAt");
 `;
 
 export async function bootstrapDatabase(): Promise<void> {

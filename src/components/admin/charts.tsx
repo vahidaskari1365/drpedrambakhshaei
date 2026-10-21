@@ -265,3 +265,47 @@ export function HoursBars({ data }: { data: { label: string; count: number }[] }
     </div>
   );
 }
+
+/* ─────────── نمودارهای نوبت‌دهی و تماس ─────────── */
+
+/** نمودار ساحتی رویدادهای ۳۰ روزه — باز شدن پنجره نوبت، انتخاب پلتفرم و کلیک تماس */
+export function BookingArea({
+  data,
+}: {
+  data: { label: string; opens: number; clicks: number; calls: number }[];
+}) {
+  return (
+    <div dir="ltr" className="h-[260px] w-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
+          <defs>
+            <linearGradient id="gOpens" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={TEAL} stopOpacity={0.5} />
+              <stop offset="100%" stopColor={TEAL} stopOpacity={0.02} />
+            </linearGradient>
+            <linearGradient id="gPicks" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={GOLD} stopOpacity={0.45} />
+              <stop offset="100%" stopColor={GOLD} stopOpacity={0.02} />
+            </linearGradient>
+            <linearGradient id="gCalls" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={VIOLET} stopOpacity={0.45} />
+              <stop offset="100%" stopColor={VIOLET} stopOpacity={0.02} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 6" stroke="rgba(255,255,255,0.07)" vertical={false} />
+          <XAxis dataKey="label" tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 10 }} tickLine={false} axisLine={false} interval={4} />
+          <YAxis tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 10 }} tickLine={false} axisLine={false} width={34} allowDecimals={false} />
+          <Tooltip content={<ChartTooltip />} />
+          <Area type="monotone" dataKey="opens" name="باز شدن پنجره نوبت" stroke={TEAL} strokeWidth={2.5} fill="url(#gOpens)" />
+          <Area type="monotone" dataKey="clicks" name="انتخاب پلتفرم" stroke={GOLD} strokeWidth={2.5} fill="url(#gPicks)" />
+          <Area type="monotone" dataKey="calls" name="کلیک تماس" stroke={VIOLET} strokeWidth={2} fill="url(#gCalls)" />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+/** دونات تفکیک پلتفرم‌های نوبت‌دهی */
+export function PlatformDonut({ data, unit = "انتخاب" }: { data: { label: string; value: number }[]; unit?: string }) {
+  return <SimpleDonut data={data} unit={unit} />;
+}

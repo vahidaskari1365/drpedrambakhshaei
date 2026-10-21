@@ -5,6 +5,7 @@ import { MotionConfig, motion, useScroll, useSpring } from "framer-motion";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
 import { QuickDock } from "./quick-dock";
+import { BookingModal } from "./booking-modal";
 
 /**
  * پوسته مشترک همه صفحات — نوبار، فوتر، نوار پیشرفت اسکرول، داک تماس سریع
@@ -29,6 +30,8 @@ export function Chrome({ children }: { children: React.ReactNode }) {
       </div>
       {/* داک شناور دسترسی سریع — Magic UI Dock */}
       <QuickDock />
+      {/* مودال رزرو نوبت — سراسری؛ از همه دکمه‌های رزرو سایت باز می‌شود */}
+      <BookingModal />
     </MotionConfig>
   );
 }

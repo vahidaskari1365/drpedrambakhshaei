@@ -20,6 +20,8 @@ import Link from "next/link";
 import type { ArticleBlock, BlogArticle } from "@/lib/blog-data";
 import { useSite } from "../content-provider";
 import { cn } from "@/lib/utils";
+import { openBooking } from "../booking-modal";
+import { trackSiteEvent } from "@/lib/track";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -125,19 +127,21 @@ function CtaBox() {
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
           <a
             href={`tel:${site.phone}`}
+            onClick={() => trackSiteEvent("call_click", { source: "article" })}
             dir="ltr"
             className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-bold text-[oklch(0.17_0.025_262)] transition-transform duration-300 hover:scale-[1.04] active:scale-95 cursor-pointer"
           >
             <Phone className="h-4 w-4" />
             {site.phone}
           </a>
-          <Link
-            href="/contact"
+          <button
+            type="button"
+            onClick={() => openBooking("article")}
             className="inline-flex items-center gap-2 rounded-full border border-background/25 bg-background/10 px-6 py-3 text-sm font-bold text-background backdrop-blur transition-colors hover:bg-background/20 cursor-pointer"
           >
             رزرو مشاوره
             <ArrowLeft className="h-4 w-4" />
-          </Link>
+          </button>
         </div>
       </div>
     </div>

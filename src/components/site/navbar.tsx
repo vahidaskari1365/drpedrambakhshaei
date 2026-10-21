@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Menu, X, Phone, Star } from "lucide-react";
 import { AnimatedLogo } from "./logo";
 import { useSite } from "./content-provider";
+import { trackSiteEvent } from "@/lib/track";
 import { type RouteKey } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
@@ -103,6 +104,7 @@ export function Navbar() {
           <div className="mr-auto lg:mr-2 flex items-center gap-2">
             <a
               href={`tel:${site.phone}`}
+              onClick={() => trackSiteEvent("call_click", { source: "navbar" })}
               className="hidden sm:flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-[13px] font-bold text-background transition-transform duration-300 hover:scale-[1.04] active:scale-95 cursor-pointer"
               dir="ltr"
             >
@@ -186,6 +188,7 @@ export function Navbar() {
               </div>
               <a
                 href={`tel:${site.phone}`}
+                onClick={() => trackSiteEvent("call_click", { source: "navbar_mobile" })}
                 dir="ltr"
                 className="flex items-center justify-center gap-2 rounded-full bg-background py-4 text-base font-bold text-[oklch(0.17_0.025_262)] cursor-pointer"
               >
