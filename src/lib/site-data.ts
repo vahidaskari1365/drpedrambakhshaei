@@ -73,7 +73,7 @@ export const SITE = {
   social: {
     telegram: "https://t.me/drbakhshaei",
     whatsapp: "https://wa.me/09302626021",
-    instagram: "https://www.instagram.com/dr.bakhshaei.omfs",
+    instagram: "https://www.instagram.com/dr.bakhshaei.omfs?vrfl=MTdodnExaGIzd2QzeQ%3D%3D",
     aparat: "https://www.aparat.com/Drpedrambakhshaei",
   },
   rating: { score: "۵٫۰", count: 9 },
