@@ -1351,3 +1351,21 @@ Stage Summary:
 - ادمین حالا می‌بیند: چند نفر پنجره نوبت باز کردند، چند نفر دکترتو/نوبت زدند، چند نفر تماس، چند فرم مشاوره + نرخ تبدیل
 - درس: تغییرات Prisma باید هم در schema.prisma (لوکال SQLite) و هم در db-bootstrap.ts (PostgreSQL هاست) اعمال شود
 - نکته عملیاتی: dev server سندباکس باید با double-fork daemonize استارت شود وگرنه با پایان session می‌میرد
+
+---
+Task ID: 40-a
+Agent: Z.ai Code (main)
+Task: لینک دقیق اینستاگرام + حذف مقاله تکراری ایمپلنت فوری + توقف ایجنت محتوا
+
+Work Log:
+- اینستاگرام: site.social.instagram در site-data.ts به لینک داده‌شده کاربر (با پارامتر vrfl) تغییر کرد — همه دکمه‌ها (داک، فوتر، صفحه تماس، seo، geo-agent) از همین ثابت می‌خوانند؛ یک ویرایش = همه‌جا
+- مقاله تکراری: هر دو slug لایو بودند (immediate-implant-loading و -dee79 با همان تایتل) — کشف شد delete patch قبلی هرگز واقعاً اعمال نشده بود؛ پچ {"_delete":true,"slug":"immediate-implant-loading"} ساخته → dispatch → success → old slug 404 شد، نسخه اصلاح‌شده (-dee79) ماند
+- پچ حذف مصرف‌شده بلافاصله از پوشه patches/ حذف شد (اجراهای بعدی workflow سبز بمانند)
+- ایجنت محتوا: workflow content-agent.yml با API غیرفعال شد (disabled_manually, HTTP 204) — تا اطلاع بعدی کاربر مقاله خودکار منتشر نمی‌کند؛ Deploy/GSC/Monitor/patch فعال ماندند
+- نکته git: file-mode churn سندباکس (100644→100755) باعث شد push بار اول reject شود — راه‌حل: checkout mode churn → stash بقیه → pull --rebase → push
+
+Stage Summary:
+- اینستاگرام روی همه دکمه‌ها دقیقاً لینک کاربر شد (لایو بعد از pull بعدی)
+- /blog/immediate-implant-loading حذف شد؛ فقط -dee79 باقی است (سایت ۱۰ مقاله)
+- ایجنت‌های محتوا خواب؛ فعال‌سازی بعدی با /enable یا سفارش کاربر
+- دیپلوی فیچر نوبت‌دهی (Task 39) هنوز در انتظار اتمام دانلود runtime 37MB روی هاست (resume خودکار کرون؛ RT_HASH جدید به‌خاطر تغییر schema)
