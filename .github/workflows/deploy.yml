@@ -73,6 +73,10 @@ jobs:
           cp -a .next/standalone/. bundle/
           # tracing بیلد پوشه‌های غیرلازم ریپو را هم به standalone کشانده — حذف (تست بوت: همه صفحات 200)
           ( cd bundle && rm -rf skills tool-results tests examples scripts docs .github db prisma .agent* *.md )
+          # v3.5 quota-fix: کش بیلد (webpack/ISR) داخل standalone هیچ استفاده ران‌تایمی ندارد؛
+          # حذفش از مبدأ یعنی باندل app کوچک‌تر می‌شود و دیگر روی دیسک هاست هم انباشته
+          # نمی‌شود (tar ادغام می‌کند نه تعویض — انباشت cache عامل پرشدن سهمیه دیسک بود)
+          rm -rf bundle/.next/cache
           # دو فایل سورس که geo-agent در اجرا با fs می‌خواند باید در باندل بمانند (بدون آن‌ها ممیزی GEO روی هاست ENOENT می‌دهد)
           mkdir -p bundle/src/lib bundle/src/app
           cp src/lib/site-data.ts bundle/src/lib/site-data.ts
