@@ -1394,3 +1394,32 @@ Stage Summary:
 - مقاله سیزدهم سایت منتشر شد: /blog/sinus-lift-upper-jaw (۱ آبان ۱۴۰۵)
 - الگوی بیلدر برای مقاله‌های بعدی آماده است؛ ایجنت محتوا همچنان خواب است (این مقاله سفارش مستقیم کاربر بود)
 - درس: تبدیل تاریخ میلادی→جلالی با Intl fa-IR در Bun راحت‌تر و درست‌تر از فرمول دستی است
+
+---
+Task ID: 42-a
+Agent: Z.ai Code (main)
+Task: رفع گیر کاور مقاله سینوس لیفت (404) — ریشه‌یابی معماری deploy و بلاک شدن runtime ۳۸.۹ مگابایتی
+
+Work Log:
+- علامت کاربر: کاور لود نمی‌شود. تشخیص: کاور قدیمی (bone-graft) 200 بود یعنی مکانیزم pull سالم است؛ track API هم 404 بود → runtime جدید (بعد از تغییر schema در Task 39) هرگز روی هاست نصب نشده
+- بررسی releases: runtime-15c8f79d (38.9MB) از deploy-20261021-085528 روی هاست ننشسته — ۴۴ ساعت stall
+- ریشه‌یابی باگ‌ها:
+  1) host-deploy.sh نام part را با $$ (PID) یکتا می‌گذاشت → هر اجرای کرون دانلود را از صفر شروع می‌کرد؛ resume بین اجراها عملاً هیچ بود (باگ اصلی stall)
+  2) اگر app بعد از runtime شکست می‌خورد، manifest کل اجرا commit نمی‌شد → runtime دوباره دانلود می‌شد
+  3) باندل ۳۸.۹ مگ = در پنجره ۴۰ دقیقه‌ای curl به سرعت ≥۱۷KB/s نیاز داشت؛ مسیر ایران→گیت‌هاب این را در هیچ اجرایی نداد
+- بازرسی محتوای runtime (دانلود asset و تحلیل): next/node_modules/sharp تودرتو = ۳۹.۱ مگ (دو libvips: glibc+musl)، دو موتور پرisma (1.0.x+3.0.x)، wasm باقیمانده در .prisma/client
+- اصلاحات (push d848a40):
+  - deploy.yml: ورودی force_runtime برای workflow_dispatch → دیپلوی فوری فقط-اپ (manifest نام runtime نصب‌شده هاست را می‌نویسد → دانلود runtime رد می‌شود)
+  - deploy.yml: لاغرسازی امن runtime: حذف query_engine_bg.wasm (۲.۳مگ)، حذف واریانت‌های musl libvips، strip --strip-debug باینری‌ها، gzip -9 → 38.9 → 29.6MB (asset جدید runtime-7a277090)
+  - host-deploy.sh v3.5: نام part پایدار (.part-$1 بدون PID — قفل flock کفایت می‌کند) → دانلود بین اجراهای کرون انباشته می‌شود؛ commit جزءبه‌جز manifest (runtime نصب‌شده در صورت شکست app دوباره دانلود نمی‌شود)
+- توالی اجرا: push → auto run success (release با runtime لاغر) → dispatch force_runtime=runtime-3fb53135.tar.gz → release فقط-اپ (app ۱۱.۴مگ) → هاست در ~۲ دقیقه کشید و نصب کرد
+- نتیجه فوری: کاور سینوس لیفت 200 شد، next/image 200، instagram لینک لایو، مودال نوبت دوپلتفرمی روی مقاله لایو (تست مرورگر: کلیک دکترتو → تب مستقیم doctoreto باز شد)
+- dispatch نرمال بعدی: manifest به runtime-7a277090 (29.6MB) اشاره می‌کند → دانلود پس‌زمینه شروع می‌شود؛ با اسکریپت جدید هاست (اگر کاربر به‌روزرسانی کند) انباشته می‌شود و کامل خواهد شد
+- وضعیت بینابینی درست‌شده: اپ جدید + runtime قدیمی (client پرisma بدون TrackEvent) → /api/track/event با catch به {ok:false} 200 جواب می‌دهد (طراحی graceful) → مودال و CTAها کار می‌کنند ولی آمار تب «نوبت و تماس» تا نشستن runtime لاغر خالی است
+- نکته: sharp واقعی در next/node_modules/sharp تودرتو است؛ استاب‌های بالادست @img بدون باینری‌اند — دست‌نزدیم تا خراب نشود
+
+Stage Summary:
+- کاور مقاله سینوس لیفت + همه تغییرات معوق (نوبت‌دهی UI، اینستاگرام) روی پروداکشن لایو شد
+- ابزار دیپلوی فوری فقط-اپ (force_runtime) و runtime لاغر ۲۹.۶ مگ برای همیشه در CI ماند
+- باگ ریشه‌ای resume اسکریپت هاست در ریپو اصلاح شد؛ نسخه هاست باید با دستور کاربر به‌روز شود (curl از raw.githubusercontent به ~/bin/deploy.sh)
+- برای کوچک‌تر کردن runtime تا ~۱۷مگ (قطع یکی از دو موتور پرisma) خروجی `openssl version` هاست لازم است
