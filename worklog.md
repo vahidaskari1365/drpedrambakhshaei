@@ -1423,3 +1423,23 @@ Stage Summary:
 - ابزار دیپلوی فوری فقط-اپ (force_runtime) و runtime لاغر ۲۹.۶ مگ برای همیشه در CI ماند
 - باگ ریشه‌ای resume اسکریپت هاست در ریپو اصلاح شد؛ نسخه هاست باید با دستور کاربر به‌روز شود (curl از raw.githubusercontent به ~/bin/deploy.sh)
 - برای کوچک‌تر کردن runtime تا ~۱۷مگ (قطع یکی از دو موتور پرisma) خروجی `openssl version` هاست لازم است
+
+---
+Task ID: 41-b
+Agent: Z.ai Code (main)
+Task: عیب‌یابی گزارش کاربر «کاور عکس هنوز لود نمی‌شود» + تحلیل خروجی ترمینال هاست (دانلود runtime مردود)
+
+Work Log:
+- کاربر خروجی ترمینال cPanel را فرستاد: دانلود runtime-7a277090.tar.gz در ۷۳٪ (۲۰.۷MB از ۲۸.۲MB) با خطای «sdc1: write failed, user block limit reached» + «curl: (23) Failed writing body» مردود شد
+- ریشه واقعی پیدا شد: سهمیه دیسک (Disk Quota) اکانت cPanel پر است — نه کندی اینترنت؛ به همین دلیل چندین نوبت resume هم هرگز کامل نشد
+- زنجیره اثر: اسکریپت تا runtime نصب نشود سراغ app نمی‌رود ⇒ هیچ app bundle جدیدی (شامل کاور سینوس لیفت و booking runtime) استخراج نشده — توضیح‌دهنده تمام 404های معلق
+- عامل رشد دیسک شناسایی‌شده: .next/cache داخل باندل app — tar «ادغام» می‌کند نه تعویض ⇒ کش webpack/ISR کهنه از هر دیپلوی انباشته می‌شد
+- فیکس CI (deploy.yml): «rm -rf bundle/.next/cache» در مرحله Assemble — باندل‌های app آینده کوچک‌تر و بدون انباشت
+- فیکس هاست (host-deploy.sh v3.5): پاک‌سازی کامل .next/cache قبل از هر استخراج app + ثبت در هدر نسخه
+- push 0d43134 (دو فایل، ۱۲ خط) ⇒ run «Deploy to cPanel (Iran)» روی 0d43134 in_progress — release جدید با app بدون cache منتشر می‌شود (runtime همان 7a277090 می‌ماند و دوباره دانلود نمی‌شود)
+- دستورات تشخیص du/df و پاک‌سازی امن فوری برای کاربر ارسال شد (حذف .next/cache روی هاست، .part-*، truncate deploy.log)
+
+Stage Summary:
+- ریشه معلق‌ماندن کاور + track API 404: پر بودن سهمیه دیسک هاست (نه مسیر ایران)
+- باندل‌ها از این پس cache ندارند؛ اسکریپت هاست v3.5 هم ضد انباشت است (کاربر باید یک بار دیگر deploy.sh را از raw رفرش کند)
+- گام بعدی کاربر: پاک‌سازی فضا → bash ~/bin/deploy.sh → پس از DEPLOYED OK کاور و booking همزمان زنده می‌شوند
