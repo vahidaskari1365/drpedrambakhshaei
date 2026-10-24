@@ -82,7 +82,11 @@ if [ -n "${CURL_VER:-}" ]; then
 fi
 
 download_verified() { # $1=asset-name → مسیر فایل part سالم را «فقط» در stdout چاپ می‌کند
-  local PART=".part-$1.$$"
+  # نام part پایدار (بدون PID) — پیشرفت دانلود بین اجراهای کرون ادامه می‌یابد
+  # (v3 نام یکتا با $$ می‌گذاشت؛ نتیجه: هر اجرای کرون از صفر شروع می‌کرد و
+  #  باندل‌های بزرگ مثل runtime ۳۰+ مگ هرگز کامل نمی‌شدند. قفل flock هم اجرای
+  #  دستی و هم کرون را مهار می‌کند، پس نام پایدار امن است.)
+  local PART=".part-$1"
   # پیام‌های پیشرفت باید به stderr بروند — اگر stdout بروند داخل نام فایل capture می‌شوند!
   echo "$(date '+%F %T') downloading $1 ..." >&2
   # محافظ کانکشن منجمد: زیر ۱۰KB/s برای ۶۰ ثانیه = قطع و retry با resume
@@ -91,7 +95,7 @@ download_verified() { # $1=asset-name → مسیر فایل part سالم را �
   curl -4 -L -C - $CURL_RETRY_FLAGS --speed-limit 10240 --speed-time 60 --max-time 2400 -o "$PART" "$BASE_URL/$1"
   # تست سلامت کل جریان گیزپ — فایل ناقص/دونوع‌نویسی‌شده هرگز باز نمی‌شود
   if ! gzip -t "$PART" 2>/dev/null; then
-    echo "$(date '+%F %T') ERROR: $1 corrupt — دوباره deploy.sh بزنید (از سرعت کم ایران، دانلود از سر گرفته می‌شود)" >&2
+    echo "$(date '+%F %T') ERROR: $1 corrupt — پارت ناقص حذف شد؛ اجرای بعدی از سر می‌گیرد" >&2
     rm -f "$PART"
     exit 1
   fi
@@ -185,7 +189,7 @@ if [ "$RT_NEW" != "$RT_OLD" ]; then
   esac
   # فهرست کامل آرشیو را هم تست کن (علاوه بر gzip -t)
   if ! tar -tzf "$RT_PART" > /dev/null 2>&1; then
-    echo "$(date '+%F %T') ERROR: $RT_PART tar listing failed — دوباره deploy.sh بزنید" >&2
+    echo "$(date '+%F %T') ERROR: $RT_PART tar listing failed — پارت حذف شد؛ اجرای بعدی از سر می‌گیرد" >&2
     rm -f "$RT_PART"
     exit 1
   fi
@@ -194,12 +198,24 @@ if [ "$RT_NEW" != "$RT_OLD" ]; then
   rm -rf "$APP_DIR/node_modules"
   tar -xzf "$RT_PART" -C "$APP_DIR"
   rm -f "$RT_PART"
+  # commit فوری runtime در manifest محلی — اگر دانلود app بعدی شکست بخورد،
+  # اجرای بعدی runtime تازه‌نصب را دوباره دانلود نمی‌کند (مسیر ایران هر مگ می‌ارزد)
+  if [ -f .deploy-manifest ]; then
+    sed -i "s|^runtime=.*|runtime=$RT_NEW|" .deploy-manifest
+  else
+    printf 'runtime=%s\n' "$RT_NEW" > .deploy-manifest
+  fi
   CHANGED=1
 fi
 
 # ۳) app — در هر بیلد جدید
 if [ "$AP_NEW" != "$AP_OLD" ]; then
   pull "$AP_NEW"
+  if [ -f .deploy-manifest ]; then
+    sed -i "s|^app=.*|app=$AP_NEW|" .deploy-manifest
+  else
+    printf 'runtime=%s\napp=%s\n' "$RT_NEW" "$AP_NEW" > .deploy-manifest
+  fi
   CHANGED=1
 fi
 
@@ -210,8 +226,7 @@ if [ "$CHANGED" = "0" ]; then
   exit 0
 fi
 
-# ۴) ثبت نسخه نصب‌شده و ری‌استارت Passenger
-cp .manifest.new .deploy-manifest
+# ۴) ری‌استارت Passenger (مانیفست قبلاً جزءبه‌جز به‌روز شده است)
 rm -f .manifest.new
 date +%s > "$APP_DIR/tmp/restart.txt"
 echo "$(date '+%F %T') DEPLOYED OK  (runtime=$RT_NEW app=$AP_NEW)"

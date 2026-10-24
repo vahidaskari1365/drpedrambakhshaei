@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      force_runtime:
+        description: "نام runtime در manifest (خالی = خودکار). برای دیپلوی فوری فقط-اپ، همان نام runtime نصب‌شده روی هاست را بدهید تا دانلود runtime رد شود"
+        required: false
+        type: string
+        default: ""
 
 concurrency:
   group: deploy-production
@@ -78,14 +84,29 @@ jobs:
           # (test -f با glob چندفایلی «binary operator expected» می‌دهد)
           ls bundle/node_modules/.prisma/client/libquery_engine-*.so.node > /dev/null 2>&1 || { echo "query engine missing!"; exit 1; }
           echo "engines: $(ls bundle/node_modules/.prisma/client/ | grep -c libquery_engine)"
+          # ── لاغرسازی امن runtime (بدون دست‌زدن به عملکرد) — 38.9MB → ~26MB ──
+          # ۱) واتم‌های پرisma فقط برای edge-runtime هستند؛ روی نود هرگز لود نمی‌شوند (~۲.۳MB)
+          rm -f bundle/node_modules/.prisma/client/query_engine_bg.wasm
+          # ۲) واریانت‌های musl کتابخانه libvips (هاست cPanel گلیب‌ک است) — نسخه linux-x64 می‌ماند
+          rm -rf bundle/node_modules/next/node_modules/sharp/node_modules/@img/sharp-linuxmusl-x64 \
+                 bundle/node_modules/next/node_modules/sharp/node_modules/@img/sharp-libvips-linuxmusl-x64
+          # ۳) جداسازی نمادهای دیباگ باینری‌ها (فقط بخش debug؛ dynsym می‌ماند → لود امن)
+          find bundle/node_modules -type f \( -name "*.so.node" -o -name "*.so.*" -o -name "*.node" \) \
+            -exec strip --strip-debug {} \; 2>/dev/null || true
           RT_HASH=$( (cat bun.lock package.json prisma/schema.prisma; du -sb bundle/node_modules) | sha256sum | cut -c1-8 )
           RT_NAME="runtime-$RT_HASH.tar.gz"
           AP_NAME="app-$(date -u +%Y%m%d-%H%M%S).tar.gz"
           mkdir -p /tmp/rtsplit
           mv bundle/node_modules /tmp/rtsplit/node_modules
-          tar -czf "$RT_NAME" -C /tmp/rtsplit node_modules
-          tar -czf "$AP_NAME" -C bundle .
-          printf 'runtime=%s\napp=%s\n' "$RT_NAME" "$AP_NAME" > manifest.txt
+          # gzip -9: چند درصد فشرده‌سازی بیشتر — مسیر ایران هر مگ اهمیت دارد
+          tar -cf - -C /tmp/rtsplit node_modules | gzip -9 > "$RT_NAME"
+          tar -cf - -C bundle . | gzip -9 > "$AP_NAME"
+          # force_runtime (workflow_dispatch): نام runtime در manifest را بر‌می‌گردد
+          # → هاست با نام نصب‌شده فعلی برابر می‌بیند، دانلود runtime را رد می‌کند
+          #   و فقط app را می‌کشد (دیپلوی فوری وقتی مسیر ایران→گیت‌هاب برای ۳۰+ مگ ناپایدار است)
+          FORCE_RUNTIME="${{ inputs.force_runtime }}"
+          RT_MANIFEST="${FORCE_RUNTIME:-$RT_NAME}"
+          printf 'runtime=%s\napp=%s\n' "$RT_MANIFEST" "$AP_NAME" > manifest.txt
           echo "RT_NAME=$RT_NAME" >> "$GITHUB_ENV"
           echo "AP_NAME=$AP_NAME" >> "$GITHUB_ENV"
           echo "runtime: $RT_NAME ($(du -sh $RT_NAME | cut -f1)) | app: $AP_NAME ($(du -sh $AP_NAME | cut -f1))"
@@ -109,10 +130,18 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG="deploy-$(date -u +%Y%m%d-%H%M%S)"
-          gh release create "$TAG" manifest.txt "$RT_NAME" "$AP_NAME" \
-            --title "deploy ${GITHUB_SHA::7}" \
-            --notes "auto build of $GITHUB_SHA" \
-            --latest
+          if [ -n "${{ inputs.force_runtime }}" ]; then
+            # دیپلوی فوری فقط-اپ: asset ران‌تایم منتشر نمی‌شود — هاست نام برابر دارد و دانلودی در کار نیست
+            gh release create "$TAG" manifest.txt "$AP_NAME" \
+              --title "deploy ${GITHUB_SHA::7} (app-only)" \
+              --notes "force_runtime=${{ inputs.force_runtime }}" \
+              --latest
+          else
+            gh release create "$TAG" manifest.txt "$RT_NAME" "$AP_NAME" \
+              --title "deploy ${GITHUB_SHA::7}" \
+              --notes "auto build of $GITHUB_SHA" \
+              --latest
+          fi
           echo "published: https://github.com/vahidaskari1365/drpedrambakhshaei/releases/latest"
 
       - name: Smoke test (best-effort — foreign route to Iran is throttled)
