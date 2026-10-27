@@ -1535,3 +1535,30 @@ Stage Summary:
 - مقاله پری‌ایمپلنتیت کامل منتشر و در هر دو لایه (DB + استاتیک/کاور) زنده: /blog/peri-implantitis-early-signs
 - چهارمین مقاله با همین قالب استاندارد؛ خط تولید (کاور → builder → patch → dispatch → راستی‌آزمایی) کاملاً پایدار و تکرارپذیر است
 - نکته فنی: API تولید تصویر گاهی 429 می‌دهد؛ صبر ~۳۰ ثانیه کافی است
+
+---
+Task ID: 45-a
+Agent: Z.ai Code (main)
+Task: تولید و انتشار مقاله «بهداشت ایمپلنت؛ مسواک، نخ دندان و واترپیک به روش درست» با استانداردهای SEO/GEO/AEO/AIO/SXO + کاور 3D + رفع فوری شکست Build پروداکشن
+
+Work Log:
+- چک sitemap: اسلاگ implant-hygiene-guide آزاد (۱۶ مقاله موجود)؛ تاریخ امروز 2026-10-27 → ۵ آبان ۱۴۰۵ با Intl
+- کاور 3D تلاش اول موفق: public/uploads/cover-implanthygiene.jpg (1344x768) — ایمپلنت با تاج در برش فک + مسواک teal + واترپیک با قطره‌های آب + نخ، پالت teal/cream، بدون متن
+- builder جدید: scripts/github-agent/build-implanthygiene-article.mjs (هم‌قالب ۴ مقاله قبلی؛ قرارداد id «ih-»)
+- build نهایی: ۳۹۱۴ کلمه | ۴۷ بلوک | ۸ quickAnswers | ۸ FAQ | ۳ جدول (ابزارها ۴ستونه ۶ سطری؛ برنامه نگهداری ۵ سطری؛ اشتباهات رایج ۶ سطری) | ۴ callout | ۶ لینک داخلی | metaTitle 53 | metaDesc 154 (اول ۱۶۱ بود؛ اصلاح شد)
+- کلیدواژه‌کلاستر ۱۵تایی: بهداشت ایمپلنت، مسواک زدن ایمپلنت، نخ دندان ایمپلنت، واترپیک برای ایمپلنت، تمیز کردن ایمپلنت دندان، نگهداری از ایمپلنت، مسواک بین دندانی ایمپلنت، برس بین دندانی، دهانشویه برای ایمپلنت، چگونه ایمپلنت را تمیز کنیم، نخ دندان مومی، بهداشت دهان بعد از ایمپلنت، طول عمر ایمپلنت، پری ایمپلنتیت، جراح فک پاسداران
+- h2ها (id ih-): why/brushing/floss/waterpik/interdental/mouthwash/routine/mistakes/checkup/conclusion
+- push 83f32d3 → dispatch 204 ولی هر دو run (patch + deploy) FAILURE شد
+- علت ۱: patch قدیمی delete-immediate-implant-loading.json (از commit محلی UUID 8d403e6) هدفش مقاله‌ای بود که دیگر وجود ندارد → 404 دائمی و run قرمز؛ خود patch مقاله ما و همه بقیه سبز بودند (created، wordCount 3805)
+- علت ۲ (بحرانی): commit محلی 8d403e6 (جلسه قبلی، هرگز پوش نشده بود) توسط pull --rebase من ناخواسته به main رفت و ۱۲ فایل route تکراری ریشه (page.tsx، template.tsx، api/route.ts و about/blog/contact/faq/gallery/prices/reviews/services + blog/[slug]) اضافه کرده بود → خطای Turbopack «You cannot have two parallel pages» → شکست Build → deploy قرمز
+- فیکس 0f78da6: git rm هر ۱۲ فایل تکراری + حذف patch معلق قدیمی → push → deploy خودکار success + re-dispatch patch → هر دو run سبز
+- درس pipeline مهم: قبل از pull --rebase/push باید git log محلی (کامیت‌های بدون origin) چک شود؛ rebase، کامیت‌های محلی جلسات قبلی را هم منتشر می‌کند
+- تأیید زنده: مقاله 200 فوری + sitemap شامل اسلاگ + og:image درست + کاور 200 (این بار با همان deploy؛ بدون انتظار اضافی) + /_next/imageoptimized هم رندر (coverLoaded=true در مرورگر)
+- مرورگر: تیتر تب/H1 درست/کاور لود/۱۴ h2/۳ جدول/FAQ (faqQ=true)/CTA/نوار شناور/اسکیمای Physician+WebSite+MedicalWebPage+FAQPage+BreadcrumbList/۶ لینک داخلی همه حاضر؛ اسکرین‌شات هیرو و میانه (کارت‌های پاسخ سریع دوتایی) سالم
+- dev server محلی پس از حذف root page.tsx سالم (via (site)/page.tsx → 200)
+
+Stage Summary:
+- مقاله «بهداشت ایمپلنت» کامل منتشر و در هر دو لایه (DB + استاتیک/کاور) زنده: /blog/implant-hygiene-guide
+- پنجمین مقاله با قالب استاندارد (bone-graft → sinus-lift → all-on-4 → root-canal-or-implant → peri-implantitis → این)؛ خط تولید کاملاً پایدار
+- بحران Build پروداکشن (routeهای موازی از commit محلی نشت‌کرده) در همان سشن شناسایی و رفع شد؛ CI فعلاً سبز
+- پیوند محتوایی کامل: این مقاله به پری‌ایمپلنتیت/مراقبت بعد جراحی/All-on-4/هزینه/گایدشده/گرافت لینک می‌دهد و خوشه ایمپلنت را کامل می‌کند
