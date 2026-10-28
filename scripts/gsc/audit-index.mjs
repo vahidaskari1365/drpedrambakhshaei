@@ -11,7 +11,7 @@
 import fs0 from 'node:fs';
 import path0 from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { listSites, inspectUrl, searchAnalytics, isoDaysAgo } from './gsc-lib.mjs';
+import { listSites, inspectUrl, searchAnalytics, isoDaysAgo, resubmitSitemap } from './gsc-lib.mjs';
 
 const SITE = 'sc-domain:drpedrambakhshaei.com';
 const HOST = 'https://drpedrambakhshaei.com';
@@ -203,6 +203,45 @@ async function main() {
   L.push('| URL | وضعیت | دلیل | کنونیکال گوگل | آخرین خزش |');
   L.push('|---|---|---|---|---|');
   for (const r of passed) L.push(row(r));
+  L.push('');
+
+  // ⑤ چک زنده HTTP برای URLهای مشکوک/قدیمی — تعیین ۲۰۰/ریدایرکت/۴۰۴
+  const DIAG = [
+    '/blog/immediate-implant-loading', // اسلاگ قدیمی مقاله ایمپلنت فوری (بدون پسوند dee79)
+    '/blog/immediate-implant-loading-dee79',
+    '/blog/implant-in-diabetic-patients', // مقاله جدید دیروز
+    '/services/wisdom/', // بقایای سایت قبلی
+    '/wishlist/', // بقایای سایت قبلی
+  ];
+  const diag = [];
+  L.push('## 🧪 چک زنده URLهای مشکوک');
+  L.push('');
+  L.push('| URL | وضعیت HTTP | مقصد ریدایرکت |');
+  L.push('|---|---|---|');
+  for (const p of DIAG) {
+    let status = 'خطا', loc = '—';
+    try {
+      const res = await fetch(`${HOST}${p}`, { redirect: 'manual', signal: AbortSignal.timeout(20000) });
+      status = res.status;
+      loc = res.headers.get('location') || '—';
+      try { await res.body?.cancel(); } catch { /* بستن استریم */ }
+    } catch (e) {
+      status = `خطا: ${e.message.slice(0, 40)}`;
+    }
+    diag.push({ p, status, loc });
+    L.push(`| \`${p}\` | ${status} | ${loc === '—' ? '—' : '`' + loc.replace(HOST, '') + '`'} |`);
+  }
+  L.push('');
+
+  // ⑥ ری‌سابمیت نقشه سایت — برای کشف سریع‌تر صفحات جدید (مثل مقاله دیروز)
+  let resub = 'خطا';
+  try {
+    await resubmitSitemap(SITE, `${HOST}/sitemap.xml`);
+    resub = '✅ انجام شد';
+  } catch (e) {
+    resub = `❌ ${e.message.slice(0, 80)}`;
+  }
+  L.push(`## 🗺️ ری‌سابمیت نقشه سایت: ${resub}`);
   L.push('');
 
   // تحلیل گروهی — هر دلیل، چه URLهایی
