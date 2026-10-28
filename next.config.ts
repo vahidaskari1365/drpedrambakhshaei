@@ -15,7 +15,7 @@ const csp = [
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
   "connect-src 'self'",
-  "frame-src https://www.google.com https://maps.google.com",
+  "frame-src https://www.google.com https://maps.google.com https://www.aparat.com",
   "media-src 'self'",
   "worker-src 'self'",
   "object-src 'none'",

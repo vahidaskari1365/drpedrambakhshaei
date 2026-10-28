@@ -23,6 +23,8 @@ import {
   RefreshCw,
   Star,
   Clock,
+  ExternalLink,
+  PlayCircle,
 } from "lucide-react";
 import type { LandingConfig } from "@/lib/landings";
 import { CONTENT_UPDATED } from "@/lib/landings";
@@ -271,6 +273,58 @@ export function ServiceLanding({ config }: { config: LandingConfig }) {
                 </table>
               </div>
             </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* ویدیوهای آموزشی — محتوای مالتی‌مدال (E-E-A-T / SXO) — embed آپارات مطابق CSP */}
+      {config.videos && config.videos.length > 0 && (
+        <section className="relative py-14 lg:py-16" aria-label="ویدیوهای آموزشی">
+          <div className="mx-auto max-w-5xl px-5 lg:px-8">
+            <motion.h2
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.9, ease }}
+              className="flex items-center gap-2 text-2xl font-black tracking-tight sm:text-3xl"
+            >
+              <PlayCircle className="h-7 w-7 text-primary" aria-hidden="true" />
+              ویدیوهای آموزشی — توضیح از زبان جراح
+            </motion.h2>
+            <div className="mt-7 grid gap-6 sm:grid-cols-2">
+              {config.videos.map((v) => (
+                <motion.figure
+                  key={v.embedUrl}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.9, ease }}
+                  className="overflow-hidden rounded-[2rem] border border-[oklch(0.5_0.06_152/0.15)] bg-card shadow-[0_30px_70px_-45px_oklch(0.4_0.06_152/0.5)]"
+                >
+                  <div className="relative aspect-video">
+                    <iframe
+                      src={v.embedUrl}
+                      title={v.title}
+                      className="absolute inset-0 h-full w-full border-0"
+                      loading="lazy"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                    />
+                  </div>
+                  <figcaption>
+                    <a
+                      href={v.pageUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between gap-2 px-5 py-4 text-[13px] font-black text-foreground transition-colors hover:text-primary cursor-pointer"
+                    >
+                      {v.title}
+                      <ExternalLink className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                    </a>
+                  </figcaption>
+                </motion.figure>
+              ))}
+            </div>
           </div>
         </section>
       )}
