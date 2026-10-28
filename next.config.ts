@@ -48,6 +48,17 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   reactStrictMode: false,
+  async redirects() {
+    return [
+      // اسلاگ قدیمی مقاله «ایمپلنت فوری» — قبلاً ایندکس شده بود و اکنون ۴۰۴ می‌داد؛
+      // ۳۰۱ دائمی اعتبار لینک را به اسلاگ رسمی منتقل و ۴۰۴ را از گزارش سرچ کنسول پاک می‌کند
+      {
+        source: "/blog/immediate-implant-loading",
+        destination: "/blog/immediate-implant-loading-dee79",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
