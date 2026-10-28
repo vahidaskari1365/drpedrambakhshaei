@@ -64,6 +64,18 @@
 | `/services/wisdom/` | ایندکس شده ✅ | ارسال و ایندکس شده ✅ | `/services/wisdom/` | 2026-10-13 |
 | `/wishlist/` | ایندکس شده ✅ | ارسال و ایندکس شده ✅ | `/wishlist/` | 2026-09-22 |
 
+## 🧪 چک زنده URLهای مشکوک
+
+| URL | وضعیت HTTP | مقصد ریدایرکت |
+|---|---|---|
+| `/blog/immediate-implant-loading` | 404 | — |
+| `/blog/immediate-implant-loading-dee79` | 200 | — |
+| `/blog/implant-in-diabetic-patients` | 200 | — |
+| `/services/wisdom/` | 308 | `/services/wisdom` |
+| `/wishlist/` | 308 | `/wishlist` |
+
+## 🗺️ ری‌سابمیت نقشه سایت: ✅ انجام شد
+
 ## 🧭 دسته‌بندی دلایل
 
 - **صفحه جایگزین با کنونیکال صحیح (طبیعی)** (3): `http://drpedrambakhshaei.com/`، `http://www.drpedrambakhshaei.com/`، `https://www.drpedrambakhshaei.com/`
