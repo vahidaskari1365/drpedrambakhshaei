@@ -1,0 +1,41 @@
+name: GSC QLP Dump
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: دریافت مخزن
+        uses: actions/checkout@v4
+
+      - name: نصب Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: نوشتن کلید سرویس اکانت
+        env:
+          GSC_KEY: ${{ secrets.GSC_KEY_JSON }}
+        run: |
+          mkdir -p secrets
+          printf '%s' "$GSC_KEY" > secrets/gsc-service-account.json
+
+      - name: استخراج کوئری×صفحه
+        run: node scripts/gsc/dump-qlp.mjs > reports/gsc-qlp-dump.md
+
+      - name: کامیت گزارش
+        run: |
+          git config user.name "gsc-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/
+          if git diff --cached --quiet; then
+            echo "گزارش جدیدی نیست"
+          else
+            git commit -m "GSC QLP dump [skip ci]"
+            git push
+          fi
