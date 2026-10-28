@@ -18,7 +18,7 @@
 | `http://drpedrambakhshaei.com/` | خنثی/در انتظار ⏳ | صفحه جایگزین با کنونیکال صحیح (طبیعی) | `/` | 2026-10-26 |
 | `http://www.drpedrambakhshaei.com/` | خنثی/در انتظار ⏳ | صفحه جایگزین با کنونیکال صحیح (طبیعی) | `/` | 2026-10-26 |
 | `/blog/` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
-| `/blog/implant-in-diabetic-patients` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
+| `/blog/implant-in-diabetic-patients` | خنثی/در انتظار ⏳ | کشف‌شده — فعلاً ایندکس نشده ⚠️ | — | — |
 | `/faq/` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
 | `/icon.svg` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
 | `/llms.txt` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
@@ -68,7 +68,7 @@
 
 | URL | وضعیت HTTP | مقصد ریدایرکت |
 |---|---|---|
-| `/blog/immediate-implant-loading` | 404 | — |
+| `/blog/immediate-implant-loading` | 308 | `/blog/immediate-implant-loading-dee79` |
 | `/blog/immediate-implant-loading-dee79` | 200 | — |
 | `/blog/implant-in-diabetic-patients` | 200 | — |
 | `/services/wisdom/` | 308 | `/services/wisdom` |
@@ -79,7 +79,8 @@
 ## 🧭 دسته‌بندی دلایل
 
 - **صفحه جایگزین با کنونیکال صحیح (طبیعی)** (3): `http://drpedrambakhshaei.com/`، `http://www.drpedrambakhshaei.com/`، `https://www.drpedrambakhshaei.com/`
-- **URL is unknown to Google** (6): `/blog/`، `/blog/implant-in-diabetic-patients`، `/faq/`، `/icon.svg`، `/llms.txt`، `/robots.txt`
+- **URL is unknown to Google** (5): `/blog/`، `/faq/`، `/icon.svg`، `/llms.txt`، `/robots.txt`
+- **کشف‌شده — فعلاً ایندکس نشده ⚠️** (1): `/blog/implant-in-diabetic-patients`
 
 > راهنما: «صفحه با ریدایرکت» و «صفحه جایگزین با کنونیکال صحیح» طبیعی و بی‌ضررند (واریانت http/www/اسلش).
 > «خزیده/کشف‌شده — فعلاً ایندکس نشده» یعنی گوگل محتوا را هنوز شایسته ایندکس نمی‌داند → تقویت محتوا و اعتبار لازم است.
