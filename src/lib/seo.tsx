@@ -44,7 +44,7 @@ export function physicianJsonLd(
     paymentAccepted: "نقدی، کارت بانکی، پرداخت مرحله‌ای",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "خیابان پاسداران، مرکز خرید پاسداران، طبقه ۲ و ۴",
+      streetAddress: "خیابان پاسداران، بالاتر از برج سفید، مرکز خرید پاسداران، طبقه ۲، واحد ۴",
       addressLocality: "تهران",
       addressRegion: "تهران",
       postalCode: "1668834111",
@@ -269,7 +269,7 @@ export function clinicJsonLd(site: SiteInfo = SITE, services?: ServiceItem[]) {
     })),
     address: {
       "@type": "PostalAddress",
-      streetAddress: "خیابان پاسداران، مرکز خرید پاسداران، طبقه ۲ و ۴",
+      streetAddress: "خیابان پاسداران، بالاتر از برج سفید، مرکز خرید پاسداران، طبقه ۲، واحد ۴",
       addressLocality: "تهران",
       addressCountry: "IR",
     },

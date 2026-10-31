@@ -71,7 +71,7 @@ export default async function ImplantPasdaranPage() {
           paymentAccepted: "نقدی، کارت بانکی، پرداخت مرحله‌ای",
           address: {
             "@type": "PostalAddress",
-            streetAddress: "خیابان پاسداران، مرکز خرید پاسداران، طبقه ۲ و ۴",
+            streetAddress: "خیابان پاسداران، بالاتر از برج سفید، مرکز خرید پاسداران، طبقه ۲، واحد ۴",
             addressLocality: "تهران",
             addressRegion: "تهران",
             addressCountry: "IR",
