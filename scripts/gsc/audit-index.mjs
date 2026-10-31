@@ -15,6 +15,8 @@ import { listSites, inspectUrl, searchAnalytics, isoDaysAgo, resubmitSitemap } f
 
 const SITE = 'sc-domain:drpedrambakhshaei.com';
 const HOST = 'https://drpedrambakhshaei.com';
+// مهم: هاست ایرانی درخواست بدون UA مرورگر را می‌بندد — درس ثبت‌شده در worklog
+const BROWSER_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36';
 const REPORT_DIR = path0.resolve(path0.dirname(fileURLToPath(import.meta.url)), '../../reports');
 
 // ترجمه وضعیت‌های coverage به فارسی
@@ -66,7 +68,10 @@ function covFa(state) {
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function fetchLiveSitemap() {
-  const res = await fetch(`${HOST}/sitemap.xml`, { signal: AbortSignal.timeout(30000) });
+  const res = await fetch(`${HOST}/sitemap.xml`, {
+    headers: { 'User-Agent': BROWSER_UA },
+    signal: AbortSignal.timeout(30000),
+  });
   if (!res.ok) throw new Error(`sitemap ${res.status}`);
   const xml = await res.text();
   return [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1].trim());
@@ -210,8 +215,11 @@ async function main() {
     '/blog/immediate-implant-loading', // اسلاگ قدیمی مقاله ایمپلنت فوری (بدون پسوند dee79)
     '/blog/immediate-implant-loading-dee79',
     '/blog/implant-in-diabetic-patients', // مقاله جدید دیروز
-    '/services/wisdom/', // بقایای سایت قبلی
-    '/wishlist/', // بقایای سایت قبلی
+    '/blog/implant-in-smokers', // مقاله سیگار و ایمپلنت
+    '/wp-content/uploads/2023/05/test.jpg', // رسانه وردپرس قدیمی — باید ۴۱۰ شود
+    '/wp-login.php', // وردپرس قدیمی — باید ۴۱۰ شود
+    '/wishlist', // بقایای ووکامرس قدیمی — باید ۳۰۱ شود
+    '/services/wisdom', // بقایای سایت قدیمی — باید ۳۰۱ شود
   ];
   const diag = [];
   L.push('## 🧪 چک زنده URLهای مشکوک');
@@ -221,7 +229,11 @@ async function main() {
   for (const p of DIAG) {
     let status = 'خطا', loc = '—';
     try {
-      const res = await fetch(`${HOST}${p}`, { redirect: 'manual', signal: AbortSignal.timeout(20000) });
+      const res = await fetch(`${HOST}${p}`, {
+        redirect: 'manual',
+        signal: AbortSignal.timeout(20000),
+        headers: { 'User-Agent': BROWSER_UA },
+      });
       status = res.status;
       loc = res.headers.get('location') || '—';
       try { await res.body?.cancel(); } catch { /* بستن استریم */ }

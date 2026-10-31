@@ -53,5 +53,8 @@ jobs:
             echo "گزارش جدیدی نیست"
           else
             git commit -m "GSC index audit [skip ci]"
-            git push
+            # اگر همزمان کامیت دیگری به main رفته باشد push رد می‌شود — rebase و تلاش دوباره
+            git fetch origin main
+            git rebase origin/main || git rebase --abort
+            git push origin HEAD:main || (git pull --rebase origin main && git push origin HEAD:main)
           fi
