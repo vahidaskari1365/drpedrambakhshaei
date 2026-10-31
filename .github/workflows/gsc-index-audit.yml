@@ -4,6 +4,15 @@ name: GSC Index Audit
 
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: 'نوع اجرا: audit (ممیزی کامل ایندکس) | wpdiag (کشف بقایای وردپرس) | both'
+        default: 'audit'
+        type: choice
+        options:
+          - audit
+          - wpdiag
+          - both
 
 permissions:
   contents: write
@@ -28,7 +37,12 @@ jobs:
           printf '%s' "$GSC_KEY" > secrets/gsc-service-account.json
 
       - name: اجرای ممیزی ایندکس
+        if: ${{ inputs.mode == 'audit' || inputs.mode == 'both' }}
         run: node scripts/gsc/audit-index.mjs
+
+      - name: کشف بقایای وردپرس
+        if: ${{ inputs.mode == 'wpdiag' || inputs.mode == 'both' }}
+        run: node scripts/gsc/diag-wp-content.mjs
 
       - name: کامیت گزارش
         run: |

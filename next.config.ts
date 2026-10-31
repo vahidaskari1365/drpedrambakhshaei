@@ -57,6 +57,20 @@ const nextConfig: NextConfig = {
         destination: "/blog/immediate-implant-loading-dee79",
         permanent: true,
       },
+      // صفحه علاقه‌مندی ووکامرس سایت وردپرسی قدیمی — هنوز نمایش گوگل دارد؛
+      // ۳۰۱ اعتبارش را به صفحه اصلی منتقل و از گزارش «ایندکس نشده» حذف می‌کند
+      {
+        source: "/wishlist",
+        destination: "/",
+        permanent: true,
+      },
+      // صفحه خدمات «دندان عقل» سایت قدیمی — نزدیک‌ترین محتوای زنده مقاله
+      // «علائم دندان نهفته و لزوم جراحی» است؛ کاربر همان هدف را پیدا می‌کند
+      {
+        source: "/services/wisdom",
+        destination: "/blog/hidden-molar-symptoms-surgery-necessity",
+        permanent: true,
+      },
     ];
   },
   async headers() {
