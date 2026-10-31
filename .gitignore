@@ -80,3 +80,6 @@ scripts/github-agent/last-raw-*.txt
 /secrets/
 gsc-service-account*.json
 *service-account*.json
+
+# فایل‌های دریافتی از کاربر — نباید در ریپو باشند
+upload/
