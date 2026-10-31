@@ -518,6 +518,10 @@ export const GALLERY = [
 /**
  * نمونه کارهای واقعی — عکس‌های اصلی از صفحه اول سایت قدیمی
  * (نمونه جراحی‌ها: جنیوپلاستی، ایمپلنت، دندان نهفته + ارتوسرجری)
+ *
+ * ⚠️ ترتیب آیتم‌های ۰ تا ۸ را نباید جابه‌جا کرد — صفحه اصلی با ایندکس
+ * (works[0], works[2], works[5], works[6], works[7], works[8]) گالری خودش را می‌سازد.
+ * نمونه‌کارهای جدید (آبان ۱۴۰۵) بعد از GALLERY اضافه شده‌اند تا ایندکس‌ها ثابت بمانند.
  */
 export const WORKS = [
   { title: "ارتوسرجری فک — قبل و بعد", image: "/uploads/jaw-surgery-result.jpg" },
@@ -525,6 +529,40 @@ export const WORKS = [
   { title: "ایمپلنت کامل دندان‌ها — قبل و بعد", image: "/uploads/implant-real.jpg" },
   { title: "جراحی دندان نهفته", image: "/uploads/wisdom-real.jpg" },
   ...GALLERY,
+  // نمونه‌کارهای جدید — کارت‌های حرفه‌ای قبل/بعد (آبان ۱۴۰۵)
+  { title: "جراحی ارتوگناتیک فک — قبل و بعد", image: "/uploads/orthognathic-case-1.jpg" },
+  { title: "جراحی ارتوگناتیک فک — اصلاح پروفیل", image: "/uploads/orthognathic-case-2.jpg" },
+  { title: "ارتوسرجری فک — قبل و بعد نیم‌رخ", image: "/uploads/orthognathic-case-3.jpg" },
+  { title: "جراحی فک — تغییر نمای نیم‌رخ", image: "/uploads/orthognathic-case-4.jpg" },
+  { title: "جراحی ارتوگناتیک — اصلاح فرم صورت", image: "/uploads/orthognathic-case-5.jpg" },
+  { title: "ارتوسرجری فک — نتیجه نهایی", image: "/uploads/orthognathic-case-6.jpg" },
+  { title: "جراحی فک — بازآفرینی پروفیل", image: "/uploads/orthognathic-case-7.jpg" },
+  { title: "جراحی فک بالا و پایین — قبل و بعد", image: "/uploads/orthognathic-case-8.jpg" },
+  { title: "جنیوپلاستی چانه — قبل و بعد", image: "/uploads/genioplasty-case-2.jpg" },
+  { title: "جراحی بینی و چانه — هماهنگی پروفیل", image: "/uploads/rhinoplasty-genioplasty.jpg" },
+  { title: "بازسازی کامل دهان با ایمپلنت", image: "/uploads/full-implant-smile.jpg" },
+  { title: "ایمپلنت دندان با گرافت دنده", image: "/uploads/rib-graft-dental-implants.jpg" },
+  { title: "اصلاح فک و چانه — قبل و بعد", image: "/uploads/jaw-chin-case.jpg" },
+  { title: "ایمپلنت کامل فک + گرافی پانورامیک", image: "/uploads/implant-panoramic-case.jpg" },
+  { title: "بازسازی کامل قوس فک با ایمپلنت", image: "/uploads/full-arch-rehabilitation.jpg" },
+  { title: "جنیوپلاستی + رینوپلاستی — پروفیل متعادل", image: "/uploads/genioplasty-rhinoplasty.jpg" },
+  { title: "ارتوسرجری دو فک + جنیوپلاستی — بیمار با سابقه شکاف لب و کام", image: "/uploads/bimaxillary-cleft-front.jpg" },
+  { title: "ارتوسرجری دو فک — نمای نیم‌رخ", image: "/uploads/bimaxillary-cleft-profile.jpg" },
+  { title: "گرافی قبل و بعد جنیوپلاستی", image: "/uploads/genioplasty-xray.jpg" },
+  { title: "فالوآپ ۲ ساله ایمپلنت‌ها — گرافی پانورامیک", image: "/uploads/implant-2yr-followup.jpg" },
+  { title: "اوردنچر بر پایه ۴ ایمپلنت — قبل و بعد", image: "/uploads/overdenture-4-implants.jpg" },
+  { title: "ایمپلنت با بارگذاری فوری تمام دهان", image: "/uploads/immediate-loading-full-mouth.jpg" },
+  { title: "قبل: قوز بینی و چانه عقب‌رفته (رتروژنیا)", image: "/uploads/retrogenia-before.jpg" },
+  { title: "بعد: اصلاح چانه و پروفیل", image: "/uploads/retrogenia-after.jpg" },
+  { title: "قبل از درمان: بی‌دندانی فک بالا", image: "/uploads/edentulous-upper-jaw.jpg" },
+  { title: "۳ ایمپلنت و اباتمنت مولتی‌یونیت", image: "/uploads/multiunit-abutment-implants.jpg" },
+  { title: "پس از تحویل روکش‌های نهایی", image: "/uploads/final-crowns-delivered.jpg" },
+  { title: "تحویل روکش موقت بلافاصله پس از جراحی", image: "/uploads/temporary-crowns-postop.jpg" },
+  { title: "۴ ایمپلنت اشترومن در استخوان بازسازی‌شده (گرافت راموس)", image: "/uploads/straumann-grafted-bone.jpg" },
+  { title: "بارزسازی ناحیه بی‌دندانی با ایمپلنت — قبل و بعد", image: "/uploads/edentulous-implant-result.jpg" },
+  { title: "روکش نهایی تمام قوس فک", image: "/uploads/full-arch-final-crowns.jpg" },
+  { title: "ایمپلنت مگاژن — جراحی در مطب", image: "/uploads/megagen-implant-surgery.jpg" },
+  { title: "جراحی ایمپلنت ROOTT در مطب", image: "/uploads/roott-implant-surgery.jpg" },
 ] as const;
 
 /** مقایسه کشویی قبل/بعد — کیس واقعی ایمپلنت کامل دهان (از صفحه اصلی سایت قدیمی) */

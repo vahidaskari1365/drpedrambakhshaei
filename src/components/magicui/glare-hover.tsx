@@ -53,7 +53,10 @@ function GlareHover({
     <div
       {...props}
       className={cn(
-        "relative grid size-fit cursor-pointer place-items-center overflow-hidden bg-transparent",
+        // نکته مهم: بدون size-fit و place-items-center — این دو باعث می‌شدند
+        // فرزندِ aspect-ratio دار (مثل aspect-[4/3]) کشیده نشود و کارت‌ها
+        // در گالری و خدمات تا ارتفاع ~۲ پیکسل جمع می‌شدند (باگ خاموش پروداکشن)
+        "relative grid cursor-pointer overflow-hidden bg-transparent",
         "before:pointer-events-none before:absolute before:inset-0 before:z-10 before:bg-no-repeat before:content-['']",
         "before:[background-image:linear-gradient(var(--gh-angle),transparent_60%,var(--gh-rgba)_70%,transparent,transparent_100%)]",
         "before:[background-size:var(--gh-size)_var(--gh-size),100%_100%]",

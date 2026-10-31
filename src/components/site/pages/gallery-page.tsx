@@ -17,11 +17,17 @@ const ease = [0.16, 1, 0.3, 1] as const;
 /** دسته‌بندی نمونه کارها برای فیلتر گرید معمولی */
 type Category = "all" | "treatments" | "clinic";
 
-const TREATMENT_IMAGES = new Set([
-  "/uploads/jaw-surgery-result.jpg",
-  "/uploads/genioplasty-real.jpg",
-  "/uploads/implant-real.jpg",
-  "/uploads/wisdom-real.jpg",
+/**
+ * فقط عکس‌های فضای مطب در دسته «فضای مطب» می‌روند؛
+ * بقیه نمونه‌کارها (قدیمی و جدید) پیش‌فرض «جراحی‌ها و خدمات» هستند
+ * تا نمونه‌کارهای جدید لازم نیست دستی به این فهرست اضافه شوند.
+ */
+const CLINIC_IMAGES = new Set([
+  "/uploads/clinic-photo-1.jpg",
+  "/uploads/clinic-photo-2.jpg",
+  "/uploads/clinic-photo-3.jpg",
+  "/uploads/clinic-photo-4.jpg",
+  "/uploads/clinic-photo-5.jpg",
 ]);
 
 const FILTERS: { id: Category; label: string }[] = [
@@ -39,7 +45,7 @@ export function GalleryPage() {
     () =>
       works.map((w) => ({
         ...w,
-        category: (TREATMENT_IMAGES.has(w.image) ? "treatments" : "clinic") as Category,
+        category: (CLINIC_IMAGES.has(w.image) ? "clinic" : "treatments") as Category,
       })),
     [works]
   );
@@ -326,12 +332,13 @@ export function GalleryPage() {
               className="relative w-full max-w-4xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] border border-background/15 shadow-2xl">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] border border-background/15 bg-background/5 shadow-2xl">
                 <Image
                   src={filtered[lightbox].image}
                   alt={filtered[lightbox].title}
                   fill
-                  className="object-cover"
+                  // object-contain — کارت‌های عمودی ۹:۱۶ کامل دیده شوند (کپشن داخل عکس حذف نشود)
+                  className="object-contain"
                   sizes="(max-width: 1024px) 100vw, 900px"
                   priority
                 />
