@@ -32,6 +32,8 @@ import {
   TrendingUp,
   Bot,
   CalendarCheck,
+  CalendarClock,
+  MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { SiteContent } from "@/lib/site-content";
@@ -46,15 +48,19 @@ import { TestsTab } from "./tests-tab";
 import { ActivityTab } from "./activity-tab";
 import { AnalyticsTab } from "./analytics-tab";
 import { BookingTab } from "./booking-tab";
+import { AppointmentsTab } from "./appointments-tab";
+import { SmsTab } from "./sms-tab";
 import { MediaTab } from "./media-tab";
 import { AgentsTab } from "./agents-tab";
 
-type TabId = "dashboard" | "agents" | "analytics" | "booking" | "content" | "media" | "blog" | "requests" | "reports" | "tests" | "activity";
+type TabId = "dashboard" | "appointments" | "analytics" | "booking" | "sms" | "content" | "media" | "blog" | "requests" | "reports" | "tests" | "activity" | "agents";
 
 const TABS: { id: TabId; label: string; icon: typeof LayoutDashboard }[] = [
   { id: "dashboard", label: "داشبورد", icon: LayoutDashboard },
+  { id: "appointments", label: "نوبت‌ها", icon: CalendarClock },
   { id: "analytics", label: "بازدیدها", icon: Eye },
   { id: "booking", label: "نوبت و تماس", icon: CalendarCheck },
+  { id: "sms", label: "پیامک", icon: MessageSquare },
   { id: "requests", label: "درخواست‌ها", icon: Inbox },
   { id: "blog", label: "مقالات بلاگ", icon: Newspaper },
   { id: "content", label: "محتوای سایت", icon: Database },
@@ -586,9 +592,11 @@ export function AdminApp() {
                   transition={{ duration: 0.3 }}
                 >
                   {tab === "dashboard" && <Dashboard overview={overview} content={content} go={setTab} />}
+                  {tab === "appointments" && <AppointmentsTab toast={toast} refreshKey={dataVersion} />}
                   {tab === "agents" && <AgentsTab toast={toast} />}
                   {tab === "analytics" && <AnalyticsTab toast={toast} refreshKey={dataVersion} />}
                   {tab === "booking" && <BookingTab toast={toast} refreshKey={dataVersion} />}
+                  {tab === "sms" && <SmsTab toast={toast} />}
                   {tab === "content" && (
                     <ContentTab content={content} overrides={overrides} onSaved={setContent} toast={toast} />
                   )}

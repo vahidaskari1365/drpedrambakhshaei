@@ -125,6 +125,44 @@ CREATE TABLE IF NOT EXISTS "TrackEvent" (
 CREATE INDEX IF NOT EXISTS "TrackEvent_type_idx" ON "TrackEvent"("type");
 CREATE INDEX IF NOT EXISTS "TrackEvent_createdAt_idx" ON "TrackEvent"("createdAt");
 CREATE INDEX IF NOT EXISTS "TrackEvent_type_createdAt_idx" ON "TrackEvent"("type", "createdAt");
+CREATE TABLE IF NOT EXISTS "Appointment" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "name" TEXT NOT NULL,
+  "phone" TEXT NOT NULL,
+  "service" TEXT NOT NULL,
+  "date" TEXT NOT NULL,
+  "time" TEXT NOT NULL,
+  "note" TEXT NOT NULL DEFAULT '',
+  "status" TEXT NOT NULL DEFAULT 'confirmed',
+  "source" TEXT NOT NULL DEFAULT 'site',
+  "patientSmsSent" BOOLEAN NOT NULL DEFAULT false,
+  "adminSmsSent" BOOLEAN NOT NULL DEFAULT false,
+  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updatedAt" TIMESTAMP(3) NOT NULL
+);
+CREATE INDEX IF NOT EXISTS "Appointment_date_time_idx" ON "Appointment"("date", "time");
+CREATE INDEX IF NOT EXISTS "Appointment_phone_idx" ON "Appointment"("phone");
+CREATE INDEX IF NOT EXISTS "Appointment_createdAt_idx" ON "Appointment"("createdAt");
+CREATE TABLE IF NOT EXISTS "OtpCode" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "phone" TEXT NOT NULL,
+  "codeHash" TEXT NOT NULL,
+  "purpose" TEXT NOT NULL DEFAULT 'booking',
+  "expiresAt" TIMESTAMP(3) NOT NULL,
+  "consumed" BOOLEAN NOT NULL DEFAULT false,
+  "attempts" INTEGER NOT NULL DEFAULT 0,
+  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS "OtpCode_phone_createdAt_idx" ON "OtpCode"("phone", "createdAt");
+CREATE TABLE IF NOT EXISTS "SmsSetting" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "apiKey" TEXT NOT NULL DEFAULT '',
+  "adminMobiles" TEXT NOT NULL DEFAULT '09302626021',
+  "templateId" TEXT NOT NULL DEFAULT '138693',
+  "senderLine" TEXT NOT NULL DEFAULT '500039235084479',
+  "enabled" BOOLEAN NOT NULL DEFAULT true,
+  "updatedAt" TIMESTAMP(3) NOT NULL
+);
 `;
 
 export async function bootstrapDatabase(): Promise<void> {

@@ -175,3 +175,49 @@ model TrackEvent {
   @@index([createdAt])
   @@index([type, createdAt])
 }
+
+/** نوبت‌های ثبت‌شده از صفحه /appointment — فقط پس از تایید پیامکی ساخته می‌شوند */
+model Appointment {
+  id             String   @id @default(cuid())
+  name           String
+  phone          String
+  service        String
+  date           String   // ISO میلادی 2026-11-02 — نمایش شمسی در UI
+  time           String   // 16:30
+  note           String   @default("")
+  status         String   @default("confirmed") // confirmed | done | cancelled | no_show
+  source         String   @default("site")
+  patientSmsSent Boolean  @default(false)
+  adminSmsSent   Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([date, time])
+  @@index([phone])
+  @@index([createdAt])
+}
+
+/** کدهای یک‌بارمصرف پیامکی — هش‌شده با انقضا و سقف تلاش */
+model OtpCode {
+  id        String   @id @default(cuid())
+  phone     String
+  codeHash  String
+  purpose   String   @default("booking")
+  expiresAt DateTime
+  consumed  Boolean  @default(false)
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([phone, createdAt])
+}
+
+/** تنظیمات سامانه پیامک SMS.ir — کلید فقط در دیتابیس سرور (گیت هرگز) */
+model SmsSetting {
+  id           String   @id @default("sms")
+  apiKey       String   @default("")
+  adminMobiles String   @default("09302626021")
+  templateId   String   @default("138693")
+  senderLine   String   @default("500039235084479")
+  enabled      Boolean  @default(true)
+  updatedAt    DateTime @updatedAt
+}

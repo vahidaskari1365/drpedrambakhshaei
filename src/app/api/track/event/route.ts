@@ -9,7 +9,13 @@ export const dynamic = "force-dynamic";
  * بدون احراز هویت؛ سبک، مقاوم و ضد Flood (حداکثر ۶۰ رویداد در دقیقه از هر IP)
  * مسیرهای پنل ادمین ثبت نمی‌شوند تا آمار سایت واقعی بماند.
  */
-const ALLOWED_TYPES = new Set(["booking_modal_open", "booking_platform_click", "call_click"]);
+const ALLOWED_TYPES = new Set([
+  "booking_modal_open",
+  "booking_platform_click",
+  "call_click",
+  "appointment_open",
+  "appointment_booked",
+]);
 const ALLOWED_PLATFORMS = new Set(["doctoreto", "nobat"]);
 
 function clean(v: unknown, max: number): string {
