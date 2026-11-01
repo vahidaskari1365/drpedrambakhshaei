@@ -1,0 +1,36 @@
+name: Seed SMS Settings
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# یک‌بارمصرف: ذخیره کلید SMS.ir در دیتابیس سرور + ارسال پیامک تست به مدیر
+# کلیدها فقط در GitHub Secrets زندگی می‌کنند؛ هیچ مقداری در کد/لاگ نمی‌آید
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ذخیره تنظیمات پیامک روی سایت
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          SMSIR_API_KEY: ${{ secrets.SMSIR_API_KEY }}
+        run: |
+          RESP=$(curl -s -m 30 -X PUT "https://drpedrambakhshaei.com/api/admin/sms-settings" \
+            -H "Content-Type: application/json" \
+            -H "x-admin-key: $ADMIN_KEY" \
+            -d "{\"apiKey\":\"$SMSIR_API_KEY\",\"adminMobiles\":\"09302626021\",\"templateId\":\"138693\",\"senderLine\":\"500039235084479\",\"enabled\":true}")
+          echo "settings: $RESP"
+          echo "$RESP" | grep -q '"ok":true' || { echo "SEED FAILED"; exit 1; }
+
+      - name: پیامک تست به مدیر
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          RESP=$(curl -s -m 30 -X POST "https://drpedrambakhshaei.com/api/admin/sms-settings/test" \
+            -H "Content-Type: application/json" \
+            -H "x-admin-key: $ADMIN_KEY" \
+            -d '{"mobile":"09302626021"}')
+          echo "test: $RESP"
+          echo "$RESP" | grep -q '"ok":true' || { echo "TEST SMS FAILED (settings are saved)"; exit 1; }
