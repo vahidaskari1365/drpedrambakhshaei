@@ -29,9 +29,17 @@ export function physicianJsonLd(
     "@type": "Physician",
     "@id": `${SITE_URL}/#physician`,
     name: "دکتر پدرام بخشایی",
-    alternateName: "Dr. Pedram Bakhshaei",
+    // نام کامل با «شهربابکی» — کلید تمایز از هم‌نامان در شهرهای دیگر (تشابه اسمی)
+    alternateName: [
+      "Dr. Pedram Bakhshaei",
+      "دکتر پدرام بخشایی شهربابکی",
+      "Dr. Pedram Bakhshaei Shahrbabaki",
+    ],
     givenName: "پدرام",
     familyName: "بخشایی",
+    // توضیح ابهام‌زدای رسمی schema.org برای جداسازی هویت از هم‌نامان
+    disambiguatingDescription:
+      "جراح و متخصص جراحی دهان، فک و صورت مستقر در تهران، خیابان پاسداران (شمال تهران)؛ رتبه ۲ بورد تخصصی کشور و عضو هیئت علمی دانشگاه شهید بهشتی. مطب فقط در تهران، پاسداران واقع است.",
     medicalSpecialty: "OralAndMaxillofacialSurgery",
     description:
       "متخصص جراحی دهان، فک و صورت، رتبه ۲ بورد تخصصی کشور، هیئت علمی دانشگاه شهید بهشتی؛ بیش از ۱۱ سال تجربه، ۱۵٬۰۰۰+ جراحی ایمپلنت و ۱۰۴ بیمار ارتوسرجری در تهران",
