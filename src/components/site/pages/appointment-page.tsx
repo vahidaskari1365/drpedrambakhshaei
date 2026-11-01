@@ -61,7 +61,7 @@ const maskPhone = (p: string) =>
   p.length === 11 ? `${p.slice(0, 4)}•••${p.slice(7)}` : p;
 
 export function AppointmentPage() {
-  const { site } = useSite();
+  const { site, services } = useSite();
 
   const [step, setStep] = React.useState<Step>(1);
   const [service, setService] = React.useState("");
@@ -211,7 +211,7 @@ export function AppointmentPage() {
       </header>
 
       {/* استپر */}
-      <ol className="mt-8 flex items-center justify-center gap-1.5 sm:gap-3" aria-label="مراحل رزرو">
+      <ol className="mt-8 flex flex-wrap items-center justify-center gap-x-1 gap-y-2 sm:gap-3" aria-label="مراحل رزرو">
         {STEPS.map(({ id, label, Icon }, i) => {
           const active = step === id;
           const passed = step > id;
@@ -223,7 +223,7 @@ export function AppointmentPage() {
                 disabled={busy}
                 aria-current={active ? "step" : undefined}
                 className={cn(
-                  "flex items-center gap-2 rounded-full px-3 py-2 text-[12px] font-black transition-colors sm:px-4 sm:text-[13px]",
+                  "flex items-center gap-1.5 rounded-full px-2.5 py-2 text-[11.5px] font-black transition-colors sm:gap-2 sm:px-4 sm:text-[13px]",
                   active && "bg-stone-900 text-white",
                   passed && "bg-emerald-100 text-emerald-700 hover:bg-emerald-200",
                   !active && !passed && "bg-stone-100 text-stone-400",
@@ -265,7 +265,7 @@ export function AppointmentPage() {
                 برای چه خدمتی نوبت می‌خواهید؟
               </h2>
               <div className="grid gap-3 sm:grid-cols-2">
-                {(site as unknown as { services?: { title: string; subtitle?: string }[] }).services?.map((s) => (
+                {services.map((s) => (
                   <button
                     key={s.title}
                     type="button"
