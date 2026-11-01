@@ -14,6 +14,7 @@ const ALLOWED_TYPES = new Set([
   "booking_platform_click",
   "call_click",
   "appointment_open",
+  "appointment_otp_sent",
   "appointment_booked",
 ]);
 const ALLOWED_PLATFORMS = new Set(["doctoreto", "nobat"]);

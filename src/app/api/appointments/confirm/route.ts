@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { rateLimit } from "@/lib/rate-limit";
-import { isSlotOpen } from "@/lib/booking-constants";
+import { isSlotOpen, normalizePatientFields } from "@/lib/booking-constants";
 import { jalaliDateLabel } from "@/lib/jalali";
 import {
   getSmsConfig,
@@ -22,6 +22,9 @@ const schema = z.object({
   service: z.string().trim().min(2).max(120),
   date: z.string().trim().regex(/^\d{4}-\d{2}-\d{2}$/),
   time: z.string().trim().regex(/^\d{2}:\d{2}$/),
+  gender: z.string().trim().max(10).optional(),
+  latinName: z.string().trim().max(80).optional(),
+  birthYear: z.string().trim().max(6).optional(),
   note: z.string().trim().max(500).optional(),
   code: z.string().trim().regex(/^\d{6}$/, "کد ۶ رقمی را وارد کنید"),
 });
@@ -45,6 +48,12 @@ export async function POST(req: Request) {
     const phone = normalizeMobile(rawPhone);
     if (!isIranMobile(phone) || !isSlotOpen(date, time)) {
       return NextResponse.json({ error: "اطلاعات نوبت معتبر نیست" }, { status: 400 });
+    }
+
+    // فیلدهای پرونده بیمار — جنسیت الزامی است
+    const patient = normalizePatientFields(parsed.data);
+    if (!patient.ok) {
+      return NextResponse.json({ error: patient.error }, { status: 400 });
     }
 
     // آخرین کد مصرف‌نشده این شماره
@@ -89,7 +98,17 @@ export async function POST(req: Request) {
     }
 
     const saved = await db.appointment.create({
-      data: { name, phone, service, date, time, note: note || "" },
+      data: {
+        name,
+        phone,
+        service,
+        date,
+        time,
+        gender: patient.gender,
+        latinName: patient.latinName,
+        birthYear: patient.birthYear,
+        note: note || "",
+      },
     });
 
     // لاگ CRM

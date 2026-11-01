@@ -184,6 +184,9 @@ model Appointment {
   service        String
   date           String   // ISO میلادی 2026-11-02 — نمایش شمسی در UI
   time           String   // 16:30
+  gender         String   @default("") // آقا | خانم
+  latinName      String   @default("") // نام لاتین بیمار (پرونده)
+  birthYear      String   @default("") // سال تولد شمسی
   note           String   @default("")
   status         String   @default("confirmed") // confirmed | done | cancelled | no_show
   source         String   @default("site")

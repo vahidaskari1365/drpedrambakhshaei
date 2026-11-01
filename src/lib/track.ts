@@ -7,7 +7,13 @@
  * هیچ‌وقت تجربه کاربری را کند یا خراب نمی‌کند — خطاها بی‌صدا نادیده گرفته می‌شوند.
  */
 
-export type SiteEventType = "booking_modal_open" | "booking_platform_click" | "call_click";
+export type SiteEventType =
+  | "booking_modal_open"
+  | "booking_platform_click"
+  | "call_click"
+  | "appointment_open"
+  | "appointment_otp_sent"
+  | "appointment_booked";
 
 /** شناسه یکتای بازدیدکننده — همان vid ماژول VisitTracker (localStorage) */
 export function getVid(): string {

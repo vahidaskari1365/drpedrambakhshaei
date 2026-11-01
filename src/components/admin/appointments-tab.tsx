@@ -29,6 +29,9 @@ type Appt = {
   service: string;
   date: string;
   time: string;
+  gender?: string;
+  latinName?: string;
+  birthYear?: string;
   note: string;
   status: string;
   patientSmsSent: boolean;
@@ -203,6 +206,13 @@ export function AppointmentsTab({
                   <p className="mt-1.5 text-[12.5px] leading-6 text-white/60">
                     {a.service} — <span className="font-bold text-white/80">{faDate(a.date)}</span> — ساعت <span dir="ltr" className="font-bold">{a.time}</span>
                   </p>
+                  {(a.gender || a.birthYear || a.latinName) && (
+                    <p className="mt-1 text-[11.5px] leading-5 text-white/50">
+                      {a.gender}
+                      {a.birthYear ? ` — متولد ${a.birthYear}` : ""}
+                      {a.latinName ? ` — ${a.latinName}` : ""}
+                    </p>
+                  )}
                   {a.note && <p className="mt-1 text-[11.5px] leading-5 text-white/40">یادداشت بیمار: {a.note}</p>}
                   <p className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-white/35">
                     <span>ثبت: {faTimeAgo(a.createdAt)}</span>

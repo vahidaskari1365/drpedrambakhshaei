@@ -143,6 +143,10 @@ CREATE TABLE IF NOT EXISTS "Appointment" (
 CREATE INDEX IF NOT EXISTS "Appointment_date_time_idx" ON "Appointment"("date", "time");
 CREATE INDEX IF NOT EXISTS "Appointment_phone_idx" ON "Appointment"("phone");
 CREATE INDEX IF NOT EXISTS "Appointment_createdAt_idx" ON "Appointment"("createdAt");
+/* مهاجرت افزایشی — فیلدهای پرونده بیمار (ویزارد جدید رزرو) */
+ALTER TABLE "Appointment" ADD COLUMN IF NOT EXISTS "gender" TEXT NOT NULL DEFAULT '';
+ALTER TABLE "Appointment" ADD COLUMN IF NOT EXISTS "latinName" TEXT NOT NULL DEFAULT '';
+ALTER TABLE "Appointment" ADD COLUMN IF NOT EXISTS "birthYear" TEXT NOT NULL DEFAULT '';
 CREATE TABLE IF NOT EXISTS "OtpCode" (
   "id" TEXT NOT NULL PRIMARY KEY,
   "phone" TEXT NOT NULL,
