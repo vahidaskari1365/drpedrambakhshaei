@@ -7,6 +7,8 @@ User-Agent: GPTBot
 User-Agent: OAI-SearchBot
 User-Agent: ChatGPT-User
 User-Agent: ClaudeBot
+User-Agent: Claude-SearchBot
+User-Agent: Claude-User
 User-Agent: Claude-Web
 User-Agent: anthropic-ai
 User-Agent: PerplexityBot
