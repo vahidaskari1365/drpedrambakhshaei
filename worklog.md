@@ -1947,3 +1947,18 @@ Stage Summary:
 - مقاله جدید canonical و بی‌تکرار است: با مقاله راهنما فقط هم‌سو محتوایی دارد و به آن لینک می‌دهد؛ ریسک cannibalization صفر
 - انتشار روی هاست از مسیر رسمی workflow انجام شد؛ در آینده نیز کلید را از GitHub Secrets بخوانید نه پیش‌فرض محلی
 - کاور تا pull بعدی cron سرور (حداکثر ~۲ دقیقه) روی هاست ظاهر می‌شود؛ llms.txt هم پس از همان pull زنده است
+
+---
+Task ID: 60
+Agent: Z.ai Code (main)
+Task: بررسی و تکمیل robots.txt — افزودن Claude-SearchBot و Claude-User (درخواست کاربر)
+
+Work Log:
+- بررسی: robots.txt از قبل وجود داشت و زنده بود (ساختار User-agent: * + لیست AI bots + Sitemap) — فهرست پیشنهادی کاربر با محتوای فعلی مقایسه شد؛ فقط ۲ ربات جا مانده بود: Claude-SearchBot و Claude-User
+- کشف معماری: پروژه دو منبع robots دارد — public/robots.txt و روت متادیتا src/app/robots.ts؛ پاسخ زنده هاست (x-nextjs-cache: HIT) از روت build-time می‌آید → هر دو فایل همگام آپدیت شدند (۱۶ ربات AI)
+- درس مهم: کامیت اول با [skip ci] push شد و deploy.yml اجرا نشد → هاست آپدیت نکرد؛ کامیت دوم بدون skip ci → Deploy to cPanel (Iran) برای fd61fc7 اجرا شد
+- وریفای: deploy.yml موفق (release deploy-20261102-124218 با باندل app ۱۶MB منتشر شد) اما pull هاست تا ۵۰ دقیقه کامل نشد (مسیر ایران→گیت‌هاب کند؛ دانلود با resume بین اجراهای کرون ادامه دارد) — محتوای زنده موقتاً نسخه قبل است و به‌محض اتمام pull + restart.txt به‌روز می‌شود
+
+Stage Summary:
+- robots.txt حالا اجازه صریح به هر ۱۶ کرالر AI (OpenAI/Anthropic/Perplexity/Google/Apple/CCBot/Meta/ByteDance/Amazon) می‌دهد + Sitemap
+- قاعده: هر تغییری در robots باید در هر دو منبع (public/robots.txt و src/app/robots.ts) اعمال شود؛ publish بدون [skip ci] برای فعال‌شدن deploy
