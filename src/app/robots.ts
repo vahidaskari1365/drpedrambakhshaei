@@ -21,6 +21,8 @@ export default function robots(): MetadataRoute.Robots {
           "OAI-SearchBot",
           "ChatGPT-User",
           "ClaudeBot",
+          "Claude-SearchBot",
+          "Claude-User",
           "Claude-Web",
           "anthropic-ai",
           "PerplexityBot",
