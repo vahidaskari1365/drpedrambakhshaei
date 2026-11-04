@@ -2131,3 +2131,38 @@ Stage Summary:
 - TL;DR/خلاصه در بالای صفحه اصلی (LOW)
 - نقل‌قول مستقیم دکتر و تعریف «X است» در محتوا (LOW)
 - Page size صفحه اصلی ۱۰۱۷KB + ۱۶۴ inline style (بهینه‌سازی بعدی)
+
+---
+Task ID: 67
+Agent: Z.ai Code (main)
+Date: 2026-11-04
+Title: اجرای اقدامات ۱ تا ۴ باقی‌مانده گزارش‌های SeoMods — پاسخ سریع/تاریخ به‌روزرسانی، نقل‌قول+تعریف‌ها، کاهش ۶۰٪ حجم صفحه اصلی، ممیزی مجدد
+
+ورودی: ۴ اقدام باقی‌مانده از ممیزی ۱۳ گزارش SeoMods (Task 66) به ترتیب درخواست کاربر
+
+اقدام ۱ — پاسخ سریع (TL;DR) + تاریخ به‌روزرسانی قابل‌مشاهده:
+- جعبه «پاسخ سریع: دکتر پدرام بخشایی کیست و چه خدماتی ارائه می‌دهد؟» بالای صفحه اصلی بعد از Hero — پاسخ مستقیم ۴ جمله‌ای با OMFS، ارتوسرجری، جنیوپلاستی، CBCT، MMA (رفع AEO: «TL;DR block missing»)
+- بج «آخرین به‌روزرسانی محتوا و تعرفه‌ها: ۱۳ آبان ۱۴۰۵» (رفع AI Citation MEDIUM: «Publish/update date missing»)
+- اسکیمای WebPage جدید (homepageJsonLd) با dateModified/lastReviewed=2026-11-04 + mentions چهار موجودیت تخصصی (رفع Entity Coverage MEDIUM: «Entities in structured data: None»)
+
+اقدام ۲ — نقل‌قول دکتر + تعریف‌های «X است» + پوشش موجودیت:
+- blockquote مستقیم دکتر با <cite> در بخش «درباره دکتر» (رفع AI Citation LOW: «Expert quotes: 0»)
+- بخش «واژه‌نامه سریع» با h2 پرسشی + dl چهار تعریف «X است»: ارتوسرجری (Le Fort I/BSSO)، جنیوپلاستی، ایمپلنت (CBCT)، آپنه خواب (MMA/CPAP) — (رفع Citation LOW: «Clear definitions: 0» + Entity CRITICAL: موجودیت‌های تخصصی)
+
+اقدام ۳ — کاهش حجم صفحه اصلی (SeoMods: 1017KB + 164 inline style):
+ریشه‌یابی با تحلیل HTML زنده: ۱۰۸۷KB = flight payload ۴۵۸KB + ۳۱۳ SVG (۱۸۴KB)
+- کشف اصلی: کل بدنه ۷+ مقاله بلاگ (blocks/quickAnswers/faqs ≈ ۴۰۰KB) از طریق ContentProvider به flight همه صفحات تزریق می‌شد؛ هیچ صفحه‌ای جز خود مقاله نیازش را ندارد
+- فیکس: slimContentForClient در content-store — فقط فیلدهای سنگین مقاله‌ها خالی می‌شود در (site)/layout؛ پنل ادمین/API/اسکیما همچنان داده کامل می‌گیرند؛ article-page اولویت را به prop سرور (بدنه کامل) می‌دهد
+- فیکس دوم: ۵ ستاره SVG در هر کارت نظر ← یک span متنی ★★★★★ (۲۰۰ SVG حذف، ~۱۲۰KB)
+- فیکس جانبی: key تکراری Marquee نظرات (نام نویسنده تکراری) + h3 دور دکمه FAQ مقاله‌ها (هماهنگ با الگوی صفحه اصلی)
+- نتیجه اندازه‌گیری: HTML صفحه اصلی ۱۰۸۷KB ← ۲۷۴KB (−۷۵٪)؛ flight ۴۵۸KB ← ۶۸KB (−۸۵٪)؛ SVG ۳۱۳ ← ۱۱۸
+
+وریفای محلی (dev server + agent-browser):
+- صفحه اصلی: پاسخ سریع/تاریخ/تعریف‌ها/نقل‌قول/WebPage schema همه حاضر ✓ | کنسول صفر خطا ✓
+- مقاله استاتیک: 14 h2 + 2 table + 6 h3 پرسشی FAQ ✓ | آکاردئون باز/بسته ✓ | مقاله دیتابیسی هم 200 ✓
+- فهرست بلاگ: 200 ✓ (فقط متادیتا مصرف می‌کند)
+- lint: پاک
+
+Stage Summary:
+- نمرات مورد انتظار: AI Citation (تاریخ + نقل‌قول + تعریف‌ها)، Entity Coverage (mentions + Le Fort I/BSSO/MMA/CBCT/CPAP)، AEO (TL;DR + h2 پرسشی + dl تعریفی)، Page Size (~۲۷۴KB)
+- ممیزی مجدد بعد از دیپلوی انجام شود (گام ۴) — ابزارها روی نسخه زنده
