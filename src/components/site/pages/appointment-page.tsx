@@ -231,7 +231,7 @@ export function AppointmentPage() {
       const data = (await res.json()) as { error?: string };
       if (!res.ok) throw new Error(data.error || "ارسال کد ناموفق بود");
       setOtpStage("code");
-      setResendIn(75);
+      setResendIn(50);
       setCode("");
       trackSiteEvent("appointment_otp_sent", { source: "appointment_page" });
     } catch (e) {
@@ -1045,6 +1045,9 @@ export function AppointmentPage() {
                         {maskPhone(phone)}
                       </span>{" "}
                       پیامک شد
+                    </p>
+                    <p className="mt-1 text-[11.5px] text-[#B0A88F]">
+                      کد تا ۱۰ دقیقه اعتبار دارد؛ اگر پیامک با چند دقیقه تأخیر رسید، همان کد را وارد کنید
                     </p>
 
                     <div dir="ltr" className="mt-6 flex justify-center *:data-[slot=input-otp-slot]:border-[#E4DCC9] *:data-[slot=input-otp-slot]:bg-[#FBF8F1]">

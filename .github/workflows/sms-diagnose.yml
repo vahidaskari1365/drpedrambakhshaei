@@ -6,14 +6,16 @@ on:
 permissions:
   contents: read
 
-# عیب‌یابی مستقیم پنل پیامک: کلید + قالب OTP + خط خدماتی
+# عیب‌یابی مستقیم پنل پیامک: کلید + قالب OTP + خط خدماتی + سنجش تأخیر تحویل
 # بدون واسطه سایت اجرا می‌شود؛ برای تشخیص «مشکل از پنل است یا از کد سایت»
-# هر دو پاسخ status و message چاپ می‌شود (کلید در لاگ ماسک می‌ماند)
+# نکته: چک وضعیت با jq انجام می‌شود — grep '"status":1' با "status":123 اشتباه می‌گرفت
 jobs:
   diagnose:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: تست قالب کد ورود (send/verify — templateId 138693)
+        id: verify
         env:
           SMSIR_API_KEY: ${{ secrets.SMSIR_API_KEY }}
           ADMIN_MOBILE: "09302626021"
@@ -24,7 +26,16 @@ jobs:
             -H "Accept: application/json" \
             -d "{\"mobile\":\"${ADMIN_MOBILE:1}\",\"templateId\":138693,\"parameters\":[{\"name\":\"CODE\",\"value\":\"۱۲۳۴۵\"}]}")
           echo "verify(138693): $RESP"
-          echo "$RESP" | grep -q '"status":1' && echo "TEMPLATE OK" || echo "TEMPLATE FAIL"
+          echo "$RESP" > /tmp/verify.json
+          if jq -e '.status == 1' /tmp/verify.json > /dev/null 2>&1; then
+            echo "TEMPLATE OK"
+          else
+            echo "TEMPLATE FAIL"
+            exit 1
+          fi
+          jq -r '.data.messageId // empty' /tmp/verify.json > /tmp/message_id.txt || true
+          echo "messageId: $(cat /tmp/message_id.txt 2>/dev/null)"
+          echo "message_id=$(cat /tmp/message_id.txt 2>/dev/null)" >> "$GITHUB_OUTPUT"
 
       - name: تست خط خدماتی (send/bulk — lineNumber 500039235084479)
         env:
@@ -37,4 +48,38 @@ jobs:
             -H "Accept: application/json" \
             -d "{\"lineNumber\":\"500039235084479\",\"messageText\":\"تست خط خدماتی سامانه نوبت‌دهی مطب دکتر پدرام بخشایی\",\"mobiles\":[\"${ADMIN_MOBILE:1}\"]}")
           echo "bulk(500039235084479): $RESP"
-          echo "$RESP" | grep -q '"status":1' && echo "LINE OK" || echo "LINE FAIL"
+          echo "$RESP" | jq -e '.status == 1' > /dev/null 2>&1 && echo "LINE OK" || echo "LINE FAIL — خط ارسال‌کننده در پنل SMS.ir فعال نیست (وضعیت ۱۲۳)"
+
+      # سنجش تأخیر واقعی تحویل: ۹۰ ثانیه بعد از ارسال، گزارش لحظه‌ای چک می‌شود؛
+      # اختلاف زمان «ارسال» و «تحویل» = تاخیری که بیمار پیامک را دیر می‌گیرد
+      - name: سنجش تأخیر تحویل (report/live بعد از ۹۰ ثانیه)
+        if: steps.verify.outputs.message_id != ''
+        env:
+          SMSIR_API_KEY: ${{ secrets.SMSIR_API_KEY }}
+        run: |
+          MSG_ID=$(cat /tmp/message_id.txt)
+          [ -z "$MSG_ID" ] && { echo "messageId در دسترس نیست — رد می‌شود"; exit 0; }
+          echo "انتظار برای تحویل... (۹۰ ثانیه)"
+          sleep 90
+          RESP=$(curl -s -m 30 "https://api.sms.ir/v1/report/live" \
+            -H "x-api-key: $SMSIR_API_KEY" \
+            -H "Accept: application/json")
+          echo "$RESP" > /tmp/live.json
+          ROW=$(jq -c --arg id "$MSG_ID" '[.. | objects | select((.messageId? // "") == $id)] | first // empty' /tmp/live.json)
+          if [ -z "$ROW" ]; then
+            echo "پیام $MSG_ID در گزارش لحظه‌ای پیدا نشد؛ نمونه از گزارش:"
+            jq -c '[.. | objects | select(has("messageId"))] | .[0:2]' /tmp/live.json || echo "$RESP" | head -c 800
+          else
+            echo "رکورد پیام: $ROW"
+            SENT_AT=$(echo "$ROW" | jq -r '.sendAt // .sendTime // .sendDateTime // empty')
+            DELIV_AT=$(echo "$ROW" | jq -r '.deliveryAt // .deliveryTime // .deliveryDateTime // .deliveryDate // empty')
+            STATUS=$(echo "$ROW" | jq -r '.status // .deliveryStatus // empty')
+            echo "status=$STATUS | sendAt=$SENT_AT | deliveryAt=$DELIV_AT"
+            if [ -n "$SENT_AT" ] && [ -n "$DELIV_AT" ]; then
+              S=$(date -d "$SENT_AT" +%s 2>/dev/null || echo "")
+              D=$(date -d "$DELIV_AT" +%s 2>/dev/null || echo "")
+              if [ -n "$S" ] && [ -n "$D" ]; then
+                echo "تأخیر تحویل: $((D - S)) ثانیه"
+              fi
+            fi
+          fi

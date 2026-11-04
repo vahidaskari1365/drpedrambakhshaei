@@ -29,7 +29,7 @@ const schema = z.object({
 /** گام ۱ نوبت‌دهی — اعتبارسنجی و ارسال کد تایید پیامکی به بیمار */
 export async function POST(req: Request) {
   try {
-    const rl = rateLimit(req, "appt-otp", 4, 10 * 60 * 1000);
+    const rl = rateLimit(req, "appt-otp", 8, 10 * 60 * 1000);
     if (!rl.ok) {
       return NextResponse.json(
         { error: "تعداد درخواست‌ها زیاد است؛ چند دقیقه بعد تلاش کنید" },
@@ -84,25 +84,27 @@ export async function POST(req: Request) {
       );
     }
 
-    // سقف ارسال مجدد: یک کد در ۶۰ ثانیه برای هر شماره
+    // سقف ارسال مجدد: یک کد در ۴۵ ثانیه برای هر شماره
     const recent = await db.otpCode.findFirst({
-      where: { phone, purpose: "booking", createdAt: { gt: new Date(Date.now() - 60_000) } },
+      where: { phone, purpose: "booking", createdAt: { gt: new Date(Date.now() - 45_000) } },
       select: { id: true },
     });
     if (recent) {
       return NextResponse.json(
-        { error: "کد قبلا ارسال شده؛ یک دقیقه صبر کنید" },
-        { status: 429, headers: { "Retry-After": "60" } },
+        { error: "کد قبلا ارسال شده؛ چند لحظه بعد دوباره تلاش کنید" },
+        { status: 429, headers: { "Retry-After": "45" } },
       );
     }
 
     const code = generateOtp();
+    // عمر کد ۱۰ دقیقه — تحویل پیامک اپراتور گاهی چند دقیقه طول می‌کشد؛
+    // کد باید بعد از رسیدن دیرهنگام پیامک هنوز معتبر باشد
     await db.otpCode.create({
       data: {
         phone,
         codeHash: hashOtp(code),
         purpose: "booking",
-        expiresAt: new Date(Date.now() + 3 * 60_000),
+        expiresAt: new Date(Date.now() + 10 * 60_000),
       },
     });
 
@@ -115,7 +117,7 @@ export async function POST(req: Request) {
       );
     }
 
-    return NextResponse.json({ ok: true, expiresIn: 180 }, { status: 201 });
+    return NextResponse.json({ ok: true, expiresIn: 600 }, { status: 201 });
   } catch (e) {
     console.error("[appt-otp]", e);
     return NextResponse.json({ error: "خطای سرور؛ لطفا بعدا تلاش کنید" }, { status: 500 });
