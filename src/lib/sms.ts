@@ -9,7 +9,8 @@ export async function getSmsConfig() {
   });
   return {
     apiKey: process.env.SMSIR_API_KEY?.trim() || row.apiKey,
-    adminMobiles: row.adminMobiles,
+    // فال‌بک: فیلد خالی مدیرها هرگز نباید اطلاع‌رسانی نوبت جدید را قطع کند
+    adminMobiles: row.adminMobiles?.trim() || DEFAULT_ADMIN_MOBILES,
     templateId: row.templateId,
     senderLine: row.senderLine,
     enabled: row.enabled,
@@ -108,6 +109,9 @@ export async function sendSmsText(
 
 const DEFAULT_TEMPLATE_ID_NUM = 138693;
 export const DEFAULT_SENDER_LINE = "500039235084479";
+
+/** شماره اطلاع‌رسانی نوبت جدید به مطب — فال‌بک وقتی فیلد «شماره مدیرها» خالی است */
+export const DEFAULT_ADMIN_MOBILES = "09302626021";
 
 /* متن‌های استاندارد پیامک نوبت — در /api/appointments/confirm استفاده می‌شوند */
 export function patientSmsText(name: string, service: string, jalaliDate: string, time: string): string {
