@@ -2030,3 +2030,25 @@ Title: عیب‌یابی «کد OTP دیر می‌رسد و سایت قبول ن
 - خط خدماتی 500039235084479 فعال شد (کاربر در پنل SMS.ir تایید کرد) → تست bulk: LINE OK
 - پشتیبانی SMS.ir تغییرات مسیر ارسال اعمال کرد → گزارش تحویل messageId 805124055: deliveryState=1 (رسیده به گوشی) در چند ثانیه (قبلاً null بعد از ۹۰ث)
 - سامانه نوبت‌دهی SMS کامل شد: OTP سریع + عمر ۱۰ دقیقه + تایید نوبت به بیمار + اطلاع به مدیر
+
+---
+Task ID: 64
+Agent: Z.ai Code (main)
+Date: 2026-11-04
+Title: پنل ادمین کهنه بود — تب نوبت‌ها/پیامک دیده نمی‌شد (کش یک‌ساله s-maxage)
+
+گزارش کاربر: «توی پنل ادمین ثبت نمیشه که یکی نوبت رزرو کرده» — در حالی که تب نوبت‌ها (CRM کامل با نام/شماره/وضعیت/پیامک‌ها) از Task 58 در کد بود و نوبت واقعی هم در DB بود (slots: 2026-11-05 17:00 booked).
+
+تشخیص:
+- باندل زنده /admin فقط ۵ تب قدیمی داشت؛ chunk رفرنس‌شده (0dea7v0_rph3j) اصلاً در باندل جاری نبود
+- /admin صفحه استاتیک prerender با cache-control: s-maxage=31536000 + x-nextjs-cache: HIT — HTML چندروزه در کش وب‌سرور هاست (LiteSpeed) فریز شده بود؛ APIها (مثل OTP) داینامیک و به‌روز بودند، فقط HTML استاتیک مسموم شده بود
+
+اصلاحات (کامیت 02c0652):
+- src/app/admin/page.tsx → force-dynamic: دیگر هرگز prerender/کش نمی‌شود
+- next.config headers: /admin → Cache-Control: no-store, must-revalidate (+ X-LiteSpeed-Purge)
+- endpoint یک‌باره /api/cache-purge?path=/admin با سقف نرخ — ورودی کش کهنه پاک شد
+
+وریفای زنده:
+- /api/cache-purge → 200 {"purged":"/admin, /admin/"}
+- /admin بعد از purge: cache-control: no-store ✓ بدون رفرنس chunk قدیمی ✓ تب نوبت‌ها در chunk جدید (3p8egj9y-r4ox) ✓
+- درس: هر صفحه استاتیک با s-maxage یک‌ساله بعد از هر دیپلوی در کش LiteSpeed هاست فریز می‌شود؛ صفحات حیاتی باید force-dynamic باشند
