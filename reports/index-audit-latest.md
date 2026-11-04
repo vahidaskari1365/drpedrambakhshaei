@@ -7,9 +7,9 @@
 
 | وضعیت | تعداد |
 |---|---|
-| ✅ ایندکس شده | 39 |
+| ✅ ایندکس شده | 40 |
 | ❌ ایندکس نشده | 0 |
-| ⏳ خنثی/در انتظار | 12 |
+| ⏳ خنثی/در انتظار | 11 |
 
 ## ❌ ایندکس نشده‌ها (با دلیل دقیق)
 
@@ -21,7 +21,6 @@
 | `/blog/dental-implant-cost-1405#post-2026-10-16-3000d7` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
 | `/blog/dental-implant-cost-1405#post-2026-10-16-ed0c64` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
 | `/blog/immediate-implant-loading` | خنثی/در انتظار ⏳ | صفحه با ریدایرکت (طبیعی) | `/blog/immediate-implant-loading-dee79` | 2026-11-01 |
-| `/blog/sleep-apnea-jaw-surgery-treatment` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
 | `/faq/` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
 | `/icon.svg` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
 | `/llms.txt` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
@@ -59,6 +58,7 @@
 | `/blog/receding-chin-sleep-apnea-treatment` | ایندکس شده ✅ | ارسال و ایندکس شده ✅ | `/blog/receding-chin-sleep-apnea-treatment` | 2026-11-04 |
 | `/blog/root-canal-or-implant` | ایندکس شده ✅ | ارسال و ایندکس شده ✅ | `/blog/root-canal-or-implant` | 2026-11-02 |
 | `/blog/sinus-lift-upper-jaw` | ایندکس شده ✅ | ارسال و ایندکس شده ✅ | `/blog/sinus-lift-upper-jaw` | 2026-11-02 |
+| `/blog/sleep-apnea-jaw-surgery-treatment` | ایندکس شده ✅ | ارسال و ایندکس شده ✅ | `/blog/sleep-apnea-jaw-surgery-treatment` | 2026-11-04 |
 | `/chin-surgery` | ایندکس شده ✅ | ارسال و ایندکس شده ✅ | `/chin-surgery` | 2026-11-02 |
 | `/contact` | ایندکس شده ✅ | ارسال و ایندکس شده ✅ | `/contact` | 2026-11-02 |
 | `/dental-implant` | ایندکس شده ✅ | ارسال و ایندکس شده ✅ | `/dental-implant` | 2026-10-26 |
@@ -90,7 +90,7 @@
 ## 🧭 دسته‌بندی دلایل
 
 - **صفحه جایگزین با کنونیکال صحیح (طبیعی)** (3): `http://drpedrambakhshaei.com/`، `http://www.drpedrambakhshaei.com/`، `https://www.drpedrambakhshaei.com/`
-- **URL is unknown to Google** (8): `/blog/`، `/blog/dental-implant-cost-1405#post-2026-10-16-3000d7`، `/blog/dental-implant-cost-1405#post-2026-10-16-ed0c64`، `/blog/sleep-apnea-jaw-surgery-treatment`، `/faq/`، `/icon.svg`، `/llms.txt`، `/robots.txt`
+- **URL is unknown to Google** (7): `/blog/`، `/blog/dental-implant-cost-1405#post-2026-10-16-3000d7`، `/blog/dental-implant-cost-1405#post-2026-10-16-ed0c64`، `/faq/`، `/icon.svg`، `/llms.txt`، `/robots.txt`
 - **صفحه با ریدایرکت (طبیعی)** (1): `/blog/immediate-implant-loading`
 
 > راهنما: «صفحه با ریدایرکت» و «صفحه جایگزین با کنونیکال صحیح» طبیعی و بی‌ضررند (واریانت http/www/اسلش).
