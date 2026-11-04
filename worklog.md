@@ -1962,3 +1962,36 @@ Work Log:
 Stage Summary:
 - robots.txt حالا اجازه صریح به هر ۱۶ کرالر AI (OpenAI/Anthropic/Perplexity/Google/Apple/CCBot/Meta/ByteDance/Amazon) می‌دهد + Sitemap
 - قاعده: هر تغییری در robots باید در هر دو منبع (public/robots.txt و src/app/robots.ts) اعمال شود؛ publish بدون [skip ci] برای فعال‌شدن deploy
+
+---
+Task ID: 61
+Agent: Z.ai Code (main + subagent 61-a)
+Task: مقاله «چانه عقب‌رفته؛ علامت‌ها، مشکلات تنفس در خواب و مسیر درمان» — بازنویسی کامل روی همان اسلاگ زنده
+
+Work Log:
+- کشف بحرانی: تلاش قبلی همین مقاله (کامیت dca24e7 سشن کرش‌شده قبلی) از قبل پوش و منتشر شده بود (اسلاگ receding-chin-sleep-apnea-treatment زنده + در سایت‌مپ)؛ پچ جدید با اسلاگ متفاوت قرار بود cannibalization با عنوان یکسان بسازد
+- راه‌حل: اسلاگ زنده حفظ شد و محتوای بهبودیافته جایگزین شد (action:updated روی همان URL) — ساب‌ایجنت (61-a) مقاله را از صفر بازنویسی کرد: ۴۲۲۳ کلمه، ۱۳ H2 پرسشی el-*، ۸ QA، ۸ FAQ، ۳ جدول، ۴ کال‌اوت، «پاسخ مستقیم:» ۱۶۱ کلمه، metaTitle ۴۷ / metaDesc ۱۶۲، ۶ لینک داخلی، کلاستر ۱۵ کلیدواژه
+- کاور: کاور قبلی (نیم‌رخ + ماه، تم خواب) هم خوب بود هم از قبل زنده — نگه داشته شد و coverAlt دقیق برای آن بازنویسی شد؛ کاور جدید ساب‌ایجنت حذف شد
+- llms.txt: توضیح خط مقاله با محتوای جدید به‌روز شد (URL ثابت)؛ رگرسیون ساب‌ایجنت (حذف نام «شهربابکی» و آدرس پاسداران از llms.txt) شناسایی و با reset به نسخه origin خنثی شد
+- پاک‌سازی: کامیت محلی تکراری d91e584 (تلاش نیمه‌کاره با همان پیام) drop شد؛ روت‌های تکراری بی‌خطر src/app (about/blog/contact/faq/gallery/prices/reviews/services/page.tsx/template.tsx/api/route.ts) که دوباره untracked ظاهر شده بودند حذف شدند
+- انتشار: commit 7f18a84 → dispatch patch-article.yml → HTTP 200 {"action":"updated","wordCount":4091} → وریفای زنده: HTTP 200، title/h1/canonical/og:image صحیح، ۵ بلوک JSON-LD شامل FAQPage، بخش پاسخ مستقیم و سفالومتری در HTML
+
+Stage Summary:
+- URL سئوپسند قدیمی حفظ شد؛ هیچ مقاله تکراری‌ای وجود ندارد؛ محتوای جدید استانداردهای کامل SEO/GEO/AEO/SXO/AIO را دارد
+- درس: قبل از ساخت مقاله جدید همیشه URL زنده هم‌موضوع را چک کنید (sitemap + HTTP status) نه فقط پوش‌های local
+
+---
+Task ID: 62
+Agent: Z.ai Code (main)
+Task: تکمیل سامانه نوبت‌دهی SMS.ir بعد از «راه افتادن» پنل (تکمیل Task 58)
+
+Work Log:
+- dispatch seed-sms.yml: ذخیره تنظیمات سبز ({"ok":true}) ولی ارسال تست قرمز: «ارسال ناموفق: API is not defined»
+- ریشه‌یابی: در lib/sms.ts ثابت API (آدرس پایه https://api.sms.ir/v1) هرگز تعریف نشده بود؛ callApi از روز اول ReferenceError می‌داد و try/catch آن را به «ارسال ناموفق» تبدیل می‌کرد — تست‌های قبلی با «OTP تزریقی در DB» این را پوشانده بودند
+- فیکس: const API اضافه شد (commit ffcdddf) + workflow جدید sms-diagnose.yml که مستقیم و بدون واسطه سایت کلید/قالب/خط SMS.ir را تست می‌کند
+- نتیجه diagnose روی پنل واقعی: قالب ۱۳۸۶۹۳ (کد ورود) کاملاً فعال و ارسال موفق (status:1، cost:2) — یعنی مدرک شغلی تایید شده؛ خط 500039235084479 برای ارسال متن آزاد «نیاز به فعال‌سازی دارد» (status:123)
+- وابستگی: پیامک‌های تایید نوبت به بیمار و اطلاع مدیر (send/bulk) تا فعال‌سازی خط در پنل SMS.ir کار نمی‌کنند؛ خود نوبت‌دهی با OTP مستقل از آن سالم است (پیامک‌های متنی best-effort و پرچم‌دار هستند)
+
+Stage Summary:
+- باتل‌نک نهایی: فعال‌سازی خط خدماتی 500039235084479 فقط از پنل SMS.ir توسط کارفرما ممکن است (بخش خطوط/شماره‌های ارسال‌کننده)
+- بعد از pull هاست: seed-sms دوباره اجرا شود (تست سمت سایت) + تست E2E واقعی OTP از /api/appointments/otp
