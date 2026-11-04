@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { HomePage } from "@/components/site/pages/home";
-import { faqJsonLd, JsonLd, ROBOTS_META } from "@/lib/seo";
+import { faqJsonLd, homepageJsonLd, JsonLd, ROBOTS_META } from "@/lib/seo";
 import { FAQ_ITEMS } from "@/lib/site-data";
 
 export const metadata: Metadata = {
@@ -17,6 +17,8 @@ const homeFaqItems = HOME_FAQ_INDEXES.map((i) => FAQ_ITEMS[i]).filter(
 export default function Home() {
   return (
     <>
+      {/* اسکیمای صفحه — تاریخ به‌روزرسانی + موجودیت‌های تخصصی (mentions) */}
+      <JsonLd data={homepageJsonLd()} />
       <JsonLd data={faqJsonLd(homeFaqItems)} />
       <HomePage />
     </>

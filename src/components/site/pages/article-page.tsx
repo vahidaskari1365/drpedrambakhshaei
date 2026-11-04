@@ -80,13 +80,15 @@ function FaqSection({ faqs }: { faqs: { q: string; a: string }[] }) {
         const isOpen = open === i;
         return (
           <div key={f.q} className="overflow-hidden rounded-2xl border border-border/60 bg-card">
-            <button
-              type="button"
-              onClick={() => setOpen(isOpen ? -1 : i)}
-              aria-expanded={isOpen}
-              className="flex w-full items-center justify-between gap-4 px-5 py-4 text-right cursor-pointer"
-            >
-              <span className="text-[14px] font-extrabold leading-7">{f.q}</span>
+            {/* h3 دور دکمه — الگوی آکاردئون استاندارد (تیتر سؤالی واقعی برای موتورهای پاسخ‌دهی) */}
+            <h3 className="m-0">
+              <button
+                type="button"
+                onClick={() => setOpen(isOpen ? -1 : i)}
+                aria-expanded={isOpen}
+                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-right cursor-pointer"
+              >
+                <span className="text-[14px] font-extrabold leading-7">{f.q}</span>
               <span
                 className={cn(
                   "flex h-7.5 w-7.5 shrink-0 items-center justify-center rounded-full border border-border/70 transition-all duration-300",
@@ -95,7 +97,8 @@ function FaqSection({ faqs }: { faqs: { q: string; a: string }[] }) {
               >
                 <Plus className={cn("h-4 w-4", isOpen ? "text-primary" : "text-muted-foreground")} />
               </span>
-            </button>
+              </button>
+            </h3>
             <motion.div
               initial={false}
               animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
@@ -332,8 +335,13 @@ function BlockRenderer({ block }: { block: ArticleBlock }) {
 
 export function ArticlePage({ article: articleProp }: { article: BlogArticle }) {
   const { site, blog } = useSite();
-  // مقاله از محتوای زنده (شامل ویرایش‌های پنل ادمین) خوانده می‌شود؛ prop فقط پشتیبان است
-  const article = blog.find((a) => a.slug === articleProp.slug) ?? articleProp;
+  // اولویت با prop سرور است که بدنه کامل (blocks/quickAnswers/faqs) دارد —
+  // نسخه داخل Context برای سبک‌شدن flight عمداً بدون بدنه است (slimContentForClient).
+  // prop و Context هر دو از getMergedContent همان درخواست می‌آیند؛ یعنی به‌روزترین‌اند.
+  const article =
+    articleProp.blocks?.length || articleProp.faqs?.length
+      ? articleProp
+      : (blog.find((a) => a.slug === articleProp.slug) ?? articleProp);
   const toc = article.blocks.filter((b): b is Extract<ArticleBlock, { type: "h2" }> => b.type === "h2");
 
   return (

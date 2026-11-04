@@ -122,6 +122,55 @@ export function websiteJsonLd() {
   };
 }
 
+/**
+ * اسکیمای صفحه اصلی — WebPage با تاریخ به‌روزرسانی قابل‌استناد + موجودیت‌های تخصصی
+ * (رفع یافته‌های SeoMods: «Publish/update date missing» + «Entities in structured data: None»)
+ */
+export function homepageJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${SITE_URL}/#webpage`,
+    url: SITE_URL,
+    name: "دکتر پدرام بخشایی | متخصص جراحی دهان، فک و صورت در پاسداران تهران",
+    inLanguage: "fa-IR",
+    dateModified: "2026-11-04",
+    lastReviewed: "2026-11-04",
+    reviewedBy: { "@id": `${SITE_URL}/#physician` },
+    about: { "@id": `${SITE_URL}/#physician` },
+    mentions: [
+      {
+        "@type": "MedicalProcedure",
+        name: "جراحی ارتوگناتیک فک",
+        alternateName: "ارتوسرجری",
+        procedureType: "https://schema.org/SurgicalProcedure",
+        bodyLocation: "فک بالا و فک پایین",
+        performer: { "@id": `${SITE_URL}/#physician` },
+      },
+      {
+        "@type": "MedicalProcedure",
+        name: "جنیوپلاستی",
+        alternateName: "جراحی چانه",
+        procedureType: "https://schema.org/SurgicalProcedure",
+        performer: { "@id": `${SITE_URL}/#physician` },
+      },
+      {
+        "@type": "MedicalProcedure",
+        name: "ایمپلنت دندان",
+        alternateName: "ایمپلنت یک‌روزه",
+        procedureType: "https://schema.org/SurgicalProcedure",
+        performer: { "@id": `${SITE_URL}/#physician` },
+      },
+      {
+        "@type": "MedicalTherapy",
+        name: "جراحی پیشبرد دو فک برای درمان آپنه خواب",
+        alternateName: "MMA — Maxillomandibular Advancement",
+        recognizingAuthority: { "@id": `${SITE_URL}/#physician` },
+      },
+    ],
+  };
+}
+
 /** اسکیمای نان‌برکرامب — مسیر صفحات برای گوگل */
 export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
   return {

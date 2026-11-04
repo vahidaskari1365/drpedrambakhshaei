@@ -74,6 +74,26 @@ export async function getMergedContent(): Promise<SiteContent> {
   return merged;
 }
 
+/**
+ * سبک‌سازی محتوا برای تزریق به Context سمت کلاینت (ContentProvider)
+ *
+ * داده کامل مقاله‌ها (blocks/quickAnswers/faqs — بیش از ۴۰۰KB برای ۷ مقاله)
+ * در flight payload «همه صفحات» تزریق می‌شد در حالی که هیچ صفحه‌ای جز خودِ
+ * مقاله به آن نیاز ندارد (صفحه مقاله، مقاله کامل را از prop سرور می‌گیرد و
+ * فهرست بلاگ فقط متادیتا می‌خواهد). این تابع فقط فیلدهای سنگین را خالی می‌کند
+ * تا RSC payload صفحه اصلی ~۴۵٪ کوچک‌تر شود.
+ * ⚠️ فقط برای (site)/layout — پنل ادمین و APIها همچنان getMergedContent کامل می‌گیرند.
+ */
+export function slimContentForClient(content: SiteContent): SiteContent {
+  if (!Array.isArray(content.blog)) return content;
+  content.blog = content.blog.map((a) =>
+    a.blocks?.length || a.quickAnswers?.length || a.faqs?.length
+      ? { ...a, blocks: [], quickAnswers: [], faqs: [] }
+      : a
+  );
+  return content;
+}
+
 /** ذخیره بازنویسی یک مجموعه + ثبت فعالیت */
 export async function saveOverride(
   key: string,

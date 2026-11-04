@@ -5,7 +5,6 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft,
-  Star,
   Quote,
   Phone,
   CalendarCheck,
@@ -23,6 +22,7 @@ import {
   FileBadge,
   HeartPulse,
   Microscope,
+  RefreshCw,
 } from "lucide-react";
 import { Hero } from "../hero";
 import { SectionHeading } from "../section-heading";
@@ -58,10 +58,13 @@ function ReviewCard({ r }: { r: SiteContent["reviews"][number] }) {
             <p className="text-[11px] text-background/50">{r.source} · {r.time}</p>
           </div>
         </div>
-        <span className="flex gap-0.5" aria-label="امتیاز ۵ از ۵">
-          {Array.from({ length: 5 }).map((_, j) => (
-            <Star key={j} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-          ))}
+        {/* امتیاز متنی — به‌جای ۵ SVG جداگانه (روی هم ~۱۲۰KB از HTML صفحه کم می‌کند) */}
+        <span
+          className="text-[13px] tracking-[0.2em] text-amber-400"
+          aria-label="امتیاز ۵ از ۵"
+          title="امتیاز ۵ از ۵"
+        >
+          ★★★★★
         </span>
       </figcaption>
     </figure>
@@ -132,6 +135,78 @@ export function HomePage() {
   return (
     <>
       <Hero />
+
+      {/* ═══ پاسخ سریع (TL;DR) — جعبه پاسخ مستقیم برای موتورهای پاسخ‌دهی + تاریخ به‌روزرسانی ═══ */}
+      <section
+        aria-labelledby="quick-answer-h"
+        className="relative border-y border-border/60 bg-card/60"
+      >
+        <div className="mx-auto max-w-7xl px-5 py-8 lg:px-8">
+          <div className="mx-auto max-w-4xl rounded-3xl border border-primary/25 bg-background/80 p-6 shadow-[0_24px_60px_-40px] shadow-primary/30 backdrop-blur lg:p-8">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h2 id="quick-answer-h" className="inline-flex items-center gap-2 text-base font-black sm:text-lg">
+                <Sparkles className="h-4.5 w-4.5 text-primary" />
+                پاسخ سریع: دکتر پدرام بخشایی کیست و چه خدماتی ارائه می‌دهد؟
+              </h2>
+              <p className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-[11px] font-bold text-primary">
+                <RefreshCw className="h-3 w-3" aria-hidden="true" />
+                آخرین به‌روزرسانی محتوا و تعرفه‌ها: ۱۳ آبان ۱۴۰۵
+              </p>
+            </div>
+            <p className="mt-4 text-[14px] leading-8 text-foreground/90">
+              دکتر پدرام بخشایی، متخصص جراحی دهان، فک و صورت (OMFS)، رتبه ۲ بورد تخصصی کشور و عضو
+              هیئت علمی دانشگاه شهید بهشتی است که در پاسداران تهران مطب دارد. خدمات اصلی مجموعه،
+              جراحی ارتوگناتیک فک (ارتوسرجری)، جنیوپلاستی چانه، ایمپلنت دندان با برنامه‌ریزی
+              سه‌بعدی CBCT، جراحی دندان نهفته و درمان قطعی آپنه خواب با جراحی پیشبرد دو فک (MMA)
+              است. رزرو نوبت آنلاین با تایید پیامکی در کمتر از یک دقیقه انجام می‌شود.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ تعریف اصطلاحات تخصصی — جمله‌های «X است» + لیست تعریفی برای موتورهای پاسخ‌دهی ═══ */}
+      <section className="bg-muted/40 relative overflow-hidden py-14 lg:py-20" aria-labelledby="glossary-h">
+        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+          <SectionHeading
+            kicker="واژه‌نامه سریع"
+            title={
+              <>
+                اصطلاحات تخصصی جراحی فک و ایمپلنت
+                <span className="text-gradient block">یعنی چه؟</span>
+              </>
+            }
+            desc="تعریف کوتاه و دقیق اصطلاحاتی که در مشاوره، مقاله‌ها و جداول تعرفه می‌بینید"
+          />
+          <dl className="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2">
+            {[
+              {
+                term: "ارتوسرجری (جراحی ارتوگناتیک فک)",
+                def: "ارتوسرجری، جراحی اصلاح موقعیت فک بالا (برش Le Fort I) و فک پایین (برش BSSO) برای جفت‌شدن صحیح دندان‌ها، تناسب صورت و بازشدن راه هوایی است.",
+              },
+              {
+                term: "جنیوپلاستی",
+                def: "جنیوپلاستی، جراحی اصلاح فرم و موقعیت چانه است؛ چانه عقب راه هوایی را تنگ می‌کند و جلوآوردن آن هم ظاهر و هم تنفس را بهتر می‌کند.",
+              },
+              {
+                term: "ایمپلنت دندان و ایمپلنت یک‌روزه",
+                def: "ایمپلنت دندان، جایگذاری ریشه مصنوعی تیتانیومی در استخوان فک با برنامه‌ریزی CBCT است؛ در ایمپلنت یک‌روزه دندان موقت همان روز تحویل داده می‌شود.",
+              },
+              {
+                term: "آپنه خواب و جراحی MMA",
+                def: "آپنه خواب، توقف مکرر تنفس در خواب است؛ وقتی ریشه آن عقب‌رفتگی فک باشد، جراحی پیشبرد دو فک (MMA) درمان قطعی محسوب می‌شود و CPAP فقط درمان کمکی شبانه است.",
+              },
+            ].map((g) => (
+              <div
+                key={g.term}
+                className="rounded-2xl border border-[oklch(0.5_0.06_152/0.14)] bg-card p-5 shadow-[0_20px_50px_-38px_oklch(0.4_0.05_152/0.5)]"
+              >
+                <dt className="text-[14px] font-black text-primary">{g.term}</dt>
+                <dd className="mt-2 text-[13px] leading-7 text-muted-foreground">{g.def}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
 
       {/* ═══ خدمات — پیش‌نمایش ۳ خدمت اصلی ═══ */}
       <section className="bg-sage relative overflow-hidden py-16 lg:py-24" aria-label="خدمات تخصصی">
@@ -468,6 +543,18 @@ export function HomePage() {
                 {aboutBio[2]}
               </p>
 
+              {/* نقل‌قول مستقیم دکتر — سیگنال تخصص و اصالت برای AI Citation و E-E-A-T */}
+              <blockquote className="mt-6 border-e-4 border-primary/60 bg-card/60 py-4 pe-5 ps-6 rounded-2xl">
+                <Quote className="mb-2 h-4.5 w-4.5 text-primary/50" aria-hidden="true" />
+                <p className="text-[14px] font-bold leading-8 text-foreground/95">
+                  جراحی فک فقط تغییر ظاهر نیست؛ برای بسیاری از بیماران، بازشدن راه هوایی، پایان
+                  آپنه خواب و بازگشت کیفیت زندگی است.
+                </p>
+                <cite className="mt-2 block text-[12px] font-medium not-italic text-muted-foreground">
+                  — دکتر پدرام بخشایی، متخصص جراحی دهان، فک و صورت
+                </cite>
+              </blockquote>
+
               {/* مدارک منتخب */}
               <ul className="mt-6 grid gap-2.5 sm:grid-cols-2">
                 {credentials.slice(4, 7).map((c) => (
@@ -643,8 +730,8 @@ export function HomePage() {
           {/* جریان پیوسته نظرات — کارت‌ها دونه‌دونه از راست وارد و از چپ خارج می‌شوند (حلقه بی‌نهایت بی‌درز) */}
           <div className="mask-fade-x">
             <Marquee pauseOnHover className="p-0 [--mg-duration:150s] [--mg-gap:1.25rem]" repeat={2}>
-              {reviews.map((r) => (
-                <ReviewCard key={`mq-${r.author}`} r={r} />
+              {reviews.map((r, i) => (
+                <ReviewCard key={`mq-${i}-${r.author}`} r={r} />
               ))}
             </Marquee>
           </div>

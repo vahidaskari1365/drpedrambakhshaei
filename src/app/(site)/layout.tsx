@@ -4,7 +4,7 @@ import { HashRedirect } from "@/components/site/hash-redirect";
 import { ContentProvider } from "@/components/site/content-provider";
 import { VisitTracker } from "@/components/site/visit-tracker";
 import { JsonLd, physicianJsonLd, websiteJsonLd } from "@/lib/seo";
-import { getMergedContent } from "@/lib/content-store";
+import { getMergedContent, slimContentForClient } from "@/lib/content-store";
 
 /** رندر زنده در هر درخواست — ویرایش‌های پنل ادمین بلافاصله در SSR دیده می‌شوند */
 export const dynamic = "force-dynamic";
@@ -23,10 +23,12 @@ export default async function SiteLayout({
 
   return (
     <>
-      {/* اسکیماهای سراسری — هویت پزشک و وب‌سایت */}
+      {/* اسکیماهای سراسری — هویت پزشک و وب‌سایت (از داده کامل، قبل از سبک‌سازی) */}
       <JsonLd data={physicianJsonLd(content.site, content.services, content.reviews)} />
       <JsonLd data={websiteJsonLd()} />
-      <ContentProvider content={content}>
+      {/* به کلاینت فقط محتوای سبک می‌رود — بدنه مقاله‌ها (۴۰۰KB+) از flight حذف می‌شود؛
+          صفحه مقاله بدنه کامل را از prop سرور می‌گیرد و اسکیمای بلاگ همین‌جا با داده کامل ساخته می‌شد */}
+      <ContentProvider content={slimContentForClient(content)}>
         <Chrome>{children}</Chrome>
       </ContentProvider>
       <VisitTracker />
