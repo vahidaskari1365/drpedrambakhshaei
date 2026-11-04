@@ -44,6 +44,9 @@ export function generateOtp(): string {
 
 type SmsResult = { ok: boolean; status?: number; message?: string };
 
+/* آدرس پایه REST API پیامک — v1 (بدون این ثابت callApi با ReferenceError می‌مُرد) */
+const API = "https://api.sms.ir/v1";
+
 async function callApi(
   path: string,
   apiKey: string,

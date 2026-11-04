@@ -1,0 +1,40 @@
+name: SMS.ir Diagnose (مستقیم — بدون سایت)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# عیب‌یابی مستقیم پنل پیامک: کلید + قالب OTP + خط خدماتی
+# بدون واسطه سایت اجرا می‌شود؛ برای تشخیص «مشکل از پنل است یا از کد سایت»
+# هر دو پاسخ status و message چاپ می‌شود (کلید در لاگ ماسک می‌ماند)
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: تست قالب کد ورود (send/verify — templateId 138693)
+        env:
+          SMSIR_API_KEY: ${{ secrets.SMSIR_API_KEY }}
+          ADMIN_MOBILE: "09302626021"
+        run: |
+          RESP=$(curl -s -m 30 -X POST "https://api.sms.ir/v1/send/verify" \
+            -H "x-api-key: $SMSIR_API_KEY" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d "{\"mobile\":\"${ADMIN_MOBILE:1}\",\"templateId\":138693,\"parameters\":[{\"name\":\"CODE\",\"value\":\"۱۲۳۴۵\"}]}")
+          echo "verify(138693): $RESP"
+          echo "$RESP" | grep -q '"status":1' && echo "TEMPLATE OK" || echo "TEMPLATE FAIL"
+
+      - name: تست خط خدماتی (send/bulk — lineNumber 500039235084479)
+        env:
+          SMSIR_API_KEY: ${{ secrets.SMSIR_API_KEY }}
+          ADMIN_MOBILE: "09302626021"
+        run: |
+          RESP=$(curl -s -m 30 -X POST "https://api.sms.ir/v1/send/bulk" \
+            -H "x-api-key: $SMSIR_API_KEY" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d "{\"lineNumber\":\"500039235084479\",\"messageText\":\"تست خط خدماتی سامانه نوبت‌دهی مطب دکتر پدرام بخشایی\",\"mobiles\":[\"${ADMIN_MOBILE:1}\"]}")
+          echo "bulk(500039235084479): $RESP"
+          echo "$RESP" | grep -q '"status":1' && echo "LINE OK" || echo "LINE FAIL"
