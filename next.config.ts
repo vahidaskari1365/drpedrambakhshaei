@@ -79,6 +79,19 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: securityHeaders,
       },
+      {
+        // پنل ادمین — هرگز در هیچ کشی (پروکسی/LiteSpeed/مرورگر) ذخیره نشود؛
+        // HTML کهنه با s-maxage یک‌ساله باعث شده بود پنل قدیمی سرو شود
+        source: "/admin",
+        headers: [
+          { key: "Cache-Control", value: "no-store, must-revalidate" },
+          { key: "X-LiteSpeed-Purge", value: "url=/admin, url=/admin/" },
+        ],
+      },
+      {
+        source: "/admin/:path*",
+        headers: [{ key: "Cache-Control", value: "no-store, must-revalidate" }],
+      },
     ];
   },
 };
