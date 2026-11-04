@@ -77,22 +77,24 @@ function FaqRow({ q, a, open, onToggle }: { q: string; a: string; open: boolean;
         open ? "border-primary/40 shadow-[0_16px_40px_-24px] shadow-primary/40" : "border-border/60"
       )}
     >
-      <button
-        type="button"
-        onClick={onToggle}
-        aria-expanded={open}
-        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start cursor-pointer"
-      >
-        <span className="text-[14px] font-extrabold leading-6">{q}</span>
-        <span
-          className={cn(
-            "flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-colors",
-            open ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
-          )}
+      <h3 className="m-0">
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-expanded={open}
+          className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start cursor-pointer"
         >
-          <ChevronDown className={cn("h-4 w-4 transition-transform duration-300", open && "rotate-180")} />
-        </span>
-      </button>
+          <span className="text-[14px] font-extrabold leading-6">{q}</span>
+          <span
+            className={cn(
+              "flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-colors",
+              open ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+            )}
+          >
+            <ChevronDown className={cn("h-4 w-4 transition-transform duration-300", open && "rotate-180")} />
+          </span>
+        </button>
+      </h3>
       <AnimatePresence initial={false}>
         {open && (
           <motion.div
