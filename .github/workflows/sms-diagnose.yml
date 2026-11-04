@@ -50,36 +50,37 @@ jobs:
           echo "bulk(500039235084479): $RESP"
           echo "$RESP" | jq -e '.status == 1' > /dev/null 2>&1 && echo "LINE OK" || echo "LINE FAIL — خط ارسال‌کننده در پنل SMS.ir فعال نیست (وضعیت ۱۲۳)"
 
-      # سنجش تأخیر واقعی تحویل: ۹۰ ثانیه بعد از ارسال، گزارش لحظه‌ای چک می‌شود؛
-      # اختلاف زمان «ارسال» و «تحویل» = تاخیری که بیمار پیامک را دیر می‌گیرد
-      - name: سنجش تأخیر تحویل (report/live بعد از ۹۰ ثانیه)
+      # سنجش تأخیر واقعی تحویل: گزارش تک‌پیام GET /v1/send/{messageId}
+      # deliveryState: 1=رسیده 2=نرسیده به گوشی 3=رسیده به مخابرات 4=نرسیده به مخابرات
+      #                5=رسیده به اپراتور 6=ناموفق 7=لیست سیاه 8=نامشخص
+      # تأخیر = deliveryDateTime - sendDateTime (یونیکس ثانیه)
+      - name: سنجش تأخیر تحویل (GET /v1/send/{messageId})
         if: steps.verify.outputs.message_id != ''
         env:
           SMSIR_API_KEY: ${{ secrets.SMSIR_API_KEY }}
         run: |
           MSG_ID=$(cat /tmp/message_id.txt)
           [ -z "$MSG_ID" ] && { echo "messageId در دسترس نیست — رد می‌شود"; exit 0; }
-          echo "انتظار برای تحویل... (۹۰ ثانیه)"
+          echo "انتظار برای رسیدن گزارش تحویل... (۹۰ ثانیه)"
           sleep 90
-          RESP=$(curl -s -m 30 "https://api.sms.ir/v1/report/live" \
+          RESP=$(curl -s -m 30 "https://api.sms.ir/v1/send/$MSG_ID" \
             -H "x-api-key: $SMSIR_API_KEY" \
             -H "Accept: application/json")
-          echo "$RESP" > /tmp/live.json
-          ROW=$(jq -c --arg id "$MSG_ID" '[.. | objects | select((.messageId? // "") == $id)] | first // empty' /tmp/live.json)
-          if [ -z "$ROW" ]; then
-            echo "پیام $MSG_ID در گزارش لحظه‌ای پیدا نشد؛ نمونه از گزارش:"
-            jq -c '[.. | objects | select(has("messageId"))] | .[0:2]' /tmp/live.json || echo "$RESP" | head -c 800
+          echo "report: $RESP"
+          echo "$RESP" > /tmp/report.json
+          STATE=$(jq -r '.data.deliveryState // empty' /tmp/report.json)
+          SENT=$(jq -r '.data.sendDateTime // empty' /tmp/report.json)
+          DELIV=$(jq -r '.data.deliveryDateTime // empty' /tmp/report.json)
+          case "$STATE" in
+            1) STATE_FA="رسیده به گوشی ✅";; 2) STATE_FA="نرسیده به گوشی ❌";;
+            3) STATE_FA="رسیده به مخابرات (در صف اپراتور)";; 4) STATE_FA="نرسیده به مخابرات ❌";;
+            5) STATE_FA="رسیده به اپراتور (در صف نهایی)";; 6) STATE_FA="ارسال ناموفق ❌";;
+            7) STATE_FA="لیست سیاه ❌";; 8) STATE_FA="نامشخص";; *) STATE_FA="بدون گزارش";;
+          esac
+          echo "وضعیت تحویل: $STATE_FA"
+          if [ -n "$SENT" ] && [ -n "$DELIV" ] && [ "$DELIV" != "null" ]; then
+            DELAY=$((DELIV - SENT))
+            echo "تأخیر تحویل: ${DELAY} ثانیه"
           else
-            echo "رکورد پیام: $ROW"
-            SENT_AT=$(echo "$ROW" | jq -r '.sendAt // .sendTime // .sendDateTime // empty')
-            DELIV_AT=$(echo "$ROW" | jq -r '.deliveryAt // .deliveryTime // .deliveryDateTime // .deliveryDate // empty')
-            STATUS=$(echo "$ROW" | jq -r '.status // .deliveryStatus // empty')
-            echo "status=$STATUS | sendAt=$SENT_AT | deliveryAt=$DELIV_AT"
-            if [ -n "$SENT_AT" ] && [ -n "$DELIV_AT" ]; then
-              S=$(date -d "$SENT_AT" +%s 2>/dev/null || echo "")
-              D=$(date -d "$DELIV_AT" +%s 2>/dev/null || echo "")
-              if [ -n "$S" ] && [ -n "$D" ]; then
-                echo "تأخیر تحویل: $((D - S)) ثانیه"
-              fi
-            fi
+            echo "گزارش تحویل هنوز نرسیده (پیامک در صف اپراتور مانده — خودش نشانه تأخیر است)"
           fi
