@@ -2173,3 +2173,19 @@ Stage Summary:
 - ری‌سابمیت sitemap.xml ✅ | IndexNow صفحه اصلی بعد از دیپلوی: 200 OK
 - نکته عملیاتی: پوش همزمان کامیت کد + کامیت worklog با [skip ci] در HEAD باعث می‌شود Deploy کل push را رد کند — کامیت worklog باید جدا یا بعد از deploy پوش شود (این بار با workflow_dispatch جبران شد)
 - تب نوبت‌های ادمین (AppointmentsTab از Task 58 + فیکس کش Task 64): endpoint زنده و با گیت کلید ادمین پاسخ می‌دهد (۴۰۱ بدون کلید — صحیح)؛ لیست/KPI/تغییر وضعیت/پرچم پیامک‌ها کامل
+
+---
+Task ID: 68
+Agent: main
+Task: انتشار مقاله «جراحی زیبایی چانه (ژنیوپلاستی)؛ پروفایل صورت چطور عوض می‌شود؟» با استانداردهای SEO/GEO/AEO/SXO/AIO + کاور سه‌بعدی
+
+Work Log:
+- کاور سه‌بعدی اختصاصی تولید شد: public/uploads/cover-genioplasty-profile.jpg (1344×768 — نیم‌رخ سه‌بعدی با خط برش استخوان چانه، بدون متن)
+- سازنده پچ: scripts/github-agent/build-genioplasty-article.mjs (هم‌قرارداد سازنده‌های قبلی، اعتبارسنجی کامل)
+- مقاله ۴۴۸۹ کلمه، ۱۵ h2 پرسشی با id قراردادی el-*، ۸ پاسخ سریع (۴۰-۶۰ کلمه)، ۸ FAQ (۶۰-۱۰۰ کلمه)، پاراگراف «پاسخ مستقیم» ۱۶۷ کلمه، ۴ جدول تصمیم‌ساز ≥۳×۳، ۵ کال‌اوت، ۶ لینک داخلی به مسیرهای واقعاً موجود، کلاستر ۱۵ کلیدواژه با حضور در متن
+- تمایز محتوایی (ضد-cannibalization): صفحه /chin-surgery سرویس+قیمت؛ مقاله چانه عقب‌رفته تشخیص+تنفس خواب؛ این مقاله «آناتومی تغییر پروفایل در چهار محور» (پروجکشن چانه، خط فک و زیرچانه، زاویه گردن، تعادل لب‌ها) + خط E + تکنیک + نقاهت + هزینه ۱۴۰۵
+- public/llms.txt: خط مقاله جدید در بخش «مقالات تخصصی» اضافه شد
+- انتشار: commit cb436a4 → push → Deploy (run 41960830276 success) → dispatch patch-article.yml (run 41960851456 success) → POST /api/blog/publish روی دیتابیس هاست
+- وریفای زنده (?cb=): صفحه /blog/genioplasty-facial-profile-change 200 (338KB) | h1 دقیق | meta title 48 کاراکتر | meta desc 160 کاراکتر | og:image کاور | FAQPage + Breadcrumb schema | کاور /uploads/cover-genioplasty-profile.jpg 200 بعد از pull هاست | sitemap شامل URL جدید | llms.txt زنده آپدیت
+
+Result: مقاله زنده و کامل روی پروداکشن؛ آماده خزش و ایندکس
