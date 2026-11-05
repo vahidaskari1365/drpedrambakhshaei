@@ -1,7 +1,7 @@
-# 🔎 ممیزی کامل ایندکس — 2026-11-04
+# 🔎 ممیزی کامل ایندکس — 2026-11-05
 
 - پراپرتی: `sc-domain:drpedrambakhshaei.com`
-- تعداد URL بازرسی‌شده: 51 (نقشه سایت: 37 + صفحات دارای نمایش + واریانت‌ها)
+- تعداد URL بازرسی‌شده: 52 (نقشه سایت: 38 + صفحات دارای نمایش + واریانت‌ها)
 
 ## خلاصه
 
@@ -9,7 +9,7 @@
 |---|---|
 | ✅ ایندکس شده | 40 |
 | ❌ ایندکس نشده | 0 |
-| ⏳ خنثی/در انتظار | 11 |
+| ⏳ خنثی/در انتظار | 12 |
 
 ## ❌ ایندکس نشده‌ها (با دلیل دقیق)
 
@@ -20,6 +20,7 @@
 | `/blog/` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
 | `/blog/dental-implant-cost-1405#post-2026-10-16-3000d7` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
 | `/blog/dental-implant-cost-1405#post-2026-10-16-ed0c64` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
+| `/blog/genioplasty-facial-profile-change` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
 | `/blog/immediate-implant-loading` | خنثی/در انتظار ⏳ | صفحه با ریدایرکت (طبیعی) | `/blog/immediate-implant-loading-dee79` | 2026-11-01 |
 | `/faq/` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
 | `/icon.svg` | خنثی/در انتظار ⏳ | URL is unknown to Google | — | — |
@@ -90,7 +91,7 @@
 ## 🧭 دسته‌بندی دلایل
 
 - **صفحه جایگزین با کنونیکال صحیح (طبیعی)** (3): `http://drpedrambakhshaei.com/`، `http://www.drpedrambakhshaei.com/`، `https://www.drpedrambakhshaei.com/`
-- **URL is unknown to Google** (7): `/blog/`، `/blog/dental-implant-cost-1405#post-2026-10-16-3000d7`، `/blog/dental-implant-cost-1405#post-2026-10-16-ed0c64`، `/faq/`، `/icon.svg`، `/llms.txt`، `/robots.txt`
+- **URL is unknown to Google** (8): `/blog/`، `/blog/dental-implant-cost-1405#post-2026-10-16-3000d7`، `/blog/dental-implant-cost-1405#post-2026-10-16-ed0c64`، `/blog/genioplasty-facial-profile-change`، `/faq/`، `/icon.svg`، `/llms.txt`، `/robots.txt`
 - **صفحه با ریدایرکت (طبیعی)** (1): `/blog/immediate-implant-loading`
 
 > راهنما: «صفحه با ریدایرکت» و «صفحه جایگزین با کنونیکال صحیح» طبیعی و بی‌ضررند (واریانت http/www/اسلش).
