@@ -2189,3 +2189,31 @@ Work Log:
 - وریفای زنده (?cb=): صفحه /blog/genioplasty-facial-profile-change 200 (338KB) | h1 دقیق | meta title 48 کاراکتر | meta desc 160 کاراکتر | og:image کاور | FAQPage + Breadcrumb schema | کاور /uploads/cover-genioplasty-profile.jpg 200 بعد از pull هاست | sitemap شامل URL جدید | llms.txt زنده آپدیت
 
 Result: مقاله زنده و کامل روی پروداکشن؛ آماده خزش و ایندکس
+
+---
+Task ID: 69
+Agent: main
+Task: GSC — ممیزی کامل ایندکس + سابمیت URLهای تازه + بررسی ربات‌ها
+
+Work Log:
+- dispatch gsc-index-audit.yml (run 41962037743, mode=audit) → گزارش reports/index-audit-latest.md با تاریخ 2026-11-05
+- نتیجه ممیزی ۵۲ URL: ۴۰ ایندکس شده ✅ | صفر ایندکس‌نشده ❌ | ۱۲ خنثی (واریانت http/www، ریدایرکت، فایل robots/llms/icon، انکرها — همه طبیعی)
+- مقاله جدید ژنیوپلاستی «URL is unknown to Google» — طبیعی (چند ساعت از انتشار گذشته)؛ resubmit sitemap.xml در همان run انجام شد + IndexNow خودکار هاست بعد از دیپلوی
+- robots.txt با ۱۶ UA زنده بررسی شد: Googlebot/Googlebot-Image/News/Video، Mediapartners، AdsBot، Bingbot، YandexBot، DuckDuckBot، Baiduspider، GPTBot، OAI-SearchBot، ChatGPT-User، ClaudeBot، PerplexityBot، Applebot — همه 200 و قواعد Allow: / بدون محدودیت روی بلاگ
+- الگوی تاریخی: مقاله‌ها ۱-۲ روزه ایندکس می‌شوند (آپنه خواب همان روز)؛ ممیزی مجدد فردا
+
+Result: هیچ صفحه واقعی ایندکس‌نشده باقی نمانده؛ فقط مقاله تازه در انتظار اولین خزش
+
+---
+Task ID: 70
+Agent: main
+Task: راستی‌آزمایی نهایی تب نوبت‌های پنل ادمین (AppointmentsTab)
+
+Work Log:
+- مسیرها: tab «نوبت‌ها» در admin-app (خط 595) ← AppointmentsTab ← GET/PATCH /api/admin/appointments
+- GET: لیست ۲۰۰ نوبت آخر + فیلتر وضعیت + KPI (کل، تاییدشده، انجام‌شده، لغوشده، امروز) — فیلدهای نمایش: نام، موبایل (لینک تماس)، خدمت، تاریخ شمسی، ساعت، وضعیت، پرچم پیامک‌ها
+- PATCH: تغییر وضعیت confirmed/done/cancelled/no_show ✓
+- وریفای زنده پروداکشن (?cb=): بدون کلید 401 ✓ | کلید نامعتبر 401 ✓ | صفحه /appointment 200 ✓
+- فیکس «ثبت نمیشه» قبلاً در Task 64 (cache refreshKey) اعمال و در Task 67 زنده تست شده بود
+
+Result: تب نوبت‌ها کامل، زنده و امن است؛ مشکل به‌روزنشدن لیست در Task 64 حل شده است
